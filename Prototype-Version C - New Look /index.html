@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NYCPS TMS Prototype - Modern UI</title>
+    <!-- Google Fonts (Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-brand">
+                <img src="nycps-logo.png" alt="NYCPS Logo" id="header-logo-nycps" class="header-logo nycps-logo">
+                <span class="logo-separator"></span>
+                <img src="SentryLogo.svg" alt="Sentry Logo" id="header-logo-sentry" class="header-logo sentry-logo">
+                <span id="header-title" class="header-title-text">New York City Public Schools Transportation Management System</span>
+            </div>
+            <div class="header-controls">
+                <span id="user-info"></span>
+                <button id="logout-btn" class="btn btn-sm btn-outline" style="display: none;">Logout <i class="fas fa-sign-out-alt"></i></button>
+            </div>
+        </header>
+
+        <!-- Sidebar (Now full height behind header) -->
+        <aside class="app-sidebar" id="app-sidebar">
+            <nav class="sidebar-nav">
+                <!-- Links will be added here by script.js -->
+            </nav>
+        </aside>
+
+        <!-- Mobile Sidebar Overlay -->
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+        <main class="main-content" id="main-content">
+            <div class="main-content-inner">
+                <!-- Initial Loading Message (Hidden) -->
+                <p style="display: none;">Loading...</p>
+
+                <!-- 1. Role Selection View -->
+                <section id="role-selection" class="view active">
+                    <div class="centered-content">
+                        <h2 class="mb-1">Welcome</h2>
+                        <p class="text-secondary mb-3">Please select your role to continue.</p>
+                        <div class="role-options">
+                            <button class="btn role-btn" data-role="Parent/Student">
+                                <i class="fas fa-user-graduate fa-fw"></i>
+                                <span>Parent / Student</span>
+                            </button>
+                            <button class="btn role-btn" data-role="Driver">
+                                <i class="fas fa-bus fa-fw"></i>
+                                <span>Driver / Attendant</span>
+                            </button>
+                            <button class="btn role-btn" data-role="School Admin">
+                                <i class="fas fa-school fa-fw"></i>
+                                <span>School Admin</span>
+                            </button>
+                            <button class="btn role-btn" data-role="OPT Admin">
+                                <i class="fas fa-user-shield fa-fw"></i>
+                                <span>OPT Admin</span>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. Login View -->
+                <section id="login-view" class="view">
+                    <div class="login-container card">
+                        <h2 id="login-role-title" class="text-center mb-3">Login</h2>
+                        <form id="login-form" novalidate>
+                            <div class="form-group">
+                                <label for="username"><i class="fas fa-user fa-fw"></i> Username / ID</label>
+                                <input type="text" id="username" class="form-control" placeholder="Enter your username or ID" required>
+                                <div class="invalid-feedback">Please enter a username or ID.</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="password"><i class="fas fa-lock fa-fw"></i> Password</label>
+                                <input type="password" id="password" class="form-control" placeholder="Enter your password" required>
+                                <div class="invalid-feedback">Please enter a password.</div>
+                                <small class="form-text text-muted mt-1">Biometric/Face ID can be used (simulation).</small>
+                            </div>
+                            <div class="form-group form-check">
+                                <input type="checkbox" class="form-check-input" id="rememberMe">
+                                <label class="form-check-label" for="rememberMe">Remember Me</label>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block mt-2"><i class="fas fa-sign-in-alt"></i> Login</button>
+                        </form>
+                        <p class="text-center mt-3"><a href="#" class="text-secondary">Forgot Password?</a> | <a href="#" class="text-secondary">Need Help?</a></p>
+                    </div>
+                </section>
+
+                <!-- 3. Parent/Student View -->
+                <section id="parent-student-view" class="view parent-student-layout">
+                    <!-- Column 1: Status & Map -->
+                     <div class="card status-card span-col-2">
+                        <div class="card-header">
+                            <span><i class="fas fa-bus-alt"></i> Bus Status: <strong class="text-accent">#B1234</strong></span>
+                            <button id="view-alerts-btn" class="btn btn-sm btn-warning icon-only" title="View Alerts">
+                                 <i class="fas fa-bell"></i> <span class="badge primary">3</span>
+                             </button>
+                         </div>
+                         <div class="bus-info">
+                             <i class="fas fa-clock"></i> <span>ETA: <strong>8:15 AM</strong> (Approaching - 5 mins away)</span> <small class="text-muted ml-auto">Updated: Just now</small>
+                         </div>
+                        <div class="map-placeholder solid">
+                            <i class="fas fa-map-marked-alt fa-3x text-muted"></i>
+                            <div class="text-muted mt-1">[ Simulated Map Showing Bus Location ]</div>
+                        </div>
+                    </div>
+
+                    <!-- Column 2: Actions & Pass -->
+                    <div class="card actions-card">
+                        <div class="card-header"><i class="fas fa-tasks"></i> Quick Actions</div>
+                        <div class="action-buttons vertical">
+                             <button id="mark-absent-btn" class="btn btn-secondary">
+                                <i class="fas fa-user-times fa-fw"></i> Mark Absent Today
+                             </button>
+                             <button id="report-issue-btn" class="btn btn-danger">
+                                 <i class="fas fa-exclamation-triangle fa-fw"></i> Report Bus Issue
+                            </button>
+                             <button id="view-schedule-btn" class="btn btn-info">
+                                 <i class="fas fa-calendar-alt fa-fw"></i> View Full Schedule
+                            </button>
+                             <button id="request-info-update-btn" class="btn btn-outline">
+                                 <i class="fas fa-edit fa-fw"></i> Request Info Update
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card pass-card">
+                        <div class="card-header"><i class="fas fa-qrcode"></i> Student Bus Pass</div>
+                        <p class="text-secondary mb-2">Show this code when boarding the bus.</p>
+                        <div class="qr-code-placeholder">
+                            <i class="fas fa-barcode fa-5x text-muted"></i>
+                            <div class="text-muted mt-1">[ Simulated QR/Barcode ]</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4. Driver View -->
+                <section id="driver-view" class="view driver-layout">
+                     <!-- Column 1: Navigation & Map -->
+                     <div class="card navigation-card">
+                         <div class="card-header">
+                            <span><i class="fas fa-route"></i> Route: BX41 AM</span>
+                             <button id="acknowledge-alert-btn" class="btn btn-sm btn-warning icon-only" title="Acknowledge Alert">
+                                <i class="fas fa-bell"></i>
+                             </button>
+                         </div>
+                         <div class="navigation-info">
+                             <span><i class="fas fa-map-signs"></i> Next: <strong>Turn Left on Elm St (0.2 mi)</strong></span>
+                             <span><i class="fas fa-clock"></i> Stop 3 ETA: 8:05 AM</span>
+                         </div>
+                        <div class="map-placeholder solid"> <!-- Re-use map placeholder style -->
+                             <i class="fas fa-map-marked-alt fa-3x text-muted"></i>
+                            <div class="text-muted mt-1">[ Simulated Map Showing Route & Current Location ]</div>
+                        </div>
+                         <div class="route-controls">
+                             <button id="audio-nav-btn" class="btn btn-info"><i class="fas fa-volume-up"></i> Audio Nav</button>
+                             <button id="full-route-btn" class="btn btn-secondary"><i class="fas fa-list-ol"></i> Route List</button>
+                             <button id="driver-alert-btn" class="btn btn-danger"><i class="fas fa-bullhorn"></i> Send Alert</button>
+                         </div>
+                    </div>
+
+                     <!-- Column 2: Ridership -->
+                     <div class="card ridership-card">
+                        <div class="card-header"><i class="fas fa-users"></i> Ridership - Stop 3 of 15</div>
+                        <ul class="ridership-list simple-list">
+                            <li data-studentid="12345">
+                                <span class="student-name"><i class="fas fa-user fa-fw"></i> Smith, John <small class="text-muted">(ID: 12345)</small></span>
+                                <span class="student-actions">
+                                    <button class="btn btn-success btn-sm boarded-btn" title="Mark Boarded"><i class="fas fa-check"></i></button>
+                                    <button class="btn btn-danger btn-sm no-show-btn" title="Mark No-Show"><i class="fas fa-times"></i></button>
+                                </span>
+                            </li>
+                            <li data-studentid="67890">
+                                <span class="student-name"><i class="fas fa-user fa-fw"></i> Doe, Jane <small class="text-muted">(ID: 67890)</small> <span class="badge warning ml-1">Attn</span></span>
+                                <span class="student-actions">
+                                    <button class="btn btn-success btn-sm boarded-btn" title="Mark Boarded"><i class="fas fa-check"></i></button>
+                                    <button class="btn btn-danger btn-sm no-show-btn" title="Mark No-Show"><i class="fas fa-times"></i></button>
+                                </span>
+                            </li>
+                            <li data-studentid="13579">
+                                <span class="student-name"><i class="fas fa-user fa-fw"></i> Garcia, Maria <small class="text-muted">(ID: 13579)</small></span>
+                                <span class="student-actions">
+                                    <button class="btn btn-success btn-sm boarded-btn" title="Mark Boarded"><i class="fas fa-check"></i></button>
+                                    <button class="btn btn-danger btn-sm no-show-btn" title="Mark No-Show"><i class="fas fa-times"></i></button>
+                                </span>
+                            </li>
+                            <li data-studentid="24680">
+                                <span class="student-name"><i class="fas fa-user fa-fw"></i> Chen, Wei <small class="text-muted">(ID: 24680)</small></span>
+                                <span class="student-actions">
+                                    <button class="btn btn-success btn-sm boarded-btn" title="Mark Boarded"><i class="fas fa-check"></i></button>
+                                    <button class="btn btn-danger btn-sm no-show-btn" title="Mark No-Show"><i class="fas fa-times"></i></button>
+                                </span>
+                            </li>
+                        </ul>
+                         <button id="scan-id-btn" class="btn btn-primary mt-2 btn-block"><i class="fas fa-id-card"></i> Scan Student ID</button>
+                    </div>
+                </section>
+
+                <!-- 5. School Admin View -->
+                <section id="school-admin-view" class="view admin-layout">
+                    <h2 class="mb-3"><i class="fas fa-school"></i> School Admin Dashboard <span class="text-muted font-normal">(PS 123)</span></h2>
+
+                    <div class="kpi-container mb-3">
+                        <div class="kpi-item card">
+                            <span class="value">15</span>
+                            <span class="label"><i class="fas fa-bus"></i> Buses En Route</span>
+                        </div>
+                        <div class="kpi-item card success">
+                            <span class="value">98%</span>
+                            <span class="label"><i class="fas fa-check-circle"></i> On-Time Arrival (AM)</span>
+                        </div>
+                         <div class="kpi-item card warning">
+                            <span class="value">2</span>
+                            <span class="label"><i class="fas fa-clock"></i> Delayed Buses</span>
+                        </div>
+                         <div class="kpi-item card info">
+                            <span class="value">350</span>
+                            <span class="label"><i class="fas fa-users"></i> Students Transported</span>
+                        </div>
+                    </div>
+
+                     <div class="card bus-overview-card">
+                        <div class="card-header">School Bus Overview</div>
+                         <div class="filter-bar form-group">
+                             <label for="school-bus-filter"><i class="fas fa-filter"></i> Filter:</label>
+                             <select id="school-bus-filter" class="form-control">
+                                 <option>All Buses</option>
+                                 <option>Delayed</option>
+                                 <option>Approaching</option>
+                                 <option>Route BX41</option>
+                                 <option>Route QN05</option>
+                             </select>
+                             <button class="btn btn-sm btn-secondary" id="apply-school-filter-btn">Apply</button>
+                         </div>
+                         <div class="map-placeholder solid">
+                            <i class="fas fa-map-marked-alt fa-3x text-muted"></i>
+                            <div class="text-muted mt-1">[ Simulated Map Showing Filtered Buses for PS 123 ]</div>
+                         </div>
+                         <div class="action-buttons mt-2 text-center">
+                             <button id="view-bus-details-btn" class="btn btn-primary"><i class="fas fa-search-location"></i> View Details</button>
+                             <button id="manage-student-info-btn" class="btn btn-secondary"><i class="fas fa-users-cog"></i> Manage Students</button>
+                             <button id="school-report-issue-btn" class="btn btn-danger"><i class="fas fa-flag"></i> Report Issue</button>
+                             <button id="generate-otp-report-btn" class="btn btn-info"><i class="fas fa-chart-line"></i> On-Time Report</button>
+                         </div>
+                     </div>
+
+                <div class="card alert-list-card">
+                     <div class="card-header"><i class="fas fa-bell"></i> Recent Alerts & Events</div>
+                     <ul class="simple-list alert-list">
+                         <li><span class="badge danger"><i class="fas fa-exclamation-circle"></i> Delay</span> Bus BX41 - 15min (Traffic on Main St)</li>
+                         <li><span class="badge info"><i class="fas fa-info-circle"></i> Update</span> Bus QN05 - Route updated for new student A. Lee.</li>
+                         <li><span class="badge success"><i class="fas fa-check-circle"></i> Resolved</span> Issue report #113 (Bus QN12) closed.</li>
+                         <li><span class="badge secondary"><i class="fas fa-user-edit"></i> Change</span> Stop time adjusted +2min for J. Doe (QN05).</li>
+                         <li><span class="badge warning"><i class="fas fa-triangle-exclamation"></i> Driver</span> Driver #456 reported late start (BX07).</li>
+                         <li><span class="badge info"><i class="fas fa-map-signs"></i> Route</span> PM Route BX42 modified for today due to road closure.</li>
+                         <li><span class="badge success"><i class="fas fa-check-circle"></i> Complete</span> All AM routes completed.</li>
+                     </ul>
+                </div>
+           </section>
+
+                <!-- 6. OPT Admin View -->
+                <section id="opt-admin-view" class="view admin-layout">
+                    <h2 class="mb-3"><i class="fas fa-user-shield"></i> OPT Admin Dashboard</h2>
+
+                     <div class="kpi-container mb-3">
+                         <div class="kpi-item card">
+                            <span class="value">9,850</span>
+                            <span class="label"><i class="fas fa-bus-alt"></i> Active Buses</span>
+                        </div>
+                         <div class="kpi-item card success">
+                            <span class="value">96%</span>
+                            <span class="label"><i class="fas fa-check-double"></i> System On-Time</span>
+                        </div>
+                         <div class="kpi-item card danger">
+                            <span class="value">152</span>
+                            <span class="label"><i class="fas fa-exclamation-triangle"></i> Active Issues</span>
+                        </div>
+                         <div class="kpi-item card info">
+                            <span class="value">165K+</span>
+                            <span class="label"><i class="fas fa-user-check"></i> Students Transported Daily</span>
+                        </div>
+                    </div>
+
+                    <div class="card bus-overview-card">
+                        <div class="card-header">System-Wide Bus Overview</div>
+                        <div class="filter-bar form-group">
+                            <input type="text" id="opt-search" class="form-control" placeholder="Search Route, Student ID, Bus...">
+                             <select id="opt-filter-status" class="form-control">
+                                 <option value="all">Status: All</option>
+                                 <option value="delayed">Delayed</option>
+                                 <option value="issue">Issue Reported</option>
+                                 <option value="gps_inactive">Inactive GPS</option>
+                             </select>
+                              <select id="opt-filter-borough" class="form-control">
+                                 <option value="all">Borough: All</option>
+                                 <option value="manhattan">Manhattan</option>
+                                 <option value="brooklyn">Brooklyn</option>
+                                 <option value="bronx">Bronx</option>
+                                 <option value="queens">Queens</option>
+                                 <option value="staten_island">Staten Island</option>
+                             </select>
+                            <button class="btn btn-sm btn-primary" id="apply-opt-filter-btn"><i class="fas fa-search"></i> Search/Filter</button>
+                        </div>
+                        <div class="map-placeholder solid">
+                            <i class="fas fa-globe-americas fa-3x text-muted"></i>
+                            <div class="text-muted mt-1">[ Simulated System-Wide Map with Filters Applied ]</div>
+                        </div>
+                    </div>
+
+                     <div class="grid-container-2col"> <!-- Use grid for actions/feed -->
+                         <div class="card admin-actions-card">
+                            <div class="card-header"><i class="fas fa-cogs"></i> Admin Actions</div>
+                             <div class="admin-actions">
+                                 <button class="btn btn-secondary"><i class="fas fa-route fa-fw"></i> Routes</button>
+                                 <button class="btn btn-secondary"><i class="fas fa-map-marker-alt fa-fw"></i> Stops</button>
+                                 <button class="btn btn-secondary"><i class="fas fa-users fa-fw"></i> Users</button>
+                                 <button class="btn btn-secondary"><i class="fas fa-bus-alt fa-fw"></i> Vehicles</button>
+                                 <button class="btn btn-secondary"><i class="fas fa-file-contract fa-fw"></i> Contracts</button>
+                                 <button class="btn btn-secondary"><i class="fas fa-chart-bar fa-fw"></i> Reports</button>
+                                 <button class="btn btn-secondary"><i class="fas fa-bell fa-fw"></i> Alerts Config</button>
+                                 <button class="btn btn-danger"><i class="fas fa-exclamation-triangle fa-fw"></i> Escalations</button>
+                                 <button class="btn btn-info"><i class="fas fa-headset fa-fw"></i> Tickets</button>
+                                 <button class="btn btn-info"><i class="fas fa-broadcast-tower fa-fw"></i> Notifications</button>
+                                 <button class="btn btn-warning"><i class="fas fa-tools fa-fw"></i> Settings</button>
+                                 <button class="btn btn-warning"><i class="fas fa-map fa-fw"></i> Map Data</button>
+                                 <button class="btn btn-secondary" id="view-route-history-btn"><i class="fas fa-history fa-fw"></i> Route History</button>
+                             </div>
+                        </div>
+
+                        <div class="card event-feed-card">
+                             <div class="card-header"><i class="fas fa-stream"></i> Live Event Feed / Action Items</div>
+                             <ul class="simple-list event-feed">
+                                 <li class="event-item" data-event-type="alert" data-event-id="A901"><span class="badge danger"><i class="fas fa-exclamation-circle"></i> GPS Lost</span> Bus #MN10 inactive (10:15 AM) - Last seen Elm & 3rd.</li>
+                                 <li class="event-item clickable-event" data-event-type="issue" data-issue-id="TKT1023" data-request-id="TKT1023">
+                                    <span class="badge danger"><i class="fas fa-tools"></i> New Issue</span> Driver #887 reports Flat Tire (Bus BK55). Needs assistance. (Click)
+                                 </li>
+                                 <li class="event-item" data-event-type="info"><span class="badge info"><i class="fas fa-robot"></i> Auto</span> Route BK02 optimized for traffic near BQE (10:12 AM). Est. +3 min delay.</li>
+                                 <li class="event-item clickable-event" data-event-type="request" data-request-id="RC123">
+                                    <span class="badge warning"><i class="fas fa-edit"></i> Route Req</span> SBC PS 21 requests modifying QN05 start time +5min. (Click)
+                                 </li>
+                                 <li class="event-item" data-event-type="log"><span class="badge secondary"><i class="fas fa-clipboard-list"></i> Log</span> Driver #5678 marked J. Doe No-Show (Stop 4, QN05, 10:05 AM)</li>
+                                 <li class="event-item clickable-event" data-event-type="request" data-request-id="ADDR01">
+                                    <span class="badge warning"><i class="fas fa-home"></i> Address Req</span> Parent req: Address change verification needed for #98765. (Click)
+                                 </li>
+                                 <li class="event-item" data-event-type="system"><span class="badge success"><i class="fas fa-server"></i> System</span> Daily route assignments completed (9:55 AM).</li>
+                             </ul>
+                        </div>
+                     </div>
+                </section>
+
+                <!-- Other views added later -->
+            </div>
+        </main>
+
+        <footer class="app-footer" id="app-footer">
+             <nav class="bottom-nav">
+                 <!-- Mobile nav items added by script.js -->
+             </nav>
+        </footer>
+    </div> <!-- /.app-container -->
+
+    <!-- Simple Modal Structure -->
+    <div id="simpleModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+            <h5 id="modalTitle">Modal Title</h5>
+            <button type="button" class="close-btn" aria-label="Close" id="modalCloseHeader">&times;</button>
+        </div>
+        <div class="modal-body" id="modalMessage">
+          <p>Some text in the Modal Body</p>
+        </div>
+        <div class="modal-footer">
+          <button id="modalConfirm" class="btn btn-primary">Confirm</button>
+          <button id="modalCancel" class="btn btn-secondary">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 

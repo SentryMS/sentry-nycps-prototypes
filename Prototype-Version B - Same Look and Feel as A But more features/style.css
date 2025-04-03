@@ -1,0 +1,566 @@
+/* Basic Reset & Root Variables */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --primary-color: #007bff; /* NYC blue */
+    --secondary-color: #6c757d; /* Grey */
+    --light-color: #f8f9fa; /* Light grey/white */
+    --dark-color: #343a40; /* Dark grey/black */
+    --success-color: #28a745;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+    --info-color: #17a2b8;
+    --font-family: 'Roboto', sans-serif;
+    --base-font-size: 16px;
+    --header-height: 60px;
+    --footer-height: 50px;
+    --padding-sm: 0.5rem;
+    --padding-md: 1rem;
+    --padding-lg: 1.5rem;
+    --border-radius: 0.25rem;
+    --box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Basic Body Styling */
+body {
+    font-family: var(--font-family);
+    font-size: var(--base-font-size);
+    line-height: 1.6;
+    color: var(--dark-color);
+    background-color: var(--light-color);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    overflow-x: hidden; /* Prevent horizontal scroll on main body */
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin-bottom: var(--padding-md);
+    font-weight: 500;
+}
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Utility Classes */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--padding-md);
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-primary {
+    color: var(--primary-color);
+}
+
+.mt-1 { margin-top: var(--padding-sm); }
+.mt-2 { margin-top: var(--padding-md); }
+.mt-3 { margin-top: var(--padding-lg); }
+.mb-1 { margin-bottom: var(--padding-sm); }
+.mb-2 { margin-bottom: var(--padding-md); }
+.mb-3 { margin-bottom: var(--padding-lg); }
+.p-1 { padding: var(--padding-sm); }
+.p-2 { padding: var(--padding-md); }
+.p-3 { padding: var(--padding-lg); }
+
+
+/* Header */
+.app-header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: var(--padding-sm) var(--padding-md);
+    box-shadow: var(--box-shadow);
+    height: var(--header-height);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.app-header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.app-header .user-info {
+    font-size: 0.9rem;
+}
+
+.app-header .logout-btn {
+    background: none;
+    border: 1px solid white;
+    color: white;
+    padding: 5px 10px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    margin-left: 1rem;
+}
+
+.app-header .logout-btn:hover {
+    background-color: white;
+    color: var(--primary-color);
+}
+
+/* Main Content Area */
+main {
+    flex: 1;
+    padding-top: calc(var(--header-height) + var(--padding-md)); /* Account for fixed header */
+    padding-bottom: calc(var(--footer-height) + var(--padding-md)); /* Account for fixed footer */
+}
+
+/* View Styling */
+.view {
+    display: none; /* Hidden by default */
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.view.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Card Styling */
+.card {
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: var(--padding-md);
+    margin-bottom: var(--padding-md);
+    overflow: hidden;
+}
+
+.card-header {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: var(--padding-sm);
+    padding-bottom: var(--padding-sm);
+    border-bottom: 1px solid #eee;
+}
+
+/* Button Styling */
+.btn {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.2s ease-in-out;
+    margin: 5px;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-secondary {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+.btn-success {
+    background-color: var(--success-color);
+    color: white;
+}
+.btn-success:hover {
+    background-color: #218838;
+}
+
+.btn-danger {
+    background-color: var(--danger-color);
+    color: white;
+}
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+.btn-warning {
+    background-color: var(--warning-color);
+    color: #333;
+}
+.btn-warning:hover {
+    background-color: #e0a800;
+}
+
+.btn-info {
+    background-color: var(--info-color);
+    color: white;
+}
+.btn-info:hover {
+    background-color: #138496;
+}
+
+.btn-block {
+    display: block;
+    width: 100%;
+}
+
+.btn-sm {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.875rem;
+}
+
+/* Form Styling */
+.form-group {
+    margin-bottom: var(--padding-md);
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.form-control {
+    display: block;
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: var(--border-radius);
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Role Selection */
+#role-selection .role-options {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--padding-md);
+}
+
+#role-selection .role-btn {
+    flex-basis: 150px;
+    padding: var(--padding-md);
+    font-size: 1.1rem;
+}
+
+/* Login Screen */
+#login-view .login-container {
+    max-width: 400px;
+    margin: 2rem auto;
+    padding: var(--padding-lg);
+}
+
+/* Map Placeholders */
+.map-placeholder {
+    width: 100%;
+    height: 300px; /* Adjust as needed */
+    background-color: #e9ecef;
+    border: 1px dashed var(--secondary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--secondary-color);
+    font-size: 1.2rem;
+    text-align: center;
+    margin-bottom: var(--padding-md);
+}
+
+/* Specific Module Styles */
+
+/* Parent/Student */
+#parent-student-view .bus-info {
+    background-color: #e3f2fd;
+    padding: var(--padding-sm);
+    margin-bottom: var(--padding-md);
+    border-radius: var(--border-radius);
+    text-align: center;
+}
+
+#parent-student-view .action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-around;
+    margin-bottom: var(--padding-md);
+}
+
+#parent-student-view .qr-code-placeholder {
+    width: 150px;
+    height: 150px;
+    margin: var(--padding-md) auto;
+    background-color: #e9ecef;
+    border: 1px solid var(--dark-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+}
+
+/* Driver */
+#driver-view .navigation-info {
+    background-color: var(--dark-color);
+    color: white;
+    padding: var(--padding-sm) var(--padding-md);
+    margin-bottom: var(--padding-md);
+    border-radius: var(--border-radius);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#driver-view .navigation-info h3 {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+#driver-view .route-controls {
+    text-align: center;
+    margin-bottom: var(--padding-md);
+}
+
+#driver-view .ridership-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+#driver-view .ridership-list li {
+    background-color: #fff;
+    border: 1px solid #eee;
+    padding: var(--padding-sm) var(--padding-md);
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: var(--border-radius);
+}
+
+#driver-view .ridership-list .student-name {
+    font-weight: 500;
+}
+
+/* School Admin */
+#school-admin-view .kpi-container, #opt-admin-view .kpi-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: var(--padding-md);
+    margin-bottom: var(--padding-md);
+}
+
+#school-admin-view .kpi-item, #opt-admin-view .kpi-item {
+    background-color: var(--primary-color);
+    color: white;
+    padding: var(--padding-md);
+    border-radius: var(--border-radius);
+    text-align: center;
+}
+
+#school-admin-view .kpi-item .value, #opt-admin-view .kpi-item .value {
+    font-size: 1.8rem;
+    font-weight: bold;
+    display: block;
+}
+
+#school-admin-view .kpi-item .label, #opt-admin-view .kpi-item .label {
+    font-size: 0.9rem;
+}
+
+#school-admin-view .action-buttons {
+     display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: var(--padding-md);
+}
+
+#school-admin-view .alert-list ul, #opt-admin-view .event-feed ul {
+    list-style: none;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #eee;
+    padding: var(--padding-sm);
+    border-radius: var(--border-radius);
+}
+
+#school-admin-view .alert-list li, #opt-admin-view .event-feed li {
+    padding: 5px;
+    border-bottom: 1px solid #f8f8f8;
+}
+#school-admin-view .alert-list li:last-child, #opt-admin-view .event-feed li:last-child {
+    border-bottom: none;
+}
+
+/* OPT Admin */
+#opt-admin-view .admin-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--padding-md);
+    margin-bottom: var(--padding-md);
+}
+
+/* Footer / Bottom Navigation */
+.app-footer {
+    background-color: #e9ecef;
+    border-top: 1px solid #dee2e6;
+    padding: 0;
+    height: var(--footer-height);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    display: none; /* Hidden until logged in */
+}
+
+.bottom-nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--secondary-color);
+    font-size: 0.8rem;
+    cursor: pointer;
+    padding: 5px;
+    flex: 1;
+    text-align: center;
+}
+
+.nav-item i {
+    font-size: 1.5rem; /* Adjust icon size */
+    margin-bottom: 2px;
+}
+
+.nav-item.active {
+    color: var(--primary-color);
+}
+
+/* Modal Dialog */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1001; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  justify-content: center;
+  align-items: center;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  padding: var(--padding-lg);
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 500px;
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  text-align: center;
+}
+
+.modal-header {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-bottom: var(--padding-md);
+}
+
+.modal-body {
+    margin-bottom: var(--padding-md);
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+
+/* Responsive Adjustments */
+@media (min-width: 768px) {
+    :root {
+        --base-font-size: 17px;
+    }
+    .app-header h1 {
+        font-size: 1.8rem;
+    }
+    #role-selection .role-btn {
+        flex-basis: 200px;
+        padding: var(--padding-lg);
+    }
+
+    /* For admin views, maybe switch to sidebar? - Not implemented here */
+}
+
+@media (min-width: 992px) {
+    :root {
+        --base-font-size: 18px;
+    }
+}
+
+
+/* Simple List styling */
+.simple-list {
+    list-style: none;
+    padding: 0;
+}
+.simple-list li {
+    padding: var(--padding-sm) 0;
+    border-bottom: 1px solid #eee;
+}
+.simple-list li:last-child {
+    border-bottom: none;
+}

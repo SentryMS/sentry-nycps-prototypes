@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NYCPS Transportation Prototype</title>
+    <!-- Google Fonts (Roboto) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons (ensure you have internet or host locally) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="app-header">
+        <h1 id="header-title">NYCPS Transportation</h1>
+        <div>
+            <span id="user-info"></span>
+            <button id="logout-btn" class="btn btn-sm">Logout</button>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- 1. Role Selection View -->
+        <section id="role-selection" class="view active">
+            <h2 class="text-center mb-3">Select Your Role</h2>
+            <div class="role-options">
+                <button class="btn btn-primary role-btn" data-role="Parent/Student">
+                    <i class="fas fa-user-graduate"></i> Parent / Student
+                </button>
+                <button class="btn btn-primary role-btn" data-role="Driver">
+                    <i class="fas fa-bus"></i> Driver / Attendant
+                </button>
+                <button class="btn btn-primary role-btn" data-role="School Admin">
+                    <i class="fas fa-school"></i> School Admin
+                </button>
+                <button class="btn btn-primary role-btn" data-role="OPT Admin">
+                    <i class="fas fa-user-shield"></i> OPT Admin
+                </button>
+            </div>
+        </section>
+
+        <!-- 2. Login View -->
+        <section id="login-view" class="view">
+            <div class="login-container card">
+                <h2 id="login-role-title" class="text-center mb-3">Login</h2>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="username">Username / ID</label>
+                        <input type="text" id="username" class="form-control" placeholder="Enter your username or ID" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" class="form-control" placeholder="Enter your password" required>
+                        <!-- Add note about biometric/face ID simulation -->
+                        <small class="form-text text-muted">Biometric/Face ID can be used (simulation).</small>
+                    </div>
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" id="rememberMe">
+                        <label class="form-check-label" for="rememberMe">Remember Me</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Login</button>
+                </form>
+                <p class="text-center mt-2"><a href="#">Forgot Password?</a> | <a href="#">Need Help?</a></p>
+            </div>
+        </section>
+
+        <!-- 3. Parent/Student View -->
+        <section id="parent-student-view" class="view">
+            <h2 class="text-center">Student Transportation Status</h2>
+
+            <div class="card">
+                <div class="card-header">Bus Location & ETA</div>
+                <div class="bus-info">
+                    <strong>Bus #B1234 ETA:</strong> 8:15 AM (5 mins away)
+                </div>
+                 <button id="view-alerts-btn" class="btn btn-warning btn-sm" style="float: right;">
+                     <i class="fas fa-bell"></i> View Alerts (3) <!-- Simulated count -->
+                 </button>
+                 <div style="clear: both;"></div> <!-- Clear float -->
+                <div class="map-placeholder mt-1">
+                    [ Simulated Map Showing Bus Location ]
+                </div>
+                <div class="action-buttons">
+                     <button id="mark-absent-btn" class="btn btn-warning btn-sm">
+                        <i class="fas fa-user-times"></i> Mark Absent Today
+                     </button>
+                     <button id="report-issue-btn" class="btn btn-danger btn-sm">
+                         <i class="fas fa-exclamation-triangle"></i> Report Issue
+                    </button>
+                     <button id="view-schedule-btn" class="btn btn-info btn-sm">
+                         <i class="fas fa-calendar-alt"></i> View Schedule
+                    </button>
+                     <button id="request-info-update-btn" class="btn btn-secondary btn-sm">
+                         <i class="fas fa-edit"></i> Request Info Update
+                    </button>
+                </div>
+            </div>
+
+             <div class="card text-center">
+                <div class="card-header">Student Bus Pass</div>
+                <p>Show this code to the driver/attendant when boarding.</p>
+                <div class="qr-code-placeholder">
+                    [ Simulated QR/Barcode ]
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Driver View -->
+        <section id="driver-view" class="view">
+            <h2 class="text-center">Route: BX41 AM</h2>
+
+             <div class="card">
+                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                     <div class="card-header" style="border-bottom: none; padding-bottom: 0; margin-bottom: 0;">Navigation</div>
+                     <button id="acknowledge-alert-btn" class="btn btn-warning btn-sm">
+                        <i class="fas fa-exclamation-triangle"></i> Acknowledge Alert
+                     </button>
+                 </div>
+                 <div class="navigation-info">
+                     <h3>Next: Turn Left on Elm St (0.2 mi)</h3>
+                     <span>ETA to Stop 3: 8:05 AM</span>
+                 </div>
+                <div class="map-placeholder">
+                    [ Simulated Map Showing Route & Current Location ]
+                </div>
+                 <div class="route-controls">
+                     <button id="audio-nav-btn" class="btn btn-info"><i class="fas fa-volume-up"></i> Audio Nav</button>
+                     <button id="full-route-btn" class="btn btn-secondary"><i class="fas fa-route"></i> Full Route Details</button>
+                     <button id="driver-alert-btn" class="btn btn-danger"><i class="fas fa-bullhorn"></i> Send Alert</button>
+                 </div>
+            </div>
+
+             <div class="card ridership-list">
+                <div class="card-header">Student Ridership (Stop 3 of 15)</div>
+                <ul>
+                    <li>
+                        <span class="student-name">Smith, John</span>
+                        <span>
+                            <button class="btn btn-success btn-sm boarded-btn"><i class="fas fa-check"></i> Boarded</button>
+                            <button class="btn btn-danger btn-sm no-show-btn"><i class="fas fa-times"></i> No-Show</button>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="student-name">Doe, Jane</span>
+                         <span>
+                            <button class="btn btn-success btn-sm boarded-btn"><i class="fas fa-check"></i> Boarded</button>
+                            <button class="btn btn-danger btn-sm no-show-btn"><i class="fas fa-times"></i> No-Show</button>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="student-name">Garcia, Maria</span>
+                         <span>
+                            <button class="btn btn-success btn-sm boarded-btn"><i class="fas fa-check"></i> Boarded</button>
+                            <button class="btn btn-danger btn-sm no-show-btn"><i class="fas fa-times"></i> No-Show</button>
+                        </span>
+                    </li>
+                     <!-- Add more students -->
+                </ul>
+                 <button id="scan-id-btn" class="btn btn-primary mt-2"><i class="fas fa-id-card"></i> Scan Student ID</button>
+            </div>
+
+        </section>
+
+        <!-- 5. School Admin View -->
+        <section id="school-admin-view" class="view">
+            <h2 class="text-center">School Admin Dashboard (PS 123)</h2>
+
+            <div class="kpi-container">
+                <div class="kpi-item">
+                    <span class="value">15</span>
+                    <span class="label">Buses En Route</span>
+                </div>
+                <div class="kpi-item" style="background-color: var(--success-color);">
+                    <span class="value">98%</span>
+                    <span class="label">On-Time Arrival (AM)</span>
+                </div>
+                 <div class="kpi-item" style="background-color: var(--warning-color); color: var(--dark-color);">
+                    <span class="value">2</span>
+                    <span class="label">Delayed Buses</span>
+                </div>
+                 <div class="kpi-item" style="background-color: var(--info-color);">
+                    <span class="value">350</span>
+                    <span class="label">Students Transported Today</span>
+                </div>
+            </div>
+
+             <div class="card">
+                <div class="card-header">School Bus Overview</div>
+                 <!-- Simulated Filters -->
+                 <div class="form-group" style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; align-items: center;">
+                     <label for="school-bus-filter" style="margin-bottom: 0;">Filter:</label>
+                     <select id="school-bus-filter" class="form-control" style="width: auto; display: inline-block;">
+                         <option>All Buses</option>
+                         <option>Delayed</option>
+                         <option>Approaching</option>
+                         <option>Route BX41</option>
+                         <option>Route QN05</option>
+                     </select>
+                     <button class="btn btn-secondary btn-sm" id="apply-school-filter-btn">Apply</button>
+                 </div>
+                 <div class="map-placeholder">
+                    [ Simulated Map Showing Filtered Buses for PS 123 ]
+                </div>
+                 <div class="action-buttons mt-2">
+                     <button id="view-bus-details-btn" class="btn btn-primary"><i class="fas fa-search-location"></i> View Bus Details</button>
+                     <button id="manage-student-info-btn" class="btn btn-secondary"><i class="fas fa-users-cog"></i> Manage Student Info</button>
+                     <button id="school-report-issue-btn" class="btn btn-danger"><i class="fas fa-flag"></i> Report Issue</button>
+                     <button id="generate-otp-report-btn" class="btn btn-info"><i class="fas fa-chart-line"></i> On-Time Report</button>
+                 </div>
+            </div>
+
+            <div class="card alert-list">
+                 <div class="card-header">Recent Alerts & Events</div>
+                 <ul>
+                     <li><i class="fas fa-exclamation-circle text-danger"></i> Bus BX41 - Delayed 15min (Traffic on Main St)</li>
+                     <li><i class="fas fa-info-circle text-info"></i> Bus QN05 - Route updated for new student pickup</li>
+                     <li><i class="fas fa-check-circle text-success"></i> All AM routes completed</li>
+                     <li><i class="fas fa-user-edit text-secondary"></i> Stop time adjusted for student J. Doe on QN05</li>
+                 </ul>
+            </div>
+        </section>
+
+        <!-- 6. OPT Admin View -->
+        <section id="opt-admin-view" class="view">
+            <h2 class="text-center">OPT Admin Dashboard</h2>
+
+             <div class="kpi-container">
+                 <div class="kpi-item">
+                    <span class="value">9,850</span>
+                    <span class="label">Active Buses</span>
+                </div>
+                 <div class="kpi-item" style="background-color: var(--success-color);">
+                    <span class="value">96%</span>
+                    <span class="label">System On-Time (Avg)</span>
+                </div>
+                 <div class="kpi-item" style="background-color: var(--danger-color);">
+                    <span class="value">152</span>
+                    <span class="label">Active Issues</span>
+                </div>
+                 <div class="kpi-item" style="background-color: var(--info-color);">
+                    <span class="value">165K+</span>
+                    <span class="label">Students Transported</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">System-Wide Bus Overview</div>
+                 <!-- Simulated Filters -->
+                 <div class="form-group" style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; align-items: center;">
+                     <input type="text" id="opt-search" class="form-control" placeholder="Search Route, Student ID, Bus..." style="flex-grow: 1;">
+                     <select id="opt-filter-status" class="form-control" style="width: auto;">
+                         <option>Status: All</option>
+                         <option>Delayed</option>
+                         <option>Issue Reported</option>
+                         <option>Inactive GPS</option>
+                     </select>
+                      <select id="opt-filter-borough" class="form-control" style="width: auto;">
+                         <option>Borough: All</option>
+                         <option>Manhattan</option>
+                         <option>Brooklyn</option>
+                         <option>Bronx</option>
+                         <option>Queens</option>
+                         <option>Staten Island</option>
+                     </select>
+                     <button class="btn btn-secondary btn-sm" id="apply-opt-filter-btn">Search/Filter</button>
+                 </div>
+                 <div class="map-placeholder">
+                    [ Simulated System-Wide Map with Filtering Options ]
+                </div>
+            </div>
+
+             <div class="card">
+                <div class="card-header">Admin Actions</div>
+                 <div class="admin-actions">
+                     <button class="btn btn-primary"><i class="fas fa-route"></i> Manage Routes</button>
+                     <button class="btn btn-primary"><i class="fas fa-map-marker-alt"></i> Manage Stops</button>
+                     <button class="btn btn-primary"><i class="fas fa-users"></i> Manage Users</button>
+                     <button class="btn btn-primary"><i class="fas fa-bus-alt"></i> Manage Vehicles</button>
+                     <button class="btn btn-secondary"><i class="fas fa-file-contract"></i> Manage Contracts</button>
+                     <button class="btn btn-secondary"><i class="fas fa-chart-bar"></i> Generate Reports</button>
+                     <button class="btn btn-secondary"><i class="fas fa-bell"></i> Configure Alerts</button>
+                     <button class="btn btn-danger"><i class="fas fa-exclamation-triangle"></i> Handle Escalations</button>
+                     <button class="btn btn-info"><i class="fas fa-headset"></i> Support Tickets</button>
+                     <button class="btn btn-info"><i class="fas fa-broadcast-tower"></i> Send Notifications</button>
+                     <button class="btn btn-warning"><i class="fas fa-tools"></i> System Settings</button>
+                     <button class="btn btn-warning"><i class="fas fa-map"></i> Edit Map Data</button>
+                     <button class="btn btn-secondary" id="view-route-history-btn"><i class="fas fa-history"></i> View Route History</button> <!-- New Button -->
+
+                 </div>
+            </div>
+
+            <div class="card event-feed">
+                 <div class="card-header">Live Event Feed / Action Items</div>
+                 <ul>
+                     <li class="event-item" data-event-type="alert"><i class="fas fa-exclamation-circle text-danger"></i> [10:15 AM] System Alert: GPS signal lost Bus #MN10.</li>
+                     <li class="event-item" data-event-type="info"><i class="fas fa-info-circle text-info"></i> [10:12 AM] Route BK02 successfully auto-optimized for traffic.</li>
+                     <li class="event-item clickable-event" data-event-type="request" data-request-id="RC123"> <!-- Make this clickable -->
+                        <i class="fas fa-edit text-warning"></i> [10:10 AM] SBC Request: Modify route QN05 start time by +5min. (Click to view)
+                     </li>
+                     <li class="event-item" data-event-type="log"><i class="fas fa-clipboard-list text-secondary"></i> [10:05 AM] Driver #5678 (BX41) marked J. Doe as No-Show.</li>
+                     <li class="event-item" data-event-type="request"><i class="fas fa-user-edit text-secondary"></i> [10:04 AM] Parent Request: Address change for student #98765.</li>
+                     <li class="event-item" data-event-type="log"><i class="fas fa-school text-secondary"></i> [10:02 AM] School Admin (PS123): Reported minor bus delay (QN05).</li>
+                     <li class="event-item" data-event-type="alert"><i class="fas fa-traffic-light text-danger"></i> [10:00 AM] System Alert: Heavy traffic detected on FDR Drive.</li>
+                     <li class="event-item" data-event-type="log"><i class="fas fa-check-circle text-success"></i> [9:58 AM] Driver #1234 (MN10) completed route.</li>
+                 </ul>
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer class="app-footer">
+        <nav class="bottom-nav">
+            <!-- Nav items will be dynamically populated or specific per role view -->
+            <!-- Example structure (adapt per role in JS) -->
+             <div class="nav-item active" data-view="[role]-view"> <!-- Replace [role] -->
+                <i class="fas fa-tachometer-alt"></i> <!-- Or fa-home -->
+                <span>Dashboard</span>
+            </div>
+            <div class="nav-item" data-view="map-view">
+                <i class="fas fa-map-marked-alt"></i>
+                <span>Map</span>
+            </div>
+             <div class="nav-item" data-view="alerts">
+                <i class="fas fa-bell"></i>
+                <span>Alerts</span>
+            </div>
+            <div class="nav-item" data-view="settings">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </div>
+        </nav>
+    </footer>
+
+    <!-- Simple Modal Structure -->
+    <div id="simpleModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header" id="modalTitle">Modal Title</div>
+        <div class="modal-body" id="modalMessage">
+          <p>Some text in the Modal Body</p>
+        </div>
+        <div class="modal-footer">
+          <button id="modalConfirm" class="btn btn-primary">Confirm</button>
+          <button id="modalCancel" class="btn btn-secondary">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
