@@ -1,0 +1,764 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AWS GovCloud Terraform Architecture</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: #333333;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f6f6f7;
+    }
+    
+    h1, h2, h3, h4 {
+      color: #1A1F2C;
+    }
+    
+    h1 {
+      font-size: 2.5em;
+      border-bottom: 2px solid #8B5CF6;
+      padding-bottom: 10px;
+      color: #1A1F2C;
+    }
+    
+    h2 {
+      font-size: 1.8em;
+      border-bottom: 1px solid #D3E4FD;
+      padding-bottom: 5px;
+      margin-top: 30px;
+      color: #6E59A5;
+    }
+    
+    h3 {
+      font-size: 1.4em;
+      margin-top: 25px;
+      color: #7E69AB;
+    }
+    
+    pre {
+      background-color: #1A1F2C;
+      color: #FFFFFF;
+      padding: 15px;
+      border-radius: 5px;
+      overflow-x: auto;
+      margin: 20px 0;
+    }
+    
+    code {
+      font-family: 'Courier New', monospace;
+    }
+    
+    ul, ol {
+      padding-left: 25px;
+    }
+    
+    a {
+      color: #0EA5E9;
+      text-decoration: none;
+    }
+    
+    a:hover {
+      text-decoration: underline;
+    }
+    
+    .section {
+      background-color: #FFFFFF;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .architecture {
+      background-color: #E5DEFF;
+      border-left: 5px solid #9b87f5;
+    }
+    
+    .prerequisites {
+      background-color: #D3E4FD;
+      border-left: 5px solid #0EA5E9;
+    }
+    
+    .setup {
+      background-color: #F2FCE2;
+      border-left: 5px solid #84cc16;
+    }
+    
+    .installation {
+      background-color: #FEF7CD;
+      border-left: 5px solid #eab308;
+    }
+    
+    .implementation {
+      background-color: #FDE1D3;
+      border-left: 5px solid #F97316;
+    }
+    
+    .security {
+      background-color: #FFDEE2;
+      border-left: 5px solid #ea384c;
+    }
+    
+    .monitoring {
+      background-color: #F1F0FB;
+      border-left: 5px solid #8E9196;
+    }
+    
+    .troubleshooting {
+      background-color: #FEC6A1;
+      border-left: 5px solid #F97316;
+    }
+    
+    .bestpractices {
+      background-color: #E5DEFF;
+      border-left: 5px solid #8B5CF6;
+    }
+    
+    .command {
+      background-color: #1A1F2C;
+      color: #f3f3f3;
+      padding: 10px;
+      border-radius: 4px;
+      margin: 10px 0;
+      font-family: 'Courier New', monospace;
+    }
+    
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 20px 0;
+    }
+    
+    th, td {
+      text-align: left;
+      padding: 12px;
+      border-bottom: 1px solid #D3E4FD;
+    }
+    
+    th {
+      background-color: #F1F0FB;
+      color: #6E59A5;
+    }
+    
+    tr:hover {
+      background-color: #f9f9f9;
+    }
+    
+    .note {
+      background-color: #FEF7CD;
+      border-left: 4px solid #eab308;
+      padding: 10px 15px;
+      margin: 15px 0;
+      border-radius: 0 4px 4px 0;
+    }
+    
+    .warning {
+      background-color: #FFDEE2;
+      border-left: 4px solid #ea384c;
+      padding: 10px 15px;
+      margin: 15px 0;
+      border-radius: 0 4px 4px 0;
+    }
+    
+    .tip {
+      background-color: #F2FCE2;
+      border-left: 4px solid #84cc16;
+      padding: 10px 15px;
+      margin: 15px 0;
+      border-radius: 0 4px 4px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>AWS GovCloud Terraform Architecture</h1>
+  
+  <p>This project implements a comprehensive AWS GovCloud architecture using Terraform, designed specifically for government cloud environments with enhanced security and compliance features.</p>
+  
+  <div class="section">
+    <h2 id="table-of-contents">Table of Contents</h2>
+    <ul>
+      <li><a href="#architecture-overview">Architecture Overview</a></li>
+      <li><a href="#prerequisites">Prerequisites</a></li>
+      <li><a href="#aws-govcloud-account-setup">AWS GovCloud Account Setup</a></li>
+      <li><a href="#installation">Installation</a></li>
+      <li><a href="#implementation-steps">Implementation Steps</a></li>
+      <li><a href="#module-descriptions">Module Descriptions</a></li>
+      <li><a href="#security-considerations">Security Considerations</a></li>
+      <li><a href="#monitoring-and-logging">Monitoring and Logging</a></li>
+      <li><a href="#troubleshooting">Troubleshooting</a></li>
+      <li><a href="#best-practices">Best Practices</a></li>
+    </ul>
+  </div>
+  
+  <div class="section architecture">
+    <h2 id="architecture-overview">Architecture Overview</h2>
+    <p>This architecture provides a secure, scalable foundation for government applications with these key components:</p>
+    <ul>
+      <li><strong>VPC & Networking</strong>: Isolated network with public and private subnets across multiple availability zones</li>
+      <li><strong>Container Infrastructure</strong>: ECS clusters for application and web workloads</li>
+      <li><strong>Security</strong>: IAM roles with least privilege, security groups, encryption at rest and in transit</li>
+      <li><strong>Data Storage</strong>: S3 buckets and DynamoDB tables for structured and unstructured data</li>
+      <li><strong>Messaging & Streaming</strong>: MSK (Managed Streaming for Kafka) for event streaming</li>
+      <li><strong>Serverless</strong>: Lambda functions for event-driven processing</li>
+      <li><strong>IoT</strong>: IoT Core for device management and data ingestion</li>
+      <li><strong>API Management</strong>: API Gateway for RESTful APIs</li>
+    </ul>
+  </div>
+  
+  <div class="section prerequisites">
+    <h2 id="prerequisites">Prerequisites</h2>
+    <p>Before you begin, ensure you have:</p>
+    <ol>
+      <li><strong>AWS GovCloud Account</strong>: Active account with appropriate permissions</li>
+      <li><strong>AWS CLI</strong>: <a href="https://aws.amazon.com/cli/">Install</a> and configure with GovCloud credentials</li>
+      <li><strong>Terraform</strong>: <a href="https://learn.hashicorp.com/tutorials/terraform/install-cli">Install</a> version 1.2.0+</li>
+      <li><strong>Git</strong>: <a href="https://git-scm.com/downloads">Install</a> for version control</li>
+      <li><strong>Required IAM Permissions</strong>: Administrator access or specific permissions to create all resources</li>
+    </ol>
+  </div>
+  
+  <div class="section setup">
+    <h2 id="aws-govcloud-account-setup">AWS GovCloud Account Setup</h2>
+    
+    <h3>1. Request GovCloud Access</h3>
+    <ul>
+      <li>Complete the <a href="https://aws.amazon.com/govcloud-us/contact/">AWS GovCloud Access Request Form</a></li>
+      <li>Provide necessary documentation for compliance verification</li>
+    </ul>
+    
+    <h3>2. Set up GovCloud IAM Users</h3>
+    <div class="command">
+      # Create programmatic access keys in the GovCloud partition<br>
+      aws iam create-user --user-name terraform-deployer<br>
+      aws iam attach-user-policy --user-name terraform-deployer --policy-arn arn:aws-us-gov:iam::aws:policy/AdministratorAccess<br>
+      aws iam create-access-key --user-name terraform-deployer
+    </div>
+    
+    <h3>3. Configure AWS CLI for GovCloud</h3>
+    <div class="command">
+      aws configure --profile govcloud<br>
+      # Enter your GovCloud access key, secret key, and region (us-gov-west-1)
+    </div>
+  </div>
+  
+  <div class="section installation">
+    <h2 id="installation">Installation</h2>
+    
+    <h3>1. Clone this repository</h3>
+    <div class="command">
+      git clone &lt;repository-url&gt;<br>
+      cd aws-govcloud-terraform
+    </div>
+    
+    <h3>2. Initialize Terraform</h3>
+    <div class="command">
+      terraform init
+    </div>
+    
+    <h3>3. Create a terraform.tfvars file</h3>
+    <div class="command">
+      region = "us-gov-west-1"<br>
+      vpc_name = "government-vpc"<br>
+      vpc_cidr = "10.0.0.0/16"<br>
+      availability_zones = ["us-gov-west-1a", "us-gov-west-1b", "us-gov-west-1c"]<br>
+      private_subnet_cidrs = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]<br>
+      public_subnet_cidrs = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
+    </div>
+  </div>
+  
+  <div class="section implementation">
+    <h2 id="implementation-steps">Implementation Steps</h2>
+    
+    <h3 id="step-1-create-network-infrastructure">Step 1: Create Network Infrastructure</h3>
+    <ol>
+      <li>
+        <strong>Review and customize VPC settings</strong>:
+        <ul>
+          <li>Edit <code>variables.tf</code> to set VPC CIDR blocks and subnets</li>
+          <li>Modify AZs based on your GovCloud region requirements</li>
+        </ul>
+      </li>
+      <li>
+        <strong>Apply Network Infrastructure</strong>:
+        <div class="command">
+          terraform apply -target=module.vpc -target=module.security_groups
+        </div>
+      </li>
+      <li>
+        <strong>Verify VPC creation</strong>:
+        <div class="command">
+          aws ec2 describe-vpcs --profile govcloud<br>
+          aws ec2 describe-subnets --profile govcloud
+        </div>
+      </li>
+    </ol>
+    
+    <h3 id="step-2-set-up-iam-roles-and-policies">Step 2: Set Up IAM Roles and Policies</h3>
+    <ol>
+      <li>
+        <strong>Review IAM configurations</strong>:
+        <ul>
+          <li>Check <code>modules/iam/main.tf</code> for role definitions</li>
+          <li>Ensure least privilege principles are applied</li>
+        </ul>
+      </li>
+      <li>
+        <strong>Apply IAM configuration</strong>:
+        <div class="command">
+          terraform apply -target=module.iam
+        </div>
+      </li>
+      <li>
+        <strong>Verify IAM creation</strong>:
+        <div class="command">
+          aws iam list-roles --profile govcloud
+        </div>
+      </li>
+    </ol>
+    
+    <h3 id="step-3-create-ecr-repositories">Step 3: Create ECR Repositories</h3>
+    <ol>
+      <li>
+        <strong>Customize repository names</strong> if needed:
+        <ul>
+          <li>Edit <code>main.tf</code> module.ecr section</li>
+        </ul>
+      </li>
+      <li>
+        <strong>Apply ECR configuration</strong>:
+        <div class="command">
+          terraform apply -target=module.ecr
+        </div>
+      </li>
+      <li>
+        <strong>Push sample container images</strong>:
+        <div class="command">
+          # Authenticate to ECR<br>
+          aws ecr get-login-password --region us-gov-west-1 --profile govcloud | docker login --username AWS --password-stdin &lt;account-id&gt;.dkr.ecr.us-gov-west-1.amazonaws.com<br>
+          <br>
+          # Build and push container images<br>
+          docker build -t &lt;account-id&gt;.dkr.ecr.us-gov-west-1.amazonaws.com/app-cluster-container:latest ./app-container/<br>
+          docker push &lt;account-id&gt;.dkr.ecr.us-gov-west-1.amazonaws.com/app-cluster-container:latest<br>
+          <br>
+          docker build -t &lt;account-id&gt;.dkr.ecr.us-gov-west-1.amazonaws.com/web-app-container:latest ./web-container/<br>
+          docker push &lt;account-id&gt;.dkr.ecr.us-gov-west-1.amazonaws.com/web-app-container:latest
+        </div>
+      </li>
+    </ol>
+    
+    <h3 id="step-4-deploy-storage-resources">Step 4: Deploy Storage Resources (S3, DynamoDB)</h3>
+    <ol>
+      <li>
+        <strong>Apply S3 configuration</strong>:
+        <div class="command">
+          terraform apply -target=module.s3
+        </div>
+      </li>
+      <li>
+        <strong>Apply DynamoDB configuration</strong>:
+        <div class="command">
+          terraform apply -target=module.dynamodb
+        </div>
+      </li>
+      <li>
+        <strong>Verify storage creation</strong>:
+        <div class="command">
+          aws s3 ls --profile govcloud<br>
+          aws dynamodb list-tables --profile govcloud
+        </div>
+      </li>
+    </ol>
+    
+    <h3 id="step-5-set-up-lambda-functions">Step 5: Set Up Lambda Functions</h3>
+    <ol>
+      <li>
+        <strong>Prepare Lambda function code</strong>:
+        <ul>
+          <li>Place function code in <code>./lambda/data-processor/</code> and <code>./lambda/auth-verifier/</code></li>
+          <li>Customize Lambda environment variables if needed</li>
+        </ul>
+      </li>
+      <li>
+        <strong>Apply Lambda configuration</strong>:
+        <div class="command">
+          terraform apply -target=module.lambda
+        </div>
+      </li>
+      <li>
+        <strong>Verify Lambda deployment</strong>:
+        <div class="command">
+          aws lambda list-functions --profile govcloud
+        </div>
+      </li>
+    </ol>
+    
+    <h3 id="step-6-deploy-kafka-cluster">Step 6: Deploy Kafka (MSK) Cluster</h3>
+    <ol>
+      <li>
+        <strong>Apply MSK configuration</strong>:
+        <div class="command">
+          terraform apply -target=module.msk
+        </div>
+      </li>
+      <li>
+        <strong>Verify MSK deployment</strong> (this may take 15-20 minutes):
+        <div class="command">
+          aws kafka list-clusters --profile govcloud
+        </div>
+      </li>
+    </ol>
+    
+    <h3 id="step-7-configure-iot-core">Step 7: Configure IoT Core</h3>
+    <ol>
+      <li>
+        <strong>Apply IoT Core configuration</strong>:
+        <div class="command">
+          terraform apply -target=module.iot_core
+        </div>
+      </li>
+      <li>
+        <strong>Register and configure devices</strong>:
+        <div class="command">
+          # Get IoT endpoint<br>
+          aws iot describe-endpoint --endpoint-type iot:Data-ATS --profile govcloud
+        </div>
+      </li>
+    </ol>
+    
+    <h3 id="step-8-deploy-ecs-clusters">Step 8: Deploy ECS Clusters</h3>
+    <ol>
+      <li>
+        <strong>Apply ECS configurations</strong>:
+        <div class="command">
+          terraform apply -target=module.ecs_clusters
+        </div>
+      </li>
+      <li>
+        <strong>Verify ECS cluster creation</strong>:
+        <div class="command">
+          aws ecs list-clusters --profile govcloud
+        </div>
+      </li>
+    </ol>
+    
+    <h3 id="step-9-set-up-api-gateway">Step 9: Set Up API Gateway</h3>
+    <ol>
+      <li>
+        <strong>Apply API Gateway configurations</strong>:
+        <div class="command">
+          terraform apply -target=module.api_gateway
+        </div>
+      </li>
+      <li>
+        <strong>Verify API Gateway creation</strong>:
+        <div class="command">
+          aws apigateway get-rest-apis --profile govcloud
+        </div>
+      </li>
+    </ol>
+    
+    <h3 id="step-10-apply-remaining-resources-and-verify">Step 10: Apply Remaining Resources and Verify</h3>
+    <ol>
+      <li>
+        <strong>Apply all remaining resources</strong>:
+        <div class="command">
+          terraform apply
+        </div>
+      </li>
+      <li>
+        <strong>Verify complete deployment</strong>:
+        <div class="command">
+          terraform output
+        </div>
+      </li>
+    </ol>
+  </div>
+  
+  <div class="section">
+    <h2 id="module-descriptions">Module Descriptions</h2>
+    
+    <h3>VPC Module</h3>
+    <p>Creates a secure network foundation with public and private subnets across multiple AZs. Includes NAT gateway, internet gateway, and route tables.</p>
+    
+    <h3>Security Module</h3>
+    <p>Implements security groups for different components:</p>
+    <ul>
+      <li>App Cluster SG: Controls access to application containers</li>
+      <li>Web Cluster SG: Controls access to web tier</li>
+      <li>MSK SG: Secures Kafka communication</li>
+      <li>IoT SG: Manages IoT device connections</li>
+    </ul>
+    
+    <h3>IAM Module</h3>
+    <p>Creates service roles with least-privilege permissions:</p>
+    <ul>
+      <li>ECS Task Execution Role</li>
+      <li>API Gateway Execution Role</li>
+      <li>IoT Role</li>
+      <li>Lambda Role</li>
+    </ul>
+    
+    <h3>ECR Module</h3>
+    <p>Creates secure container registries for:</p>
+    <ul>
+      <li>Application containers</li>
+      <li>Web application containers</li>
+      <li>IoT containers</li>
+    </ul>
+    
+    <h3>ECS Module</h3>
+    <p>Deploys containerized applications:</p>
+    <ul>
+      <li>App Cluster: Backend application services</li>
+      <li>Web Cluster: Frontend web services</li>
+      <li>Load balancers and target groups for each cluster</li>
+    </ul>
+    
+    <h3>API Gateway Module</h3>
+    <p>Creates REST API endpoints with:</p>
+    <ul>
+      <li>Resource paths</li>
+      <li>Methods</li>
+      <li>Integration points</li>
+      <li>Deployment stages</li>
+    </ul>
+    
+    <h3>IoT Core Module</h3>
+    <p>Configures IoT services:</p>
+    <ul>
+      <li>IoT Things</li>
+      <li>Thing Types</li>
+      <li>Policies</li>
+      <li>Rules for data processing</li>
+    </ul>
+    
+    <h3>DynamoDB Module</h3>
+    <p>Creates NoSQL tables for:</p>
+    <ul>
+      <li>Application data</li>
+      <li>IoT device data</li>
+    </ul>
+    
+    <h3>S3 Module</h3>
+    <p>Creates secure buckets for:</p>
+    <ul>
+      <li>Application storage</li>
+      <li>Secure file storage</li>
+      <li>Data processing</li>
+    </ul>
+    
+    <h3>Lambda Module</h3>
+    <p>Deploys serverless functions:</p>
+    <ul>
+      <li>Data processor for event handling</li>
+      <li>Authentication verifier for security</li>
+    </ul>
+    
+    <h3>MSK Module</h3>
+    <p>Creates Kafka cluster for:</p>
+    <ul>
+      <li>Event streaming</li>
+      <li>Real-time data processing</li>
+      <li>Service communication</li>
+    </ul>
+  </div>
+  
+  <div class="section security">
+    <h2 id="security-considerations">Security Considerations</h2>
+    
+    <h3>1. Encryption</h3>
+    <ul>
+      <li>S3 buckets use AES-256 encryption</li>
+      <li>DynamoDB tables use AWS-managed encryption</li>
+      <li>TLS for Kafka communications</li>
+    </ul>
+    
+    <h3>2. Network Security</h3>
+    <ul>
+      <li>Private subnets for sensitive workloads</li>
+      <li>Security groups limit traffic flow</li>
+      <li>NAT gateway for outbound-only internet access</li>
+    </ul>
+    
+    <h3>3. Authentication & Authorization</h3>
+    <ul>
+      <li>IAM roles with least privilege</li>
+      <li>Service-to-service authentication</li>
+      <li>IoT policy-based access control</li>
+    </ul>
+    
+    <h3>4. Compliance</h3>
+    <ul>
+      <li>GovCloud environment for FedRAMP compliance</li>
+      <li>Audit logging enabled</li>
+      <li>Resource tagging for compliance tracking</li>
+    </ul>
+  </div>
+  
+  <div class="section monitoring">
+    <h2 id="monitoring-and-logging">Monitoring and Logging</h2>
+    
+    <h3>1. CloudWatch Logs</h3>
+    <ul>
+      <li>ECS task logs</li>
+      <li>Lambda function logs</li>
+      <li>MSK broker logs</li>
+    </ul>
+    
+    <h3>2. Metrics</h3>
+    <ul>
+      <li>CPU and memory utilization for ECS tasks</li>
+      <li>DynamoDB read/write capacity metrics</li>
+      <li>Lambda invocation metrics</li>
+    </ul>
+    
+    <h3>3. Alarms (to be configured)</h3>
+    <div class="command">
+      resource "aws_cloudwatch_metric_alarm" "example" {<br>
+        alarm_name          = "cpu-utilization-alarm"<br>
+        comparison_operator = "GreaterThanThreshold"<br>
+        evaluation_periods  = "2"<br>
+        metric_name         = "CPUUtilization"<br>
+        namespace           = "AWS/ECS"<br>
+        period              = "60"<br>
+        statistic           = "Average"<br>
+        threshold           = "80"<br>
+        alarm_description   = "This alarm monitors ECS task CPU utilization"<br>
+        dimensions = {<br>
+          ClusterName = module.ecs_clusters.app_cluster_id<br>
+        }<br>
+      }
+    </div>
+  </div>
+  
+  <div class="section troubleshooting">
+    <h2 id="troubleshooting">Troubleshooting</h2>
+    
+    <h3>Common Issues</h3>
+    
+    <h4>1. Terraform State Lock</h4>
+    <div class="command">
+      # Force unlock if needed (use with caution)<br>
+      terraform force-unlock LOCK_ID
+    </div>
+    
+    <h4>2. Resource Creation Failures</h4>
+    <ul>
+      <li>Check AWS CloudTrail for API errors</li>
+      <li>Verify IAM permissions</li>
+      <li>Check resource quotas in GovCloud</li>
+    </ul>
+    
+    <h4>3. Connectivity Issues</h4>
+    <ul>
+      <li>Verify security group rules</li>
+      <li>Check route tables</li>
+      <li>Test with Network ACL rules</li>
+    </ul>
+    
+    <h3>Debug Commands</h3>
+    <div class="command">
+      # Get VPC details<br>
+      aws ec2 describe-vpcs --profile govcloud<br>
+      <br>
+      # Check security groups<br>
+      aws ec2 describe-security-groups --profile govcloud<br>
+      <br>
+      # Test connectivity<br>
+      aws ec2 describe-network-interfaces --profile govcloud
+    </div>
+  </div>
+  
+  <div class="section bestpractices">
+    <h2 id="best-practices">Best Practices</h2>
+    
+    <h3>1. State Management</h3>
+    <p>Store Terraform state in an S3 backend with versioning:</p>
+    <ul>
+      <li>Use state locking with DynamoDB</li>
+      <li>Example configuration:</li>
+    </ul>
+    <div class="command">
+      terraform {<br>
+        backend "s3" {<br>
+          bucket         = "terraform-state-govcloud"<br>
+          key            = "terraform.tfstate"<br>
+          region         = "us-gov-west-1"<br>
+          dynamodb_table = "terraform-lock"<br>
+          encrypt        = true<br>
+        }<br>
+      }
+    </div>
+    
+    <h3>2. CI/CD Integration</h3>
+    <ul>
+      <li>Use AWS CodeBuild/CodePipeline in GovCloud</li>
+      <li>Implement terraform plan in CI pipeline</li>
+      <li>Only apply changes after review</li>
+    </ul>
+    
+    <h3>3. Tagging Strategy</h3>
+    <div class="command">
+      tags = {<br>
+        Environment = "Production"<br>
+        Project     = "GovernmentApp"<br>
+        Owner       = "SecurityTeam"<br>
+        Compliance  = "FedRAMP-High"<br>
+      }
+    </div>
+    
+    <h3>4. Cost Optimization</h3>
+    <ul>
+      <li>Right-size ECS tasks and MSK brokers</li>
+      <li>Use auto-scaling for variable workloads</li>
+      <li>Monitor and set budget alerts</li>
+    </ul>
+    
+    <h3>5. Maintenance and Updates</h3>
+    <div class="command">
+      # Update terraform providers<br>
+      terraform init -upgrade<br>
+      <br>
+      # Plan updates<br>
+      terraform plan
+    </div>
+    
+    <h3>6. Backup Strategy</h3>
+    <ul>
+      <li>Enable versioning on S3 buckets</li>
+      <li>Set up DynamoDB backups</li>
+      <li>Export MSK configurations</li>
+    </ul>
+    
+    <h3>7. Patching and Upgrades</h3>
+    <ul>
+      <li>Update ECS task definitions for container updates</li>
+      <li>Plan for MSK version upgrades</li>
+      <li>Test Lambda runtime updates</li>
+    </ul>
+  </div>
+  
+  <div class="section">
+    <h2 id="additional-resources">Additional Resources</h2>
+    <ul>
+      <li><a href="https://docs.aws.amazon.com/govcloud-us/latest/UserGuide/welcome.html">AWS GovCloud Documentation</a></li>
+      <li><a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs">Terraform AWS Provider</a></li>
+      <li><a href="https://www.terraform-best-practices.com/">Terraform Best Practices</a></li>
+    </ul>
+    
+    <hr>
+    
+    <h2 id="project-contributors">Project Contributors</h2>
+    <p>Initial work and architecture design</p>
+    
+    <h2 id="license">License</h2>
+    <p>This project is licensed under the MIT License - see the LICENSE file for details.</p>
+  </div>
+</body>
+</html>
