@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NYCPS TMS - Prescriptive Development Strategy & Implementation</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.7; color: #212529; max-width: 1100px; margin: 25px auto; padding: 25px; background-color: #fdfdfe; border: 1px solid #ced4da; border-radius: 8px; }
+        h1, h2, h3, h4, h5 { color: #003366; margin-top: 1.8em; margin-bottom: 0.8em; padding-bottom: 6px; font-weight: 600; }
+        h1 { text-align: center; font-size: 2.4em; border-bottom: 3px solid #003366; margin-bottom: 1.2em; }
+        h2 { /* Major Strategy Sections */ font-size: 2.0em; border-bottom: 2px solid #003366; background-color: #eaf2f8; padding: 10px 15px; border-radius: 5px 5px 0 0; margin-left: -26px; margin-right: -26px; margin-top: 2em; }
+        h3 { /* Sub-sections */ font-size: 1.6em; border-bottom: 1px solid #b7d1ed; padding-left: 15px; }
+        h4 { /* Detail Areas */ font-size: 1.3em; border-bottom: none; color: #0056b3; padding-left: 30px; font-weight: 500; }
+        h5 { /* Granular activity/tool titles */ font-size: 1.1em; border-bottom: none; color: #333; padding-left: 45px; font-weight: bold; margin-top: 1em; margin-bottom: 0.3em; }
+        p, li { margin-bottom: 0.9em; font-size: 1.08em; }
+        ul { list-style-type: square; margin-left: 60px; margin-bottom: 1em; }
+        ol { list-style-type: decimal; margin-left: 60px; margin-bottom: 1em; }
+        ol ol { list-style-type: lower-alpha; margin-left: 75px; }
+        ol ol ol { list-style-type: lower-roman; margin-left: 90px; }
+        strong { font-weight: 600; color: #003366; }
+        code { font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; display: block; background-color: #282c34; color: #abb2bf; padding: 15px; border: 1px solid #3e4451; border-radius: 5px; font-size: 0.95em; white-space: pre; overflow-x: auto; margin: 10px 0; }
+        .section-description { padding: 15px; margin-bottom: 20px; border: 1px solid #e0e0e0; background-color: #fff; border-radius: 4px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+        .step-list ol { list-style-type: none; counter-reset: step-counter; padding-left: 0; }
+        .step-list li { counter-increment: step-counter; margin-bottom: 20px; padding-left: 45px; position: relative; }
+        .step-list li::before { content: counter(step-counter); position: absolute; left: 0; top: 0; background-color: #0056b3; color: white; font-weight: bold; width: 30px; height: 30px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1em; }
+        .config-item { margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px dotted #ccc;}
+        .config-item strong { display: block; margin-bottom: 5px; }
+        .note { background-color: #e2f0f9; border-left: 5px solid #007bff; padding: 10px 15px; margin: 15px 0; border-radius: 4px; color: #004085; font-style: italic;}
+        .warning { background-color: #fff3cd; border-left: 5px solid #ffc107; padding: 10px 15px; margin: 15px 0; border-radius: 4px; color: #856404; font-weight: bold;}
+    </style>
+</head>
+<body>
+
+    <h1>NYCPS TMS: Prescriptive Development Strategy & Implementation Guide</h1>
+
+    <!-- Introduction -->
+    <section id="intro">
+        <h2>Introduction: Development Philosophy & Methodology</h2>
+        <div class="section-description">
+            <p>This document prescribes the definitive end-to-end Development Strategy for the NYCPS Transportation Management System (TMS). Our approach is grounded in modern software engineering principles, emphasizing agility, security, quality, and automation to successfully deliver this complex, large-scale system on AWS GovCloud within the required timeframe. We will employ an **Agile (Scrum) methodology** tightly integrated with **DevSecOps practices**.</p>
+            <p>A core tenet of this strategy is **developer ownership of quality**. Developers are responsible for writing comprehensive automated tests (unit, integration, E2E) for their code. The dedicated QA team will focus on exploratory testing, UAT facilitation, performance testing, and security validation, complementing, but not replacing, the developer's responsibility for functional correctness verified through automation.</p>
+            <p>Adherence to the processes, standards, and tools outlined herein is mandatory for all development team members to ensure consistency, security, and predictability throughout the project lifecycle.</p>
+        </div>
+    </section>
+
+    <!-- Development Environment Setup -->
+    <section id="dev-env-setup">
+        <h2>I. Development Environment Setup & Tooling</h2>
+        <div class="section-description">
+            <p>We will establish a standardized, robust development environment for every engineer to ensure consistency and productivity. This environment provides the necessary tools to build, test, and debug code locally before integrating it into the shared pipelines.</p>
+            <h3>A. Developer Workstation Specifications (Minimum)</h3>
+            <div class="note">These specifications ensure developers can run necessary tools like Docker, IDEs, and potentially local simulators without performance bottlenecks.</div>
+            <ul>
+                <li><strong>Operating System:</strong> macOS (latest or N-1) or Linux (e.g., Ubuntu LTS). Windows 10/11 with WSL2 is acceptable but macOS/Linux preferred for CLI/Docker consistency.</li>
+                <li><strong>Processor:</strong> Modern multi-core processor (e.g., Intel Core i7/i9 8th gen+, AMD Ryzen 7+, Apple M1/M2/M3).</li>
+                <li><strong>RAM:</strong> Minimum 16GB (32GB strongly recommended).</li>
+                <li><strong>Storage:</strong> Minimum 512GB NVMe SSD (1TB recommended).</li>
+                <li><strong>Display:</strong> Sufficient resolution for comfortable IDE usage (e.g., FHD or higher). Dual monitors recommended.</li>
+            </ul>
+
+            <h3>B. Required Software Installation</h3>
+            <p>Developers must install and configure the following core software:</p>
+            <ol>
+                <li><strong>Version Control:</strong> Git (latest stable version). Configuration must include setting user name and email consistent with the project's Git host (e.g., GitHub/GitLab/CodeCommit).</li>
+                <li><strong>Containerization:</strong> Docker Desktop (latest stable version) or equivalent container runtime. Ensure sufficient resources are allocated in Docker settings (CPU, RAM).</li>
+                <li><strong>Cloud CLI:</strong> AWS CLI v2 (latest version). Must be configured for AWS GovCloud regions (`us-gov-west-1`, `us-gov-east-1`) using secure credential methods (e.g., SSO integration via AWS IAM Identity Center, AssumeRole credentials via profile, *never* hardcoded access keys). MFA must be enforced for console/API access.</li>
+                <li><strong>Infrastructure as Code CLI:</strong> Terraform CLI (latest stable version matching the project standard).</li>
+                <li><strong>Runtime Environments:</strong> Install specific versions required by the project's chosen backend/frontend stacks (e.g., Node.js LTS, Python 3.11+, JDK 17+). Use version managers (nvm, pyenv, SDKMAN!) where applicable for consistency.</li>
+                <li><strong>Package Managers:</strong> Install necessary package managers (npm/yarn, pip, Maven/Gradle).</li>
+                <li><strong>Build Tools:</strong> Ensure relevant build tools are available (e.g., Maven, Gradle, Webpack/Vite CLI).</li>
+            </ol>
+
+            <h3>C. Integrated Development Environments (IDEs)</h3>
+            <p>Developers will use modern IDEs equipped with appropriate plugins for enhanced productivity and quality.</p>
+            <ul>
+                <li><strong>Recommended IDEs:</strong>
+                    <ul>
+                        <li><strong>Frontend:</strong> VS Code (recommended), WebStorm.</li>
+                        <li><strong>Backend (Java):</strong> IntelliJ IDEA Ultimate.</li>
+                        <li><strong>Backend (Python):</strong> PyCharm Professional, VS Code.</li>
+                        <li><strong>Backend (Node.js):</strong> VS Code, WebStorm.</li>
+                    </ul>
+                </li>
+                <li><strong>Mandatory IDE Plugins/Configuration:</strong>
+                    <ul>
+                        <li><strong>Language Support:</strong> Official plugins for the project's primary languages (Python, Java, TypeScript/JavaScript, etc.).</li>
+                        <li><strong>Linters/Formatters:</strong> Integration with project-defined linters/formatters (e.g., ESLint, Prettier, Black, Checkstyle) with auto-format-on-save enabled.</li>
+                        <li><strong>Debugger:</strong> Configured for local debugging of applications (including Docker containers).</li>
+                        <li><strong>Git Integration:</strong> Built-in or plugin-based Git client.</li>
+                        <li><strong>Docker Integration:</strong> Plugin for managing Docker containers and images.</li>
+                        <li><strong>AWS Toolkit:</strong> Official AWS Toolkit plugin for IDE integration with AWS services (Lambda testing, ECR browsing, etc.).</li>
+                        <li><strong>Terraform Plugin:</strong> Syntax highlighting, validation, and auto-completion for Terraform HCL.</li>
+                        <li><strong>Testing Framework Integration:</strong> Plugins to run and debug unit/integration tests directly within the IDE (e.g., Jest Runner, Pytest plugin).</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3>D. Local AWS Simulation (Optional but Recommended)</h3>
+            <ul>
+                <li><strong>Tooling:</strong> Utilize tools like `LocalStack` or specific service simulators (e.g., `DynamoDB Local`) to emulate AWS services locally. This accelerates development cycles by reducing reliance on deployed cloud environments for basic testing.</li>
+                <li><strong>Configuration:</strong> Configure application code and test frameworks to target local endpoints when running in a local development/test mode.</li>
+            </ul>
+
+             <h3>E. Access Provisioning & Onboarding</h3>
+            <ol>
+                <li><strong>AWS Access:</strong> Provision developer IAM users/roles with least-privilege access to necessary GovCloud DEV environment services via federation or IAM Identity Center. MFA must be enforced.</li>
+                <li><strong>Tool Access:</strong> Grant access to Git repositories, Jira/ADO project boards, Confluence/SharePoint spaces, CI/CD platform, artifact repositories.</li>
+                <li><strong>Onboarding Documentation:</strong> Provide developers with a comprehensive onboarding guide covering project setup, tool configuration, workflow procedures, and points of contact.</li>
+            </ol>
+        </div>
+    </section>
+
+    <!-- Coding Standards and Practices -->
+    <section id="coding-standards">
+        <h2>II. Coding Standards & Secure Practices</h2>
+        <div class="section-description">
+            <p>We will enforce rigorous coding standards and secure development practices across all codebases (frontend, backend, infrastructure) to ensure quality, maintainability, readability, and security.</p>
+            <h3>A. Language-Specific Style Guides</h3>
+            <ul>
+                <li><strong>Mandate:</strong> All code must adhere to widely accepted style guides for the respective language.
+                    <ul>
+                        <li><strong>JavaScript/TypeScript:</strong> Airbnb JavaScript Style Guide or Google TypeScript Style Guide (TBD based on team preference).</li>
+                        <li><strong>Python:</strong> PEP 8 (Style Guide for Python Code).</li>
+                        <li><strong>Java:</strong> Google Java Style Guide.</li>
+                        <li>*(Add others as needed)*</li>
+                    </ul>
+                </li>
+                <li><strong>Enforcement:</strong> Utilize automated linters (ESLint, Flake8/Pylint, Checkstyle) and formatters (Prettier, Black, google-java-format) configured according to the chosen style guide. These tools will be integrated into IDEs (auto-format on save) and the CI pipeline (build fails on linting errors).</li>
+            </ul>
+
+            <h3>B. General Coding Principles</h3>
+            <ul>
+                <li><strong>Readability:</strong> Write clear, concise, self-documenting code. Use meaningful variable and function names. Keep functions/methods short and focused (Single Responsibility Principle).</li>
+                <li><strong>Modularity:</strong> Design code in reusable, loosely coupled modules/components/classes (SOLID principles). Avoid monolithic structures.</li>
+                <li><strong>Comments:</strong> Comment complex logic, non-obvious decisions, and public APIs/interfaces. Avoid commenting obvious code. Keep comments up-to-date.</li>
+                <li><strong>Error Handling:</strong> Implement robust error handling using exceptions or appropriate error-signaling mechanisms. Log errors effectively (see Accountability section in SDLC). Avoid swallowing exceptions silently. Provide meaningful error messages for debugging without exposing sensitive internal details to end-users.</li>
+                <li><strong>Configuration Management:</strong> Externalize all environment-specific configurations (database connections, API endpoints, feature flags). Never hardcode configurations or secrets in the codebase. Use environment variables, configuration files loaded at runtime, or secrets management services.</li>
+            </ul>
+
+            <h3>C. Secure Coding Practices (Mandatory)</h3>
+            <p>This is paramount. All developers must understand and apply secure coding principles based on OWASP Top 10, SANS Top 25, and the specific **NYCPS Secure Coding Standards for Vendors (Attachment 1B)**.</p>
+            <ul>
+                <li><strong>Input Validation:</strong> Rigorously validate *all* input from external sources (user interfaces, APIs, files, databases, other services) on the server-side. Use allow-listing (whitelisting) rather than deny-listing (blacklisting). Validate for type, length, format, and range. Sanitize data intended for interpretation by other systems (e.g., SQL, OS commands, XML/JSON parsers).</li>
+                <li><strong>Output Encoding:</strong> Contextually encode all output displayed to users or passed to interpreters (HTML, JavaScript, SQL) to prevent Cross-Site Scripting (XSS) and other injection attacks. Use framework-provided encoding mechanisms where available and appropriate for the context.</li>
+                <li><strong>Authentication & Session Management:</strong> Implement securely. Do not expose session IDs in URLs. Use secure, HttpOnly, SameSite cookies. Regenerate session IDs upon login/privilege change. Implement proper logout functionality that invalidates the session server-side. Protect against session fixation and hijacking.</li>
+                <li><strong>Access Control (Authorization):</strong> Enforce authorization checks server-side for *every* request accessing protected resources or performing sensitive actions. Implement checks based on user roles/permissions derived from a trusted source (e.g., validated JWT claims, session data linked to backend authorization system). Adhere to the principle of least privilege. Protect against Insecure Direct Object References (IDOR).</li>
+                <li><strong>Cryptographic Practices:</strong> Use strong, industry-standard cryptographic algorithms and libraries for encryption and hashing (as mandated by NYCPS/NYC3 standards and AWS KMS/Secrets Manager capabilities). Never store sensitive data (especially PII) unencrypted at rest unless absolutely necessary and approved with compensating controls. Never implement custom cryptographic algorithms. Manage keys securely using KMS.</li>
+                <li><strong>Error Handling & Logging:</strong> Do not leak sensitive information (stack traces, system details, PII) in error messages presented to users. Log security-relevant events (logins, failures, access control decisions, exceptions) with sufficient detail for auditing and forensics (see Accountability).</li>
+                <li><strong>Dependency Security:</strong> Regularly scan third-party libraries and dependencies for known vulnerabilities (SCA). Update vulnerable dependencies promptly.</li>
+                <li><strong>Database Security:</strong> Use parameterized queries or prepared statements exclusively to prevent SQL injection. Grant database users least privilege access.</li>
+                <li><strong>File Handling:</strong> Validate filenames and paths to prevent directory traversal. Scan uploaded files for malware. Store user-uploaded files outside the web root with appropriate permissions.</li>
+            </ul>
+             <div class="note">Regular secure coding training (e.g., based on OWASP resources) will be mandatory for all developers. Security champions within teams will promote best practices.</div>
+        </div>
+    </section>
+
+    <!-- Development Workflow -->
+    <section id="dev-workflow">
+        <h2>III. Development Workflow (Git & Agile/Scrum)</h2>
+        <div class="section-description">
+            <p>We will follow a structured Git workflow integrated with our Scrum process to manage code changes, collaboration, and releases effectively.</p>
+            <h3>A. Git Branching Strategy (Gitflow Variant)</h3>
+            <ul>
+                <li><code>main</code>: Represents the production-ready code. Only receives merges from approved `release` or `hotfix` branches. Protected branch.</li>
+                <li><code>develop</code>: Represents the latest integrated development state. Feature branches are merged here. Protected branch (requires PRs). Nightly/regular builds deployed to DEV/QA environment from here.</li>
+                <li><code>feature/TICKET-###-short-description</code>: Developers create feature branches from `develop` for each user story or bug fix task (where `TICKET-###` is the Jira/ADO issue key).</li>
+                <li><code>release/vX.Y.Z</code>: Branched from `develop` when preparing for a production release. Used for final stabilization, bug fixing, and documentation updates specific to the release. Merged into `main` upon release, and back into `develop` to incorporate release-specific fixes.</li>
+                <li><code>hotfix/TICKET-###-critical-fix</code>: Branched directly from `main` to address critical production bugs. Merged back into both `main` and `develop` upon completion.</li>
+            </ul>
+
+            <h3>B. Agile/Scrum Process Integration</h3>
+            <ol>
+                <li><strong>Sprint Planning:</strong> The team selects user stories from the prioritized Product Backlog that fit within the sprint capacity (typically 2 weeks). Stories are broken down into technical tasks. A sprint goal is defined.</li>
+                <li><strong>Development Cycle:</strong>
+                    <ul>
+                        <li>For each task/story, a developer creates a `feature/` branch from `develop`.</li>
+                        <li>Code is written following standards, including comprehensive automated tests (unit, integration).</li>
+                        <li>Code is committed frequently to the feature branch with meaningful messages referencing the ticket ID.</li>
+                        <li>Developer ensures all tests pass locally and code lints correctly.</li>
+                    </ul>
+                </li>
+                 <li><strong>Pull Request (PR) Process:</strong>
+                    <ul>
+                        <li>Developer creates a PR from their `feature/` branch targeting `develop`.</li>
+                        <li>PR description links to the Jira/ADO ticket(s), summarizes changes, and details any manual testing performed or specific review instructions.</li>
+                        <li>CI pipeline automatically runs (build, lint, unit tests, SAST, SCA). PR cannot be merged if CI fails.</li>
+                        <li>Code review is performed (see Section VII). Reviewers approve or request changes.</li>
+                        <li>Developer addresses feedback, pushes updates to the feature branch (triggering CI again).</li>
+                        <li>Once approved and CI passes, the PR is merged into `develop` (typically squashed for cleaner history).</li>
+                    </ul>
+                </li>
+                <li><strong>Daily Stand-up:</strong> Team members briefly share progress, plans for the day, and any blockers.</li>
+                <li><strong>Testing (Post-Merge):</strong> Automated integration and E2E tests run against the `develop` branch build deployed to the QA environment.</li>
+                <li><strong>Sprint Review:</strong> Team demonstrates the completed and tested features (meeting Definition of Done) from the sprint to the Product Owner and stakeholders. Feedback is gathered.</li>
+                <li><strong>Sprint Retrospective:</strong> Team discusses what went well, what could be improved, and agrees on process adjustments for the next sprint.</li>
+            </ol>
+        </div>
+    </section>
+
+    <!-- Frontend Strategy -->
+    <section id="frontend-strategy">
+        <h2>IV. Frontend Development Strategy (Web & Mobile)</h2>
+        <div class="section-description">
+            <p>We will develop intuitive, accessible, performant, and secure user interfaces for all modules (Parent/Caregiver, Student, Driver, School Admin, OPT Admin, SBC Admin) using modern web and mobile technologies.</p>
+            <h3>A. Technology Stack (Example: React & React Native)</h3>
+            <div class="note">The specific framework choice (React, Angular, Vue for web; React Native, Native Swift/Kotlin, Flutter for mobile) will be finalized during detailed design, but the principles below apply generally. This example assumes React for web and React Native for mobile for consistency.</div>
+            <ul>
+                <li><strong>Web Framework:</strong> React (latest stable version) with TypeScript.</li>
+                <li><strong>Mobile Framework:</strong> React Native with TypeScript.</li>
+                <li><strong>State Management:</strong> Redux Toolkit or Zustand (TBD based on complexity) for global state; React Context API for localized state.</li>
+                <li><strong>Component Library/UI Kit:</strong> Utilize a pre-built, accessible component library (e.g., Material UI, Ant Design, Chakra UI) customized to NYCPS branding/style guide, or develop a custom library.</li>
+                <li><strong>Routing:</strong> React Router (Web), React Navigation (Mobile).</li>
+                <li><strong>API Interaction:</strong> Axios or Fetch API, potentially with generated clients from OpenAPI specs (e.g., using `openapi-generator`). Implement robust error handling and loading states.</li>
+                <li><strong>Mapping:</strong> Integrate mapping libraries (e.g., Leaflet, Mapbox GL JS, Google Maps SDK wrappers) compatible with backend GIS data (potentially GeoJSON served via APIs) and AWS Location Service (if used).</li>
+                <li><strong>Build Tool:</strong> Vite or Create React App (managed via react-scripts) for web; Metro bundler for React Native.</li>
+            </ul>
+
+            <h3>B. Development Practices</h3>
+            <ul>
+                <li><strong>Component-Based Architecture:</strong> Build UIs using small, reusable, well-defined components with clear props and state management.</li>
+                <li><strong>TypeScript Enforcement:</strong> Utilize TypeScript for static typing to catch errors early and improve code maintainability. Enforce strict type checking.</li>
+                <li><strong>State Management Strategy:</strong> Clearly define where state resides (local component state, context, global store) to avoid prop drilling and ensure predictability.</li>
+                <li><strong>API Integration:</strong> Develop dedicated service modules/hooks for interacting with backend APIs. Implement consistent error handling, request cancellation, and caching strategies (e.g., using React Query or SWR).</li>
+                <li><strong>Accessibility (WCAG 2.0 AA):</strong> Mandatory adherence. Use semantic HTML, ARIA attributes where necessary, ensure keyboard navigability, sufficient color contrast, provide text alternatives for non-text content. Integrate accessibility linters (e.g., `eslint-plugin-jsx-a11y`) and perform manual testing (keyboard, screen reader).</li>
+                <li><strong>Performance Optimization:</strong> Code splitting, lazy loading components/routes, image optimization, memoization (React.memo, useMemo, useCallback), efficient state updates, network request optimization.</li>
+                <li><strong>Security:</strong> Sanitize any user-generated content displayed in the UI (though primary sanitization is backend). Protect against client-side vulnerabilities like XSS (via framework mechanisms and output encoding), CSRF (if using session cookies - less common with token auth), insecure data storage (use secure storage mechanisms like SecureStore/Keychain on mobile).</li>
+            </ul>
+
+            <h3>C. Developer-Owned Testing (Frontend)</h3>
+            <ul>
+                <li><strong>Unit Tests:</strong> Test individual components and utility functions in isolation using Jest and React Testing Library (RTL). Mock API calls and external dependencies. Focus on rendering output, state changes, and event handling logic. Aim for high coverage of component logic.</li>
+                <li><strong>Integration/Component Tests:</strong> Test interactions between related components, context providers, or components interacting with mocked service layers using RTL or potentially Cypress Component Testing.</li>
+                <li><strong>End-to-End (E2E) Tests:</strong> Automate critical user flows using Cypress or Playwright. Tests run against a deployed application in a test environment interacting with live (or mocked) backend APIs. Examples: User login, viewing bus location, submitting absence report, scanning QR code (simulated).</li>
+                <li><strong>Accessibility Checks:</strong> Integrate automated accessibility checks (e.g., `jest-axe`, `cypress-axe`) into test suites.</li>
+                <li><strong>CI Integration:</strong> All unit and component tests run on every PR/commit. E2E tests run against deployments to QA/Staging environments.</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Backend Strategy -->
+    <section id="backend-strategy">
+        <h2>V. Backend Development Strategy (Microservices & API)</h2>
+        <div class="section-description">
+            <p>We will develop backend functionality as a set of independent, scalable, and resilient microservices communicating via well-defined APIs and asynchronous events, deployed primarily as containers on AWS Fargate/ECS or serverless functions via Lambda.</p>
+             <h3>A. Technology Stack (Example: Python/FastAPI & Node.js/Express)</h3>
+             <div class="note">The choice of language/framework per microservice can vary based on the specific task (e.g., Python for data processing/routing, Node.js for I/O-bound API gateways). Consistency within a domain is encouraged. This example uses Python/FastAPI for a core service and Node.js for an API aggregation layer.</div>
+            <ul>
+                <li><strong>Primary Language/Framework:</strong> Python 3.11+ with FastAPI (for performance and type hints) or Node.js LTS with Express/NestJS (for I/O heavy tasks). Java/Spring Boot is also a viable option. (Decision per service team/domain).</li>
+                <li><strong>API Specification:</strong> OpenAPI 3.0 (Swagger) for defining all RESTful APIs. Use code-first (FastAPI/NestJS) or spec-first approaches.</li>
+                <li><strong>Data Access:</strong>
+                    <ul>
+                        <li><strong>PostgreSQL/PostGIS:</strong> SQLAlchemy (Python), TypeORM/Prisma (Node.js), JPA/Hibernate (Java).</li>
+                        <li><strong>DynamoDB:</strong> AWS SDK (Boto3 for Python, AWS SDK for JavaScript/Java).</li>
+                        <li><strong>ElastiCache (Redis/Memcached):</strong> Standard client libraries for the chosen language.</li>
+                    </ul>
+                </li>
+                 <li><strong>Messaging/Streaming:</strong> AWS SDK for interacting with Kinesis, SQS, SNS. Libraries like `aiobotocore` (Python) or `@aws-sdk/client-sqs` (Node.js) for asynchronous operations.</li>
+                 <li><strong>Containerization:</strong> Docker with multi-stage builds for optimized, secure images based on official language base images.</li>
+            </ul>
+
+            <h3>B. Development Practices</h3>
+            <ul>
+                <li><strong>API Design (RESTful):</strong> Follow REST principles. Use standard HTTP methods (GET, POST, PUT, PATCH, DELETE) appropriately. Use clear resource naming conventions. Implement versioning (e.g., `/v1/` in URL path).</li>
+                <li><strong>Microservice Design:</strong> Design services around business capabilities (DDD). Ensure loose coupling and high cohesion. Communicate via APIs or events, avoid direct database sharing between services. Implement resilience patterns (retries, timeouts, circuit breakers) for inter-service calls (e.g., using libraries like `resilience4j` (Java), `polly` (.NET via Lambda Powertools), or custom logic).</li>
+                <li><strong>Asynchronous Processing:</strong> Utilize message queues (SQS) and pub/sub (SNS) for decoupling time-consuming tasks or broadcasting events. Design services to be idempotent where possible when consuming messages.</li>
+                <li><strong>Configuration Management:</strong> Load configurations (database URLs, API keys, feature flags) from environment variables or AWS Systems Manager Parameter Store / Secrets Manager at startup.</li>
+                <li><strong>Logging:</strong> Implement structured logging (JSON format preferred) including correlation IDs to trace requests across microservices. Log key events, errors, and security-relevant actions.</li>
+                <li><strong>Security Implementation:</strong>
+                    <ul>
+                        <li>Implement authentication/authorization middleware in API gateways or individual services to validate JWTs/tokens and check permissions based on roles/claims.</li>
+                        <li>Apply input validation rigorously at API boundaries.</li>
+                        <li>Use parameterized queries/ORMs to prevent SQL injection.</li>
+                        <li>Minimize attack surface; expose only necessary endpoints.</li>
+                    </ul>
+                </li>
+            </ul>
+
+             <h3>C. Developer-Owned Testing (Backend)</h3>
+             <ul>
+                 <li><strong>Unit Tests:</strong> Test individual functions, classes, controllers in isolation using frameworks like Pytest (Python), JUnit/Mockito (Java), Jest (Node.js). Mock external dependencies (database calls, API calls to other services, message queues). Focus on business logic, validation rules, error handling. Aim for high code coverage.</li>
+                 <li><strong>Integration Tests:</strong> Test service interaction with its direct dependencies (e.g., database, cache, message queue) within a controlled test environment. Use test containers (e.g., `testcontainers`) locally or run against dedicated test instances in the cloud QA environment. Verify data persistence, message consumption/production, interactions with mocked external APIs.</li>
+                 <li><strong>API/Contract Tests:</strong> Test API endpoints directly using tools like Postman or automated frameworks (Pytest with `requests`, RestAssured). Validate request/response schemas against OpenAPI specs. Consider using Pact for consumer-driven contract testing between microservices to ensure compatibility without full E2E setup.</li>
+                 <li><strong>E2E Tests (Service Level):</strong> Test critical business flows that span multiple microservices owned by the team, typically by invoking the public API gateway and verifying results/side effects across services (e.g., creating a route triggers DB updates and notifications). Mock external dependencies beyond the team's control.</li>
+                 <li><strong>CI Integration:</strong> All unit and integration tests run on every PR/commit. API/Contract/E2E tests run against deployments to QA environment.</li>
+             </ul>
+        </div>
+    </section>
+
+    <!-- Integration Strategy -->
+    <section id="integration-strategy">
+        <h2>VI. Integration Strategy</h2>
+        <div class="section-description">
+            <p>We will ensure seamless and secure data flow between internal microservices, NYCPS enterprise systems, and required third-party services.</p>
+            <h3>A. Internal Microservice Communication</h3>
+            <ul>
+                <li><strong>Synchronous (Request/Response):</strong> Primarily via RESTful APIs exposed through internal API Gateway endpoints or service discovery mechanisms within ECS/EKS. Use HTTPS (TLS) for all internal traffic. Implement appropriate authentication/authorization between services (e.g., mutual TLS, service-to-service JWTs).</li>
+                <li><strong>Asynchronous (Event-Driven):</strong> Utilize SNS for pub/sub (broadcasting events like 'RouteUpdated') and SQS for reliable queuing of commands or events requiring specific processing (e.g., 'ProcessNewRidershipScan'). Leverage Kinesis/MSK for high-volume event streams (GPS data). Design consumers to be idempotent.</li>
+            </ul>
+            <h3>B. NYCPS System Integration (ATS, NPSIS, Ticketing, Contracts, etc.)</h3>
+            <ul>
+                <li><strong>Discovery & Definition:</strong> Collaborate closely with DIIT and NYCPS SMEs to precisely define data requirements, formats, frequency (real-time API vs. batch file), and security protocols for each integration point.</li>
+                <li><strong>API-Based Integration:</strong> Prefer RESTful APIs where available from NYCPS systems. Develop dedicated 'Adapter' microservices within the TMS architecture to handle communication, data transformation, and error handling specific to each NYCPS system API. Secure communication using appropriate authentication (API keys, OAuth, mTLS) managed via Secrets Manager and ensure transport encryption (TLS).</li>
+                <li><strong>File-Based Integration:</strong> If APIs are unavailable, establish secure file transfer mechanisms (SFTP preferred over FTP) using dedicated S3 buckets and Lambda/Glue ETL jobs triggered by file arrival events (S3 Event Notifications). Define file formats, naming conventions, PGP encryption requirements, and error handling processes. Utilize AWS Transfer Family for managed SFTP endpoints.</li>
+                <li><strong>Database Integration (Least Preferred):</strong> Direct database links are generally discouraged due to tight coupling and security risks. If absolutely necessary and approved by security/architecture review, establish read-only replicas or use secure database links with tightly restricted permissions, accessed only via dedicated adapter services.</li>
+                <li><strong>Security & Connectivity:</strong> Utilize the established secure AWS Direct Connect/VPN tunnels for connectivity to internal NYCPS resources. Implement appropriate firewall rules and security group configurations on both ends.</li>
+            </ul>
+            <h3>C. Third-Party Service Integration (Traffic Data, Mapping/GIS, Notifications)</h3>
+            <ul>
+                <li><strong>API Keys & Credentials:</strong> Store all third-party API keys and credentials securely in AWS Secrets Manager. Grant access only to specific IAM roles used by the services needing them.</li>
+                <li><strong>SDK/Client Libraries:</strong> Use official vendor-provided SDKs or well-vetted client libraries where available.</li>
+                <li><strong>Resilience:</strong> Implement retry logic with exponential backoff and circuit breakers for calls to external services to handle transient failures or rate limiting.</li>
+                <li><strong>Rate Limiting:</strong> Be mindful of and respect any rate limits imposed by third-party APIs. Implement client-side throttling if necessary.</li>
+                <li><strong>Error Handling:</strong> Implement robust error handling for failed API calls, timeouts, or unexpected responses from third parties.</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Testing Strategy (Developer Focus) -->
+    <section id="testing-strategy">
+        <h2>VII. Testing Strategy (Developer Ownership)</h2>
+        <div class="section-description">
+            <p>Quality is a team responsibility, with developers taking primary ownership of ensuring functional correctness through comprehensive, automated testing integrated deeply into the development workflow.</p>
+            <h3>A. Developer Testing Responsibilities</h3>
+            <ul>
+                <li><strong>Unit Testing:</strong> Developers *must* write unit tests covering the logic within their code (functions, classes, components). Mocks/stubs will be used to isolate the unit under test. Goal: High code coverage verified by tools (e.g., `coverage.py`, Jacoco, Istanbul) and validation during code review.</li>
+                <li><strong>Integration Testing:</strong> Developers *must* write integration tests verifying the interaction of their service with its direct, essential dependencies (e.g., database persistence layer, message queue consumers/producers, interactions with *closely coupled* internal services). These tests may run against local test containers or dedicated QA environment resources.</li>
+                <li><strong>API/Contract Testing:</strong> Developers *must* write tests that validate the API contract (request/response structure, status codes, basic auth/authz) of the services they build. Tools like Postman (collections run via Newman in CI) or framework-specific test clients will be used. Pact contract testing is encouraged between highly interdependent services.</li>
+                <li><strong>End-to-End (E2E) Testing Contribution:</strong> Developers will collaborate with QA engineers to identify critical user flows and contribute to building/maintaining automated E2E test suites (e.g., using Cypress/Playwright). While QA may take the lead on the overall E2E suite, developers are responsible for ensuring their features are testable and contributing tests for core paths.</li>
+                <li><strong>Test Automation:</strong> All unit, integration, and API/contract tests *must* be automated and integrated into the CI pipeline. E2E tests should be automated for critical paths and run regularly.</li>
+            </ul>
+
+            <h3>B. Definition of Done (DoD)</h3>
+            <p>A User Story is considered "Done" only when:</p>
+            <ul>
+                <li>Code implementing the functionality is complete.</li>
+                <li>Code adheres to all coding and security standards.</li>
+                <li>Comprehensive unit and integration tests are written and *passing* (meeting coverage targets).</li>
+                <li>Relevant API/Contract tests are written and *passing*.</li>
+                <li>E2E test scenarios (if applicable) are identified, and automated tests are created/updated and *passing*.</li>
+                <li>Code has been successfully peer-reviewed and merged into the `develop` branch.</li>
+                <li>The feature has been successfully deployed and verified in the QA environment via automated tests.</li>
+                <li>Necessary documentation (code comments, API spec updates, user guides if applicable) is complete.</li>
+                <li>The Product Owner has formally accepted the story during the Sprint Review based on meeting acceptance criteria.</li>
+            </ul>
+             <div class="warning">Failure to include adequate automated tests (Unit, Integration, API) will block code reviews and prevent stories from meeting the Definition of Done.</div>
+
+            <h3>C. QA Team Role</h3>
+            <p>The QA team complements developer testing by focusing on:</p>
+            <ul>
+                <li><strong>Exploratory Testing:</strong> Manually exploring the application to find edge cases, usability issues, and unexpected behavior missed by automated tests.</li>
+                <li><strong>UAT Facilitation:</strong> Organizing and supporting UAT sessions with NYCPS stakeholders.</li>
+                <li><strong>Performance Testing:</strong> Designing, executing, and analyzing results from large-scale performance and load tests.</li>
+                <li><strong>Security Testing Oversight:</strong> Coordinating penetration tests, reviewing DAST/SAST results, and validating security fixes.</li>
+                <li><strong>E2E Test Suite Management:</strong> Owning the overall E2E test automation strategy, framework, and execution, collaborating with developers.</li>
+                <li><strong>Test Environment Management:</strong> Overseeing the setup and maintenance of dedicated QA/Staging/Performance environments.</li>
+                <li><strong>Release Certification:</strong> Providing a final quality assessment before production releases based on overall test results and risk analysis.</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Code Review -->
+    <section id="code-review">
+        <h2>VIII. Code Review Process</h2>
+        <div class="section-description">
+            <p>Mandatory peer code reviews are a critical quality gate. All code changes merged into `develop` (and subsequently `main` via releases/hotfixes) must undergo a thorough review.</p>
+            <h3>A. Process Steps</h3>
+            <ol>
+                <li>Developer completes work on a feature branch, ensuring all local tests pass and code adheres to standards.</li>
+                <li>Developer creates a Pull Request (PR) targeting the `develop` branch.</li>
+                <li>PR description clearly explains the purpose of the change, links to the relevant Jira/ADO ticket(s), and highlights any areas needing specific attention or manual testing steps.</li>
+                <li>Automated CI checks (build, lint, unit tests, SAST, SCA) are triggered and must pass.</li>
+                <li>Developer assigns 1-2 designated peer reviewers (or team lead for critical changes).</li>
+                <li>Reviewer(s) examine the code against a defined checklist (see below).</li>
+                <li>Reviewer(s) provide constructive feedback via PR comments or approve the changes.</li>
+                <li>Developer addresses all comments, pushing updates to the feature branch (re-triggering CI).</li>
+                <li>Once all reviewers approve and CI checks pass, the PR is merged (preferably using squash merge for clean history).</li>
+            </ol>
+            <h3>B. Review Checklist (Minimum Criteria)</h3>
+            <ul>
+                <li><strong>Functionality:</strong> Does the code correctly implement the requirements/acceptance criteria? Does it handle edge cases?</li>
+                <li><strong>Security:</strong> Are there potential vulnerabilities (OWASP Top 10)? Is input validated? Is output encoded? Are auth checks correct? Is sensitive data handled appropriately?</li>
+                <li><strong>Testing:</strong> Are there sufficient, meaningful unit and integration tests? Do tests cover main paths and edge cases? Is coverage adequate?</li>
+                <li><strong>Readability/Maintainability:</strong> Is the code clear, well-formatted, and understandable? Are names meaningful? Are comments adequate? Is complexity minimized? Does it follow SOLID/modular principles?</li>
+                <li><strong>Performance:</strong> Are there obvious performance bottlenecks (e.g., inefficient loops, unnecessary database calls)? Is resource handling (e.g., connections, file handles) correct?</li>
+                <li><strong>Standards Adherence:</strong> Does the code follow language style guides and project conventions?</li>
+                <li><strong>Error Handling:</strong> Are errors handled gracefully? Are logs sufficient for debugging?</li>
+                <li><strong>Documentation:</strong> Is necessary documentation (code comments, README updates, API spec changes) included?</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Build & CI -->
+    <section id="build-ci">
+        <h2>IX. Build & Continuous Integration (CI)</h2>
+        <div class="section-description">
+            <p>Our CI process, implemented using AWS CodePipeline and CodeBuild (or similar), automates the verification and packaging of code changes, providing rapid feedback to developers.</p>
+            <h3>A. CI Pipeline Stages (Example for a Microservice)</h3>
+            <ol>
+                <li><strong>Source Trigger:</strong> Pipeline automatically starts upon commit/merge to specified branches (e.g., `develop`, `feature/*` via PR). Source pulled from CodeCommit/GitHub.</li>
+                <li><strong>Lint & Format Check:</strong> Run linters (ESLint, Flake8) and formatters (Prettier, Black) to enforce code style. Fail build if checks fail.</li>
+                <li><strong>Unit Tests:</strong> Compile code (if necessary) and run all unit tests using the appropriate framework (Jest, Pytest, JUnit). Fail build if any tests fail. Generate code coverage reports.</li>
+                <li><strong>Security Scans:</strong>
+                    <ul>
+                        <li>Run SAST scan (SonarQube, Checkmarx) on the source code. Fail build based on configured quality gates (e.g., number/severity of new vulnerabilities).</li>
+                        <li>Run SCA scan (Snyk, Dependency-Check) on dependencies. Fail build based on configured quality gates (e.g., presence of critical/high vulnerabilities without patches).</li>
+                    </ul>
+                </li>
+                <li><strong>Build Artifact:</strong> Build the deployment artifact (e.g., create Docker image using a multi-stage Dockerfile, package Lambda deployment .zip).</li>
+                <li><strong>Push Artifact:</strong> Push the built artifact to its repository (e.g., ECR for Docker images, S3 for Lambda zips) tagged appropriately (e.g., with Git commit hash or build number).</li>
+                <li><strong>(Optional) Trigger CD:</strong> Optionally, trigger the Continuous Deployment pipeline to deploy the artifact to the DEV environment.</li>
+                <li><strong>Notifications:</strong> Notify developers (e.g., via Slack/Teams/Email) of build success or failure, linking back to the pipeline execution details and relevant commit/PR.</li>
+            </ol>
+             <div class="note">Integration and E2E tests are typically run in separate pipelines triggered *after* deployment to QA/Staging environments, not usually within the primary CI build pipeline itself.</div>
+        </div>
+    </section>
+
+</body>
+</html>

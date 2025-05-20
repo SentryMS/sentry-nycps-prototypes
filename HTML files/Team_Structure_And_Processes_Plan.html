@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NYCPS TMS - Prescriptive Human Resources & Team Management Strategy</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.8; color: #212529; max-width: 1400px; margin: 25px auto; padding: 35px; background-color: #ffffff; border: 1px solid #dee2e6; border-radius: 10px; box-shadow: 0 6px 12px rgba(0,0,0,0.07); }
+        h1, h2, h3, h4, h5, h6 { color: #002b5c; margin-top: 1.8em; margin-bottom: 0.8em; padding-bottom: 8px; font-weight: 600; border-bottom: 2px solid #003366; }
+        h1 { text-align: center; font-size: 2.6em; border-bottom: 4px solid #003366; margin-bottom: 1.5em; }
+        h2 { /* Major Sections */ font-size: 2.1em; border-bottom: 3px solid #003366; background-color: #eaf2f8; padding: 12px 18px; border-radius: 6px 6px 0 0; margin-left: -36px; margin-right: -36px; margin-top: 2.5em; }
+        h3 { /* Primary Strategy Components */ font-size: 1.7em; border-bottom: 2px solid #b7d1ed; padding-left: 10px; margin-top: 2.2em;}
+        h4 { /* Key Processes / Concepts */ font-size: 1.4em; border-bottom: 1px dashed #ced4da; color: #004080; padding-left: 25px; font-weight: 600; margin-top: 2em; }
+        h5 { /* Specific Details / Steps */ font-size: 1.2em; border-bottom: none; color: #343a40; padding-left: 40px; font-weight: bold; margin-top: 1.5em; margin-bottom: 0.5em; }
+        h6 { /* Implementation/Tooling Notes */ font-size: 1.05em; border-bottom: none; color: #495057; padding-left: 55px; font-style: italic; margin-top: 1em; margin-bottom: 0.4em; }
+        p, li { margin-bottom: 1em; font-size: 1.1em; }
+        ul { list-style-type: disc; margin-left: 70px; margin-bottom: 1.2em; } /* Changed from circle */
+        ol { list-style-type: decimal; margin-left: 70px; margin-bottom: 1.2em; }
+        ol ol { list-style-type: lower-alpha; margin-left: 90px; }
+        ol ol ol { list-style-type: lower-roman; margin-left: 110px; }
+        strong { font-weight: 700; color: #002b5c; }
+        code { font-family: 'Fira Code', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; display: block; background-color: #2b303b; color: #c0c5ce; padding: 18px; border: 1px solid #3e4451; border-radius: 6px; font-size: 1em; white-space: pre-wrap; word-wrap: break-word; overflow-x: auto; margin: 12px 0; line-height: 1.6; }
+        .section-description { padding: 20px; margin-bottom: 25px; border: 1px solid #e9ecef; background-color: #f8f9fa; border-radius: 5px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.05); }
+        .subsection { padding: 15px; margin: 15px 0; border: 1px solid #f1f1f1; border-left: 5px solid #b7d1ed; background-color: #fff; border-radius: 4px;}
+        .implementation-detail { background-color: #f0fff0; border: 1px solid #c3e6c9; border-left: 5px solid #28a745; padding: 15px; margin-top: 15px; border-radius: 4px; color: #155724; font-size: 1.05em;}
+        .implementation-detail h5 { color: #155724; margin-top: 0;}
+        .template-box { background-color: #fefefe; border: 1px dashed #adb5bd; padding: 15px; margin: 15px 40px; border-radius: 4px; font-family: monospace; font-size: 0.95em; }
+        .template-box h5 { color: #495057; font-style: normal; font-size: 1.1em; margin-bottom: 10px; margin-top: 5px; padding-left: 0;}
+        .template-box ul { margin-left: 20px; }
+        .checklist { list-style-type: none; padding-left: 40px; } /* Indent checklist */
+        .checklist li { margin-bottom: 8px; position: relative;}
+        .checklist li input[type=checkbox] { margin-right: 10px; position: absolute; left: -30px; top: 5px; } /* Style checkboxes */
+        .responsibility { font-weight: bold; color: #6f42c1; /* Bootstrap Purple */ display: block; margin-top: 8px; margin-left: 40px; font-size: 0.95em; }
+        .kpi-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        .kpi-table th, .kpi-table td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+        .kpi-table th { background-color: #eaf2f8; font-weight: bold; }
+        .compliance-note { background-color: #fff3cd; border-left: 5px solid #ffc107; padding: 10px 15px; margin: 15px 0; border-radius: 4px; color: #856404; font-style: italic;}
+    </style>
+</head>
+<body>
+
+    <h1>NYCPS TMS: Prescriptive Human Resources & Team Management Strategy</h1>
+
+    <!-- Introduction -->
+    <section id="intro">
+        <h2>I. Introduction: Philosophy, Goals & Scope</h2>
+        <div class="section-description">
+            <p>This document mandates the comprehensive Human Resources (HR) and Team Management Strategy for the NYCPS Transportation Management System (TMS) project. Recognizing that the success of this complex, large-scale, geographically distributed project hinges critically on its people, this strategy establishes best-in-class processes for team structuring, talent acquisition, onboarding, development, performance management, collaboration, knowledge retention, and fostering a high-performance, positive, and compliant team culture.</p>
+            <p><strong>Philosophy:</strong> We believe in empowering autonomous, cross-functional teams, fostering psychological safety, promoting continuous learning, demanding accountability through clear expectations and objective metrics, and ensuring seamless collaboration despite geographical separation. This strategy integrates HR and management practices directly into the Agile/DevSecOps workflow.</p>
+            <p><strong>Goals:</strong></p>
+            <ul>
+                <li>Attract, onboard, and retain top-tier engineering, product, and support talent globally.</li>
+                <li>Ensure every team member possesses the necessary skills and clear understanding of their role, responsibilities, and project objectives.</li>
+                <li>Foster a highly collaborative, inclusive, and productive environment across time zones.</li>
+                <li>Implement objective, data-driven performance management focused on both output and outcomes (quality, reliability, value delivery).</li>
+                <li>Guarantee knowledge continuity throughout the project lifecycle, minimizing impact from personnel changes.</li>
+                <li>Ensure strict adherence to all NYCPS HR policies, labor laws, and compliance regulations.</li>
+                <li>Achieve elite DORA metrics and project KPIs through effective team structure and management.</li>
+            </ul>
+            <p><strong>Scope:</strong> This plan covers all personnel directly assigned to the NYCPS TMS project (estimated 50-60 members, vendor and potentially designated NYCPS counterparts), including developers, QA, SRE/Ops, security, architects, PMs, POs, BAs, UX designers, trainers, support tiers, and leadership, from project initiation through operational handover and potential offboarding.</p>
+        </div>
+    </section>
+
+    <!-- Team Structure -->
+    <section id="team-structure">
+        <h2>II. Team Structure, Roles & Responsibilities (RACI)</h2>
+        <div class="section-description">
+            <p>We will organize the 50-60 person team into cross-functional, domain-aligned Agile (Scrum) teams supported by specialized platform/central teams to optimize focus, collaboration, and delivery flow.</p>
+
+            <h4>A. Proposed Team Structure (Example - To be finalized)</h4>
+            <ul>
+                <li><strong>Feature Teams (Multiple):</strong> Aligned with major functional domains/microservice groups (e.g., Team Apollo - Routing Engine; Team Juno - Parent/Student Apps; Team Minerva - Ridership & Driver App; Team Vulcan - Admin Consoles & Reporting).
+                    <ul><li>Composition: Scrum Master, Product Owner (NYCPS designee liaison), Tech Lead, Backend Devs, Frontend/Mobile Devs, QA Engineers/SDETs.</li></ul>
+                </li>
+                <li><strong>Platform Teams (Centralized):</strong> Provide foundational services and expertise across feature teams.
+                    <ul>
+                        <li><strong>DevOps/SRE Team:</strong> Manages CI/CD pipelines, AWS infrastructure (via IaC), monitoring/alerting, incident response, operational reliability.</li>
+                        <li><strong>Security Team (DevSecOps):</strong> Manages security tooling, performs security reviews/testing, consults on secure design, manages compliance posture.</li>
+                        <li><strong>Data Platform/GIS Team:</strong> Manages core data stores (DBA functions), data integration pipelines, GIS platform maintenance, reporting/analytics infrastructure.</li>
+                        <li><strong>Architecture Guild:</strong> Cross-team group of senior architects/leads providing architectural guidance, standards, and review (not a full-time team).</li>
+                    </ul>
+                </li>
+                <li><strong>Project Leadership & Support:</strong>
+                    <ul><li>Project Managers (Vendor & NYCPS), Program Manager (Overall Lead), Core UX Design Team, Business Analysts, Technical Writers, Training Team, Tiered Support Teams (L1/L2/L3 - see Ops Strategy).</li></ul>
+                </li>
+            </ul>
+             <div class="implementation-detail">
+                 <h5>Implementation How-To:</h5>
+                 <ol>
+                    <li>Finalize team structure and domain alignment based on architecture and initial backlog priorities during project initiation.</li>
+                    <li>Clearly document team charters, missions, and primary responsibilities in Confluence.</li>
+                    <li>Assign initial team members based on skills and experience.</li>
+                 </ol>
+                 <p class="responsibility">Responsibility: Project Leadership, Management.</p>
+             </div>
+
+            <h4>B. Detailed Roles, Responsibilities & Expectations</h4>
+            <p>Clear expectations are crucial. Below are key roles and their core responsibilities/expectations within our framework:</p>
+            <div class="subsection">
+                <ul>
+                    <li><strong>Project Manager (Vendor/NYCPS):</strong> Overall project execution, schedule management, budget tracking, risk/issue management facilitation, change management process ownership, stakeholder communication, governance reporting, resource coordination. <strong>Expectation:</strong> Proactive planning, clear communication, rigorous adherence to PM processes, ensures alignment between vendor/NYCPS goals.</li>
+                    <li><strong>Product Owner (NYCPS Designee):</strong> Owns/prioritizes Product Backlog, defines user story acceptance criteria, represents business/user needs, accepts/rejects completed work in Sprint Reviews, available for team clarification. <strong>Expectation:</strong> Decisive prioritization, clear communication of requirements, active participation in Agile ceremonies.</li>
+                    <li><strong>Scrum Master:</strong> Facilitates Scrum ceremonies, removes team impediments, coaches team on Agile/Scrum practices, shields team from external distractions, tracks sprint metrics. <strong>Expectation:</strong> Servant leadership, process expert, effective impediment remover, fosters team self-organization.</li>
+                    <li><strong>Technical Lead (Feature Team / Platform):</strong> Guides technical design/implementation within the team/domain, mentors developers, ensures adherence to architecture/coding/security standards, leads code reviews, resolves technical blockers. <strong>Expectation:</strong> Deep technical expertise, strong communication/mentoring skills, ownership of technical quality for their domain.</li>
+                    <li><strong>Software Engineer (Backend/Frontend/Mobile):</strong> Designs, develops, tests (Unit, Integration, API/Component), and maintains code according to user stories and standards. Participates actively in code reviews, Agile ceremonies, and troubleshooting. Owns quality of their deliverables. <strong>Expectation:</strong> High-quality secure code, comprehensive automated tests, collaborative attitude, continuous learning, adherence to process.</li>
+                    <li><strong>QA Engineer / SDET:</strong> Develops/maintains test strategy & plans, builds/maintains automated test frameworks (API, E2E, Perf), performs exploratory testing, manages defect tracking/triage, facilitates UAT, certifies release quality. <strong>Expectation:</strong> Strong testing/automation skills, critical thinking, quality advocacy, collaboration with Dev/PO.</li>
+                    <li><strong>DevOps Engineer:</strong> Builds/maintains CI/CD pipelines, automates infrastructure provisioning (IaC), manages configuration, implements monitoring/alerting tooling. <strong>Expectation:</strong> Expertise in GitLab CI/CD, Terraform, AWS, scripting, automation focus.</li>
+                    <li><strong>SRE Engineer:</strong> Focuses on production reliability, availability, performance. Defines/monitors SLOs, manages incident response, leads post-mortems, automates operational tasks (toil reduction), capacity planning, DR testing. <strong>Expectation:</strong> Deep operational expertise, strong troubleshooting, automation skills, focus on reliability metrics.</li>
+                    <li><strong>Security Engineer (DevSecOps):</strong> Integrates/manages security tools (SAST/DAST/SCA), performs security reviews (code, architecture), consults on secure design, triages security findings, coordinates pen tests, monitors security posture. <strong>Expectation:</strong> Expertise in application/cloud security, secure coding, security tools, risk assessment.</li>
+                    <li><strong>Cloud Architect:</strong> Defines/governs overall AWS GovCloud architecture, sets technical standards, reviews major designs, advises on service selection and cost optimization.</li>
+                    <li><strong>UX/UI Designer:</strong> Creates user flows, wireframes, mockups, prototypes. Conducts usability testing. Ensures consistent and accessible user experience based on NYCPS guidelines.</li>
+                    <li><strong>Business Analyst:</strong> Elicits, analyzes, documents detailed requirements (user stories, acceptance criteria). Facilitates communication between stakeholders and development teams.</li>
+                    <li><strong>Technical Writer:</strong> Creates/maintains system documentation, user manuals, API documentation, KB articles.</li>
+                    <li><strong>Trainer:</strong> Develops and delivers training materials/sessions for different user groups.</li>
+                    <li><strong>Support Engineers (L1/L2/L3):</strong> Follow defined processes for incident/request handling, troubleshooting, escalation, and resolution (as per Ops Strategy).</li>
+                </ul>
+            </div>
+
+            <h4>C. RACI Matrix (Responsible, Accountable, Consulted, Informed)</h4>
+            <p>A detailed RACI matrix will be developed and maintained in Confluence to clarify responsibilities for key project activities and deliverables, reducing ambiguity.</p>
+            <div class="implementation-detail">
+                <h6>Implementation How-To:</h6>
+                <ol>
+                   <li>Create a matrix template in Confluence.</li>
+                   <li>List key project activities/deliverables down the rows (e.g., Budget Approval, Requirements Sign-off, Architecture Design, Code Review, Unit Testing, E2E Test Execution, Production Deployment Approval, Incident Resolution, Risk Mitigation Plan).</li>
+                   <li>List key roles across the columns.</li>
+                   <li>Collaboratively fill in the matrix cells with R, A, C, or I for each activity/role intersection, ensuring only one 'A' per activity.</li>
+                   <li>Review and approve the RACI matrix with project leadership. Refer to it regularly to resolve responsibility questions.</li>
+                </ol>
+                <p class="responsibility">Responsibility: Project Managers, Team Leads.</p>
+                <h6>Conceptual RACI Snippet:</h6>
+                <div class="template-box">
+                    | Activity                         | PM     | PO     | Tech Lead | Developer | QA     | SRE/Ops | Security | SteeringCo |
+                    |----------------------------------|--------|--------|-----------|-----------|--------|---------|----------|------------|
+                    | Define User Story Accept. Criteria | C      | **A**  | R/C       | I         | C      | I       | I        | I          |
+                    | Develop Feature Code             | I      | I      | R/C       | **R**     | I      | I       | I        | I          |
+                    | Write Unit Tests                 | I      | I      | R/C       | **R**     | C      | I       | I        | I          |
+                    | Conduct Code Review              | I      | I      | **A**     | R         | C      | C       | C        | I          |
+                    | Execute E2E Tests                | I      | C      | C         | I         | **R**  | C       | I        | I          |
+                    | Approve Production Deployment    | C      | C      | C         | I         | C      | R       | C        | **A**      |
+                    | Resolve SEV1 Production Incident | C      | I      | R/C       | R/C       | C      | **A**   | C        | I          |
+                    | ...                              | ...    | ...    | ...       | ...       | ...    | ...     | ...        | ...        |
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Geography -->
+    <section id="geography">
+        <h2>III. Geographical Distribution Strategy</h2>
+        <div class="section-description">
+            <p>Managing a 50-60 member globally distributed team requires specific strategies to maintain alignment, collaboration, and productivity across time zones.</p>
+            <div class="implementation-detail">
+                 <h6>Implementation How-To:</h6>
+                <ol>
+                    <li><strong>Core Collaboration Hours:** Define a daily window of 3-4 hours where maximum overlap occurs across major geographical locations (e.g., US East Coast, Europe, India). Schedule critical synchronous meetings (Sprint Planning, Reviews, key design sessions) during these hours where possible.</li>
+                    <li><strong>Asynchronous Communication First:** Emphasize detailed communication via Jira comments, Confluence documentation, well-documented MRs, and structured Slack/Teams channels over reliance on real-time meetings for non-urgent matters. Set clear expectations for response times within asynchronous channels.</li>
+                    <li><strong>Meeting Recording & Minutes:** Mandate recording of key meetings (with consent) and prompt distribution of detailed minutes with action items to ensure those unable to attend synchronously stay informed. Store centrally in Confluence.</li>
+                    <li><strong>Tooling for Visibility:** Leverage Jira dashboards, GitLab activity feeds, and shared Confluence spaces to provide asynchronous visibility into progress and status across time zones.</li>
+                    <li><strong>Rotate Meeting Times:** Where feasible, rotate timings for recurring meetings (e.g., stand-ups for cross-geo teams, TRB meetings) to distribute inconvenience across time zones fairly.</li>
+                    <li><strong>Cultural Awareness Training:** Provide training/resources on effective cross-cultural communication and collaboration.</li>
+                    <li><strong>Travel Budget (Targeted):** Allocate budget for periodic co-location of key leads or teams for critical planning, design, or integration workshops if deemed necessary (recognizing RFP constraints on T&E reimbursement).</li>
+                    <li><strong>US Presence Requirement:** Ensure all personnel requiring access to AWS GovCloud resources or potentially sensitive NYCPS data physically reside within the continental United States, as per RFP requirements and potential compliance constraints. Clearly define which roles have this constraint.</li>
+                </ol>
+                <p class="responsibility">Responsibility: Project Management, Team Leads, Scrum Masters.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Onboarding -->
+    <section id="onboarding">
+        <h2>IV. Detailed Team Onboarding Plan</h2>
+        <div class="section-description">
+            <p>A structured, comprehensive onboarding process is essential to rapidly integrate new team members into this complex project and distributed team, ensuring they become productive quickly and understand project context, tools, and processes.</p>
+             <h4>A. Onboarding Goals:</h4>
+             <ul>
+                 <li>Provide necessary project context, domain knowledge (NYCPS OPT), and architectural overview.</li>
+                 <li>Ensure proficiency with required tools (GitLab, Jira, Confluence, AWS GovCloud basics, IDE setup).</li>
+                 <li>Instill understanding of and adherence to defined development processes (Agile/Scrum, Git workflow, coding standards, testing requirements, DevSecOps pipeline).</li>
+                 <li>Integrate new members into their specific team and establish key relationships (Manager, Buddy, Mentor, Team Lead).</li>
+                 <li>Enable contribution to project tasks within the first 2-4 weeks.</li>
+             </ul>
+            <h4>B. Structured Onboarding Program (First 4 Weeks):</h4>
+            <div class="implementation-detail">
+                <h6>Implementation How-To:</h6>
+                <ol>
+                    <li><strong>Week 1: Foundation & Setup</strong>
+                        <ul>
+                            <li>**HR Onboarding:** Standard company HR processes completed.</li>
+                            <li>**Welcome & Introductions:** Introductions to Manager, assigned Buddy, Mentor (if applicable), and immediate team. Team welcome message/virtual coffee chat.</li>
+                            <li>**Project Overview:** Dedicated session(s) with PM/Lead covering project goals, scope, history, key stakeholders, high-level architecture, and current status. Review core project documentation (Charter, Roadmap).</li>
+                            <li>**Tool Access & Setup:** Grant access to Jira, GitLab, Confluence, Slack/Teams, AWS GovCloud (DEV environment initially). Guided setup of local development environment (IDE, Git, Docker, AWS CLI, project repositories) using documented procedures. Troubleshoot setup issues with Buddy/DevOps support.</li>
+                            <li>**Process Introduction:** Overview of Agile/Scrum ceremonies, Git workflow, Code Review process, CI/CD pipeline basics, Defect Management. Review key Confluence spaces.</li>
+                            <li>**Security & Compliance Briefing:** Mandatory initial briefing on data privacy (FERPA, NY Ed Law 2-d), secure coding basics, AWS GovCloud restrictions, and acceptable use policies.</li>
+                            <li>**Initial Task:** Assign a simple, well-defined introductory task (e.g., fix a minor bug, add a unit test, update documentation) paired with Buddy for guidance.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Week 2: Domain & Technical Deep Dive</strong>
+                        <ul>
+                            <li>**Domain Knowledge Sessions:** Focused sessions on NYCPS OPT operations, terminology, key user personas (drivers, parents, admins), core business processes (routing, ridership).</li>
+                            <li>**Architecture Deep Dive:** Sessions covering specific microservices, data models, APIs, and infrastructure components relevant to the new member's team/role.</li>
+                            <li>**Tooling Deep Dive:** Hands-on sessions/labs on using specific features of Jira (workflows, reporting), GitLab (MRs, pipelines, security scans), testing frameworks, debugging techniques.</li>
+                            <li>**Coding Standards Review:** Detailed review of language-specific style guides and secure coding practices. Practice via code katas or reviewing existing MRs with Buddy.</li>
+                            <li>**Continue Initial Task:** Progress on the initial task, participate in team stand-ups and code reviews (as observer initially).</li>
+                            <li>**1:1 Check-ins:** Regular check-ins with Manager and Buddy.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Weeks 3-4: Integration & Contribution</strong>
+                        <ul>
+                            <li>**First "Real" Task/Story:** Assign a small, well-defined user story or task from the current sprint backlog, ideally for pair programming with Buddy or another team member.</li>
+                            <li>**Full Ceremony Participation:** Actively participate in Daily Stand-ups, Sprint Planning (task breakdown), Backlog Grooming (asking questions), Sprint Reviews (observing/potentially demoing small part), Retrospectives.</li>
+                            <li>**First Code Review/MR:** Submit first Merge Request with support from Buddy/Lead. Participate in reviewing others' MRs.</li>
+                            <li>**Shadowing (Role-Specific):** Shadow relevant activities (e.g., QA shadows exploratory testing, DevOps shadows pipeline monitoring, Support shadows ticket triage).</li>
+                            <li>**Refine Understanding:** Use 1:1s and team interactions to clarify remaining questions about process, architecture, or domain.</li>
+                            <li>**Onboarding Feedback:** Provide feedback on the onboarding process itself.</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+            <h4>C. Supporting Mechanisms & Artifacts</h4>
+             <div class="implementation-detail">
+                 <h6>Implementation How-To:</h6>
+                 <ol>
+                    <li><strong>Onboarding Portal (Confluence Space):** Create a dedicated space containing:
+                        <ul>
+                            <li>Welcome Message & Team Directory (with photos/roles).</li>
+                            <li>Onboarding Checklists (Week 1, Week 2, etc.).</li>
+                            <li>Links to Key Project Documentation (Charter, Architecture, Process Guides, Style Guides).</li>
+                            <li>Tool Setup Guides & Access Request Links/Forms.</li>
+                            <li>Schedule of introductory meetings.</li>
+                            <li>Links to recorded training sessions/workshops.</li>
+                            <li>FAQ section.</li>
+                        </ul>
+                    </li>
+                     <li><strong>Onboarding Ticket Workflow (Jira/ADO):** Create an "Onboarding" issue type/workflow to track progress through key setup and training milestones for each new hire. Assign tasks to relevant parties (Manager, IT, Security, Buddy).</li>
+                     <li><strong>Buddy System:** Assign an experienced team member (not necessarily senior) as a go-to peer resource for day-to-day questions, environment setup help, and navigating team norms during the first month. Define Buddy responsibilities clearly.</li>
+                     <li><strong>Mentorship Program (Optional but Recommended):** Assign a more senior engineer/lead as a longer-term mentor (distinct from direct manager) focused on career development, technical growth, and navigating broader organizational context.</li>
+                     <li><strong>Regular Check-ins:** Schedule mandatory check-ins: Daily quick sync with Buddy (first week), Weekly 1:1 with Manager, Bi-weekly 1:1 with Mentor (if applicable).</li>
+                 </ol>
+                 <p class="responsibility">Responsibility: Hiring Manager (Overall process), HR (Formalities), Buddy/Mentor (Guidance), DevOps/IT/Security (Access/Tooling), PM/Leads (Project Context), New Hire (Active participation).</p>
+             </div>
+        </div>
+    </section>
+
+    <!-- Skills Management -->
+    <section id="skills-management">
+         <h2>V. Skills Management & Continuous Training Plan</h2>
+         <div class="section-description">
+            <p>We will proactively manage team skills to ensure we possess the necessary expertise across diverse technologies (AWS GovCloud, specific languages/frameworks, security, testing tools) and address gaps through targeted training and development.</p>
+             <h4>A. Skills Matrix Development & Maintenance</h4>
+             <div class="implementation-detail">
+                 <h6>Implementation How-To:</h6>
+                 <ol>
+                    <li><strong>Define Required Skills:** Based on the project's technology stack and roles, create a comprehensive list of critical technical skills (e.g., Terraform, Python/FastAPI, React Native, PostgreSQL/PostGIS, Kinesis, ECS/Fargate, GitLab CI, Cypress, AWS Security Services) and essential soft skills (Communication, Collaboration, Problem Solving, Agile Practices). Categorize by role where appropriate.</li>
+                    <li><strong>Create Matrix Template:** Develop a spreadsheet or Confluence table listing skills vs. team members. Define proficiency levels (e.g., 0-Not Applicable, 1-Awareness, 2-Beginner/Learning, 3-Intermediate/Competent, 4-Advanced/Proficient, 5-Expert/Mentor).</li>
+                    <li>**Initial Assessment:** Conduct initial skills assessment via self-assessment validated by managers/leads during onboarding or project start. Populate the matrix.</li>
+                    <li>**Regular Updates:** Update the matrix periodically (e.g., quarterly or semi-annually) as part of performance review cycles or when significant technology changes occur. Track skill development progress.</li>
+                    <li><strong>Analyze Gaps:** Regularly analyze the matrix to identify critical skill gaps within teams or across the project. Use this analysis to inform the training plan.</li>
+                 </ol>
+                  <p class="tool-note">Tools: Confluence Tables, Shared Spreadsheet (Excel/Google Sheets), potentially specialized HR/Skills Management software.</p>
+                  <p class="responsibility">Responsibility: Project Management/HR, Team Leads/Managers (Assessment validation), All Team Members (Self-assessment).</p>
+             </div>
+
+             <h4>B. Targeted Training & Development Plan</h4>
+              <div class="implementation-detail">
+                 <h6>Implementation How-To:</h6>
+                 <ol>
+                    <li><strong>Individual Development Plans (IDPs):** As part of performance management, managers work with individuals to create IDPs focusing on developing skills needed for their role and career growth, referencing the Skills Matrix gaps.</li>
+                    <li><strong>Training Needs Analysis:** Aggregate identified skill gaps from the matrix and IDPs to determine project-wide training priorities.</li>
+                    <li><strong>Training Delivery Methods (Blended Approach):**
+                        <ul>
+                            <li>**Internal Workshops/Brown Bags:** Schedule regular sessions led by internal SMEs on project-specific architecture, tools, processes, or new technologies being adopted. Record sessions and store in Confluence.</li>
+                            <li>**Pair Programming / Shadowing:** Encourage pairing for complex tasks or knowledge transfer between senior/junior engineers or across domains.</li>
+                            <li>**External Training Courses:** Identify and budget for relevant online courses (e.g., AWS Training, Pluralsight, Udemy) or instructor-led training for critical skills (especially AWS GovCloud, specific security certs, advanced testing frameworks).</li>
+                            <li>**Certifications:** Support and potentially fund relevant certifications (AWS certifications, Security certs, Scrum Master/PO certs).</li>
+                            <li>**Documentation & Self-Study:** Encourage use of official documentation, tutorials, and allocate some time for self-directed learning. Maintain curated list of relevant resources in Confluence.</li>
+                        </ul>
+                    </li>
+                     <li><strong>Tracking & Budgeting:** Allocate a specific training budget. Track training participation and effectiveness (e.g., via post-training surveys, skill assessment updates).</li>
+                 </ol>
+                 <p class="responsibility">Responsibility: Project Management/HR (Budget/Coordination), Team Leads/Managers (Identifying needs, IDPs), Internal SMEs (Delivering internal training), All Team Members (Active participation).</p>
+             </div>
+        </div>
+    </section>
+
+    <!-- Performance Management -->
+    <section id="performance-kpis">
+        <h2>VI. Performance Management & KPIs</h2>
+        <div class="section-description">
+            <p>We will implement a performance management system based on clear expectations, continuous feedback, and objective data (KPIs) tied to both individual contributions and team/project outcomes.</p>
+            <h4>A. Defining Expectations</h4>
+             <div class="implementation-detail">
+                 <h6>Implementation How-To:</h6>
+                 <ol>
+                    <li>Document clear Role Descriptions (as outlined in Section II.B) detailing core responsibilities and expected competencies for each role on the project.</li>
+                    <li>Set specific, measurable, achievable, relevant, time-bound (SMART) goals for individuals and teams aligned with project milestones and objectives during performance planning cycles (e.g., quarterly or semi-annually). Goals should cover both "what" (deliverables, KPI targets) and "how" (collaboration, adherence to process, skill development).</li>
+                 </ol>
+                <p class="responsibility">Responsibility: Management, Team Leads, HR.</p>
+            </div>
+
+            <h4>B. Continuous Feedback & Formal Reviews</h4>
+            <div class="implementation-detail">
+                 <h6>Implementation How-To:</h6>
+                 <ol>
+                    <li><strong>Regular 1:1 Meetings:** Mandatory bi-weekly 1:1s between managers/leads and direct reports for ongoing discussion of progress against goals, feedback (positive and constructive), challenges, and development needs. Document key discussion points.</li>
+                    <li><strong>Peer Feedback (Code Reviews):** Utilize GitLab MR comments as a primary mechanism for specific, timely technical feedback. Promote constructive review culture.</li>
+                    <li><strong>Sprint Retrospectives:** Provide a forum for team-level process feedback.</li>
+                    <li><strong>Formal Performance Reviews:** Conduct formal reviews (e.g., semi-annually) documenting performance against goals, utilizing KPI data, peer feedback (potentially via 360-degree feedback tools/process if implemented), and manager assessment. Link review outcomes to compensation/promotion cycles and update IDPs.</li>
+                 </ol>
+                 <p class="responsibility">Responsibility: Managers/Team Leads, All Team Members (giving/receiving feedback).</p>
+             </div>
+
+             <h4>C. Key Performance Indicators (KPIs) & Measurement Automation</h4>
+             <div class="implementation-detail">
+                 <h6>Implementation How-To:</h6>
+                 <p>We will track a balanced set of KPIs across different dimensions, automating data collection wherever possible.</p>
+                 <ol>
+                     <li><strong>KPI Selection & Definition:** Finalize the specific KPIs, targets, calculation methods, and data sources for each category below. Document definitions in Confluence.</li>
+                     <li><strong>Automation Implementation:**
+                         <ul>
+                             <li>Configure Jira/ADO dashboards and REST API queries (using scripts e.g., Python with `requests` and `jira` library) to extract Sprint/Flow metrics, Defect metrics.</li>
+                             <li>Configure GitLab Insights or use GitLab APIs (via scripts) to extract DORA metrics, Pipeline metrics, Code Coverage, Security Scan results.</li>
+                             <li>Configure CloudWatch Metrics/Alarms/Dashboards and potentially APM tools to track Operational/Reliability metrics and SLO adherence. Extract data via AWS SDK/CLI or CloudWatch API.</li>
+                             <li>Develop scripts/processes to aggregate data from these sources into a central reporting dashboard (e.g., built in QuickSight, Grafana, or a custom web app) or directly into MBR/Status Report templates.</li>
+                         </ul>
+                     </li>
+                     <li><strong>Reporting Cadence:** Integrate automated KPI reporting into Weekly Status Reports, Sprint Reviews, and Monthly Business Reviews as appropriate for the audience.</li>
+                 </ol>
+                 <p class="responsibility">Responsibility: Project Managers, Tech Leads, DevOps/SRE Team (Automation), QA Lead, Security Lead.</p>
+                 <h5>KPI Categories & Examples (To be finalized with specific targets):</h5>
+                 <table class="kpi-table">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>KPI Example</th>
+                            <th>Data Source (Potential)</th>
+                            <th>Automation</th>
+                            <th>Primary Audience</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>**Velocity & Flow**</td>
+                            <td>Team Velocity (Avg Story Points/Sprint)</td>
+                            <td>Jira/ADO</td>
+                            <td>High (Jira Reports/API)</td>
+                            <td>Team, Leads, PMs</td>
+                        </tr>
+                         <tr>
+                            <td></td>
+                            <td>Sprint Commitment Reliability (%)</td>
+                            <td>Jira/ADO</td>
+                            <td>High (Jira Reports/API)</td>
+                            <td>Team, Leads, PMs</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Cycle Time (Avg time from 'In Progress' to 'Done')</td>
+                            <td>Jira/ADO</td>
+                            <td>High (Jira Reports/API)</td>
+                            <td>Team, Leads</td>
+                        </tr>
+                         <tr>
+                            <td>**DORA Metrics**</td>
+                            <td>Deployment Frequency</td>
+                            <td>GitLab CI/CD Logs/API</td>
+                            <td>High</td>
+                            <td>Leads, PMs, SteeringCo</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Lead Time for Changes (Commit to Prod)</td>
+                             <td>GitLab CI/CD Logs/API, Git History</td>
+                             <td>High</td>
+                             <td>Leads, PMs, SteeringCo</td>
+                        </tr>
+                         <tr>
+                            <td></td>
+                            <td>Change Failure Rate (%)</td>
+                             <td>GitLab CI/CD Deploy Logs, Incident Data (Jira/PagerDuty)</td>
+                             <td>Medium (Requires correlation)</td>
+                             <td>Leads, PMs, SRE, SteeringCo</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Mean Time To Restore (MTTR)</td>
+                             <td>Incident Management System (PagerDuty/Jira)</td>
+                              <td>Medium (Requires incident data)</td>
+                             <td>SRE, Leads, PMs, SteeringCo</td>
+                        </tr>
+                         <tr>
+                            <td>**Quality**</td>
+                            <td>Unit Test Code Coverage (%)</td>
+                             <td>GitLab CI (Coverage Reports)</td>
+                              <td>High</td>
+                             <td>Dev Team, Leads, QA</td>
+                        </tr>
+                        <tr>
+                             <td></td>
+                            <td>CI Pipeline Success Rate (%)</td>
+                             <td>GitLab CI/CD Logs/API</td>
+                              <td>High</td>
+                             <td>Dev Team, DevOps, Leads</td>
+                        </tr>
+                         <tr>
+                            <td></td>
+                            <td>Defect Escape Rate (Prod Defects / Total Defects per Release)</td>
+                             <td>Jira/ADO</td>
+                             <td>Medium (Manual calculation from Jira data)</td>
+                             <td>QA, Leads, PMs</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                             <td>Automated Test Pass Rate (%) (E2E, Integration)</td>
+                             <td>GitLab CI/CD Test Reports</td>
+                              <td>High</td>
+                             <td>QA, Dev Team, Leads</td>
+                        </tr>
+                         <tr>
+                            <td>**Security**</td>
+                            <td>Open Critical/High Vulnerabilities (SAST/SCA/DAST/Container) Count & Age</td>
+                             <td>GitLab Security Dashboard, Jira/ADO (Security Defects)</td>
+                              <td>High</td>
+                             <td>Security Team, Leads, PMs</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                             <td>Time to Remediate Critical/High Vulnerabilities</td>
+                             <td>Jira/ADO (Security Defects)</td>
+                             <td>High</td>
+                              <td>Security Team, Leads</td>
+                        </tr>
+                         <tr>
+                            <td>**Operations & Reliability**</td>
+                            <td>Service Availability / Uptime (%) vs SLA</td>
+                             <td>CloudWatch Metrics/Alarms, APM Tool</td>
+                              <td>High</td>
+                             <td>SRE/Ops, Leads, PMs, SteeringCo</td>
+                        </tr>
+                         <tr>
+                            <td></td>
+                            <td>SLO Adherence / Error Budget Burn Rate</td>
+                             <td>CloudWatch Metrics/Alarms, APM Tool</td>
+                              <td>High</td>
+                             <td>SRE/Ops, Dev Team, Leads</td>
+                        </tr>
+                         <tr>
+                            <td></td>
+                             <td>Incident Count by Severity & MTTR</td>
+                             <td>PagerDuty/Opsgenie, Jira/ADO</td>
+                             <td>Medium (Requires correlation)</td>
+                             <td>SRE/Ops, Leads, PMs</td>
+                        </tr>
+                        <tr>
+                            <td>**Individual (Examples)**</td>
+                             <td>Code Review Feedback Quality/Timeliness</td>
+                             <td>GitLab MRs (Manual Assessment)</td>
+                              <td>Low</td>
+                             <td>Manager/Lead</td>
+                        </tr>
+                         <tr>
+                             <td></td>
+                             <td>Automated Test Contribution (Coverage / Tests Written)</td>
+                             <td>Code Coverage Reports, Git History (Manual Assessment)</td>
+                             <td>Medium</td>
+                              <td>Manager/Lead</td>
+                         </tr>
+                         <tr>
+                             <td></td>
+                             <td>On-time Task Completion (%)</td>
+                             <td>Jira/ADO (Manual Assessment based on estimates/sprint commitments)</td>
+                             <td>Low</td>
+                             <td>Manager/Lead</td>
+                         </tr>
+                    </tbody>
+                 </table>
+             </div>
+        </div>
+    </section>
+
+    <!-- Ways of Working -->
+    <section id="ways-of-working">
+        <h2>VII. Ways of Working & Collaboration</h2>
+        <div class="section-description">
+            <p>Establishing clear norms and leveraging tools effectively is crucial for a large, distributed team.</p>
+             <div class="implementation-detail">
+                 <h6>Implementation How-To:</h6>
+                 <ol>
+                    <li><strong>Agile Ceremonies:** Mandatory participation as defined by role. Strict timeboxing enforced by Scrum Masters. Focus on defined purpose of each ceremony.</li>
+                    <li><strong>Tool Usage Standards:**
+                        <ul>
+                           <li>**Jira/ADO:** Single source of truth for *work items* (Stories, Tasks, Bugs, Risks, CRs). Keep status updated daily. Log time accurately if required. Link related issues.</li>
+                           <li>**Confluence/SharePoint:** Single source of truth for *documentation* (Plans, Designs, ADRs, Minutes, KBs, Runbooks, How-Tos). Keep pages organized and up-to-date. Use templates.</li>
+                           <li>**GitLab:** Single source for code, MRs, CI/CD pipelines, registries. Use MR descriptions effectively. Respond to code review comments promptly.</li>
+                           <li>**Slack/Teams:** For *transient*, quick communication. Use threads. Avoid making key decisions in chat; summarize and move to Jira/Confluence if needed. Respect focus time; use DND status appropriately. Adhere to channel purpose guidelines.</li>
+                           <li>**Email:** For formal external communication or broad internal announcements (supplemented by Confluence).</li>
+                        </ul>
+                    </li>
+                    <li><strong>Meeting Etiquette (Mandatory for Video Calls):**
+                        <ul>
+                           <li>Cameras ON by default to improve engagement.</li>
+                           <li>Mute when not speaking. Use clear audio (headset recommended).</li>
+                           <li>Be prepared and on time. Stick to the agenda.</li>
+                           <li>Facilitators ensure inclusive participation.</li>
+                           <li>Minimize distractions.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Asynchronous Communication Best Practices:** Write clearly and concisely. Provide sufficient context. State desired outcome or question clearly. Allow reasonable response time (consider time zones).</li>
+                    <li><strong>Cross-Team Collaboration:** Define clear points of contact between teams. Use shared Slack channels for cross-team topics. Document dependencies clearly in Jira/ADO. Proactively communicate potential impacts to other teams.</li>
+                    <li><strong>Definition of Ready (DoR) & Done (DoD):** Rigorous adherence to DoR before starting work and DoD before closing work ensures clarity and quality handoffs. DoD *must* include passing all required automated tests and code review approval.</li>
+                 </ol>
+                 <p class="responsibility">Responsibility: All Team Members, Scrum Masters (Facilitation), Team Leads (Reinforcement).</p>
+             </div>
+        </div>
+    </section>
+
+    <!-- Knowledge Management -->
+    <section id="knowledge-management">
+        <h2>VIII. Knowledge Management & Transfer Plan</h2>
+         <div class="section-description">
+            <p>We will implement robust practices to capture, organize, share, and retain project knowledge, minimizing reliance on individuals and ensuring continuity.</p>
+            <div class="implementation-detail">
+                 <h6>Implementation How-To:</h6>
+                 <ol>
+                    <li><strong>Central Knowledge Hub (Confluence/SharePoint):** Maintain the well-structured project space as the single source of truth for all documentation (Requirements, Design, Architecture, ADRs, Test Plans, Runbooks, Meeting Minutes, How-Tos, Onboarding Materials, Process Guides). Mandate documentation creation/updates as part of the Definition of Done for relevant tasks.</li>
+                    <li><strong>Code Documentation:**
+                        <ul>
+                           <li>**Comments:** Mandate clear comments for complex logic, algorithms, non-obvious code sections, and public APIs/functions. Keep comments concise and up-to-date.</li>
+                           <li>**READMEs:** Require comprehensive README files at the root of each repository/microservice detailing: purpose, setup instructions, local testing commands, key architectural decisions, dependencies, deployment process, and points of contact. Use standardized template.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Architecture Decision Records (ADRs):** Document significant architectural decisions (e.g., choice of database, communication pattern, major library) using a simple ADR template (Context, Decision, Consequences). Store versioned ADRs in Git or Confluence.</li>
+                    <li>**Knowledge Sharing Sessions:** Schedule regular (e.g., bi-weekly/monthly) internal sessions:
+                        <ul>
+                            <li>**Tech Talks / Brown Bags:** Team members present on new technologies, architectural patterns, complex features they built, or lessons learned.</li>
+                            <li>**Cross-Team Demos:** Feature teams demo progress or specific technical implementations to other teams.</li>
+                            <li>**Recorded Sessions:** Record key sessions and store them in Confluence for asynchronous viewing / onboarding.</li>
+                        </ul>
+                    </li>
+                     <li><strong>Pair Programming:** Encourage pair programming, especially for complex tasks, onboarding new members, or cross-skilling between frontend/backend/ops.</li>
+                     <li><strong>Code Review as KT:** Leverage the mandatory code review process as a primary mechanism for knowledge sharing about code changes.</li>
+                     <li>**Handover Process (Internal):** When tasks or component ownership transitions between team members, require a documented handover including a brief meeting and updates to relevant Confluence pages/READMEs.</li>
+                 </ol>
+                 <p class="responsibility">Responsibility: All Team Members (Contributing), Tech Leads/Architects (Driving documentation standards/ADRs), Scrum Masters/PMs (Facilitating sharing sessions).</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Offboarding -->
+    <section id="offboarding">
+        <h2>IX. Detailed Offboarding & Knowledge Retention Process</h2>
+         <div class="section-description">
+             <p>A formal offboarding process is mandatory to ensure knowledge continuity and security when a team member leaves the project.</p>
+             <div class="implementation-detail">
+                  <h6>Implementation How-To:</h6>
+                  <ol>
+                    <li><strong>Initiation:** Manager notifies PM, HR, Security, and relevant Leads upon confirmation of departure date.</li>
+                    <li><strong>Knowledge Handover Plan:** Manager works with departing individual and relevant lead(s)/team members to create a specific handover plan covering:
+                        <ul>
+                            <li>Current work in progress (status, next steps, handover target person).</li>
+                            <li>Areas of unique knowledge or ownership.</li>
+                            <li>Location of critical documentation.</li>
+                            <li>Pending action items or decisions.</li>
+                         </ul>
+                    </li>
+                    <li><strong>Documentation Completion:** Departing individual *must* ensure all owned documentation (Confluence pages, READMEs, code comments for WIP) is complete and up-to-date before last day. Manager/Lead verifies.</li>
+                    <li><strong>Handover Sessions:** Schedule dedicated handover meetings between departing individual and receiving team member(s)/lead(s) as defined in the plan. Receiving member confirms understanding.</li>
+                    <li><strong>Access Revocation Checklist:** Utilize a standardized checklist (managed potentially via Jira workflow or secure spreadsheet) tracked by Manager/HR/Security:
+                        <ul>
+                            <li>Revoke access to GitLab repositories.</li>
+                            <li>Revoke access to Jira/ADO project.</li>
+                            <li>Revoke access to Confluence space.</li>
+                            <li>Revoke access to Slack/Teams channels.</li>
+                            <li>Revoke access to AWS GovCloud IAM user/roles.</li>
+                            <li>Revoke VPN access.</li>
+                            <li>Disable any service accounts tied to the individual.</li>
+                            <li>Revoke access to any third-party tool licenses.</li>
+                            <li>Confirm return of any physical assets (laptop, hardware tokens, ID badges).</li>
+                         </ul>
+                    </li>
+                    <li><strong>Final Verification:** Manager confirms completion of knowledge handover and documentation updates. Security confirms completion of access revocation checklist. HR completes formal offboarding procedures.</li>
+                  </ol>
+                  <p class="responsibility">Responsibility: Manager (Oversees process), Departing Individual (Execution), Receiving Team Member/Lead (Receives KT), Security Team (Access Revocation), HR (Formalities), PM (Awareness).</p>
+                   <div class="compliance-note">Timely and complete access revocation upon departure is a critical security control. Maintain auditable records of offboarding checklist completion.</div>
+             </div>
+        </div>
+    </section>
+
+     <!-- Team Health -->
+    <section id="team-health">
+        <h2>X. Team Health, Culture & Well-being</h2>
+         <div class="section-description">
+             <p>A high-performing team requires a healthy, inclusive, and sustainable culture.</p>
+              <div class="implementation-detail">
+                 <h6>Implementation How-To:</h6>
+                 <ol>
+                    <li><strong>Psychological Safety:** Actively foster an environment where team members feel safe to speak up, ask questions, admit mistakes, and challenge ideas respectfully without fear of retribution. This is critical for effective retrospectives, risk identification, and innovation. Managers and Leads model this behavior.</li>
+                    <li><strong>Blameless Culture:** Reinforce blameless post-mortems for incidents. Focus on systemic and process improvements, not individual fault.</li>
+                    <li><strong>Recognition:** Implement mechanisms for both formal (e.g., performance reviews, project milestone celebrations) and informal (e.g., peer-to-peer shout-outs in Slack/stand-ups) recognition of contributions and effort.</li>
+                    <li><strong>Workload Management:** Managers/Leads monitor team workload via sprint commitments, velocity trends, and regular 1:1s. Proactively address signs of burnout or unsustainable pressure. Encourage taking PTO.</li>
+                    <li><strong>Diversity & Inclusion:** Promote respectful collaboration and actively work against bias. Ensure equitable opportunities for participation and growth.</li>
+                    <li><strong>Team Building:** For distributed teams, intentionally schedule periodic virtual (or occasional in-person, budget permitting) team-building activities to foster camaraderie.</li>
+                 </ol>
+                <p class="responsibility">Responsibility: All Team Members, Managers/Leads (Setting the tone), Scrum Masters (Facilitating team dynamics), HR (Supporting policies).</p>
+             </div>
+        </div>
+    </section>
+
+     <!-- Conclusion -->
+    <section id="conclusion-hr">
+        <h2>XI. Conclusion: People as the Foundation for Success</h2>
+        <div class="section-description">
+            <p>This detailed Human Resources and Team Management Strategy provides the essential framework for building, managing, and sustaining the high-performance, globally distributed team required to deliver the NYCPS TMS project successfully. By implementing these prescriptive practices for structure, onboarding, skills development, performance management based on objective KPIs, collaborative ways of working, knowledge retention, and fostering a positive culture, we establish the human foundation necessary to meet the project's complex technical challenges, demanding timeline, and critical public sector mission. Consistent execution and continuous refinement of this strategy are paramount to maximizing our most valuable asset – our people – and ultimately delivering exceptional value to NYCPS.</p>
+        </div>
+    </section>
+
+</body>
+</html>

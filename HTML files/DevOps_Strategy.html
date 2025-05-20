@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NYCPS TMS - Prescriptive DevSecOps Strategy & Implementation</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.7; color: #212529; max-width: 1200px; margin: 25px auto; padding: 25px; background-color: #fdfdfe; border: 1px solid #ced4da; border-radius: 8px; }
+        h1, h2, h3, h4, h5, h6 { color: #003366; margin-top: 1.8em; margin-bottom: 0.8em; padding-bottom: 6px; font-weight: 600; }
+        h1 { text-align: center; font-size: 2.6em; border-bottom: 3px solid #003366; margin-bottom: 1.2em; }
+        h2 { /* Major Sections */ font-size: 2.1em; border-bottom: 2px solid #003366; background-color: #eaf2f8; padding: 12px 18px; border-radius: 5px 5px 0 0; margin-left: -27px; margin-right: -27px; margin-top: 2.2em; }
+        h3 { /* Primary Lifecycle Stages */ font-size: 1.7em; border-bottom: 1px solid #b7d1ed; padding-left: 15px; margin-top: 2em;}
+        h4 { /* Sub-stages or Key Concepts */ font-size: 1.4em; border-bottom: none; color: #0056b3; padding-left: 30px; font-weight: 500; margin-top: 1.5em; }
+        h5 { /* Specific Activities/Processes */ font-size: 1.2em; border-bottom: none; color: #333; padding-left: 45px; font-weight: bold; margin-top: 1.2em; margin-bottom: 0.4em; }
+        h6 { /* Tooling/Implementation Details */ font-size: 1.1em; border-bottom: none; color: #5a6268; padding-left: 60px; font-style: italic; margin-top: 0.8em; margin-bottom: 0.3em; }
+        p, li { margin-bottom: 1em; font-size: 1.1em; }
+        ul { list-style-type: square; margin-left: 70px; margin-bottom: 1em; }
+        ol { list-style-type: decimal; margin-left: 70px; margin-bottom: 1em; }
+        ol ol { list-style-type: lower-alpha; margin-left: 85px; }
+        ol ol ol { list-style-type: lower-roman; margin-left: 100px; }
+        strong { font-weight: 600; color: #003366; }
+        code { font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; display: block; background-color: #282c34; color: #abb2bf; padding: 15px; border: 1px solid #3e4451; border-radius: 5px; font-size: 0.98em; white-space: pre; overflow-x: auto; margin: 10px 0; }
+        .section-description { padding: 18px; margin-bottom: 25px; border: 1px solid #e0e0e0; background-color: #fff; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+        .step-list ol { list-style-type: none; counter-reset: step-counter; padding-left: 0; }
+        .step-list li { counter-increment: step-counter; margin-bottom: 25px; padding-left: 50px; position: relative; }
+        .step-list li::before { content: counter(step-counter); position: absolute; left: 0; top: 0; background-color: #0056b3; color: white; font-weight: bold; width: 32px; height: 32px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.05em; }
+        .goal-box { background-color: #e8f5e9; border: 1px solid #c8e6c9; border-left: 5px solid #4caf50; padding: 15px; margin: 15px 0; border-radius: 4px; color: #1b5e20; }
+        .quality-gate { background-color: #ffebee; border: 1px solid #ffcdd2; border-left: 5px solid #f44336; padding: 10px 15px; margin: 15px 0; border-radius: 4px; color: #b71c1c; font-weight: bold;}
+        .tool-note { font-style: italic; color: #5a6268; font-size: 0.95em; margin-top: -0.5em; padding-left: 60px; }
+        .responsibility { font-weight: bold; color: #800080; /* Purple */ display: block; margin-top: 5px;}
+    </style>
+</head>
+<body>
+
+    <h1>NYCPS TMS: Prescriptive End-to-End DevSecOps Strategy & Implementation</h1>
+
+    <!-- Introduction & Goals -->
+    <section id="intro">
+        <h2>I. Introduction: Philosophy & Goals</h2>
+        <div class="section-description">
+            <p>This document mandates the comprehensive DevSecOps strategy and implementation plan for the NYCPS Transportation Management System (TMS) project. Our philosophy integrates development, security, testing, and operations into a unified, automated, and collaborative workflow, executed within an Agile (Scrum) framework using GitLab as the central platform and deploying to AWS GovCloud.</p>
+            <p>The non-negotiable goals driving this strategy are:</p>
+            <div class="goal-box">
+                <ol>
+                    <li><strong>Best-in-Class Developer Experience & DORA Metrics:</strong> We will empower our globally distributed, multi-stack team with standardized tools, efficient local environments, rapid feedback loops via CI, and minimal bureaucratic overhead to maximize productivity and achieve excellent DORA metrics (Deployment Frequency, Lead Time for Changes, Change Failure Rate, Time to Restore Service).</li>
+                    <li><strong>Hyper-Fast, Reliable CI/CD Pipeline:</strong> We will implement highly optimized, parallelized, and cached CI/CD pipelines in GitLab to enable rapid, reliable delivery of changes from code commit to production deployment, facilitating fast time-to-market for features and fixes.</li>
+                    <li><strong>Rigorous Automated Quality & Security Gating:</strong> We will enforce stringent, automated quality and security gates at *every* stage of the pipeline (pre-commit, CI, post-deploy). Only code meeting the highest standards for correctness, performance, accessibility, and security will progress towards production. Developer ownership of testing is paramount.</li>
+                    <li><strong>Maximum Automation:</strong> We will automate every feasible aspect of the SDLC, including builds, testing (unit, integration, E2E, performance, security, accessibility), infrastructure provisioning (IaC), configuration management, deployments, monitoring, and alerting to reduce manual effort, minimize errors, and increase speed and reliability.</li>
+                </ol>
+            </div>
+        </div>
+    </section>
+
+    <!-- Setup & Tooling Implementation -->
+    <section id="setup-tooling">
+        <h2>II. Foundational Setup & Tooling Implementation</h2>
+        <div class="section-description">
+            <p>Before development commences, we will establish the core tools, configurations, and standards.</p>
+            <h3>A. Developer Environment Standardization</h3>
+             <h5>1. Local Machine Setup</h5>
+                <ul>
+                    <li><strong>Action:</strong> Document and provide standardized setup instructions/scripts for developer machines (macOS/Linux/WSL2) covering Git, Docker Desktop, AWS CLI v2 (configured for GovCloud with SSO/AssumeRole), Terraform CLI, required language runtimes (Node, Python, Java via version managers), package managers (npm, pip, Maven), and build tools.</li>
+                    <li><strong>Responsibility:</strong> DevOps/Platform Team.</li>
+                </ul>
+             <h5>2. IDE Configuration</h5>
+                 <ul>
+                    <li><strong>Action:</strong> Mandate use of approved IDEs (VS Code, IntelliJ, PyCharm, WebStorm) with required extensions (Language support, Linters/Formatters, Git, Docker, AWS Toolkit, Terraform, Testing frameworks). Provide shared IDE settings files/profiles for consistency.</li>
+                    <li><strong>Action:</strong> Configure IDEs for auto-linting and auto-formatting on save based on project standards.</li>
+                    <li><strong>Responsibility:</strong> DevOps Team, Development Leads.</li>
+                 </ul>
+             <h5>3. Pre-commit Hooks Setup</h5>
+                 <ul>
+                     <li><strong>Action:</strong> Implement Git pre-commit hooks using tools like `Husky` (for JS/TS projects) or `pre-commit` (multi-language framework).</li>
+                     <li><strong>Action:</strong> Configure hooks to automatically run:
+                         <ul>
+                             <li>Linters (ESLint, Flake8, Checkstyle, etc.).</li>
+                             <li>Formatters (Prettier, Black, etc.).</li>
+                             <li>Basic credential scanners (e.g., `gitleaks`, `trufflehog`) to prevent accidental secret commits.</li>
+                             <li>(Optional but Recommended) Fast-running subset of critical unit tests.</li>
+                         </ul>
+                     </li>
+                     <li><strong>Quality Gate:</strong> Commits *must* pass all pre-commit checks.</li>
+                    <li><strong>Responsibility:</strong> DevOps Team, Development Leads.</li>
+                 </ul>
+             <h5>4. Local Testing Setup</h5>
+                <ul>
+                    <li><strong>Action:</strong> Document procedures for running unit, integration, and component/API tests locally (e.g., `npm test`, `pytest`, `mvn test`).</li>
+                    <li><strong>Action:</strong> Provide Docker Compose files or Dev Container configurations (`devcontainer.json` for VS Code) to easily spin up local dependencies (databases, caches, simulators like LocalStack) for integration testing.</li>
+                    <li><strong>Responsibility:</strong> Development Teams, DevOps Team.</li>
+                </ul>
+
+            <h3>B. GitLab Setup & Configuration</h3>
+             <h5>1. Group & Project Structure</h5>
+                <ul>
+                    <li><strong>Action:</strong> Create a top-level GitLab Group for the NYCPS TMS project.</li>
+                    <li><strong>Action:</strong> Establish repositories within the group. Adopt a **poly-repo** strategy: separate repositories for each microservice, frontend application, shared library, and the Terraform IaC codebase. Name repositories clearly (e.g., `tms-gps-ingestion-service`, `tms-parent-app-react`, `tms-infra-terraform`).</li>
+                    <li><strong>Responsibility:</strong> DevOps Lead, Project Management.</li>
+                </ul>
+             <h5>2. Repository Settings</h5>
+                <ul>
+                    <li><strong>Action:</strong> Configure Branch Protection rules for `main` and `develop` branches:
+                        <ul>
+                            <li>Prevent direct pushes.</li>
+                            <li>Require Merge Requests (MRs).</li>
+                            <li>Require CI pipeline success before merging.</li>
+                            <li>Require a minimum number of reviewer approvals (e.g., 1 or 2 depending on criticality).</li>
+                            <li>Prevent authors from approving their own MRs.</li>
+                            <li>(Optional) Require resolution of all comments/threads.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Action:</strong> Configure repository settings to enforce Conventional Commit message format (e.g., using commit message linting in CI or server-side hooks if available).</li>
+                    <li><strong>Action:</strong> Set up GitLab Issue tracking integration (linking commits/MRs to issues).</li>
+                    <li><strong>Responsibility:</strong> DevOps Lead, Repository Maintainers.</li>
+                </ul>
+             <h5>3. CI/CD Runner Configuration</h5>
+                <ul>
+                    <li><strong>Action:</strong> Provision and register GitLab Runners capable of executing project jobs. Use dedicated runners (e.g., EC2 instances in AWS GovCloud managed via GitLab Runner Operator on EKS, or SaaS runners if using GitLab.com with appropriate security).</li>
+                    <li><strong>Action:</strong> Configure runners with necessary tags (e.g., `docker`, `aws`, `terraform`, `nodejs`, `python`) to route jobs appropriately. Ensure runners have necessary tools installed (Docker, AWS CLI, Terraform, language runtimes) or use Docker-in-Docker / appropriate base images in job definitions.</li>
+                    <li><strong>Action:</strong> Configure runner caching (e.g., S3 cache) to speed up builds (dependency downloads, Docker layers).</li>
+                     <li><strong>Responsibility:</strong> DevOps/Platform Team.</li>
+                </ul>
+             <h5>4. GitLab CI/CD Variables & Secrets Management</h5>
+                <ul>
+                    <li><strong>Action:</strong> Configure GitLab CI/CD Variables at the Group or Project level for environment-specific settings (AWS regions, account IDs, cluster names, non-sensitive API endpoints). Use "Protected" variables for sensitive environments like Staging/Prod, only accessible to protected branches/tags.</li>
+                    <li><strong>Action:</strong> Integrate GitLab with a secure secrets manager (like HashiCorp Vault or AWS Secrets Manager) for handling highly sensitive credentials (AWS keys for runners if not using IAM roles, database passwords needed during CI, third-party API keys). *Avoid storing sensitive secrets directly in GitLab CI/CD variables.*</li>
+                     <li><strong>Responsibility:</strong> DevOps Team, Security Team.</li>
+                </ul>
+             <h5>5. Package & Container Registries</h5>
+                <ul>
+                    <li><strong>Action:</strong> Enable and configure GitLab's built-in Container Registry for Docker images.</li>
+                    <li><strong>Action:</strong> Enable and configure GitLab's built-in Package Registry for language-specific packages (npm, Maven, PyPI) if desired, or configure integration with AWS CodeArtifact/external repos.</li>
+                    <li><strong>Responsibility:</strong> DevOps Team.</li>
+                </ul>
+        </div>
+    </section>
+
+    <!-- Development & Integration -->
+    <section id="dev-integration">
+        <h2>III. Development, Code Review & Continuous Integration (CI)</h2>
+        <div class="section-description">
+            <p>This phase covers the core loop of coding features, ensuring quality through reviews and automated checks, and integrating code into the main development line.</p>
+            <h3>A. Feature Development Workflow (per User Story/Task)</h3>
+             <h5>1. Branch Creation</h5>
+                <ul>
+                    <li><strong>Action:</strong> Developer checks out the latest `develop` branch (`git checkout develop && git pull origin develop`).</li>
+                    <li><strong>Action:</strong> Developer creates a feature branch using the naming convention `feature/TICKET-###-short-description` (e.g., `feature/TMS-123-add-gps-timestamp`).</li>
+                     <li><strong>Responsibility:</strong> Developer.</li>
+                </ul>
+             <h5>2. Coding & Local Testing</h5>
+                 <ul>
+                    <li><strong>Action:</strong> Developer writes application code and associated automated tests (Unit, Integration) following TDD/BDD principles and adhering to secure coding standards and style guides.</li>
+                    <li><strong>Action:</strong> Developer frequently runs linters, formatters, and tests locally using IDE integration or CLI commands (`npm run lint`, `npm test`, `pytest`, `mvn verify`).</li>
+                    <li><strong>Action:</strong> Developer uses local environment (Docker Compose/Dev Containers) to test interactions with dependent services (databases, caches, mocks).</li>
+                     <li><strong>Responsibility:</strong> Developer.</li>
+                 </ul>
+             <h5>3. Committing Code</h5>
+                 <ul>
+                     <li><strong>Action:</strong> Developer commits changes frequently to the feature branch with clear, concise messages adhering to the Conventional Commits standard (e.g., `feat(api): add endpoint for route retrieval #TMS-124`, `fix(ui): correct ETA display formatting #TMS-125`, `test(svc): add unit tests for validation logic #TMS-126`).</li>
+                     <li><strong>Action:</strong> Pre-commit hooks automatically run linters, formatters, credential scans, and potentially fast unit tests. <strong>Quality Gate:</strong> Commit is blocked if hooks fail.</li>
+                    <li><strong>Responsibility:</strong> Developer.</li>
+                 </ul>
+            <h3>B. Code Review via Merge Request (MR)</h3>
+             <h5>1. MR Creation</h5>
+                <ul>
+                    <li><strong>Action:</strong> Once the feature is complete and all local tests pass, developer pushes the feature branch to GitLab (`git push origin feature/TMS-123...`).</li>
+                    <li><strong>Action:</strong> Developer creates a Merge Request in GitLab targeting the `develop` branch.</li>
+                    <li><strong>Action:</strong> Developer fills out the MR template, linking the relevant Jira/ADO ticket(s), providing a clear summary of changes, explaining the "why", detailing testing performed, and adding specific instructions for reviewers or QA.</li>
+                     <li><strong>Responsibility:</strong> Developer.</li>
+                </ul>
+             <h5>2. Automated Pre-Merge Checks (CI Pipeline Triggered by MR)</h5>
+                 <ul>
+                    <li><strong>Action:</strong> GitLab CI pipeline automatically runs on the feature branch/MR context.</li>
+                    <li><strong>Pipeline Stages:**
+                        <ol>
+                            <li>Build: Compile code, install dependencies.</li>
+                            <li>Static Analysis: Run Linters, SAST (SonarQube/GitLab SAST), SCA (Dependency Scanning).</li>
+                            <li>Unit Test: Execute all unit tests, calculate code coverage.</li>
+                            <li>Package (Dry Run): Build container images/packages without pushing.</li>
+                        </ol>
+                    </li>
+                    <li><strong>Quality Gate:</strong> MR is blocked from merging if any stage fails (e.g., build error, lint error, unit test failure, coverage below threshold [e.g., 80%], critical/high SAST/SCA vulnerability found). Pipeline status clearly visible on the MR.</li>
+                    <li><strong>Responsibility:</strong> CI/CD System, Developer (to fix failures).</li>
+                 </ul>
+            <h5>3. Peer Code Review</h5>
+                <ul>
+                    <li><strong>Action:</strong> Developer assigns designated peer reviewer(s) (1-2 depending on team policy/change complexity).</li>
+                    <li><strong>Action:</strong> Reviewers thoroughly examine the code changes against the checklist (Functionality, Security, Testing, Readability, Performance, Standards).</li>
+                    <li><strong>Action:</strong> Reviewers provide constructive feedback via GitLab comments/threads or approve the MR. Use GitLab's "suggestion" feature for minor fixes.</li>
+                     <li><strong>Quality Gate:</strong> MR requires explicit approval from the required number of reviewers.</li>
+                     <li><strong>Responsibility:</strong> Designated Reviewers, Developer (to address comments).</li>
+                </ul>
+            <h5>4. Merging</h5>
+                 <ul>
+                     <li><strong>Action:</strong> Once all discussions are resolved, required approvals are given, and the CI pipeline succeeds, the developer (or designated integrator) merges the MR into `develop`.</li>
+                     <li><strong>Action:</strong> Use the "Squash commits" option when merging to keep the `develop` branch history clean (one commit per feature/fix). Ensure the squashed commit message links back to the MR and ticket ID.</li>
+                     <li><strong>Action:</strong> Delete the feature branch after successful merge.</li>
+                      <li><strong>Responsibility:</strong> Developer / Integrator.</li>
+                 </ul>
+            <h3>C. Continuous Integration on `develop` Branch</h3>
+             <h5>1. Post-Merge Pipeline</h5>
+                 <ul>
+                     <li><strong>Action:</strong> A merge to `develop` automatically triggers a more comprehensive CI pipeline.</li>
+                     <li><strong>Pipeline Stages:**
+                         <ol>
+                             <li>Build: (Same as MR pipeline)</li>
+                             <li>Static Analysis: (Same as MR pipeline)</li>
+                             <li>Unit Test: (Same as MR pipeline)</li>
+                             <li>Package: Build *and push* artifacts (Docker images to ECR, packages to GitLab Registry/CodeArtifact, Lambda zips to S3) tagged with commit hash or build ID.</li>
+                             <li>(Optional) Deploy to DEV: Automatically trigger CD pipeline to deploy to the Development environment (see next section).</li>
+                         </ol>
+                     </li>
+                      <li><strong>Quality Gate:</strong> Failures in any stage block subsequent stages and trigger notifications.</li>
+                     <li><strong>Responsibility:</strong> CI/CD System.</li>
+                 </ul>
+        </div>
+    </section>
+
+    <!-- Continuous Testing -->
+    <section id="cont-testing">
+        <h2>IV. Continuous Testing (Automated Quality Gates)</h2>
+        <div class="section-description">
+            <p>Automated testing is integrated throughout the pipeline to provide rapid feedback and enforce quality gates.</p>
+            <h3>A. Testing Levels & Pipeline Integration</h3>
+             <h5>1. Unit Tests</h5>
+                <ul>
+                    <li><strong>Trigger:</strong> Run locally by developers; run automatically in CI pipeline on every commit/MR and merge to `develop`.</li>
+                    <li><strong>Scope:</strong> Individual functions/classes/components in isolation.</li>
+                    <li><strong>Tools:</strong> Jest, Pytest, JUnit, etc.</li>
+                    <li><strong>Quality Gate (CI):</strong> Build fails if any unit test fails. Code coverage checked against threshold (e.g., 80% line/branch); build fails if below target.</li>
+                    <li><strong>Responsibility:</strong> Developer (writing & fixing), CI System (execution).</li>
+                </ul>
+             <h5>2. Integration Tests</h5>
+                 <ul>
+                    <li><strong>Trigger:</strong> Run locally by developers against test containers; run automatically in CI/CD pipeline *after* deployment to DEV/QA environments.</li>
+                    <li><strong>Scope:</strong> Interaction between a service and its direct dependencies (database, cache, message queue, closely coupled internal APIs - potentially mocked).</li>
+                    <li><strong>Tools:</strong> Testcontainers, Pytest fixtures, Spring Boot integration tests, etc.</li>
+                    <li><strong>Quality Gate (Post-Deploy):</strong> Deployment to next stage (e.g., QA -> Staging) blocked if critical integration tests fail.</li>
+                     <li><strong>Responsibility:</strong> Developer (writing & fixing), CI/CD System (execution).</li>
+                 </ul>
+             <h5>3. API Contract Tests</h5>
+                <ul>
+                    <li><strong>Trigger:</strong> Run automatically in CI/CD pipeline *after* deployment to DEV/QA environments.</li>
+                    <li><strong>Scope:</strong> Validating API request/response schemas against OpenAPI specs. Testing authentication/basic authorization.</li>
+                    <li><strong>Tools:</strong> Postman/Newman, RestAssured, Pytest with `requests`, Pact (Consumer-Driven Contracts).</li>
+                    <li><strong>Quality Gate (Post-Deploy):</strong> Deployment to next stage blocked if API contract tests fail.</li>
+                     <li><strong>Responsibility:</strong> Developer (writing & fixing), CI/CD System (execution).</li>
+                 </ul>
+             <h5>4. Component Tests (UI)</h5>
+                <ul>
+                    <li><strong>Trigger:</strong> Run locally by developers; run automatically in CI pipeline on every commit/MR and merge to `develop`.</li>
+                    <li><strong>Scope:</strong> Testing UI components in isolation or groups, mocking backend API calls.</li>
+                    <li><strong>Tools:</strong> React Testing Library, Cypress Component Testing.</li>
+                    <li><strong>Quality Gate (CI):</strong> Build fails if component tests fail.</li>
+                     <li><strong>Responsibility:</strong> Frontend Developer (writing & fixing), CI System (execution).</li>
+                 </ul>
+            <h5>5. End-to-End (E2E) Tests</h5>
+                <ul>
+                    <li><strong>Trigger:</strong> Run automatically in CI/CD pipeline *after* deployment to QA and/or Staging environments (can be time-consuming, may run less frequently or in parallel).</li>
+                    <li><strong>Scope:</strong> Simulate critical user journeys across multiple services and UI layers.</li>
+                    <li><strong>Tools:</strong> Cypress, Playwright, Selenium.</li>
+                    <li><strong>Quality Gate (Post-Deploy):</strong> Deployment to next stage (e.g., Staging -> Prod) blocked if critical E2E flows fail. Failures trigger investigation.</li>
+                     <li><strong>Responsibility:</strong> QA Team (primary suite management), Developers (contributing tests for new features), CI/CD System (execution).</li>
+                 </ul>
+             <h5>6. Security Testing (Automated)</h5>
+                <ul>
+                    <li><strong>SAST:</strong> Run in CI pipeline on MRs and merges to `develop`. (See CI Section). **Quality Gate:** Block merge/build on high/critical findings.</li>
+                    <li><strong>SCA:</strong> Run in CI pipeline on MRs and merges to `develop`. (See CI Section). **Quality Gate:** Block merge/build on high/critical findings.</li>
+                    <li><strong>DAST:</strong> Run automatically (e.g., nightly or post-deploy) against QA/Staging environments using tools like OWASP ZAP integrated into GitLab CI/CD. **Quality Gate:** High/critical findings block promotion to Prod and create high-priority bugs.</li>
+                    <li><strong>Container Scanning:</strong> Run automatically after image build in CI or via ECR scanning features. **Quality Gate:** High/critical findings block deployment.</li>
+                     <li><strong>Responsibility:</strong> CI/CD System (execution), Security Team (tool config & rule tuning), Developers (fixing findings).</li>
+                 </ul>
+              <h5>7. Accessibility Testing (Automated)</h5>
+                 <ul>
+                    <li><strong>Trigger:</strong> Run automatically in CI/CD pipeline *after* deployment to QA/Staging environments, integrated with E2E test runs.</li>
+                    <li><strong>Scope:</strong> Scan key UI pages/components for common WCAG violations.</li>
+                    <li><strong>Tools:</strong> Axe-core integrated with Cypress (`cypress-axe`) or Playwright.</li>
+                    <li><strong>Quality Gate (Post-Deploy):</strong> Report generated. Critical violations may block promotion depending on severity and defined policy.</li>
+                     <li><strong>Responsibility:</strong> Frontend Developers (fixing findings), QA Team (managing tests), CI/CD System (execution).</li>
+                 </ul>
+              <h5>8. Performance Testing (Automated)</h5>
+                 <ul>
+                    <li><strong>Trigger:</strong> Run automatically (e.g., nightly or on-demand before release) against a dedicated, production-scaled Performance Testing environment deployed via the CD pipeline.</li>
+                    <li><strong>Scope:</strong> Simulate realistic user load (mix of API calls, user interactions) based on expected peak usage patterns. Measure response times, throughput, error rates, resource utilization (CPU, memory, DB connections).</li>
+                    <li><strong>Tools:</strong> k6, JMeter, Gatling (scripts version controlled).</li>
+                    <li><strong>Quality Gate (Pre-Release):</strong> Performance results compared against NFRs/SLOs. Significant regressions or failure to meet targets block production release.</li>
+                     <li><strong>Responsibility:</strong> Performance Engineering/QA Team (scripting, execution, analysis), Developers (addressing bottlenecks), CI/CD System (execution).</li>
+                 </ul>
+        </div>
+    </section>
+
+     <!-- Continuous Deployment -->
+    <section id="cd-release">
+        <h2>V. Continuous Deployment (CD) & Release Management</h2>
+        <div class="section-description">
+            <p>We will automate deployments to all environments using GitLab CI/CD, incorporating quality gates and appropriate deployment strategies.</p>
+            <h3>A. Deployment Pipeline Flow</h3>
+            <ol>
+                <li>**Merge to `develop`**: Triggers CI pipeline (Build, Unit Test, Scan, Package). On success, automatically triggers deployment to **DEV** environment.</li>
+                <li>**Post-DEV Deploy**: Automated integration and API contract tests run against DEV.</li>
+                <li>**Manual Trigger/Schedule**: Deploy approved `develop` build from DEV to **QA** environment.</li>
+                <li>**Post-QA Deploy**: Automated E2E, DAST, Accessibility tests run against QA. Manual exploratory testing by QA team occurs here.</li>
+                <li>**Release Branch Creation**: When ready for a release candidate, create `release/vX.Y.Z` branch from `develop`.</li>
+                <li>**Deploy Release Branch**: Trigger deployment of the `release/` branch to **Staging/UAT** environment.</li>
+                <li>**Post-Staging/UAT Deploy**: Re-run E2E, DAST, Accessibility tests. Conduct formal UAT with NYCPS stakeholders. Run performance tests against dedicated Perf environment (deployed from `release/` branch). Address any critical bugs via commits to the `release/` branch (which triggers re-deploy/re-test).</li>
+                <li>**Production Release Preparation**:
+                    <ul>
+                        <li>Final Release Readiness Review and Go/No-Go decision.</li>
+                        <li>Merge `release/vX.Y.Z` branch into `main` and tag `main` with `vX.Y.Z`.</li>
+                        <li>Merge `release/vX.Y.Z` branch back into `develop` to incorporate release bug fixes.</li>
+                    </ul>
+                </li>
+                <li>**Production Deployment**: Trigger CD pipeline from the tag on `main`. **Quality Gate:** Requires manual approval step in GitLab CI pipeline (authorized personnel only).</li>
+                <li>**Post-Prod Deploy**: Execute automated smoke tests. Intensive monitoring. Phased rollout if using Canary strategy.</li>
+            </ol>
+
+            <h3>B. Infrastructure Deployment (Terraform via GitLab CI/CD)</h3>
+            <ul>
+                <li>**Pipeline Integration:** Create dedicated GitLab CI/CD jobs for running `terraform plan` and `terraform apply`.</li>
+                <li>**Workspaces/Directories:** Configure jobs to run within the correct `environments/` subdirectory based on the target environment.</li>
+                <li>**Plan Stage:** Run `terraform plan -var-file="<env>.tfvars" -out="tfplan.out"`. Store the `tfplan.out` file as a pipeline artifact.</li>
+                <li>**Apply Stage:**
+                    <ul>
+                        <li>For Dev/QA: Automatically run `terraform apply "tfplan.out"`.</li>
+                        <li>For Staging/Prod: Include a `when: manual` step requiring authorized user interaction in the GitLab UI to trigger `terraform apply "tfplan.out"`.</li>
+                    </ul>
+                </li>
+                 <li><strong>Security:** Configure GitLab Runners with secure access to AWS GovCloud (e.g., using IAM roles via OIDC federation if possible, or securely managed temporary credentials).</li>
+            </ul>
+
+            <h3>C. Deployment Strategies</h3>
+            <ul>
+                <li><strong>Default: Blue/Green:** For ECS/Fargate services, configure CodeDeploy (integrated with GitLab CI) to perform Blue/Green deployments. This allows zero-downtime traffic shifting and instant rollback.</li>
+                <li><strong>Optional: Canary Releases:** For high-risk changes or initial feature rollouts, configure CodeDeploy or use ALB weighted target groups/Lambda aliases (managed via Terraform/CI scripts) to gradually shift traffic to the new version while monitoring metrics.</li>
+            </ul>
+
+            <h3>D. Release Management & Governance</h3>
+             <ul>
+                 <li><strong>Release Versioning:** Use Semantic Versioning (SemVer - MAJOR.MINOR.PATCH) for releases tagged on `main`.</li>
+                 <li><strong>Release Notes:** Automatically generate baseline release notes from Conventional Commit messages between release tags. Augment with manual summaries of key features/fixes. Publish using GitLab Releases.</li>
+                 <li><strong>Change Control Board (CCB):** Integrate with NYCPS CCB process for production deployment approvals. GitLab's manual approval gates can represent CCB sign-off within the pipeline.</li>
+                 <li><strong>Rollback Plan:** Maintain documented rollback procedures for each type of deployment (application code, infrastructure, database migration). Test rollback procedures periodically.</li>
+             </ul>
+        </div>
+    </section>
+
+    <!-- Operations & Observability -->
+    <section id="ops-observability">
+        <h2>VI. Production Operations, Observability & Incident Response</h2>
+        <div class="section-description">
+            <p>Post-deployment, we will focus on maintaining system health, performance, and security through proactive monitoring, alerting, and a robust incident response process.</p>
+            <h3>A. Monitoring & Observability</h3>
+            <ul>
+                <li><strong>Metrics (The Four Golden Signals):</strong>
+                    <ul>
+                        <li><strong>Latency:</strong> Track request duration for APIs, database queries, page loads (CloudWatch metrics from ALB, API Gateway, Lambda; APM tools; frontend monitoring).</li>
+                        <li><strong>Traffic:</strong> Monitor request rates (requests/sec) for services (ALB, API Gateway, Lambda). Monitor queue depths (SQS), stream throughput (Kinesis).</li>
+                        <li><strong>Errors:</strong> Track HTTP error codes (4xx, 5xx from ALB/API GW), application exceptions (Lambda errors, logs), database errors (RDS logs/metrics).</li>
+                        <li><strong>Saturation:</strong> Monitor resource utilization (CPU, Memory, Disk I/O for EC2/RDS/ECS; Concurrency limits for Lambda; Connection counts for DBs).</li>
+                    </ul>
+                </li>
+                <li><strong>Logging:</strong> Implement centralized, structured (JSON) logging for all applications and infrastructure components using CloudWatch Logs. Include correlation IDs to trace requests across services.</li>
+                <li><strong>Distributed Tracing:</strong> Implement OpenTelemetry (or AWS X-Ray) across microservices to trace requests as they flow through the system, identifying bottlenecks and dependencies.</li>
+                <li><strong>Dashboarding:</strong> Create environment-specific dashboards in CloudWatch (or Grafana/Datadog) visualizing key metrics (Golden Signals, business KPIs like active routes, successful boardings), log queries, and trace data. Provide high-level dashboards for OPT leadership and detailed dashboards for SRE/Dev teams.</li>
+            </ul>
+
+            <h3>B. Alerting</h3>
+            <ul>
+                <li><strong>Strategy:</strong> Focus on actionable alerts based on symptoms (high latency, high error rates, resource saturation, critical security events) rather than just causes. Define clear thresholds and evaluation periods in CloudWatch Alarms.</li>
+                <li><strong>Routing:</strong> Route alerts via SNS to appropriate channels based on severity and service:
+                    <ul>
+                        <li>Critical Production Issues: PagerDuty/Opsgenie triggering on-call rotation for SRE/Ops.</li>
+                        <li>Warning/Non-Critical Production Issues: Dedicated Slack/Teams channel for Ops/Dev.</li>
+                        <li>Test Environment Failures: Slack/Teams channel for relevant Dev/QA team.</li>
+                    </ul>
+                </li>
+                <li><strong>Runbooks:</strong> Develop runbooks linked to critical alerts, outlining initial diagnostic steps and mitigation procedures.</li>
+            </ul>
+
+            <h3>C. Incident Response & SRE</h3>
+            <ul>
+                <li><strong>On-Call Rotation:</strong> Establish a formal on-call schedule for SRE/Ops team for production support.</li>
+                <li><strong>Incident Commander Role:</strong> Define roles and responsibilities during major incidents.</li>
+                <li><strong>Communication:</strong> Clear internal (war room/Slack channel) and external (status page, stakeholder notifications) communication protocols during incidents.</li>
+                <li><strong>Root Cause Analysis (RCA):</strong> Conduct blameless post-mortems for all significant production incidents. Document findings, contributing factors, timeline, impact, corrective actions, and lessons learned. Track action items to completion.</li>
+                <li><strong>Service Level Objectives (SLOs):</strong> Define measurable SLOs for key user journeys/services (e.g., API latency < 200ms P95, login success rate > 99.9%). Monitor SLIs (Service Level Indicators) and use error budgets to balance reliability work with feature development.</li>
+                <li><strong>Chaos Engineering (Future):</strong> Consider implementing controlled chaos engineering experiments in staging environments to proactively test system resilience.</li>
+            </ul>
+
+             <h3>D. Support Handoff</h3>
+             <ul>
+                 <li>Ensure clear documentation and training are provided to Tier 1/2 support teams (if distinct from SRE/DevOps) on using monitoring tools, dashboards, basic troubleshooting steps, and the escalation process.</li>
+             </ul>
+        </div>
+    </section>
+
+    <!-- Feedback & Improvement -->
+    <section id="feedback-improvement">
+        <h2>VII. Feedback & Continuous Improvement</h2>
+        <div class="section-description">
+            <p>The DevOps lifecycle is a continuous loop. Feedback from production operations, testing, and users directly informs future development cycles.</p>
+            <ul>
+                <li><strong>Retrospectives:</strong> Use Agile retrospectives to identify bottlenecks or inefficiencies in the *DevOps process itself* and implement improvements.</li>
+                <li><strong>Monitoring -> Backlog:</strong> Insights from monitoring (performance bottlenecks, frequent non-critical errors) should generate tasks/stories in the product backlog.</li>
+                <li><strong>Incident RCA -> Backlog:</strong> Action items from RCAs (e.g., fix bug, improve monitoring, add resilience pattern) *must* be added to the backlog and prioritized.</li>
+                <li><strong>User Feedback -> Backlog:</strong> Feedback collected from end-users (via support channels, surveys, UAT) should be reviewed by the Product Owner and translated into potential backlog items.</li>
+                <li><strong>Metric Review:</strong> Regularly review DORA metrics and SLO adherence to identify systemic areas for improvement in the development and deployment process.</li>
+            </ul>
+        </div>
+    </section>
+
+</body>
+</html>

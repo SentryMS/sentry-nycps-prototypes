@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NYCPS TMS - Prescriptive Observability, Monitoring, Alerting & Support Strategy</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.8; color: #212529; max-width: 1300px; margin: 25px auto; padding: 30px; background-color: #ffffff; border: 1px solid #dee2e6; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
+        h1, h2, h3, h4, h5, h6 { color: #002b5c; margin-top: 1.8em; margin-bottom: 0.8em; padding-bottom: 8px; font-weight: 600; border-bottom: 2px solid #003366; }
+        h1 { text-align: center; font-size: 2.6em; border-bottom: 4px solid #003366; margin-bottom: 1.5em; }
+        h2 { /* Major Sections */ font-size: 2.1em; border-bottom: 3px solid #003366; background-color: #eaf2f8; padding: 12px 18px; border-radius: 6px 6px 0 0; margin-left: -31px; margin-right: -31px; margin-top: 2.5em; }
+        h3 { /* Primary Pillars/Processes */ font-size: 1.7em; border-bottom: 2px solid #b7d1ed; padding-left: 10px; margin-top: 2.2em;}
+        h4 { /* Sub-Topics */ font-size: 1.4em; border-bottom: 1px dashed #ced4da; color: #004080; padding-left: 25px; font-weight: 600; margin-top: 2em; }
+        h5 { /* Specific Concepts/Tools */ font-size: 1.2em; border-bottom: none; color: #343a40; padding-left: 40px; font-weight: bold; margin-top: 1.5em; margin-bottom: 0.5em; }
+        h6 { /* Implementation Details/Notes */ font-size: 1.05em; border-bottom: none; color: #495057; padding-left: 55px; font-style: italic; margin-top: 1em; margin-bottom: 0.4em; }
+        p, li { margin-bottom: 1em; font-size: 1.1em; }
+        ul { list-style-type: circle; margin-left: 70px; margin-bottom: 1.2em; }
+        ol { list-style-type: decimal; margin-left: 70px; margin-bottom: 1.2em; }
+        ol ol { list-style-type: lower-alpha; margin-left: 90px; }
+        ol ol ol { list-style-type: lower-roman; margin-left: 110px; }
+        strong { font-weight: 700; color: #002b5c; }
+        code { font-family: 'Fira Code', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; display: block; background-color: #2b303b; color: #c0c5ce; padding: 18px; border: 1px solid #3e4451; border-radius: 6px; font-size: 1em; white-space: pre; overflow-x: auto; margin: 12px 0; line-height: 1.5; }
+        .section-description { padding: 20px; margin-bottom: 25px; border: 1px solid #e9ecef; background-color: #f8f9fa; border-radius: 5px; box-shadow: inset 0 1px 2px rgba(0,0,0,0.05); }
+        .goal-box { background-color: #d1ecf1; border: 1px solid #bee5eb; border-left: 6px solid #17a2b8; padding: 18px; margin: 20px 0; border-radius: 5px; color: #0c5460; }
+        .goal-box h4 { margin-top:0; color: #0c5460; border: none;}
+        .principle-box { background-color: #e2e3e5; border: 1px solid #d6d8db; border-left: 6px solid #6c757d; padding: 15px; margin: 15px 0; border-radius: 4px; color: #343a40;}
+        .principle-box h4 { margin-top:0; color: #343a40; border: none;}
+        .tool-note { font-style: italic; color: #6c757d; font-size: 0.98em; margin-top: -0.6em; padding-left: 55px; }
+        .responsibility { font-weight: bold; color: #6f42c1; /* Bootstrap Purple */ display: block; margin-top: 8px; margin-left: 40px; font-size: 0.95em; }
+        .implementation-steps { background-color: #fff; border: 1px solid #e0e0e0; border-left: 5px solid #0056b3; padding: 15px; margin-top: 15px; border-radius: 4px; }
+        .implementation-steps h5 { color: #003366; margin-top: 0;}
+        .visual-flow { border: 2px dashed #6c757d; background-color: #f8f9fa; padding: 20px; margin: 20px 0; border-radius: 8px; font-family: monospace; line-height: 1.5; }
+        .flow-stage { font-weight: bold; color: #003366; margin-top: 10px; display: block;}
+        .flow-item { margin-left: 20px; }
+        .flow-tool { color: #17a2b8; font-style: italic; }
+        .flow-gate { color: #dc3545; font-weight: bold; margin-left: 10px; }
+        .flow-output { color: #28a745; margin-left: 10px; }
+    </style>
+</head>
+<body>
+
+    <h1>NYCPS TMS: Prescriptive Observability, Monitoring, Alerting, & Production Support Strategy</h1>
+
+    <!-- Introduction -->
+    <section id="intro">
+        <h2>I. Introduction: Philosophy & Goals</h2>
+        <div class="section-description">
+            <p>This document mandates the comprehensive, hyper-detailed strategy for Observability, Monitoring, Alerting, Incident Management, and Production Support for the NYCPS Transportation Management System (TMS). This is not merely an operational function but a core pillar of our DevSecOps approach, designed to ensure the system's reliability, performance, security, and availability meet the stringent requirements of the NYCPS and its users.</p>
+            <p>Our philosophy is built upon **Site Reliability Engineering (SRE) principles**, emphasizing proactive monitoring, data-driven decision-making, automation of operational tasks (toil reduction), blameless post-mortems, and clearly defined Service Level Objectives (SLOs). We aim to move beyond reactive troubleshooting to predictive and preventative maintenance.</p>
+             <div class="goal-box">
+                <h4>Mandatory Strategy Goals:</h4>
+                <ol>
+                    <li><strong>Deep System Visibility (Observability):</strong> Gain comprehensive insight into system behavior through the "three pillars": Metrics, Logs, and Traces, correlated across all components (infrastructure, application, database, frontend).</li>
+                    <li><strong>Proactive & Actionable Monitoring/Alerting:</strong> Detect potential issues *before* they impact users. Alerts must be specific, actionable, linked to runbooks, and minimize noise/fatigue. Alert on symptoms impacting user experience and SLOs.</li>
+                    <li><strong>Rapid Incident Response & Resolution:</strong> Implement a structured, efficient incident management process with clear roles, communication protocols, and escalation paths to meet aggressive Mean Time To Detect (MTTD) and Mean Time To Repair (MTTR) targets, aligning with RFP RTOs.</li>
+                    <li><strong>Structured, Multi-Tiered Production Support:</strong> Provide clear pathways for issue resolution, empowering L1/L2 support with knowledge and tools while ensuring efficient escalation to L3 (Dev/SRE) for complex problems.</li>
+                    <li><strong>Continuous Learning & Improvement:</strong> Utilize incident data, monitoring trends, and post-mortems to continuously refine monitoring, alerting, runbooks, system architecture, and the support process itself. Quantify reliability via SLOs and Error Budgets.</li>
+                    <li><strong>Seamless SDLC Integration:</strong> Embed observability and operational requirements into the design, development, testing, and deployment phases ("Shift Left" operations).</li>
+                </ol>
+            </div>
+        </div>
+    </section>
+
+     <!-- Core Pillars of Observability -->
+    <section id="observability-pillars">
+        <h2>II. Core Pillars of Observability: Implementation Details</h2>
+        <div class="section-description">
+            <p>We will implement a multi-faceted approach combining Metrics, Logging, and Tracing, providing complementary views into system health and behavior.</p>
+
+        <h3>A. Metrics: Measuring System Health & Performance</h3>
+        <div class="implementation-steps">
+            <h5>1. What We Will Measure (Layered Approach):</h5>
+            <ul>
+                <li><strong>Infrastructure Metrics (AWS Resources):</strong>
+                    <ul>
+                        <li><strong>Compute (EC2, Fargate, Lambda):</strong> CPU Utilization, Memory Utilization, Disk I/O (Read/Write Ops/Bytes), Network I/O (In/Out Bytes/Packets), Throttles (Lambda), Running Tasks/Instances (ECS/EC2 AutoScaling).</li>
+                        <li><strong>Database (RDS, DynamoDB, ElastiCache):</strong> CPU Utilization, Memory Usage (where applicable), Disk Queue Depth/IOPS/Latency (RDS/EBS), Database Connections, Read/Write Latency/Throughput/Throttles (DynamoDB), Cache Hit/Miss Rate (ElastiCache), Replication Lag (RDS).</li>
+                        <li><strong>Networking (ALB, API GW, NAT GW):</strong> Request Count, Latency (Target/API GW), HTTP Error Codes (4xx, 5xx), Healthy/Unhealthy Host Count (ALB), Active Connections, NAT Gateway Error/Dropped Packet Counts.</li>
+                        <li><strong>Messaging (SQS, SNS, Kinesis/MSK):</strong> ApproximateNumberOfMessagesVisible/Delayed (SQS), AgeOfOldestMessage (SQS), MessagesPublished (SNS), Put/Get Record Latency/Bytes (Kinesis), Broker/Topic Metrics (MSK - CPU, Network, Disk).</li>
+                        <li><strong>Storage (S3):</strong> Request Counts (Get/Put), Latency, Error Rates (4xx/5xx).</li>
+                         <li><strong>AWS Health Events:</strong> Monitor via EventBridge for service degradation/outages impacting our regions/services.</li>
+                    </ul>
+                </li>
+                <li><strong>Application Performance Metrics (APM):</strong>
+                    <ul>
+                        <li><strong>Request Rate/Throughput:</strong> Requests per second/minute per API endpoint/service.</li>
+                        <li><strong>Request Latency (End-to-End & Internal):</strong> P50, P90, P95, P99 latency distributions for key API endpoints and critical internal service calls.</li>
+                        <li><strong>Error Rates:</strong> Rate of HTTP 5xx, 4xx errors per endpoint/service. Rate of application exceptions (uncaught errors).</li>
+                        <li><strong>Resource Usage (Runtime Specific):</strong> JVM Heap/GC Metrics (Java), Event Loop Lag (Node.js), Process CPU/Memory (Python/Node/Java within container).</li>
+                        <li><strong>Dependency Metrics:</strong> Latency and error rates for calls to external services (DBs, caches, other microservices, 3rd party APIs).</li>
+                    </ul>
+                </li>
+                <li><strong>Frontend Performance / Real User Monitoring (RUM):</strong>
+                    <ul>
+                        <li><strong>Page Load Times:</strong> Core Web Vitals (LCP, FID, CLS).</li>
+                        <li><strong>JavaScript Errors:</strong> Count and rate of frontend JS errors.</li>
+                        <li><strong>API Call Performance (Client-Side):</strong> Latency and error rates for API calls initiated from the browser/mobile app.</li>
+                        <li><strong>Route Transitions / User Action Timings:</strong> Time taken for specific user interactions.</li>
+                    </ul>
+                </li>
+                <li><strong>Synthetic Monitoring:</strong>
+                    <ul>
+                        <li><strong>API Endpoint Checks:</strong> Regularly ping key API endpoints to verify availability and basic response correctness.</li>
+                        <li><strong>UI Workflow Checks:</strong> Simulate critical user journeys (login, view map, submit absence) via browser automation to check end-to-end functionality and availability.</li>
+                    </ul>
+                </li>
+                <li><strong>Business KPIs:</strong>
+                    <ul>
+                        <li>GPS Pings Processed per Minute.</li>
+                        <li>Ridership Scans Processed per Minute.</li>
+                        <li>Active Routes / Buses Online.</li>
+                        <li>Route Calculation Success/Failure Rate & Latency.</li>
+                        <li>Notification Delivery Success/Failure Rate.</li>
+                        <li>User Login Success/Failure Rate.</li>
+                        <li>(Derived) On-Time Performance metrics (based on comparison of actual vs scheduled times from logs/DB).</li>
+                    </ul>
+                </li>
+            </ul>
+            <h5>2. How We Will Implement Metrics Collection:</h5>
+            <ol>
+                <li><strong>AWS Native Metrics:</strong> Leverage default CloudWatch metrics provided by AWS services (EC2, RDS, ALB, Lambda, SQS, etc.). Enable detailed monitoring where appropriate (e.g., EC2).</li>
+                <li><strong>CloudWatch Agent:</strong> Deploy the CloudWatch agent via Systems Manager Distributor/State Manager (for EC2) or build into container images/sidecars (for ECS/Fargate) to collect detailed OS-level metrics (memory, disk space) and custom application metrics (via StatsD/collectd protocols or embedded metric format in logs).</li>
+                <li><strong>APM Tooling (if used, e.g., Datadog/Dynatrace):</strong> Deploy APM agents alongside application code (as libraries or sidecars) to automatically instrument applications and collect detailed performance metrics and traces. Configure agents securely for GovCloud endpoints.</li>
+                <li><strong>Frontend Monitoring:</strong> Integrate CloudWatch RUM SDK or a third-party RUM provider SDK into web and mobile applications.</li>
+                <li><strong>Synthetic Monitoring:</strong> Create CloudWatch Synthetics Canaries (using Node.js or Python blueprints) for API and UI checks. Schedule regular execution (e.g., every 1-5 minutes for critical checks).</li>
+                <li><strong>Custom Metrics:</strong> Applications will emit critical business KPIs or custom performance metrics to CloudWatch directly via AWS SDK calls or by publishing structured logs that Metric Filters can parse.</li>
+                <li><strong>Metric Storage & Visualization:</strong> Primarily use CloudWatch Metrics. Build comprehensive dashboards in CloudWatch Dashboards, potentially supplemented by Grafana (if using Prometheus/other sources) or QuickSight (for BI/longer-term analysis). APM tools provide their own dashboards.</li>
+            </ol>
+            <p class="tool-note">Tools: AWS CloudWatch (Metrics, Agent, Synthetics, RUM), Terraform/CloudFormation (for agent deployment/config), APM Tool (Optional: Datadog, Dynatrace, New Relic), Grafana/QuickSight.</p>
+            <p class="responsibility">Responsibility: SRE/Ops (Infrastructure, Agent Deployment, Base Dashboards), Developers (App Instrumentation, Custom Metrics, APM Integration), QA (Synthetic Scripting).</p>
+        </div>
+
+        <h3>B. Logging: Recording Events & State</h3>
+        <div class="implementation-steps">
+            <h5>1. What We Will Log:</h5>
+            <ul>
+                <li><strong>Application Logs:</strong>
+                    <ul>
+                        <li>Request/Response details for APIs (method, path, status code, latency, user ID, correlation ID - *carefully exclude PII/secrets from request/response bodies*).</li>
+                        <li>Key business events (e.g., route generated, ridership scanned, notification sent, user profile updated).</li>
+                        <li>Application lifecycle events (startup, shutdown).</li>
+                        <li>Errors and Exceptions (with full stack traces).</li>
+                        <li>Warnings for potential issues.</li>
+                        <li>Debug level logs (configurable, disabled in production by default).</li>
+                        <li>Security events (authentication success/failure, authorization failure, potential input validation failures).</li>
+                    </ul>
+                </li>
+                <li><strong>Infrastructure Logs:</strong>
+                    <ul>
+                        <li>Load Balancer Access Logs (ALB/NLB).</li>
+                        <li>VPC Flow Logs (sampled or full, depending on security needs/cost).</li>
+                        <li>RDS Database Logs (Postgres logs, audit logs if enabled).</li>
+                        <li>Operating System Logs (syslog, auth logs - collected via CloudWatch Agent).</li>
+                        <li>CloudTrail Logs (already configured for AWS API calls).</li>
+                        <li>WAF Logs.</li>
+                    </ul>
+                </li>
+                <li><strong>Correlation ID:</strong> A unique request identifier generated at the edge (API Gateway/ALB) or by the first service, passed through downstream service calls (via HTTP headers, message attributes) and included in *all* log messages related to that request.</li>
+            </ul>
+            <h5>2. How We Will Implement Logging:</h5>
+            <ol>
+                <li><strong>Structured Logging (JSON):</strong> Mandate use of structured logging libraries (e.g., python-json-logger, Logback JSON encoder, Winston for Node.js) in all applications. Logs must be written to standard output/error within containers/Lambda functions. Standard fields include timestamp, log level, service name, correlation ID, message, and contextual key-value pairs.</li>
+                <li><strong>Log Collection:</strong>
+                    <ul>
+                       <li><strong>Lambda:</strong> Natively integrates with CloudWatch Logs.</li>
+                       <li><strong>Fargate/ECS:</strong> Configure task definitions to use the `awslogs` log driver, sending container stdout/stderr directly to designated CloudWatch Log Groups.</li>
+                       <li><strong>EC2:</strong> Deploy and configure the CloudWatch Agent to collect application logs, OS logs (syslog, auth.log), and metrics.</li>
+                    </ul>
+                </li>
+                 <li><strong>Log Storage & Centralization:</strong> Configure CloudWatch Log Groups per service/environment with appropriate retention policies (e.g., 30 days for DEV/QA, 1 year for PROD application logs, longer if required for compliance/audit logs). Consider streaming logs from CloudWatch to a centralized logging platform (AWS OpenSearch Service, Splunk, Datadog Logs) via Kinesis Data Firehose for advanced querying, analysis, and longer retention if CloudWatch native capabilities are insufficient.</li>
+                 <li><strong>Log Access & Analysis:</strong> Use CloudWatch Logs Insights for powerful querying and analysis of logs stored in CloudWatch. If using a centralized platform, leverage its query language (OpenSearch Query DSL, Splunk SPL). Grant appropriate IAM permissions for log access based on roles.</li>
+             </ol>
+            <p class="tool-note">Tools: CloudWatch Logs, CloudWatch Agent, Fluentd/FluentBit (optional sidecars), Structured Logging Libraries (language-specific), AWS OpenSearch Service / ELK / Splunk / Datadog Logs (optional central platform), Kinesis Data Firehose.</p>
+            <p class="responsibility">Responsibility: Developers (instrumenting code with structured logs), DevOps/SRE (configuring agents, log groups, retention, central platform if used).</p>
+        </div>
+
+        <h3>C. Tracing: Understanding Request Flow</h3>
+         <div class="implementation-steps">
+            <h5>1. What We Will Trace:</h5>
+            <ul>
+                <li>End-to-end requests starting from the user interface or external API call.</li>
+                <li>Flows across microservices (synchronous API calls, asynchronous message passing via SQS/SNS/Kinesis).</li>
+                <li>Interactions with AWS managed services (DynamoDB, RDS, S3, Lambda).</li>
+                <li>Identify latency contributions of each component in a request path.</li>
+                <li>Visualize service dependencies.</li>
+            </ul>
+             <h5>2. How We Will Implement Tracing:</h5>
+             <ol>
+                 <li><strong>Instrumentation Standard:</strong> Adopt **OpenTelemetry (OTel)** as the standard for instrumentation across all services. OTel provides vendor-neutral APIs and SDKs.</li>
+                 <li><strong>Automatic Instrumentation:</strong> Utilize OTel auto-instrumentation agents/libraries where available for supported frameworks (e.g., Java Agent, Python auto-instrumentation, Node.js auto-instrumentation) to capture common interactions (HTTP requests, DB queries) with minimal code changes.</li>
+                 <li><strong>Manual Instrumentation:</strong> Manually instrument critical code paths, asynchronous boundaries, and business logic using OTel SDKs to create custom spans and add relevant attributes (e.g., user ID, route ID, business context).</li>
+                 <li><strong>Context Propagation:</strong> Ensure trace context (Trace ID, Span ID) is automatically propagated across process boundaries (HTTP headers using W3C Trace Context standard, message attributes for SQS/SNS/Kinesis). OTel SDKs typically handle this when configured correctly.</li>
+                 <li><strong>Trace Backend/Exporter:</strong> Configure OTel SDKs/Collectors to export trace data to **AWS X-Ray**. Use the AWS Distro for OpenTelemetry (ADOT) Collector for streamlined collection and export. (Alternatively, could export to other OTel-compatible backends like Jaeger, Zipkin, or APM vendors if required, but X-Ray provides native AWS integration).</li>
+                 <li><strong>Sampling:</strong> Configure appropriate sampling rates (e.g., 100% for critical transactions in dev/test, potentially lower percentage-based or adaptive sampling in production to manage cost, while ensuring X-Ray traces key requests).</li>
+                 <li><strong>Visualization & Analysis:</strong> Use the AWS X-Ray console to view service maps, trace timelines, identify errors, and analyze latency distributions. Integrate X-Ray trace IDs into structured logs for correlation.</li>
+             </ol>
+            <p class="tool-note">Tools: OpenTelemetry SDKs/APIs (language-specific), OpenTelemetry Collector (specifically ADOT Collector), AWS X-Ray.</p>
+            <p class="responsibility">Responsibility: Developers (instrumentation), DevOps/SRE (collector configuration, sampling strategy).</p>
+         </div>
+    </section>
+
+    <!-- Alerting -->
+    <section id="alerting">
+        <h2>III. Alerting Strategy: From Detection to Action</h2>
+        <div class="section-description">
+            <p>Our alerting strategy focuses on detecting user-impacting issues and SLO violations quickly, routing actionable alerts to the right teams, and minimizing alert fatigue.</p>
+            <h3>A. Alerting Philosophy</h3>
+            <ul>
+                <li><strong>Alert on Symptoms, Not Causes (Primarily):</strong> Focus alerts on high-level indicators of problems affecting users or SLOs (e.g., high latency P99, high 5xx error rate, low success rate for core transactions, SQS queue depth exceeding processing capacity) rather than low-level causes (e.g., high CPU on one instance, unless it *directly* correlates to user impact).</li>
+                <li><strong>Actionability:</strong> Every alert MUST be actionable. If the recipient doesn't know what to do when an alert fires, the alert is ineffective. Link alerts to specific runbooks or troubleshooting guides.</li>
+                <li><strong>Severity Levels & Routing:</strong> Define clear severity levels (e.g., Critical/SEV1, Warning/SEV2, Info/SEV3) with distinct notification targets and response expectations.
+                    <ul>
+                        <li><strong>Critical (SEV1):</strong> Production outage, significant user impact, SLO breach imminent or occurring, critical security event. <strong>Target:</strong> PagerDuty/Opsgenie -> On-call SRE/Ops immediate engagement. Expected response: Within 5-15 minutes.</li>
+                        <li><strong>Warning (SEV2):</strong> Potential future issue, performance degradation nearing SLO threshold, non-critical service errors increasing, resource saturation warnings. <strong>Target:</strong> Dedicated Slack/Teams channel for SRE/Ops/Dev, potentially low-urgency PagerDuty notification. Expected response: Within business hours or next on-call shift.</li>
+                        <li><strong>Info (SEV3):</strong> Informational events, successful completion of critical batch jobs, scaling events. <strong>Target:</strong> Slack/Teams channel, Email. No immediate action required.</li>
+                    </ul>
+                </li>
+                <li><strong>Minimize Noise:</strong> Aggressively tune alert thresholds and evaluation periods based on historical data and baselines to avoid flapping and false positives. Use composite alarms where appropriate. Implement alert silencing/maintenance windows during planned activities.</li>
+            </ul>
+
+             <h3>B. Alert Implementation</h3>
+             <h5>1. Defining Alarms (IaC):</h5>
+                 <ul>
+                     <li>Define CloudWatch Alarms primarily using Terraform (or CloudFormation). Store alarm definitions in Git alongside infrastructure/application code.</li>
+                     <li>Use variables in Terraform to manage thresholds and dimensions per environment.</li>
+                     <li>Standardize alarm naming conventions (e.g., `<env>-<service>-<metric>-<severity>`).</li>
+                     <li>Link `alarm_actions` and `ok_actions` to appropriate SNS topics configured for different severities.</li>
+                 </ul>
+                 <p class="responsibility">Responsibility: SRE/Ops, DevOps Team.</p>
+
+            <h5>2. Key Alert Categories (Examples):</h5>
+                 <ul>
+                     <li><strong>Availability:** Synthetic check failures (API & UI), ALB 5xx error rate high, ALB UnHealthyHostCount > 0, Lambda Throttle/Error rate high, ECS Service desired count vs running count mismatch.</li>
+                     <li><strong>Latency:** ALB/API GW Target Latency P95/P99 > X ms, RDS Query Latency high, Lambda Duration P95 > X ms.</li>
+                     <li><strong>Traffic/Saturation:** SQS ApproximateNumberOfMessagesVisible > X for Y minutes, Kinesis GetRecords.IteratorAgeMilliseconds > X seconds, RDS DB Connections > X%, Compute (EC2/Fargate/Lambda) CPU/Memory Utilization consistently > X%.</li>
+                     <li><strong>Errors:** Application 5xx error rate > X%, High rate of specific exceptions in logs (via Metric Filters), Database error log patterns.</li>
+                     <li><strong>Security:** GuardDuty high/medium severity findings, Critical WAF blocks/counts, IAM policy changes (via Config/EventBridge), Root account usage.</li>
+                     <li><strong>Business KPIs:** Critical job failure, Significant drop in ridership scan rate (anomaly detection).</li>
+                 </ul>
+                <p class="responsibility">Responsibility: SRE/Ops (Infrastructure/Platform), Developers (Application-specific alerts), Security Team (Security alerts).</p>
+
+            <h5>3. Alert Routing & On-Call:</h5>
+                 <ul>
+                     <li>Configure SNS topics for each severity level/team responsibility area.</li>
+                     <li>Integrate Critical/SEV1 SNS topics with PagerDuty/Opsgenie.</li>
+                     <li>Configure PagerDuty/Opsgenie services, escalation policies, and on-call schedules for SRE/Ops and potentially core Dev teams.</li>
+                     <li>Integrate Warning/Info SNS topics with Slack/Teams channels for broader visibility.</li>
+                 </ul>
+                 <p class="tool-note">Tools: CloudWatch Alarms, SNS, PagerDuty/Opsgenie, Slack/Teams, Terraform.</p>
+                 <p class="responsibility">Responsibility: SRE/Ops Team.</p>
+
+             <h5>4. Runbooks:</h5>
+                <ul>
+                     <li>For every *actionable* alert, create a corresponding runbook/playbook stored in Confluence/Git wiki.</li>
+                     <li>Runbooks should include: Alert description, potential causes, initial diagnostic steps (e.g., specific CloudWatch dashboards/log queries, commands to run), mitigation/resolution steps, escalation contacts.</li>
+                     <li>Link the runbook directly from the alert notification (e.g., in PagerDuty/Slack message).</li>
+                     <li>Keep runbooks up-to-date through regular review and post-incident updates.</li>
+                </ul>
+                <p class="responsibility">Responsibility: SRE/Ops Team, Development Teams (for application-specific runbooks).</p>
+
+        </div>
+    </section>
+
+    <!-- Incident Management -->
+    <section id="incident-mgmt">
+        <h2>V. Incident Management Process</h2>
+        <div class="section-description">
+            <p>We will follow a standardized, structured process for managing incidents impacting production services, prioritizing rapid restoration and communication, followed by thorough learning.</p>
+            <h3>A. Incident Lifecycle Stages:</h3>
+            <ol>
+                <li><strong>Detection:</strong> Incident detected via automated alerting (CloudWatch, APM), monitoring dashboards, synthetic checks, or user reports (escalated via Support Tiers).</li>
+                <li><strong>Engagement & Assessment:</strong> Automated alert triggers PagerDuty/Opsgenie, notifying the on-call SRE/Ops engineer. On-call acknowledges the alert, performs initial assessment of impact and severity (assigns SEV level), and declares an incident if warranted.</li>
+                <li><strong>Mobilization & Communication (for SEV1/SEV2):</strong>
+                    <ul>
+                        <li>Incident Commander (IC) role assigned (typically initial on-call, may rotate).</li>
+                        <li>Dedicated incident communication channel created (e.g., Slack channel `#incident-YYYYMMDD-description`, persistent video call bridge).</li>
+                        <li>Relevant SMEs (Dev, DB, Network, Security) paged/invited to join based on initial assessment.</li>
+                        <li>Comms Lead assigned to manage internal/external stakeholder communication (Status Page updates, internal summaries).</li>
+                        <li>Scribe assigned to document timeline, key decisions, actions taken in a shared document (e.g., Confluence page, Google Doc).</li>
+                    </ul>
+                </li>
+                <li><strong>Diagnosis & Investigation:</strong> Team collaborates in the war room/channel, using monitoring dashboards, logs, traces, and runbooks to identify the root cause or contributing factors. IC coordinates efforts, avoids jumping to conclusions.</li>
+                <li><strong>Mitigation & Resolution:</strong> Implement actions to restore service as quickly as possible. This might be a temporary workaround (e.g., rollback deployment, scale up resources, disable feature flag) or a permanent fix. Prioritize service restoration over root cause finding if necessary. Validate fix restores service.</li>
+                <li><strong>Communication & Closure:</strong> Comms Lead provides regular updates internally and externally (Status Page). Once service is confirmed stable, IC declares the incident resolved. Final communications sent.</li>
+                <li><strong>Post-Mortem (RCA):</strong> For all SEV1/SEV2 incidents (and others as deemed necessary), conduct a blameless post-mortem within 1-3 business days.
+                    <ul>
+                        <li>Focus on "what happened?", "what was the impact?", "how did we respond?", "what went well?", "what could be improved?", and "how do we prevent recurrence?".</li>
+                        <li>Document detailed timeline, root cause(s), contributing factors, actionable follow-up items (assigned owners, due dates) tracked in Jira/ADO.</li>
+                        <li>Share post-mortem report widely for learning.</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <h3>B. Implementation Details:</h3>
+            <ul>
+                <li>Define clear SEV level definitions based on user impact (e.g., SEV1=System wide outage/major data loss, SEV2=Significant feature impairment/performance degradation for many users, SEV3=Minor feature impairment/performance issue for some users, SEV4=Cosmetic issue/low impact bug).</li>
+                <li>Configure PagerDuty/Opsgenie schedules, escalation policies (e.g., escalate to secondary on-call if no ack within 10 mins, escalate to manager if unresolved after 1 hour).</li>
+                <li>Create incident response runbook templates in Confluence.</li>
+                <li>Create incident ticket templates in Jira/ADO.</li>
+                <li>Set up Status Page (e.g., Statuspage.io, Cachet) for external communication during major incidents.</li>
+                <li>Conduct regular incident response drills or "Game Days" to practice the process.</li>
+            </ul>
+            <p class="responsibility">Responsibility: SRE/Ops Team (leads process), All Engineers (participate as needed), Incident Commander (coordination), Comms Lead (communication).</p>
+        </div>
+    </section>
+
+     <!-- Production Support -->
+    <section id="prod-support">
+        <h2>VI. Production Support Model (Tiered)</h2>
+        <div class="section-description">
+            <p>A multi-tiered support structure ensures issues are handled efficiently by the appropriate team, providing clear escalation paths and leveraging specialized knowledge.</p>
+            <h3>A. Support Tiers & Responsibilities:</h3>
+            <ul>
+                <li><strong>Tier 1 (L1): Service Desk / Initial Triage</strong>
+                    <ul>
+                        <li><strong>Who:</strong> Dedicated Service Desk team (potentially shared NYCPS resource or vendor team). Requires basic system understanding and strong customer service skills.</li>
+                        <li><strong>Responsibilities:</strong> First point of contact for user-reported issues (calls, emails, tickets). Log all issues in the Ticketing System (Jira Service Management/ServiceNow). Perform initial classification and prioritization. Resolve basic issues using Knowledge Base (KB) articles and standard operating procedures (SOPs) (e.g., password resets, simple configuration guidance, known issue workarounds). Gather necessary information for escalation. Escalate unresolved issues to L2 within defined SLA timeframes.</li>
+                        <li><strong>Tools:</strong> Ticketing System, Knowledge Base (Confluence), Basic Monitoring Dashboards (Read-only).</li>
+                    </ul>
+                </li>
+                 <li><strong>Tier 2 (L2): Application / System Support</strong>
+                    <ul>
+                        <li><strong>Who:</strong> Application Support specialists, junior SRE/Ops engineers with deeper system knowledge.</li>
+                        <li><strong>Responsibilities:</strong> Handle escalations from L1. Perform in-depth troubleshooting using monitoring tools (CloudWatch, APM, logs). Analyze application logs and configurations. Execute more complex runbooks. Investigate system performance issues. Identify potential bugs or infrastructure problems. Resolve configuration issues, application-level problems not requiring code changes. Escalate code bugs, platform issues, or complex infrastructure problems to L3. Contribute to KB/runbooks based on resolved issues.</li>
+                        <li><strong>Tools:</strong> Ticketing System, CloudWatch (Logs Insights, Metrics, Dashboards), APM Tool, Tracing Tool (X-Ray), Runbooks (Confluence), potentially read-only database access for specific queries.</li>
+                    </ul>
+                </li>
+                <li><strong>Tier 3 (L3): Engineering / Expert Support</strong>
+                    <ul>
+                        <li><strong>Who:</strong> Development Teams (Backend, Frontend, Mobile), Senior SRE/Ops Engineers, Security Engineers, Database Administrators (DBAs), Cloud Architects.</li>
+                        <li><strong>Responsibilities:</strong> Handle escalations from L2 requiring deep technical expertise or code/infrastructure changes. Debug complex application code. Diagnose and resolve infrastructure/platform issues (AWS service problems, networking, OS-level). Fix code bugs (following standard Dev workflow). Address security vulnerabilities/incidents. Perform complex database operations/tuning. Implement architectural changes needed for reliability/performance. Provide definitive root cause analysis. Update runbooks/documentation based on complex fixes.</li>
+                        <li><strong>Tools:</strong> All L2 tools + IDEs, Debuggers, Code Repositories (GitLab), CI/CD Pipelines, Terraform, AWS Console (with appropriate permissions), Database Admin tools, Security analysis tools.</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3>B. Implementation & Process:</h3>
+            <ol>
+                <li><strong>Ticketing System Configuration:</strong> Set up Jira Service Management (or equivalent) with queues for each support tier, automated routing rules based on issue type/severity, and SLA tracking.</li>
+                <li><strong>Knowledge Base (KB) Development:</strong> Create and maintain a comprehensive KB in Confluence, populated with SOPs, runbooks, FAQs, known error database (KEDB), and troubleshooting guides. L2/L3 teams are responsible for documenting solutions.</li>
+                <li><strong>Escalation Procedures:</strong> Clearly document criteria and steps for escalating issues between tiers (e.g., unresolved within X hours, requires specific permissions, requires code change). Define warm handoff procedures.</li>
+                <li><strong>Training:</strong> Provide specific training to each tier on the tools, processes, and scope of their responsibilities. L1/L2 need strong KB/runbook usage training.</li>
+                <li><strong>Feedback Loop:</strong> Regularly review ticket trends, escalation patterns, and resolution times to identify areas for improvement (e.g., better L1 documentation, automation opportunities, recurring bugs needing L3 fixes).</li>
+            </ol>
+            <p class="responsibility">Responsibility: Support Manager (overall process), L1/L2/L3 Team Leads/Members (execution within tier), SRE/DevOps (KB/Runbook contribution).</p>
+        </div>
+    </section>
+
+    <!-- SRE Practices -->
+    <section id="sre-practices">
+        <h2>VII. Site Reliability Engineering (SRE) Practices</h2>
+        <div class="section-description">
+            <p>We will adopt core SRE principles to systematically improve reliability, performance, and operational efficiency.</p>
+            <ul>
+                <li><strong>Service Level Objectives (SLOs) & Error Budgets:</strong>
+                    <ul>
+                        <li><strong>Define SLOs:</strong> Collaboratively define specific, measurable SLOs for critical user journeys (e.g., Parent App bus location check latency < 500ms P95, Ridership scan processing success rate > 99.9%, API Gateway availability > 99.95%). Base SLOs on user expectations and business requirements.</li>
+                        <li><strong>Define SLIs:</strong> Identify the corresponding Service Level Indicators (metrics) used to measure SLOs (e.g., ALB latency metric, custom success rate metric).</li>
+                        <li><strong>Establish Error Budgets:</strong> Calculate the acceptable level of failures/unavailability based on the SLO target (e.g., 99.95% availability allows ~22 mins downtime/month).</li>
+                        <li><strong>Monitor & Alert on Budgets:</strong> Track SLI performance against SLOs. Alert proactively when the error budget is being consumed too quickly.</li>
+                        <li><strong>Use Budgets for Prioritization:</strong> If the error budget is consistently depleted, prioritize reliability work (bug fixes, performance improvements, infrastructure upgrades) over new feature development for that service until reliability improves.</li>
+                        <p class="responsibility">Responsibility: SRE Team, Product Owner, Tech Leads.</p>
+                    </ul>
+                </li>
+                 <li><strong>Toil Reduction & Automation:</strong>
+                    <ul>
+                        <li><strong>Identify Toil:</strong> Actively identify manual, repetitive, automatable, tactical tasks with no enduring value performed by Ops/SRE/Support teams (e.g., manual deployments, report generation, common alert responses, user onboarding).</li>
+                        <li><strong>Automate:</strong> Dedicate engineering time (SREs and Devs) to automate identified toil using scripting (Python, Bash), IaC (Terraform), CI/CD pipelines, or building internal tools.</li>
+                        <li><strong>Goal:</strong> Aim for SREs to spend <50% of their time on operational toil, freeing up time for engineering projects that improve reliability and automation.</li>
+                        <p class="responsibility">Responsibility: SRE Team, DevOps Team, Development Teams.</p>
+                    </ul>
+                </li>
+                 <li><strong>Capacity Planning:</strong>
+                    <ul>
+                        <li><strong>Monitor Trends:</strong> Track historical resource utilization (CPU, memory, disk, network, DB connections, queue depths) and request rates.</li>
+                        <li><strong>Forecast Needs:</strong> Project future resource requirements based on usage trends, anticipated growth (e.g., start of school year), and new feature rollouts.</li>
+                        <li><strong>Provision Proactively:</strong> Adjust auto-scaling configurations, provision additional database/cache capacity, or upgrade instance types *before* resource saturation impacts performance. Utilize load testing to validate capacity limits.</li>
+                        <p class="responsibility">Responsibility: SRE/Ops Team.</p>
+                    </ul>
+                </li>
+                <li><strong>Release Engineering:</strong>
+                     <ul>
+                         <li>SRE team collaborates with Dev and QA on designing safe and reliable deployment strategies (Blue/Green, Canary).</li>
+                         <li>Define operational readiness checklists for new services/features entering production.</li>
+                         <li>Automate rollout/rollback procedures within the CI/CD pipeline.</li>
+                         <p class="responsibility">Responsibility: SRE Team, DevOps Team, Development Leads.</p>
+                     </ul>
+                 </li>
+                 <li><strong>Blameless Culture:</strong> Foster and enforce a culture where system failures and incidents are treated as learning opportunities to improve the system and processes, not to assign individual blame. Post-mortems focus on technical and process factors.</li>
+            </ul>
+        </div>
+    </section>
+
+     <!-- Integration with SDLC -->
+    <section id="sdlc-integration">
+        <h2>VIII. Integration with SDLC & Development/Testing Strategy</h2>
+        <div class="section-description">
+            <p>This Observability and Support strategy is not separate from development and testing but deeply integrated:</p>
+            <ul>
+                <li><strong>Planning/Requirements:</strong> Non-functional requirements related to performance, availability (SLOs), and supportability are defined early. Observability needs for new features are considered.</li>
+                <li><strong>Design:</strong> Systems are designed for observability (structured logging, tracing points, key metrics). Runbooks are drafted during design. Monitoring/alerting strategy influences architectural choices (e.g., choosing managed services with built-in monitoring).</li>
+                <li><strong>Development:</strong> Developers instrument code for logs, metrics, and traces using standard libraries/SDKs. Developers write unit/integration tests that may verify logging output or metric emission. Runbooks are refined.</li>
+                <li><strong>Testing:</strong> QA verifies monitoring coverage and alert accuracy in test environments. Performance testing validates SLOs. Security testing validates audit logging. DR testing validates recovery monitoring and alerting. Exploratory testing may uncover gaps in observability.</li>
+                <li><strong>Deployment (CD):</strong> Pipelines include steps to configure monitoring/alerting for new resources (e.g., applying CloudWatch alarm Terraform modules). Post-deployment smoke tests check key observability endpoints. Monitoring status is a key factor in Blue/Green/Canary rollout decisions.</li>
+                <li><strong>Operations:</strong> Monitoring data, incident trends, and post-mortem action items feed directly back into the product backlog, influencing prioritization for future sprints (continuous improvement loop).</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Continuous Improvement -->
+    <section id="continuous-improvement-ops">
+        <h2>IX. Continuous Improvement</h2>
+        <div class="section-description">
+            <p>We will continuously refine this strategy based on operational experience and evolving best practices.</p>
+            <ul>
+                <li><strong>Regular Reviews:</strong> Conduct quarterly reviews of the overall observability strategy, tooling effectiveness, alert fatigue levels, incident trends, and SLO adherence.</li>
+                <li><strong>Post-Mortem Actions:</strong> Ensure action items from incident RCAs related to monitoring, alerting, or runbooks are tracked and implemented.</li>
+                <li><strong>Tool Evaluation:</strong> Periodically assess new AWS features or third-party tools related to observability, APM, log analysis, and incident management.</li>
+                <li><strong>Training:</strong> Provide ongoing training to Dev, Ops, SRE, and Support teams on observability tools, incident response processes, and SRE principles.</li>
+                <li><strong>Documentation Updates:</strong> Keep all related documentation (this strategy, runbooks, KB articles, monitoring dashboards) current.</li>
+            </ul>
+            <p class="responsibility">Responsibility: SRE Lead, Ops Manager, QA Lead, Dev Leads.</p>
+        </div>
+    </section>
+
+</body>
+</html>

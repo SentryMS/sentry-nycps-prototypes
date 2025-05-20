@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NYCPS TMS - Hyper-Detailed Prescriptive DevSecOps Strategy</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.8; color: #1a1a1a; max-width: 1300px; margin: 25px auto; padding: 30px; background-color: #ffffff; border: 1px solid #dee2e6; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
+        h1, h2, h3, h4, h5, h6 { color: #002b5c; /* Darker DOE Blue */ margin-top: 2em; margin-bottom: 1em; padding-bottom: 8px; font-weight: 600; border-bottom: 2px solid #003366; }
+        h1 { text-align: center; font-size: 2.8em; border-bottom: 4px solid #003366; margin-bottom: 1.5em; }
+        h2 { /* Major Sections */ font-size: 2.2em; border-bottom: 3px solid #003366; background-color: #f0f4f8; padding: 15px 20px; border-radius: 6px 6px 0 0; margin-left: -31px; margin-right: -31px; margin-top: 2.5em; }
+        h3 { /* Primary Lifecycle Stages */ font-size: 1.8em; border-bottom: 2px solid #b7d1ed; padding-left: 10px; margin-top: 2.2em;}
+        h4 { /* Sub-stages or Key Concepts */ font-size: 1.5em; border-bottom: 1px dashed #ced4da; color: #004080; padding-left: 25px; font-weight: 600; margin-top: 2em; }
+        h5 { /* Specific Activities/Processes */ font-size: 1.25em; border-bottom: none; color: #343a40; padding-left: 40px; font-weight: bold; margin-top: 1.5em; margin-bottom: 0.5em; }
+        h6 { /* Tooling/Implementation Details */ font-size: 1.1em; border-bottom: none; color: #495057; padding-left: 55px; font-style: italic; margin-top: 1em; margin-bottom: 0.4em; }
+        p, li { margin-bottom: 1em; font-size: 1.1em; }
+        ul { list-style-type: circle; margin-left: 70px; margin-bottom: 1.2em; }
+        ol { list-style-type: decimal; margin-left: 70px; margin-bottom: 1.2em; }
+        ol ol { list-style-type: lower-alpha; margin-left: 90px; }
+        ol ol ol { list-style-type: lower-roman; margin-left: 110px; }
+        strong { font-weight: 700; color: #002b5c; }
+        code { font-family: 'Fira Code', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; display: block; background-color: #2b303b; color: #c0c5ce; padding: 18px; border: 1px solid #3e4451; border-radius: 6px; font-size: 1em; white-space: pre; overflow-x: auto; margin: 12px 0; line-height: 1.5; }
+        .section-description { padding: 20px; margin-bottom: 25px; border: 1px solid #e9ecef; background-color: #f8f9fa; border-radius: 5px; box-shadow: inset 0 1px 2px rgba(0,0,0,0.05); }
+        .step-list ol { list-style-type: none; counter-reset: step-counter; padding-left: 0; }
+        .step-list li { counter-increment: step-counter; margin-bottom: 25px; padding-left: 55px; position: relative; }
+        .step-list li::before { content: counter(step-counter); position: absolute; left: 0; top: 0; background-color: #0056b3; color: white; font-weight: bold; width: 35px; height: 35px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.1em; }
+        .goal-box { background-color: #d4edda; border: 1px solid #c3e6cb; border-left: 6px solid #28a745; padding: 18px; margin: 20px 0; border-radius: 5px; color: #155724; }
+        .goal-box h4 { margin-top:0; color: #155724; border: none;}
+        .quality-gate { background-color: #f8d7da; border: 1px solid #f5c6cb; border-left: 6px solid #dc3545; padding: 12px 18px; margin: 18px 0; border-radius: 5px; color: #721c24; font-weight: bold;}
+        .tool-note { font-style: italic; color: #6c757d; font-size: 0.98em; margin-top: -0.6em; padding-left: 70px; }
+        .responsibility { font-weight: bold; color: #6f42c1; /* Bootstrap Purple */ display: block; margin-top: 8px; margin-left: 40px; font-size: 0.95em; }
+        .implementation-steps { background-color: #fff; border: 1px solid #e0e0e0; border-left: 5px solid #FF9933; /* NYC DOE Orange */ padding: 15px; margin-top: 15px; border-radius: 4px; }
+        .implementation-steps h6 { color: #BF7500; /* Darker Orange */ margin-top: 0; font-style: normal;}
+        .flow-diagram { border: 2px solid #003366; background-color: #f0f4f8; padding: 20px; margin: 20px 0; border-radius: 8px; font-family: monospace; line-height: 1.4; }
+        .flow-step { margin-bottom: 10px; }
+        .flow-arrow { color: #0056b3; font-weight: bold; margin: 0 5px;}
+        .flow-gate { color: #dc3545; font-weight: bold; border: 1px solid #dc3545; padding: 2px 5px; border-radius: 3px; display: inline-block; margin-left: 10px;}
+        .flow-env { color: #28a745; font-weight: bold; border: 1px solid #28a745; padding: 2px 5px; border-radius: 3px; display: inline-block; margin-left: 10px;}
+    </style>
+</head>
+<body>
+
+    <h1>NYCPS TMS: Hyper-Detailed Prescriptive DevSecOps Strategy</h1>
+
+    <!-- Introduction -->
+    <section id="intro">
+        <h2>I. Introduction: Philosophy, Goals & Scope</h2>
+        <div class="section-description">
+            <p>This document mandates the comprehensive, highly detailed, end-to-end DevSecOps strategy and implementation plan for the NYCPS Transportation Management System (TMS) project (RFP R1804). This prescriptive approach integrates Development, Security, Quality Assurance (QA), Site Reliability Engineering (SRE), and Operations into a unified, automated, and collaborative workflow. It leverages **GitLab** as the central DevOps platform and targets deployment onto **AWS GovCloud (US)** infrastructure provisioned via **Terraform**.</p>
+            <p>The overarching methodology is **Agile (Scrum)**, executed in short iterations (Sprints) to deliver value incrementally and adapt to feedback. Security and Quality are not phases but continuous activities embedded throughout the entire lifecycle ("Shift Left").</p>
+            <p>This strategy is designed for a **globally distributed team of 50-60 engineers** working across diverse technology stacks (Frontend: React/React Native/TypeScript; Backend: Python/FastAPI, Node.js/Express, Java/Spring Boot; Infrastructure: Terraform/AWS; Databases: PostgreSQL/PostGIS, DynamoDB; Messaging: Kinesis/MSK, SQS/SNS).</p>
+            <div class="goal-box">
+                <h4>Mandatory Goals:</h4>
+                <ol>
+                    <li><strong>Elite Developer Experience & DORA Metrics:</strong> Provide a seamless, efficient local development setup, rapid CI feedback (<10-15 mins typical), clear processes, and minimized friction. Target elite DORA performance: Daily+ Deployment Frequency, <1 Day Lead Time for Changes, <15% Change Failure Rate, <1 Hour Time to Restore Service.</li>
+                    <li><strong>Ultra-Fast, Secure, Reliable CI/CD Pipeline:</strong> Implement highly optimized GitLab CI/CD pipelines with extensive caching, parallelization, and robust error handling. Pipelines must enforce all quality and security gates automatically.</li>
+                    <li><strong>Impenetrable Automated Quality & Security Gating:</strong> Mandate automated checks at every stage: pre-commit, CI (MRs, main branches), post-deployment. Implement zero tolerance for critical/high security vulnerabilities and regressions in core functionality. Developer-owned testing is foundational.</li>
+                    <li><strong>Hyper-Automation:</strong> Automate infrastructure provisioning (IaC), configuration management, builds, all test levels (Unit, Integration, API, E2E, Performance, Security, Accessibility), deployments (Blue/Green, Canary), monitoring setup, alerting, and rollback triggers.</li>
+                </ol>
+            </div>
+        </div>
+    </section>
+
+    <!-- Visual Process Flow -->
+    <section id="visual-flow">
+         <h2>II. Visualizing the End-to-End DevSecOps Flow (Textual Representation)</h2>
+         <div class="section-description">
+             <p>The following describes the journey of a typical code change (new feature, bug fix, enhancement) from a developer's machine through to production, highlighting the automated gates and feedback loops.</p>
+             <div class="flow-diagram">
+                 <div class="flow-step">1. [Developer] -> Checkout `develop`, Create `feature/TMS-XXX` branch.</div>
+                 <div class="flow-step">2. [Developer] -> Code Feature/Fix + Write Unit/Integration Tests (TDD).</div>
+                 <div class="flow-step">3. [Developer] -> Run tests locally + Format/Lint Code.</div>
+                 <div class="flow-step">4. [Developer] -> `git commit` <span class="flow-gate">[Pre-Commit Hook: Lint/Format/Secrets Scan -> PASS]</span></div>
+                 <div class="flow-step">5. [Developer] -> `git push` to feature branch.</div>
+                 <div class="flow-step">6. [Developer] -> Create GitLab Merge Request (MR) -> `develop`.</div>
+                 <div class="flow-step">7. [GitLab CI] -> Trigger MR Pipeline: Build <span class="flow-arrow">-></span> Unit Test <span class="flow-arrow">-></span> SAST <span class="flow-arrow">-></span> SCA <span class="flow-arrow">-></span> Coverage Check <span class="flow-gate">[Quality Gate: All Checks PASS]</span></div>
+                 <div class="flow-step">8. [Reviewer(s)] -> Peer Code Review (Focus: Logic, Security, Testing, Standards). <span class="flow-gate">[Quality Gate: Approval(s) Required]</span></div>
+                 <div class="flow-step">9. [Developer/Integrator] -> Merge MR (Squash) -> `develop`.</div>
+                 <div class="flow-step">10. [GitLab CI] -> Trigger `develop` Branch Pipeline: Build <span class="flow-arrow">-></span> Test <span class="flow-arrow">-></span> Scan <span class="flow-arrow">-></span> Package Artifacts (Docker Image/Lambda Zip). <span class="flow-gate">[Quality Gate: All Checks PASS]</span></div>
+                 <div class="flow-step">11. [GitLab CD] -> Auto-Deploy Artifact -> <span class="flow-env">[DEV Environment]</span>.</div>
+                 <div class="flow-step">12. [GitLab CI] -> Auto-Run Post-DEV Deploy Tests (API Tests, Basic Integration Tests). <span class="flow-gate">[Quality Gate: PASS]</span> -> Notify Dev Team.</div>
+                 <div class="flow-step">13. [GitLab CD] -> Manual Trigger/Schedule -> Deploy Artifact -> <span class="flow-env">[QA Environment]</span>.</div>
+                 <div class="flow-step">14. [GitLab CI/QA Team] -> Run Post-QA Deploy Tests (Full Integration, E2E Tests, DAST Scan, Accessibility Scan). QA performs Exploratory Testing. <span class="flow-gate">[Quality Gate: All Automated Tests PASS, No Blocking Manual Bugs]</span> -> Notify QA/Dev Team.</div>
+                 <div class="flow-step">15. [Release Manager/Lead] -> Create `release/vX.Y.Z` branch from `develop`.</div>
+                 <div class="flow-step">16. [GitLab CD] -> Deploy `release/` branch -> <span class="flow-env">[Staging/UAT Environment]</span>.</div>
+                 <div class="flow-step">17. [NYCPS Stakeholders/QA] -> Conduct UAT.</div>
+                 <div class="flow-step">18. [GitLab CI/Perf Team] -> Deploy `release/` branch -> <span class="flow-env">[Perf Test Environment]</span> -> Run Automated Load/Performance Tests.</div>
+                 <div class="flow-step">19. [Security Team/3rd Party] -> Conduct Penetration Testing against Staging. <span class="flow-gate">[Quality Gates: UAT Sign-off, Perf NFRs Met, No Critical/High PenTest Findings]</span></div>
+                 <div class="flow-step">20. [Release Manager] -> Merge `release/` -> `main`, Tag `vX.Y.Z`, Merge `release/` -> `develop`.</div>
+                 <div class="flow-step">21. [GitLab CD] -> Trigger Prod Deploy from Tag -> <span class="flow-gate">[Manual Approval Gate: CCB/Release Manager]</span> -> Execute Blue/Green or Canary Deploy -> <span class="flow-env">[PROD Environment]</span>.</div>
+                 <div class="flow-step">22. [GitLab CI/SRE] -> Run Post-Prod Smoke Tests. Intense Monitoring Activated. <span class="flow-gate">[Quality Gate: Smoke Tests PASS, Key Metrics Stable]</span> -> Complete Traffic Shift (if B/G or Canary).</div>
+                 <div class="flow-step">23. [SRE/Ops/Dev] -> Ongoing Monitoring, Alerting, Incident Response (using CloudWatch, APM, PagerDuty).</div>
+                 <div class="flow-step">24. [All Teams] -> Feedback Loop (Monitoring Data, Incident RCAs, User Feedback, Retrospectives) -> Input to Backlog (Step 1).</div>
+             </div>
+         </div>
+    </section>
+
+    <!-- Detailed SDLC Phase Implementations -->
+    <section id="detailed-phases">
+        <h2>III. Detailed Lifecycle Phase Implementation</h2>
+        <div class="section-description">
+            <p>This section provides exhaustive detail on the activities, tools, responsibilities, quality gates, and implementation steps for each phase of the DevSecOps lifecycle.</p>
+
+            <!-- Planning & Requirements -->
+            <h3>A. Phase: Planning & Requirements Definition</h3>
+            <div class="implementation-steps">
+                <h5>1. Activity: Project Initiation & Governance Setup</h5>
+                <h6>Implementation Steps:</h6>
+                <ol>
+                    <li>Schedule and conduct the official project kick-off meeting involving all key vendor and NYCPS stakeholders (Exec Sponsors, PMs, Tech Leads, Security Liaisons, OPT SMEs).</li>
+                    <li>Document and distribute kick-off meeting minutes, including agreed-upon vision, high-level goals, key contacts, and communication plan (meeting cadence, status reporting format/frequency, escalation paths).</li>
+                    <li>Formally define and document the Governance Structure (Steering Committee charter, Technical Review Board scope, Change Control Board process aligning with NYCPS standards). Obtain sign-off on the governance plan.</li>
+                    <li>Create shared project calendars and distribution lists.</li>
+                    <li>Review the high-level 12-month roadmap; identify immediate dependencies and high-level risks. Populate initial Risk Register in Jira/Confluence.</li>
+                </ol>
+                 <p class="tool-note">Tools: Confluence/SharePoint (Documentation), Jira/Azure DevOps (Risk Register), Calendar Tool, Email/Slack/Teams.</p>
+                 <p class="responsibility">Responsibility: Project Managers (Vendor & NYCPS), Technical Leads, Executive Sponsors.</p>
+
+                <h5>2. Activity: Detailed Requirements Elicitation (Iterative)</h5>
+                 <h6>Implementation Steps:</h6>
+                 <ol>
+                    <li>Identify key SME groups for initial phases (e.g., OPT Routers for core routing, DIIT Security for auth/compliance, Pilot School Admins for UI).</li>
+                    <li>Schedule and facilitate requirements workshops using techniques like:
+                        <ul>
+                            <li>User Story Mapping: Visually map user journeys and identify epics/features.</li>
+                            <li>Interviews: One-on-one discussions with SMEs.</li>
+                            <li>Process Modeling: Documenting AS-IS and TO-BE workflows using BPMN or similar.</li>
+                            <li>Prototyping: Creating low-fidelity mockups (e.g., Balsamiq, Figma) to elicit UI/UX feedback early.</li>
+                        </ul>
+                    </li>
+                    <li>Focus elicitation on the scope of the upcoming 1-2 project phases/releases.</li>
+                    <li>Document NFRs explicitly: Performance (latency, throughput targets), Scalability (user/bus numbers, data volume growth), Availability (SLAs per component), Accessibility (WCAG 2.0 AA), Security (specific GovCloud/NYCPS controls, encryption standards), Data Retention (7 years).</li>
+                    <li>Document detailed data mapping requirements for integrations with existing NYCPS systems (ATS, NPSIS, etc.). Specify data fields, formats, frequency, direction.</li>
+                    <li>Document compliance requirements check-list (FERPA, NY Ed Law 2-d, CIPA, HIPAA implications in GovCloud, NYC3 policies).</li>
+                </ol>
+                <p class="tool-note">Tools: Miro/Lucidchart (Mapping), Figma/Balsamiq (Prototyping), Confluence (Documentation), Jira/ADO (Requirement Tracking).</p>
+                <p class="responsibility">Responsibility: Business Analysts, UX Designers, Technical Leads, NYCPS SMEs, Product Owner.</p>
+
+                 <h5>3. Activity: Requirements Analysis & Documentation</h5>
+                 <h6>Implementation Steps:</h6>
+                 <ol>
+                    <li>Translate workshop outputs into formal User Stories in Jira/ADO.</li>
+                    <li>Each User Story must include:
+                        <ul>
+                            <li>Clear Title (User Role, Action, Goal).</li>
+                            <li>Detailed Description/Narrative.</li>
+                            <li>Specific, Measurable, Achievable, Relevant, Time-bound (SMART) Acceptance Criteria (using Gherkin syntax - Given/When/Then - is highly recommended for BDD).</li>
+                            <li>Link to related Epics/Features.</li>
+                            <li>Initial priority and estimated effort (Story Points).</li>
+                            <li>Relevant NFRs or Compliance constraints noted.</li>
+                        </ul>
+                    </li>
+                    <li>Refine process models (BPMN) and conceptual data models based on analysis.</li>
+                    <li>Update Data Dictionary with newly identified attributes.</li>
+                    <li>Create initial test scenario outlines linked to user stories.</li>
+                 </ol>
+                 <p class="tool-note">Tools: Jira/Azure DevOps, Confluence, Gherkin syntax validators.</p>
+                 <p class="responsibility">Responsibility: Business Analysts, Product Owner, Technical Leads, QA Lead.</p>
+
+                 <h5>4. Activity: Requirements Validation, Prioritization & Backlog Management</h5>
+                 <h6>Implementation Steps:</h6>
+                 <ol>
+                     <li>Conduct formal review sessions for documented user stories and acceptance criteria with NYCPS Product Owner and SMEs. Obtain documented approval/sign-off per story or feature set.</li>
+                     <li>Prioritize the Product Backlog collaboratively with the Product Owner based on business value, dependencies, risk, and alignment with phase goals.</li>
+                     <li>Define and document the Definition of Ready (DoR): Checklist criteria a User Story must meet before it can be accepted into Sprint Planning (e.g., Clear Acceptance Criteria, Estimated, Dependencies Identified, UX Mockup Approved if applicable).</li>
+                     <li>Conduct regular Backlog Grooming sessions (at least once per sprint) where the development team reviews upcoming stories, asks clarifying questions, breaks down large stories, re-estimates effort, and ensures stories meet the DoR.</li>
+                 </ol>
+                <p class="tool-note">Tools: Jira/Azure DevOps (Backlog, Priorities, DoR field), Confluence (Meeting Minutes).</p>
+                <p class="responsibility">Responsibility: Product Owner, Business Analysts, Scrum Master, Development Team Lead, Development Team.</p>
+
+                 <div class="quality-gate">
+                    <strong>Quality Gate & Sign-off:</strong> Formal sign-off by NYCPS Product Owner(s) on the prioritized and groomed backlog for the upcoming phase/release, confirming requirements are understood and meet DoR.
+                 </div>
+            </div>
+
+            <!-- Design -->
+             <h3>B. Phase: Architecture & Design</h3>
+             <div class="implementation-steps">
+                <h5>1. Activity: Detailed Architecture Definition</h5>
+                 <h6>Implementation Steps:</h6>
+                 <ol>
+                     <li>Based on refined NFRs, finalize choices for AWS GovCloud services (e.g., Kinesis vs. MSK, Fargate vs. EKS, specific RDS instance sizes per environment). Justify choices in Architecture Decision Records (ADRs) stored in Confluence/Git.</li>
+                     <li>Create detailed network diagrams (using diagramming tools, export as images/PDF stored in Confluence/Git) showing VPCs, subnets, routing, security zones, load balancers, VPN/Direct Connect, and key traffic flows for each environment.</li>
+                     <li>Define and document the multi-AZ HA strategy for each critical component (e.g., RDS Multi-AZ, ECS service desired count > 1 across AZs, ELB cross-zone balancing).</li>
+                     <li>Define and document the DR strategy (e.g., Pilot Light in secondary GovCloud region), including data replication mechanisms (S3 CRR, RDS cross-region snapshots/replicas), IaC deployment process for DR, and RPO/RTO targets per service.</li>
+                 </ol>
+                 <p class="tool-note">Tools: Lucidchart/Draw.io, Confluence, Git (for ADRs).</p>
+                 <p class="responsibility">Responsibility: Cloud Architect, Tech Leads, Security Architect, Ops Lead.</p>
+                 <div class="quality-gate">
+                    <strong>Quality Gate & Sign-off:</strong> Formal approval of the detailed Architecture Document and HA/DR plan by the Technical Review Board.
+                 </div>
+
+                <h5>2. Activity: Microservice & API Design</h5>
+                 <h6>Implementation Steps:</h6>
+                 <ol>
+                     <li>Finalize microservice boundaries and responsibilities using DDD workshops/event storming if needed.</li>
+                     <li>Define RESTful API contracts using OpenAPI Specification (OAS) v3.x for *all* inter-service communication and public-facing endpoints. Store OAS files in Git repository, ideally alongside the service code.
+                         <ul>
+                             <li>Specify paths, HTTP methods, parameters (path, query, header, cookie), request bodies, response schemas (using JSON Schema), status codes, and security schemes (e.g., JWT Bearer, API Key).</li>
+                             <li>Use tools like Swagger Editor/UI or Stoplight for design and validation.</li>
+                             <li>Implement API versioning strategy (e.g., URI path versioning `/v1/`).</li>
+                         </ul>
+                     </li>
+                     <li>Define asynchronous event schemas (e.g., using JSON Schema or Avro) for messages published to Kinesis/MSK/SNS/SQS. Document event producers and consumers.</li>
+                     <li>Design internal communication patterns (sync vs. async) based on coupling needs and resilience requirements. Design retry/circuit breaker logic for synchronous calls.</li>
+                 </ol>
+                 <p class="tool-note">Tools: OpenAPI/Swagger Editor, Stoplight, Avro tools, Confluence, Git.</p>
+                 <p class="responsibility">Responsibility: Backend Tech Leads, Backend Developers, Cloud Architect.</p>
+                 <div class="quality-gate">
+                    <strong>Quality Gate & Sign-off:</strong> Peer review and approval of API/Event schemas by Tech Leads and consuming teams.
+                 </div>
+
+                <h5>3. Activity: Data & Security Design</h5>
+                 <h6>Implementation Steps:</h6>
+                 <ol>
+                     <li>Create detailed Logical and Physical Data Models (ERDs for RDS, document structure for DynamoDB) including data types, constraints, relationships, indexing strategies.</li>
+                     <li>Perform Threat Modeling (STRIDE) on key workflows (e.g., user login, PII access, route modification, GPS data flow). Document threats and planned mitigations.</li>
+                     <li>Design Authentication flow integrating with NYCPS IdP (SAML) or Cognito. Specify token handling (JWT validation, refresh tokens).</li>
+                     <li>Design Authorization model (RBAC). Define roles, permissions, and how they map to API endpoints and data access. Specify how permissions are checked (e.g., custom Lambda authorizer, middleware in service).</li>
+                     <li>Define data encryption strategy: KMS keys (CMKs vs. AWS-managed), specific services requiring encryption at rest (S3, EBS, RDS, DynamoDB, SQS, SNS), TLS enforcement for transit.</li>
+                     <li>Design secure logging/auditing strategy: What specific security events must be logged, log format, log storage/retention/access control.</li>
+                     <li>Define specific Security Group rules per service/tier (e.g., App tier SG allows ingress from LB SG on port X, DB tier SG allows ingress from App tier SG on port Y). Define WAF rules (Managed rulesets + custom rules).</li>
+                 </ol>
+                 <p class="tool-note">Tools: ERD tools (draw.io, ERWin), Threat modeling tools/templates, Confluence.</p>
+                 <p class="responsibility">Responsibility: Data Architects, Security Architects, Tech Leads, Compliance Officer.</p>
+                 <div class="quality-gate">
+                    <strong>Quality Gate & Sign-off:</strong> Formal approval of Data Models, Threat Models, and Security Control designs by Technical Review Board and Security Review Board/NYC3.
+                 </div>
+
+                 <h5>4. Activity: UI/UX Design Finalization</h5>
+                 <h6>Implementation Steps:</h6>
+                 <ol>
+                    <li>Refine wireframes and mockups into high-fidelity, pixel-perfect designs based on previous feedback.</li>
+                    <li>Create clickable prototypes for key user flows.</li>
+                    <li>Conduct final usability testing rounds.</li>
+                    <li>Finalize component library and ensure alignment with NYCPS style guide and WCAG 2.0 AA requirements (color contrast, focus states, ARIA attributes planned).</li>
+                 </ol>
+                 <p class="tool-note">Tools: Figma/Sketch/Adobe XD, InVision/Marvel (Prototyping), Accessibility testing browser plugins.</p>
+                 <p class="responsibility">Responsibility: UX/UI Designers, Frontend Lead, Product Owner, Accessibility Specialist.</p>
+                 <div class="quality-gate">
+                    <strong>Quality Gate & Sign-off:</strong> Formal approval of final UI designs and prototypes by Product Owner and key stakeholders.
+                 </div>
+
+                  <h5>5. Activity: Test & Operations Planning</h5>
+                  <h6>Implementation Steps:</h6>
+                  <ol>
+                      <li>Develop Master Test Plan detailing overall strategy, scope, environments, tools, roles, entry/exit criteria for each test level.</li>
+                      <li>Develop initial Performance Test Plan outlining key scenarios, load profiles, NFR targets, and tools.</li>
+                      <li>Develop initial Security Test Plan outlining scope for DAST, SAST, SCA, and penetration testing coordination.</li>
+                      <li>Develop initial Monitoring & Alerting plan identifying key metrics (Golden Signals) per service, dashboard requirements, and alerting strategy.</li>
+                      <li>Draft initial operational runbooks for common tasks and incident response.</li>
+                   </ol>
+                   <p class="tool-note">Tools: Confluence, Test management tools (e.g., Jira Zephyr/Xray).</p>
+                   <p class="responsibility">Responsibility: QA Lead, Performance Engineer, Security Lead, SRE/Ops Lead, Tech Leads.</p>
+             </div>
+
+            <!-- Development -->
+             <h3>C. Phase: Development (Implementation)</h3>
+             <div class="implementation-steps">
+                <h5>1. Activity: Sprint Execution (Iterative)</h5>
+                 <h6>Implementation Steps:</h6>
+                 <ol>
+                     <li><strong>Sprint Planning:</strong> Team commits to User Stories meeting DoR. Tasks created/assigned in Jira. Sprint Goal agreed.</li>
+                     <li><strong>Feature Branching:</strong> Developers create `feature/TMS-XXX` branches from `develop`.</li>
+                     <li><strong>Coding (TDD/BDD):</strong>
+                         <ul>
+                            <li>Write failing unit/integration test based on acceptance criteria.</li>
+                            <li>Write minimal code to make test pass.</li>
+                            <li>Refactor code and tests for clarity and efficiency.</li>
+                            <li>Strictly adhere to secure coding standards (input validation, output encoding, auth checks, proper error handling, least privilege). Use framework security features correctly.</li>
+                            <li>Implement structured logging with correlation IDs.</li>
+                         </ul>
+                     </li>
+                     <li><strong>Local Testing & Verification:</strong>
+                         <ul>
+                            <li>Run all relevant tests locally (`npm test`, `pytest`, `mvn verify`).</li>
+                            <li>Use Docker Compose/Dev Containers to test against local dependencies.</li>
+                            <li>Manually test functionality in local environment.</li>
+                         </ul>
+                    </li>
+                     <li><strong>Committing & Pre-commit Checks:</strong>
+                        <ul>
+                            <li>Commit frequently with Conventional Commit messages linking to Jira issues.</li>
+                            <li>Pre-commit hooks *must* pass (linting, formatting, secret scanning).</li>
+                         </ul>
+                    </li>
+                     <li><strong>Infrastructure Code (IaC):</strong> Develop/update Terraform modules/configurations for resources required by the feature. Test using `terraform validate` and `terraform plan`. Commit to the *same* feature branch or a linked branch.</li>
+                     <li><strong>Documentation:</strong> Update code comments, READMEs, API specifications (OpenAPI) as needed.</li>
+                 </ol>
+                 <p class="responsibility">Responsibility: Developers, DevOps Engineers (for IaC).</p>
+
+                 <h5>2. Activity: Code Review & Merge Request (MR) Process</h5>
+                 <h6>Implementation Steps:</h6>
+                 <ol>
+                     <li>Developer creates MR targeting `develop`, linking issues, providing detailed description and testing notes.</li>
+                     <li><strong>Automated Checks (GitLab CI on MR):</strong>
+                         <ul>
+                             <li>Build verification.</li>
+                             <li>Linter/Formatter checks.</li>
+                             <li>Unit test execution & code coverage check (against threshold).</li>
+                             <li>SAST scan (e.g., SonarQube/GitLab SAST).</li>
+                             <li>SCA scan (e.g., GitLab Dependency Scanning).</li>
+                         </ul>
+                     </li>
+                     <li><strong>Quality Gate:</strong> MR pipeline must pass ALL checks. Merge blocked otherwise.</li>
+                     <li><strong>Peer Review:</strong> 1-2 reviewers assigned. Reviewers perform thorough check against documented checklist (functionality, security, testing, readability, performance, standards). Constructive feedback provided via GitLab comments.</li>
+                     <li><strong>Quality Gate:</strong> Required number of reviewer approvals obtained. All comments resolved.</li>
+                     <li><strong>Merge:</strong> Developer/Lead merges using Squash option, ensuring commit message links MR/ticket. Feature branch deleted.</li>
+                 </ol>
+                 <p class="responsibility">Responsibility: Developers, Reviewers, Tech Leads.</p>
+
+                 <h5>3. Activity: Continuous Integration on `develop`</h5>
+                  <h6>Implementation Steps:</h6>
+                  <ol>
+                      <li>Merge to `develop` triggers `develop` branch pipeline in GitLab CI.</li>
+                      <li>Pipeline Stages: Build -> Static Analysis -> Unit Test -> Package (Build & Push Docker image to ECR / Zip to S3).</li>
+                      <li><strong>Quality Gate:</strong> Pipeline must pass all stages. Failure sends immediate notifications (Slack/Email).</li>
+                      <li>Successful pipeline run makes the artifact available for deployment to DEV environment.</li>
+                  </ol>
+                 <p class="responsibility">Responsibility: CI/CD System.</p>
+             </div>
+
+            <!-- Testing -->
+             <h3>D. Phase: Continuous Testing & Quality Assurance</h3>
+             <div class="implementation-steps">
+                <h5>1. Activity: Automated Test Execution (Integrated with CI/CD)</h5>
+                 <h6>Implementation Steps:</h6>
+                 <ol>
+                    <li><strong>Unit & Component Tests:</strong> Run automatically as part of CI pipeline on every commit/MR (triggered by GitLab CI). Results reported back to MR/pipeline status.</li>
+                    <li><strong>Integration & API Tests:</strong> Run automatically *after* successful deployment to DEV and QA environments (triggered by GitLab CD). Results reported back to pipeline status. Failures block promotion.</li>
+                    <li><strong>E2E Tests:</strong> Run automatically against QA and Staging environments (e.g., nightly, post-deployment). Results reported to QA team/dashboards. Critical failures block promotion/trigger alerts.</li>
+                    <li><strong>Security Tests (DAST, Container Scan):</strong> Run automatically against QA/Staging environments (post-deployment, nightly). Results fed into defect tracking/security dashboards. Critical findings block promotion.</li>
+                    <li><strong>Accessibility Tests:</strong> Run automatically as part of E2E suite against QA/Staging. Results reported for review/remediation.</li>
+                    <li><strong>Performance Tests:</strong> Run manually or scheduled against dedicated Perf environment before major releases or significant changes. Results analyzed against NFRs.</li>
+                 </ol>
+                 <p class="responsibility">Responsibility: CI/CD System, Developers (fixing test failures), QA Team (managing E2E/Perf/Accessibility suites), Security Team (managing DAST/Container scans).</p>
+
+                 <h5>2. Activity: Manual & Exploratory Testing</h5>
+                  <h6>Implementation Steps:</h6>
+                  <ol>
+                      <li>QA Engineers perform exploratory testing based on user stories and risk areas in the QA environment throughout the sprint.</li>
+                      <li>QA verifies bug fixes deployed to QA environment.</li>
+                      <li>QA performs targeted manual regression testing for high-risk areas before releases.</li>
+                      <li>QA facilitates and supports UAT sessions in the Staging environment, providing test scenarios and guidance to NYCPS stakeholders.</li>
+                      <li>Accessibility Specialist performs manual checks (keyboard, screen reader) on key flows in Staging.</li>
+                  </ol>
+                 <p class="responsibility">Responsibility: QA Team, Accessibility Specialist, NYCPS UAT Participants.</p>
+
+                <h5>3. Activity: Defect Triage & Management</h5>
+                 <h6>Implementation Steps:</h6>
+                 <ol>
+                     <li>All failed automated tests automatically create or link to defects in Jira/ADO. Manual defects logged by QA/UAT participants.</li>
+                     <li>Daily defect triage meeting ("Bug Scrub") involving QA Lead, Dev Lead, Product Owner (or rep) to review new defects, prioritize, and assign them for fixing within the current or next sprint.</li>
+                     <li>Track defect resolution status and verification in Jira/ADO. Maintain metrics on defect density, resolution time, etc.</li>
+                 </ol>
+                <p class="responsibility">Responsibility: QA Lead, Dev Lead, Product Owner, Developers, QA Engineers.</p>
+
+                 <div class="quality-gate">
+                    <strong>Quality Gates:</strong> Defined pass/fail criteria for each automated test suite integrated into CI/CD pipelines. Formal UAT sign-off. Go/No-Go decision based on outstanding defect severity/count before production release. Performance NFRs met. No unresolved critical/high security vulnerabilities.
+                 </div>
+             </div>
+
+            <!-- Deployment -->
+             <h3>E. Phase: Deployment & Release Management</h3>
+             <div class="implementation-steps">
+                <h5>1. Activity: Automated Deployment to Environments</h5>
+                 <h6>Implementation Steps:</h6>
+                 <ol>
+                     <li>Configure GitLab CI/CD pipelines (`.gitlab-ci.yml`) with distinct stages and jobs for deploying to DEV, QA, Staging, Perf, and PROD environments.</li>
+                     <li>Use environment-specific GitLab CI/CD variables for configurations (endpoints, feature flags, resource names). Securely inject secrets needed for deployment (e.g., AWS credentials via OIDC or Vault integration).</li>
+                     <li>**DEV Deployment:** Trigger automatically on merge to `develop` after successful CI build.</li>
+                     <li>**QA Deployment:** Trigger manually or scheduled (e.g., nightly) from successful `develop` builds.</li>
+                     <li>**Staging/UAT Deployment:** Trigger manually from a `release/` branch build.</li>
+                     <li>**Perf Deployment:** Trigger manually from a `release/` branch build to the dedicated performance testing environment.</li>
+                     <li><strong>PROD Deployment:** Trigger manually *only* from a tagged commit on the `main` branch. **Mandatory:** Include a `when: manual` step in the GitLab CI job requiring explicit action by authorized personnel (Release Manager, Ops Lead) in the GitLab UI.</strong></li>
+                     <li>Implement Blue/Green or Canary deployment strategies using AWS CodeDeploy integrated with ECS/Fargate or via ALB/Route 53 weighting managed by deployment scripts/Terraform.</li>
+                     <li>Integrate database migration script execution (Flyway/Liquibase) as a controlled step within the deployment pipeline *before* application traffic is shifted to the new version. Implement rollback procedures for migrations.</li>
+                 </ol>
+                 <p class="tool-note">Tools: GitLab CI/CD, AWS CodeDeploy, Terraform, Flyway/Liquibase, Docker, ECR, S3, AWS Systems Manager Parameter Store/Secrets Manager.</p>
+                 <p class="responsibility">Responsibility: DevOps Team, CI/CD System.</p>
+
+                 <h5>2. Activity: Infrastructure Provisioning (Terraform via CI/CD)</h5>
+                  <h6>Implementation Steps:</h6>
+                  <ol>
+                      <li>Create dedicated GitLab CI jobs for `terraform plan` and `terraform apply` for each environment.</li>
+                      <li>Configure jobs to run in the correct `environments/` directory using appropriate `<env>.tfvars`.</li>
+                      <li>**Plan Job:** Runs on MRs targeting `develop`/`release`/`main` branches and on merges. Saves plan file (`tfplan.out`) as an artifact.</li>
+                      <li>**Apply Job (DEV/QA):** Runs automatically after Plan job succeeds on merges to `develop`. Applies the saved plan artifact.</li>
+                      <li>**Apply Job (Staging/PROD):** Includes `when: manual` trigger. Requires authorized user to click 'play' in GitLab UI after reviewing the plan artifact from the preceding job. Applies the saved plan artifact.</li>
+                      <li>Securely provide AWS credentials to the runner executing Terraform (prefer temporary credentials via OIDC or AssumeRole).</li>
+                  </ol>
+                 <p class="responsibility">Responsibility: DevOps Team, CI/CD System, Authorized Approvers (for Staging/Prod).</p>
+                 <div class="quality-gate">
+                    <strong>Quality Gates:</strong> `terraform plan` must succeed. Manual review and approval of plan required for Staging/Prod `apply`. `terraform apply` must complete successfully.
+                 </div>
+
+                  <h5>3. Activity: Release Management & Governance</h5>
+                   <h6>Implementation Steps:</h6>
+                   <ol>
+                       <li>Follow SemVer for versioning releases tagged on `main`.</li>
+                       <li>Generate automated Release Notes from Conventional Commits using GitLab Releases feature. Supplement with manual overview.</li>
+                       <li>Conduct formal Release Readiness Review meeting prior to production deployment approval. Review test results, open defects, performance metrics, security scan summaries, rollback plan. Obtain Go/No-Go decision.</li>
+                       <li>Integrate production deployment approval with NYCPS CCB process. Use GitLab's manual approval gate as evidence.</li>
+                       <li>Communicate release schedule and potential impact to all stakeholders in advance.</li>
+                   </ol>
+                   <p class="responsibility">Responsibility: Release Manager, Project Manager, Tech Leads, QA Lead, Ops Lead, Security Lead, Product Owner, CCB.</p>
+             </div>
+
+             <!-- Operations -->
+             <h3>F. Phase: Operations, Observability & Incident Response</h3>
+              <div class="implementation-steps">
+                 <h5>1. Activity: Monitoring & Alerting Implementation</h5>
+                  <h6>Implementation Steps:</h6>
+                  <ol>
+                      <li>Configure CloudWatch Agent/Fluentd/OTel Collector to ship structured logs and metrics from all compute resources (EC2, Fargate, Lambda) to CloudWatch Logs and Metrics.</li>
+                      <li>Configure CloudWatch Synthetics Canaries for key user endpoint monitoring (API checks, UI workflow checks).</li>
+                      <li>Set up CloudWatch Alarms with specific, actionable thresholds for the "Four Golden Signals" (Latency, Traffic, Errors, Saturation) per service, plus key business metrics and security events (GuardDuty findings, WAF blocks).</li>
+                      <li>Configure SNS topics for alert routing based on severity (e.g., `critical-prod-alerts`, `warning-prod-alerts`, `nonprod-alerts`).</li>
+                      <li>Integrate SNS topics with PagerDuty/Opsgenie for on-call notifications for critical production alerts. Integrate with Slack/Teams for lower severity/non-prod alerts.</li>
+                      <li>Build comprehensive dashboards in CloudWatch/Grafana/QuickSight visualizing key SLIs, operational metrics, logs, and traces per service and environment.</li>
+                  </ol>
+                  <p class="tool-note">Tools: CloudWatch (Logs, Metrics, Alarms, Synthetics), SNS, PagerDuty/Opsgenie, Grafana/QuickSight, AWS X-Ray/OpenTelemetry.</p>
+                  <p class="responsibility">Responsibility: SRE/Ops Team, DevOps Team.</p>
+
+                 <h5>2. Activity: Incident Management & SRE Practices</h5>
+                  <h6>Implementation Steps:</h6>
+                  <ol>
+                      <li>Define and document the Incident Management process: Roles (Incident Commander, Comms Lead, Tech Lead), severity levels (SEV1-SEV4), communication channels (War Room, Status Page), escalation matrix, RCA process.</li>
+                      <li>Configure PagerDuty/Opsgenie with on-call schedules and escalation policies.</li>
+                      <li>Integrate alerting tools with incident tracking (e.g., automatically create Jira tickets for critical alerts).</li>
+                      <li>Conduct regular blameless post-mortems for SEV1/SEV2 incidents, tracking action items rigorously.</li>
+                      <li>Define and track SLOs/SLIs for critical services. Calculate error budgets and use them to inform prioritization between feature work and reliability improvements.</li>
+                      <li>Implement automated operational tasks ("ChatOps" via Slack/Teams bots if appropriate) for common diagnostic or remediation actions.</li>
+                  </ol>
+                 <p class="tool-note">Tools: PagerDuty/Opsgenie, StatusPage.io, Jira/ADO, Confluence, Slack/Teams.</p>
+                 <p class="responsibility">Responsibility: SRE/Ops Team, Incident Commander (during incidents), Development Teams (participating in RCAs).</p>
+
+                 <h5>3. Activity: Ongoing Maintenance & Optimization</h5>
+                 <h6>Implementation Steps:</h6>
+                 <ol>
+                     <li>Establish regular cadence for reviewing and applying OS/runtime/dependency patches using automated tools (Systems Manager Patch Manager) and CI/CD pipelines, starting with lower environments.</li>
+                     <li>Schedule and perform regular DR tests (failover/failback).</li>
+                     <li>Continuously monitor AWS costs and implement optimization recommendations (right-sizing, storage tiering, RI/SP purchases).</li>
+                     <li>Periodically review and tune CloudWatch alarm thresholds based on historical performance.</li>
+                     <li>Review security logs and findings (GuardDuty, Security Hub, WAF logs) regularly.</li>
+                  </ol>
+                 <p class="responsibility">Responsibility: SRE/Ops Team, Security Team, DevOps Team.</p>
+              </div>
+
+             <!-- Feedback Loop -->
+             <h3>G. Phase: Feedback & Continuous Improvement</h3>
+             <div class="implementation-steps">
+                <h5>1. Activity: Collect & Analyze Feedback</h5>
+                 <h6>Implementation Steps:</h6>
+                 <ol>
+                     <li>Establish channels for collecting end-user feedback (in-app forms, support tickets, UAT sessions, surveys).</li>
+                     <li>Analyze operational data: monitoring metrics, incident trends, log patterns, CI/CD pipeline performance (DORA metrics).</li>
+                     <li>Conduct regular Agile Retrospectives (per sprint) focusing on process improvements for the DevSecOps workflow itself.</li>
+                     <li>Review SLO adherence and error budget consumption.</li>
+                 </ol>
+                <p class="responsibility">Responsibility: Product Owner, Project Manager, Scrum Master, SRE/Ops, QA, Dev Teams.</p>
+
+                <h5>2. Activity: Integrate Learnings into Backlog</h5>
+                 <h6>Implementation Steps:</h6>
+                 <ol>
+                     <li>Product Owner/BAs translate validated user feedback and operational requirements into new User Stories or Bugs in the backlog.</li>
+                     <li>Action items from Incident RCAs and Retrospectives are added to the backlog as technical debt, bug, or process improvement tasks.</li>
+                     <li>Prioritize these items alongside new feature development during Backlog Grooming and Sprint Planning, ensuring a balance between new functionality and system health/reliability/security.</li>
+                 </ol>
+                 <p class="responsibility">Responsibility: Product Owner, Scrum Master, Tech Leads.</p>
+              </div>
+        </div>
+    </section>
+
+</body>
+</html>

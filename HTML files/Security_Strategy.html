@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NYCPS TMS - Prescriptive Security & Compliance Strategy</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.8; color: #212529; max-width: 1400px; margin: 25px auto; padding: 35px; background-color: #ffffff; border: 1px solid #dee2e6; border-radius: 10px; box-shadow: 0 6px 12px rgba(0,0,0,0.07); }
+        h1, h2, h3, h4, h5, h6 { color: #002b5c; margin-top: 1.8em; margin-bottom: 0.8em; padding-bottom: 8px; font-weight: 700; border-bottom: 2px solid #003366; }
+        h1 { text-align: center; font-size: 2.6em; border-bottom: 4px solid #003366; margin-bottom: 1.5em; }
+        h2 { /* Major Sections */ font-size: 2.1em; border-bottom: 3px solid #003366; background-color: #eaf2f8; padding: 12px 18px; border-radius: 6px 6px 0 0; margin-left: -36px; margin-right: -36px; margin-top: 2.5em; }
+        h3 { /* Primary Strategy Pillars */ font-size: 1.7em; border-bottom: 2px solid #b7d1ed; padding-left: 10px; margin-top: 2.2em;}
+        h4 { /* Key Security Domains / Processes */ font-size: 1.4em; border-bottom: 1px dashed #ced4da; color: #004080; padding-left: 25px; font-weight: 600; margin-top: 2em; }
+        h5 { /* Specific Controls / Steps */ font-size: 1.2em; border-bottom: none; color: #343a40; padding-left: 40px; font-weight: bold; margin-top: 1.5em; margin-bottom: 0.5em; }
+        h6 { /* Implementation/Tooling Notes */ font-size: 1.05em; border-bottom: none; color: #495057; padding-left: 55px; font-style: italic; margin-top: 1em; margin-bottom: 0.4em; }
+        p, li { margin-bottom: 1em; font-size: 1.1em; }
+        ul { list-style-type: disc; margin-left: 70px; margin-bottom: 1.2em; }
+        ol { list-style-type: decimal; margin-left: 70px; margin-bottom: 1.2em; }
+        ol ol { list-style-type: lower-alpha; margin-left: 90px; }
+        ol ol ol { list-style-type: lower-roman; margin-left: 110px; }
+        strong { font-weight: 700; color: #002b5c; }
+        code { font-family: 'Fira Code', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; display: block; background-color: #2b303b; color: #c0c5ce; padding: 18px; border: 1px solid #3e4451; border-radius: 6px; font-size: 1em; white-space: pre-wrap; word-wrap: break-word; overflow-x: auto; margin: 12px 0; line-height: 1.6; }
+        .section-description { padding: 20px; margin-bottom: 25px; border: 1px solid #e9ecef; background-color: #f8f9fa; border-radius: 5px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.05); }
+        .subsection { padding: 15px; margin: 15px 0; border: 1px solid #f1f1f1; border-left: 5px solid #b7d1ed; background-color: #fff; border-radius: 4px;}
+        .implementation-detail { background-color: #f0fff0; border: 1px solid #c3e6c9; border-left: 5px solid #28a745; padding: 15px; margin-top: 15px; border-radius: 4px; color: #155724; font-size: 1.05em;}
+        .implementation-detail h5 { color: #155724; margin-top: 0;}
+        .responsibility { font-weight: bold; color: #6f42c1; display: block; margin-top: 8px; margin-left: 40px; font-size: 0.95em; }
+        .governance-note { background-color: #fff8e1; border-left: 5px solid #ffc107; padding: 10px 15px; margin: 15px 0; border-radius: 4px; color: #856404; font-style: italic;}
+        .compliance-note { background-color: #f8d7da; border-left: 5px solid #dc3545; padding: 10px 15px; margin: 15px 0; border-radius: 4px; color: #721c24; font-style: italic; font-weight: bold;}
+        .risk-note { background-color: #f8d7da; border-left: 5px solid #dc3545; padding: 10px 15px; margin: 15px 0; border-radius: 4px; color: #721c24; font-weight: bold;}
+        .automation-note { background-color: #d1ecf1; border-left: 5px solid #17a2b8; padding: 10px 15px; margin: 15px 0; border-radius: 4px; color: #0c5460; font-style: italic;}
+        .tool-note { font-style: italic; color: #6c757d; font-size: 0.98em; margin-top: -0.6em; padding-left: 55px; }
+        .emphasis { color: #0056b3; font-weight: bold; }
+        .security-control { border: 1px solid #c6d9f0; padding: 10px 15px; margin: 10px 40px; background-color: #e8f0fe; border-radius: 4px;}
+        .security-control strong { color: #003366;}
+    </style>
+</head>
+<body>
+
+    <h1>NYCPS TMS: Prescriptive Security & Compliance Strategy</h1>
+
+    <!-- Introduction -->
+    <section id="intro-security">
+        <h2>I. Introduction: The Security & Compliance Imperative</h2>
+        <div class="section-description">
+            <p>This document mandates the comprehensive, hyper-detailed, and **non-negotiable** Security and Compliance Strategy for the NYCPS Transportation Management System (TMS) project. Given the system's critical function in transporting students, the extreme sensitivity of the data processed (including student PII protected under FERPA and NY Ed Law 2-d, and potentially health information), deployment within the regulated AWS GovCloud environment, and the stringent requirements imposed by NYC3, OTI, DIIT, and contractual obligations, security and compliance are the absolute top priorities, overriding all other concerns where conflicts arise.</p>
+            <p>**Our approach is Zero Trust and Defense-in-Depth.** We assume no implicit trust based on network location or system origin. Every user, device, and service interaction must be authenticated and explicitly authorized based on the principle of least privilege. Security controls are layered throughout the architecture, application stack, operational processes, and data lifecycle. Compliance is not treated as a checklist item but as an integral outcome of robust, verifiable security practices.</p>
+            <p>This strategy details the specific policies, procedures, technical controls, automation, governance, and ongoing vigilance required to build, operate, and maintain a TMS system that is demonstrably secure, resilient against threats (internal and external), and perpetually audit-ready. **Failure in any aspect of this strategy is unacceptable.**</p>
+             <div class="risk-note">Any security vulnerability or compliance failure could lead to severe consequences, including harm to students, data breaches triggering legal/financial penalties, loss of public trust, project termination, and significant reputational damage to NYCPS.</div>
+        </div>
+    </section>
+
+    <!-- Core Security Principles -->
+    <section id="security-principles">
+        <h2>II. Guiding Security & Compliance Principles (Mandatory)</h2>
+        <div class="section-description">
+             <div class="principle-box" style="border-left-color: #dc3545; background-color: #f8d7da; color: #721c24;">
+                 <h4 style="color: #721c24;">Core Security & Compliance Principles:</h4>
+                <ul>
+                    <li><strong>Security & Compliance by Design/Default:** Controls and requirements *must* be integrated from the earliest design stages and be the default configuration.</li>
+                    <li><strong>Zero Trust Architecture:** Never trust, always verify. Authenticate and authorize every access request based on identity, device posture (where possible), and least privilege, regardless of network location.</li>
+                    <li>**Defense-in-Depth:** Implement multiple, layered security controls (Network, Host, Application, Data, Identity, Operations). A breach of one layer should not compromise the entire system.</li>
+                    <li>**Least Privilege Access:** Grant users, roles, and services *only* the minimum permissions necessary to perform their required functions. Regularly review and revoke unnecessary access.</li>
+                    <li>**Data Minimization & Confidentiality:** Collect, process, and retain only essential data. Classify data rigorously and apply encryption and access controls appropriate to its sensitivity (especially PII).</li>
+                    <li>**Immutable Infrastructure & Automation:** Utilize Infrastructure as Code (IaC) and automated pipelines to build, deploy, and manage infrastructure and applications consistently and securely, reducing manual errors and configuration drift. Treat infrastructure components as ephemeral where possible.</li>
+                    <li>**Continuous Monitoring & Rapid Response:** Implement comprehensive monitoring to detect security threats and compliance deviations in near real-time. Have practiced incident response plans ready for immediate execution.</li>
+                    <li>**Verifiable Compliance:** All controls and processes *must* generate auditable evidence (logs, configuration records, test results, attestations) to demonstrate compliance with all applicable mandates (FERPA, 2-d, NYC3, etc.).</li>
+                    <li>**Secure SDLC Integration:** Embed security activities (threat modeling, SAST, DAST, SCA, security reviews) throughout the entire software development lifecycle ("Shift Left").</li>
+                    <li>**Shared Responsibility (Explicit):** While the Security Team leads strategy and provides expertise, *everyone* involved in the project (Dev, Ops, QA, PM, Users) shares responsibility for adhering to security policies and practices.</li>
+                </ul>
+             </div>
+        </div>
+    </section>
+
+    <!-- Governance & Roles -->
+     <section id="security-governance">
+        <h2>III. Security & Compliance Governance Structure</h2>
+        <div class="section-description">
+            <p>Effective security and compliance require dedicated roles and clear governance integrated with project oversight.</p>
+            <div class="implementation-detail">
+                 <h6>Implementation How-To:</h6>
+                 <ol>
+                    <li>Establish/Leverage a formal **Security Review Board (SRB)** comprising:
+                        <ul>
+                           <li>NYCPS CISO / Designee (Chair)</li>
+                           <li>NYCPS CPO / Designee</li>
+                           <li>Project Security Lead (Vendor)</li>
+                           <li>Lead Cloud Architect (Vendor)</li>
+                           <li>DIIT Security Representative</li>
+                           <li>NYC3 Representative (as required/invited)</li>
+                           <li>Legal Counsel Liaison (as required)</li>
+                           <li>Project Manager (Facilitator/Scribe)</li>
+                        </ul>
+                        The SRB meets regularly (e.g., monthly and ad-hoc) to review/approve security architecture, threat models, significant control implementations, risk assessments, penetration test results, compliance reports, and major security incident post-mortems. Decisions are formally documented.
+                    </li>
+                    <li>Define explicit security responsibilities within project roles (beyond those listed in the HR Plan):
+                        <ul>
+                           <li>**Project Security Lead (Vendor):** Owns implementation of security strategy, coordinates security team activities, primary security POC, reports security status/risks, ensures DevSecOps integration.</li>
+                           <li>**Application Security (AppSec) Engineer(s):** Perform secure code reviews, manage SAST/DAST/SCA tools, provide secure coding training/guidance, assist development teams with vulnerability remediation.</li>
+                           <li>**Cloud Security Engineer(s) (DevSecOps):** Implement/manage security controls in AWS GovCloud (IAM, SGs, WAF, KMS, Config, GuardDuty, Security Hub), automate security checks in IaC/CI/CD, respond to cloud security alerts.</li>
+                           <li>**Compliance Analyst:** Maintains CRTM, tracks compliance evidence, coordinates audit responses, monitors regulatory changes.</li>
+                           <li>**All Developers:** Responsible for writing secure code according to standards, writing tests for security features, remediating vulnerabilities identified in their code.</li>
+                           <li>**All SRE/Ops:** Responsible for secure configuration/patching of infrastructure, monitoring security alerts, participating in incident response.</li>
+                        </ul>
+                    </li>
+                    <li>Integrate security reviews and compliance checks as mandatory quality gates within the overall SDLC and Change Management processes.</li>
+                 </ol>
+                 <p class="responsibility">Responsibility: Project Leadership, NYCPS CISO, CPO, Legal, Security Team Lead.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Compliance Framework -->
+    <section id="compliance-framework-detailed">
+        <h2>IV. Compliance Framework Implementation</h2>
+        <div class="section-description">
+            <p>We will implement a proactive framework to ensure and demonstrate adherence to all relevant mandates.</p>
+             <div class="implementation-detail">
+                 <h6>Implementation How-To:</h6>
+                 <ol>
+                    <li>**Maintain Comprehensive CRTM:** Continuously update the Compliance Requirements Traceability Matrix (CRTM in Confluence) mapping FERPA, NY Ed Law 2-d, CIPA, HIPAA (GovCloud context), WCAG 2.0 AA, NYC3/OTI/DIIT policies, and contractual security/privacy clauses to specific technical controls, operational procedures, test cases, and evidence artifacts (logs, reports, configurations). Assign owners for verifying each mapping.</li>
+                    <li>**Policy Development & Alignment:** Ensure the TMS Data Governance Policy, Incident Response Plans (SIRP & general), BCP, and other project policies are explicitly aligned with and reference applicable regulations and NYCPS standards. Obtain necessary CPO/CISO/Legal approvals.</li>
+                    <li>**Automated Compliance Checks:**
+                        <ul>
+                           <li>Leverage **AWS Config** with managed and custom rules (aligned with FedRAMP High / NIST 800-53 baselines suitable for GovCloud, plus specific NYCPS requirements) to continuously monitor infrastructure configuration compliance (e.g., encryption enabled, public access blocked, logging enabled).</li>
+                           <li>Utilize **AWS Security Hub** to aggregate findings from Config, GuardDuty, Inspector, Macie, and potentially partner tools against specific compliance frameworks (e.g., CIS Benchmarks, NIST).</li>
+                           <li>Implement **automated checks within CI/CD pipelines** (e.g., `tfsec`, `checkov` for IaC; linters for policy adherence in code) to catch potential compliance issues before deployment.</li>
+                           <li>Configure alerts for critical compliance deviations reported by Config/Security Hub.</li>
+                        </ul>
+                    </li>
+                    <li>**Regular Compliance Reviews:** Conduct quarterly internal reviews led by the Compliance Analyst/Officer, using the CRTM and automated tool reports to verify control effectiveness and evidence completeness. Report findings to project leadership and SRB.</li>
+                    <li>**Mandatory Compliance Training:** Implement role-based training covering general privacy/security awareness (all personnel) and specific requirements (FERPA/2-d for data handlers, secure coding for developers, WCAG for frontend devs/designers, incident reporting for all). Track completion rigorously.</li>
+                 </ol>
+                 <p class="responsibility">Responsibility: Compliance Analyst, Security Team, DevOps Team (Automation), PM, Training Lead.</p>
+                 <div class="compliance-note">Proactive, automated monitoring and meticulous evidence management via the CRTM are key to demonstrating continuous compliance.</div>
+            </div>
+    </section>
+
+    <!-- Security Embedded in SDLC -->
+    <section id="security-in-sdlc">
+        <h2>V. Embedding Security Throughout the DevSecOps Lifecycle (Prescriptive)</h2>
+        <div class="section-description">
+            <p>"Shift Left" Security: Security activities are integrated into every phase, not delayed until the end.</p>
+            <ol>
+                <li><strong>Phase 1: Planning & Requirements</strong>
+                    <ul>
+                        <li><span class="emphasis">Mandatory Activity:</span> Identify high-level security & compliance requirements (privacy, availability, integrity needs based on data classification). Incorporate into NFRs.</li>
+                        <li><span class="emphasis">Mandatory Activity:</span> Conduct initial Security Risk Assessment; add security risks to project Risk Register.</li>
+                        <li><span class="emphasis">Mandatory Activity:</span> Define data classification for key data elements anticipated.</li>
+                    </ul>
+                     <div class="quality-gate">Gate: Security/Compliance NFRs included in requirements baseline.</div>
+                </li>
+                 <li><strong>Phase 2: Architecture & Design</strong>
+                    <ul>
+                        <li><span class="emphasis">Mandatory Activity:</span> Conduct detailed **Threat Modeling** (STRIDE/equivalent) for all new services/components and critical workflows. Document threats and required mitigations.</li>
+                        <li><span class="emphasis">Mandatory Activity:</span> Design specific security controls mapped to threats and compliance requirements (AuthN/Z, Encryption, Logging, Input Validation, Network Segmentation).</li>
+                        <li><span class="emphasis">Mandatory Activity:</span> Define secure configurations for AWS services (IAM policies, SG rules, KMS usage).</li>
+                        <li><span class="emphasis">Mandatory Activity:</span> Design secure API contracts.</li>
+                         <li><span class="emphasis">Mandatory Activity:</span> Include security considerations in all Architecture Decision Records (ADRs).</li>
+                    </ul>
+                     <div class="quality-gate">Gate: Security architecture & design formally reviewed and approved by Security Review Board (SRB) / CISO designee. Threat model documented and reviewed.</div>
+                 </li>
+                 <li><strong>Phase 3: Development (Implementation)</strong>
+                    <ul>
+                        <li><span class="emphasis">Mandatory Activity:</span> Strict adherence to Secure Coding Standards (NYCPS, OWASP).</li>
+                        <li><span class="emphasis">Mandatory Activity:</span> Use approved, secure libraries and frameworks. Track dependencies.</li>
+                        <li><span class="emphasis">Mandatory Activity:</span> Implement security controls as designed (AuthN/Z checks, input validation, output encoding, logging).</li>
+                        <li><span class="emphasis">Mandatory Activity:</span> Write unit/integration tests specifically for security controls (e.g., testing access denial for incorrect roles).</li>
+                        <li><span class="emphasis">Mandatory Activity:</span> Run linters and basic security checks via pre-commit hooks.</li>
+                        <li><span class="emphasis">Mandatory Activity:</span> Conduct security-focused peer code reviews using checklists.</li>
+                    </ul>
+                 </li>
+                 <li><strong>Phase 4: Testing & QA</strong>
+                    <ul>
+                        <li><span class="emphasis">Mandatory Activity:</span> Execute automated SAST, SCA, Container Scanning in CI pipelines (block on critical/high findings).</li>
+                        <li><span class="emphasis">Mandatory Activity:</span> Execute automated DAST scans against QA/Staging environments.</li>
+                        <li><span class="emphasis">Mandatory Activity:</span> Develop and execute specific test cases validating security requirements and controls (AuthN/Z rules, input validation effectiveness, error handling security).</li>
+                        <li><span class="emphasis">Mandatory Activity:</span> Conduct formal Penetration Testing (internal/3rd party) against Staging environment before major releases.</li>
+                        <li><span class="emphasis">Mandatory Activity:</span> Track and manage remediation of all identified security vulnerabilities based on severity SLAs.</li>
+                    </ul>
+                    <div class="quality-gate">Gate: All required security tests passed. No unresolved Critical/High vulnerabilities without documented risk acceptance from SRB/CISO.</div>
+                </li>
+                 <li><strong>Phase 5: Deployment & Release</strong>
+                    <ul>
+                        <li><span class="emphasis">Mandatory Activity:</span> Deploy infrastructure using reviewed and approved IaC (Terraform) enforcing secure configurations (Security Groups, IAM, encryption).</li>
+                        <li><span class="emphasis">Mandatory Activity:</span> Use secure deployment strategies (Blue/Green, Canary) managed via CI/CD.</li>
+                        <li><span class="emphasis">Mandatory Activity:</span> Verify production environment configuration compliance using AWS Config Rules post-deployment.</li>
+                        <li><span class="emphasis">Mandatory Activity:</span> Include security sign-off in the Production Readiness Review / Go/No-Go decision.</li>
+                        <li><span class="emphasis">Mandatory Activity:</span> Securely manage secrets/credentials needed for deployment using Secrets Manager/Vault integration in CI/CD.</li>
+                    </ul>
+                    <div class="quality-gate">Gate: Security sign-off obtained for production release. Automated config checks pass.</div>
+                </li>
+                 <li><strong>Phase 6: Operations & Maintenance</strong>
+                    <ul>
+                        <li><span class="emphasis">Mandatory Activity:</span> Continuous security monitoring (GuardDuty, Security Hub, CloudTrail, WAF logs, SIEM).</li>
+                        <li><span class="emphasis">Mandatory Activity:</span> Timely vulnerability patching according to defined SLAs.</li>
+                        <li><span class="emphasis">Mandatory Activity:</span> Regular IAM access reviews and least privilege enforcement.</li>
+                        <li><span class="emphasis">Mandatory Activity:</span> Execute Security Incident Response Plan (SIRP) when needed.</li>
+                        <li><span class="emphasis">Mandatory Activity:</span> Participate in periodic security audits and compliance reviews.</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+    </section>
+
+     <!-- Specific Security Control Domains -->
+    <section id="security-controls">
+        <h2>VI. Detailed Security Control Domains & Implementation</h2>
+        <div class="section-description">
+            <p>This section details the specific technical and procedural controls implemented across key security domains.</p>
+
+            <div class="subsection">
+                <h4>A. Identity & Access Management (IAM) - Zero Trust Foundation</h4>
+                 <div class="implementation-detail">
+                    <h5>Implementation How-To:</h5>
+                    <ol>
+                       <li><strong>Centralized Identity (Human Users):</strong> Federate using SAML/OIDC with NYCPS primary IdP (Azure AD/ADFS/NYCSA) for staff/parents/students where feasible, mapping IdP groups/attributes to TMS roles. Use AWS IAM Identity Center for streamlined federation setup if possible in GovCloud. For users without federation (SBC staff), use AWS Cognito User Pools with mandatory MFA (TOTP Authenticator App preferred over SMS) and strong password policies.</li>
+                       <li><strong>Machine/Service Identity (IAM Roles):</strong> *Mandate* use of IAM Roles for *all* AWS service access (Lambda Execution Roles, ECS Task Roles, EC2 Instance Profiles). **Strictly prohibit use of long-lived IAM user access keys** for applications/services.</li>
+                       <li>**Least Privilege Policies:** Craft fine-grained IAM policies attached to roles/users. Grant only the specific actions (`iam:Action`) needed on specific resources (`Resource ARN`). Use condition keys (`iam:Condition`) extensively to restrict access based on source IP, VPC endpoint, time of day, tags, MFA status, etc. Regularly review policies using IAM Access Analyzer.</li>
+                       <li>**Role-Based Access Control (RBAC) in Application:** Implement application-level authorization checks based on user roles derived from IdP groups/Cognito groups or internal TMS role assignments, enforcing access to specific APIs and data scopes.</li>
+                       <li>**Secrets Management:** Store *all* secrets (DB passwords, API keys, certs) securely in **AWS Secrets Manager**. Configure automatic rotation where supported. Grant access to secrets via least-privilege IAM policies attached to service roles. Applications retrieve secrets at runtime via SDK calls. **No secrets in code, config files, or environment variables.**</li>
+                       <li>**Access Reviews:** Implement mandatory quarterly user access reviews. Managers/Data Stewards review and recertify access for their direct reports/data domains. Automate reporting of current access lists. Revoke unnecessary access promptly via defined offboarding process.</li>
+                       <li>**Auditing:** Log all authentication attempts (success/failure), authorization failures, IAM policy changes (CloudTrail), and Secrets Manager access (CloudTrail). Alert on suspicious IAM activity (privilege escalation, root usage).</li>
+                    </ol>
+                    <p class="tool-note">Tools: AWS IAM (Roles, Policies, Identity Center), AWS Cognito, AWS Secrets Manager, AWS KMS, SAML/OIDC IdPs (NYCPS), Terraform (for IaC).</p>
+                    <p class="responsibility">Responsibility: Security Team (Policy/Design/Audit), DevOps (IaC Implementation), Developers (App RBAC/Secret Retrieval).</p>
+                 </div>
+            </div>
+
+            <div class="subsection">
+                <h4>B. Network Security (Layered Defense)</h4>
+                <div class="implementation-detail">
+                    <h5>Implementation How-To:</h5>
+                    <ol>
+                       <li>**VPC Design:** Use multiple VPCs (Prod/NonProd). Implement multi-AZ design with distinct public and private subnets. Place all sensitive resources (databases, backend compute) in **private subnets** with no direct internet ingress/egress.</li>
+                       <li>**Network Segmentation:**
+                           <ul>
+                               <li>**Security Groups (Stateful):** Define granular SGs per application tier/service. Allow ingress *only* from specific source SGs on specific ports (e.g., DB SG allows port 5432 only from App Tier SG). Default deny all ingress. Egress rules should also be restricted to only necessary destinations where feasible (e.g., VPC endpoints, specific external APIs via NAT GW). Manage SGs via Terraform.</li>
+                               <li>**Network ACLs (Stateless):** Use as a secondary, broader layer of defense. Define NACL rules allowing necessary traffic between subnets but denying common malicious traffic types. Default deny implicit.</li>
+                           </ul>
+                       </li>
+                        <li>**Edge Security:**
+                            <ul>
+                               <li>Deploy **AWS WAF** with ALBs and CloudFront distributions. Use AWS Managed Rulesets (Core rules, SQLi/XSS prevention, Bot Control) and develop custom rules specific to TMS application vulnerabilities or traffic patterns. Configure WAF to block or log suspicious requests.</li>
+                               <li>Utilize **AWS Shield Advanced** for enhanced DDoS protection on critical public endpoints (CloudFront, ALBs, Route 53). Configure proactive engagement with AWS DDoS Response Team (DRT).</li>
+                            </ul>
+                        </li>
+                        <li>**Private Connectivity:** Use **VPC Endpoints (Interface & Gateway)** extensively for accessing AWS services (S3, DynamoDB, KMS, Secrets Mgr, ECR, SQS, SNS, etc.) privately from within the VPC without traversing the internet.</li>
+                        <li>**Traffic Flow Logging:** Enable **VPC Flow Logs** (potentially sampled or targeted at critical subnets due to volume/cost) delivered to CloudWatch Logs or S3 for network traffic analysis and security incident investigation.</li>
+                        <li>**Egress Control:** Route outbound internet traffic from private subnets through **NAT Gateways**. Consider implementing **AWS Network Firewall** or proxy solutions for more granular egress filtering and inspection if required by compliance/security policy.</li>
+                    </ol>
+                     <p class="tool-note">Tools: AWS VPC, Subnets, Security Groups, Network ACLs, NAT Gateway, Internet Gateway, VPC Endpoints, AWS WAF, AWS Shield Advanced, AWS Network Firewall (optional), Route 53, CloudTrail, VPC Flow Logs, Terraform.</p>
+                     <p class="responsibility">Responsibility: Cloud Architect, Network Security Engineer, DevOps Team (IaC), Security Team (WAF/Firewall Rules).</p>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h4>C. Data Security & Privacy Controls</h4>
+                <div class="implementation-detail">
+                    <h5>Implementation How-To:</h5>
+                    <ol>
+                       <li>**Encryption Everywhere:**
+                           <ul>
+                               <li>**At Rest:** Mandate SSE-KMS with dedicated, environment-specific CMKs (with key rotation enabled) for S3 buckets, EBS volumes, RDS instances/snapshots, DynamoDB tables, ElastiCache (where available), SQS/SNS queues containing Confidential/Highly Restricted data. Enforce via IaC and AWS Config rules.</li>
+                               <li>**In Transit:** Mandate TLS 1.2+ with strong ciphers for *all* communication (external user -> AWS Edge, Edge -> Internal Services, Service-to-Service, Service -> Database/Cache/Queue). Configure ALBs, API Gateway, CloudFront, application clients accordingly.</li>
+                           </ul>
+                       </li>
+                        <li>**Data Classification Enforcement:** Technical controls must reflect data classification (from Data Governance Policy/Matrix). E.g., Highly Restricted data requires CMK encryption, more stringent access logging, potentially masking in more scenarios.</li>
+                        <li>**PII Handling:** Implement specific procedures for handling PII according to FERPA/NY Ed Law 2-d: Strict access control (RBAC/ABAC), purpose limitation enforcement in code, secure logging (avoid logging PII directly), mandatory masking/anonymization in non-prod, verifiable destruction after retention period.</li>
+                        <li>**Data Masking/Anonymization:** Implement automated, robust masking/anonymization pipelines (Glue, Lambda) using approved techniques for populating non-prod environments. Verification of effectiveness is mandatory.</li>
+                        <li>**Data Loss Prevention (DLP):** Explore using **AWS Macie** to automatically discover and classify sensitive data (PII) in S3 buckets and alert on unusual access patterns or potential data leakage. Configure Macie jobs and alerts appropriately.</li>
+                        <li>**Secure Backup/Restore:** Ensure backups are encrypted with the same (or stronger) keys as source data. Restrict access to backup/restore functions via IAM. Regularly test restore procedures *and* validate data integrity/security post-restore.</li>
+                        <li>**Secure Destruction:** Implement automated S3 Lifecycle expiration policies for 7-year deletion. Implement verified, logged procedures for deleting data from active databases/EBS if needed before retention expiry (requires formal approval). Obtain/generate Certificates of Destruction.</li>
+                    </ol>
+                    <p class="tool-note">Tools: AWS KMS, AWS Secrets Manager, AWS S3 (SSE, Lifecycle, Policies), AWS RDS (Encryption, Audit Logging), AWS DynamoDB (Encryption, PITR), AWS EBS (Encryption), TLS Certificates (ACM), AWS Config, AWS Macie (optional), AWS Backup, Terraform, Application Code (Masking logic).</p>
+                     <p class="responsibility">Responsibility: Security Team (Encryption/Key Policy), DevOps (IaC Config), Developers (PII Handling/Masking Logic), DBA (DB Security/Backup), Compliance Officer (Verification).</p>
+                    <div class="compliance-note">Data security controls must directly map to and verifiably enforce the TMS Data Governance Policy and all regulatory requirements (FERPA, 2-d).</div>
+                </div>
+            </div>
+
+             <div class="subsection">
+                 <h4>D. Application Security (AppSec)</h4>
+                 <div class="implementation-detail">
+                     <h5>Implementation How-To:</h5>
+                     <ol>
+                        <li>**Secure SDLC Integration:** Embed SAST, SCA, DAST, Container Scanning, Threat Modeling, Secure Code Reviews throughout the development lifecycle (as detailed in SDLC/DevSecOps sections).</li>
+                        <li>**Input Validation:** Mandate rigorous server-side validation of *all* inputs (APIs, UI forms, file uploads) against allow-lists for type, length, format, range using framework features and custom logic. Sanitize data before passing to interpreters (SQL, OS, etc.).</li>
+                        <li>**Output Encoding:** Mandate contextual output encoding for all data reflected back to users (HTML, JavaScript) or used in downstream systems (e.g., generating reports) to prevent XSS. Use framework features (React's default JSX encoding, template engine escaping) and specific encoding libraries where needed.</li>
+                        <li>**Authentication/Authorization Implementation:** Securely implement AuthN/Z checks server-side for every request to protected resources, verifying tokens/sessions and checking permissions/scope against defined RBAC/ABAC rules.</li>
+                        <li>**API Security:** Use API Gateway for public/internal APIs. Implement rate limiting, throttling, request validation (based on OpenAPI spec), and appropriate authorizers (Lambda Authorizer for custom logic, Cognito Authorizer, IAM Authorizer).</li>
+                        <li>**Dependency Management:** Continuously monitor third-party libraries (SCA) and promptly update components with known critical/high vulnerabilities. Maintain a Software Bill of Materials (SBOM).</li>
+                        <li>**Secure Session Management:** Use secure, HttpOnly, SameSite cookies; short timeouts; regenerate session IDs on login; implement secure logout.</li>
+                        <li>**Error Handling:** Implement generic error messages for users; log detailed error information (excluding PII) securely on the backend for debugging.</li>
+                     </ol>
+                     <p class="tool-note">Tools: GitLab CI (SAST, DAST, SCA, Container Scanning), SonarQube, OWASP ZAP, Snyk, Code Review Checklists, API Gateway, Secure Coding Libraries/Framework Features.</p>
+                     <p class="responsibility">Responsibility: Developers (Implementation), AppSec Engineers (Reviews, Tooling, Guidance), QA (Testing Controls).</p>
+                 </div>
+             </div>
+
+            <div class="subsection">
+                <h4>E. Infrastructure Security (Host, Container, Serverless)</h4>
+                 <div class="implementation-detail">
+                    <h5>Implementation How-To:</h5>
+                    <ol>
+                       <li>**Hardening:** Use hardened base Operating System images (e.g., CIS Benchmarked AMIs for EC2, minimal base images like distroless or Alpine for containers). Remove unnecessary packages/services. Configure OS security settings (firewall, auditd).</li>
+                       <li>**Vulnerability Management:** Use AWS Inspector (for EC2) and ECR Scanning/Trivy (for containers) to continuously scan for OS/library vulnerabilities. Integrate results with patching process/CI quality gates.</li>
+                       <li>**Patch Management:** Implement automated patching for OS using AWS Systems Manager Patch Manager for EC2 instances. For containers, mandate rebuilding images regularly with updated base images/dependencies via CI/CD pipeline. Track patching compliance against SLAs.</li>
+                       <li>**Configuration Management:** Use AWS Config rules to monitor infrastructure configurations against defined security baselines (e.g., EBS encryption enabled, S3 public access blocked, specific ports closed in SGs). Alert on non-compliance. Use Terraform/IaC to enforce desired state.</li>
+                       <li>**Container Security:**
+                            <ul>
+                               <li>Scan images for vulnerabilities before deployment.</li>
+                               <li>Run containers as non-root users.</li>
+                               <li>Use read-only file systems where possible.</li>
+                               <li>Configure minimal resource limits (CPU/Memory).</li>
+                               <li>Use Security Groups and potentially network policies (in EKS) for network segmentation.</li>
+                               <li>Monitor container runtime behavior (e.g., using GuardDuty EKS Runtime Monitoring or tools like Falco).</li>
+                            </ul>
+                       </li>
+                        <li>**Serverless Security (Lambda):**
+                            <ul>
+                               <li>Assign least-privilege IAM execution roles per function.</li>
+                               <li>Store secrets in Secrets Manager, access via IAM role (never in environment variables directly unless encrypted with KMS).</li>
+                               <li>Validate input event schemas.</li>
+                               <li>Include dependencies securely; scan deployment packages for vulnerabilities (SCA).</li>
+                               <li>Configure appropriate memory/timeout limits to prevent abuse.</li>
+                               <li>Monitor execution logs and errors via CloudWatch.</li>
+                            </ul>
+                        </li>
+                    </ol>
+                    <p class="tool-note">Tools: AWS Inspector, AWS Systems Manager (Patch Manager, State Manager), ECR Scanning, Trivy/Clair, AWS Config, GuardDuty, Terraform, Docker Security Best Practices, Lambda Best Practices.</p>
+                    <p class="responsibility">Responsibility: SRE/Ops Team, DevOps Team (IaC/Patch Automation), Security Team (Scanning/Policy), Developers (Container/Lambda config).</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SecOps & Incident Response -->
+     <section id="secops-ir">
+        <h2>VII. Security Operations (SecOps) & Incident Response</h2>
+        <div class="section-description">
+            <p>This details the processes for continuously monitoring the security posture and responding rapidly and effectively to potential security incidents.</p>
+            <div class="implementation-detail">
+                 <h5>Implementation How-To:</h5>
+                 <ol>
+                    <li>**Centralized Security Monitoring & SIEM:**
+                        <ul>
+                           <li>Aggregate logs (CloudTrail, VPC Flow Logs, WAF, GuardDuty findings, Security Hub findings, critical application security logs) into a dedicated SIEM (e.g., AWS OpenSearch Service with Security Analytics, Splunk).</li>
+                           <li>Develop correlation rules and threat detection logic within the SIEM specific to TMS threats and compliance requirements.</li>
+                           <li>Create security-focused dashboards for visualizing security posture, active threats, and compliance status.</li>
+                        </ul>
+                        <p class="responsibility">Responsibility: Security Team (SecOps).</p>
+                    </li>
+                    <li>**Security Alerting:**
+                        <ul>
+                           <li>Configure high-fidelity alerts based on SIEM correlations, GuardDuty/Security Hub critical findings, critical AWS Config non-compliance, and key application security events (e.g., repeated AuthZ failures, potential injection attempts detected by WAF/App logs).</li>
+                           <li>Route critical security alerts *immediately* to the Security Team on-call rotation via PagerDuty/Opsgenie.</li>
+                           <li>Route lower-priority security notifications to dedicated Slack/Teams channels.</li>
+                        </ul>
+                         <p class="responsibility">Responsibility: Security Team, SRE/Ops (Alerting Infra).</p>
+                    </li>
+                     <li>**Security Incident Response Plan (SIRP):**
+                        <ul>
+                           <li>Maintain and regularly rehearse (via tabletop exercises) the dedicated SIRP covering specific threat scenarios (Malware, Ransomware, DDoS, Unauthorized Access, Insider Threat, Data Breach/Exfiltration).</li>
+                           <li>SIRP *must* include phases: Preparation -> Detection & Analysis -> Containment -> Eradication -> Recovery -> Post-Incident Activity (RCA, Lessons Learned).</li>
+                           <li>Define clear roles and responsibilities during a security incident (Security Incident Lead, Forensics Lead, Comms Lead, Legal Liaison, etc.).</li>
+                           <li>Mandate immediate engagement protocols between Security, SRE/Ops, Legal, Comms, and NYCPS Leadership (CISO, CPO) based on incident severity/type, especially for potential data breaches.</li>
+                           <li>Include specific procedures for evidence preservation and forensic analysis (leveraging CloudTrail, logs, snapshots).</li>
+                           <li>Integrate SIRP communication steps with overall Incident Management and BCP communication plans.</li>
+                         </ul>
+                        <p class="responsibility">Responsibility: Security Team (Owner/Lead), SRE/Ops, Legal, Comms, CISO/CPO.</p>
+                         <div class="compliance-note">Having a well-defined and practiced SIRP is critical for meeting data breach notification requirements (e.g., under NY Ed Law 2-d) and minimizing incident impact.</div>
+                    </li>
+                 </ol>
+            </div>
+        </div>
+    </section>
+
+     <!-- Vendor & Third-Party Security -->
+    <section id="vendor-security">
+        <h2>VIII. Vendor & Third-Party Security Management</h2>
+        <div class="section-description">
+            <p>Security risks extend to the entire supply chain. We will enforce strict security requirements for all external parties interacting with TMS data or systems.</p>
+             <div class="implementation-detail">
+                 <h6>Implementation How-To:</h6>
+                 <ol>
+                    <li>**Mandatory Pre-Contract Due Diligence:** Perform rigorous security assessments (reviewing policies, certifications like SOC2/ISO27001, questionnaires, potentially vulnerability scans/interviews) for *all* vendors handling TMS data or providing critical system components *before* contract signing. Document findings and required remediations.</li>
+                    <li>**Contractual Security Requirements:** Ensure contracts include mandatory clauses requiring adherence to NYCPS security/privacy policies (flow-down), specific security controls (e.g., encryption), audit rights, breach notification obligations (within 24 hours), and secure offboarding/data destruction requirements.</li>
+                    <li>**Least Privilege Access for Vendors:** Grant vendor personnel/systems only the absolute minimum necessary access to NYCPS environments or data, using time-bound, audited mechanisms (e.g., temporary IAM roles, restricted VPN access).</li>
+                    <li>**Ongoing Monitoring (Where Applicable):** For critical SaaS vendors, periodically review their compliance documentation (updated SOC2 reports) and security posture. Monitor logs for anomalous vendor access patterns.</li>
+                    <li>**Secure Offboarding:** Rigorously execute the access revocation checklist for all vendor personnel/systems immediately upon contract termination or personnel departure. Ensure data destruction certification is received.</li>
+                 </ol>
+                 <p class="responsibility">Responsibility: Security Team (Assessments), Contract Manager, Legal (Contracts), PM/VRM (Ongoing Monitoring), IT/Ops (Access Control).</p>
+             </div>
+        </div>
+    </section>
+
+     <!-- Automation & Guardrails -->
+    <section id="security-automation">
+        <h2>IX. Security Automation & Automated Guardrails</h2>
+        <div class="section-description">
+            <p>Automation is key to consistently enforcing security policies and providing rapid feedback.</p>
+             <div class="implementation-detail">
+                 <div class="automation-note">We will automate security checks and controls wherever feasible to reduce manual effort and ensure consistent enforcement.</div>
+                 <h6>Implementation How-To:</h6>
+                 <ol>
+                    <li>**CI/CD Security Gates:** Automate SAST, SCA, Container Scanning, and potentially basic DAST checks within GitLab CI/CD pipelines, configured to *fail the build* based on severity thresholds.</li>
+                    <li>**IaC Security Validation:** Integrate tools like `tfsec`, `Checkov`, or `CloudFormation Guard` into CI pipelines to scan Terraform/CloudFormation code for security misconfigurations *before* deployment. Fail builds on critical findings.</li>
+                    <li>**AWS Config Rules (Preventive & Detective):** Deploy AWS Config rules (managed and custom) to continuously monitor resource configurations against security baselines (e.g., check for unencrypted volumes, public S3 buckets, permissive SGs). Configure *auto-remediation* actions (via Systems Manager Automation) for specific, low-risk violations where appropriate and approved.</li>
+                    <li>**Automated Alerting:** Configure CloudWatch Alarms/EventBridge rules based on Security Hub findings, GuardDuty alerts, Config non-compliance, and critical security logs to trigger automated notifications or incident response workflows.</li>
+                    <li>**IAM Policy Validation:** Use IAM Access Analyzer to continuously review IAM policies for unintended external or cross-account access and alert on findings.</li>
+                    <li>**Patch Management Automation:** Utilize AWS Systems Manager Patch Manager to automate OS patching schedules and compliance reporting for EC2 instances.</li>
+                 </ol>
+                  <p class="responsibility">Responsibility: DevOps Team, Security Team, SRE/Ops Team.</p>
+             </div>
+        </div>
+    </section>
+
+    <!-- Training & Awareness -->
+    <section id="security-training">
+        <h2>X. Security Training & Awareness Program</h2>
+        <div class="section-description">
+            <p>Technology and processes are only effective if personnel understand their security responsibilities.</p>
+             <div class="implementation-detail">
+                 <h6>Implementation How-To:</h6>
+                 <ol>
+                     <li>**Mandatory Onboarding Training:** All project personnel (including vendor staff) *must* complete initial training covering: NYCPS Acceptable Use Policy, Data Classification, PII Handling (FERPA/2-d focus), Phishing Awareness, Secure Password Practices, Incident Reporting Procedures. Track completion.</li>
+                     <li>**Role-Based Security Training:** Provide specific, mandatory training based on roles:
+                        <ul>
+                           <li>**Developers:** Secure Coding Practices (OWASP Top 10, language specifics), Threat Modeling basics, Using security tools in CI/CD.</li>
+                           <li>**Ops/SRE/DevOps:** Secure AWS Configuration (IAM, Networking, KMS), Secure IaC practices, Incident Response procedures, Log analysis basics.</li>
+                           <li>**QA:** Security testing concepts, Identifying common vulnerabilities, Testing security controls.</li>
+                           <li>**PMs/POs/BAs:** Understanding security requirements, Risk management related to security, Secure design principles overview.</li>
+                           <li>**Support Staff:** Recognizing security incidents, Secure handling of user data, Escalation procedures.</li>
+                        </ul>
+                    </li>
+                    <li>**Annual Refresher Training:** Mandate annual completion of core security awareness and relevant role-based training modules.</li>
+                    <li>**Phishing Simulations:** Conduct periodic simulated phishing campaigns to test and reinforce awareness.</li>
+                    <li>**Security Champions Program:** Identify security-minded individuals within development teams to act as local advocates, mentors, and liaisons with the central security team.</li>
+                    <li>**Documentation:** Make security policies, standards, and training materials easily accessible via Confluence.</li>
+                 </ol>
+                 <p class="responsibility">Responsibility: Security Team (Content/Delivery), Training Lead (Logistics/Tracking), Managers/Leads (Ensuring team completion).</p>
+             </div>
+        </div>
+    </section>
+
+     <!-- Audit Readiness -->
+    <section id="audit-readiness-sec">
+        <h2>XI. Compliance Audit Readiness (Security Focus)</h2>
+        <div class="section-description">
+            <p>We maintain a state of perpetual readiness for security-focused audits.</p>
+             <div class="implementation-detail">
+                 <h6>Implementation How-To:</h6>
+                 <ol>
+                    <li>**Evidence Collection Automation:** Leverage AWS Config, Security Hub, CloudTrail, GuardDuty, IAM Access Analyzer, and GitLab CI/CD logs/reports as primary sources of automated evidence for control effectiveness. Configure delivery to central logging/S3 archives.</li>
+                    <li>**CRTM for Security Controls:** Ensure the Compliance Requirements Traceability Matrix explicitly maps security regulations/policies (NYC3, FERPA, 2-d) to specific technical controls (KMS keys, SG rules, WAF rules, IAM policies, SAST checks, etc.) and links to automated evidence sources or manual test results.</li>
+                    <li>**Regular Internal Security Audits:** Conduct quarterly internal audits focusing on specific security domains (e.g., IAM configuration, Network segmentation, Vulnerability management process, Incident Response readiness) using the CRTM and automated tool outputs. Track findings and remediation.</li>
+                    <li>**Documentation Repository:** Maintain the organized Confluence space containing all security policies, standards, architecture diagrams, threat models, security test reports (pen tests, scan summaries), incident post-mortems, training records, and internal/external audit reports/responses.</li>
+                    <li>**Audit Response Playbook:** Maintain a specific playbook for responding to external security audits, detailing roles (Audit Liaison, SMEs), evidence gathering process, communication protocols, and review/approval steps for responses.</li>
+                 </ol>
+                 <p class="responsibility">Responsibility: Security Team, Compliance Analyst, PM, DevOps/SRE (Evidence generation).</p>
+             </div>
+        </div>
+    </section>
+
+    <!-- Conclusion -->
+    <section id="conclusion-security">
+        <h2>XII. Conclusion: Building a Foundation of Trust</h2>
+        <div class="section-description">
+            <p>This Prescriptive Security & Compliance Strategy establishes an uncompromising framework designed to protect sensitive student data, ensure regulatory adherence, and build operational resilience for the NYCPS TMS. By embedding security into every phase of the lifecycle ("Shift Left"), leveraging extensive automation and AWS GovCloud's capabilities, implementing defense-in-depth across all layers, mandating rigorous testing and validation, and fostering a security-aware culture through continuous training and clear accountability, we create a demonstrably secure and compliant system.</p>
+            <p>The hyper-detailed controls, processes, governance structures, and focus on verifiable evidence outlined herein provide the necessary assurance for a critical public sector application handling PII. Adherence to this strategy is mandatory and fundamental to maintaining the trust of NYCPS, students, parents, and the public, ensuring the TMS project's long-term success and integrity.</p>
+        </div>
+    </section>
+
+</body>
+</html>

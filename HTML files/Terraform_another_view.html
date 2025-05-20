@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NYCPS TMS - Expanded Terraform Module Examples</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.7; color: #212529; max-width: 1200px; margin: 25px auto; padding: 25px; background-color: #fdfdfe; border: 1px solid #ced4da; border-radius: 8px; }
+        h1, h2, h3, h4 { color: #003366; margin-top: 1.8em; margin-bottom: 0.8em; padding-bottom: 6px; font-weight: 600; }
+        h1 { text-align: center; font-size: 2.4em; border-bottom: 3px solid #003366; margin-bottom: 1.2em; }
+        h2 { /* Module Title */ font-size: 2.0em; border-bottom: 2px solid #003366; background-color: #eaf2f8; padding: 10px 15px; border-radius: 5px 5px 0 0; margin-left: -26px; margin-right: -26px; margin-top: 2em; }
+        h3 { /* File Name */ font-size: 1.6em; border-bottom: 1px solid #b7d1ed; padding-left: 15px; }
+        h4 { /* Code Purpose/Notes */ font-size: 1.3em; border-bottom: none; color: #0056b3; padding-left: 30px; font-weight: 500; }
+        p, li { margin-bottom: 0.9em; font-size: 1.08em; }
+        ul { list-style-type: square; margin-left: 60px; margin-bottom: 1em; }
+        strong { font-weight: 600; color: #003366; }
+        code { font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; display: block; background-color: #282c34; color: #abb2bf; padding: 15px; border: 1px solid #3e4451; border-radius: 5px; font-size: 0.95em; white-space: pre; overflow-x: auto; margin: 10px 0; }
+        code .tf-comment { color: #5c6370; font-style: italic; }
+        code .tf-keyword { color: #c678dd; }
+        code .tf-string { color: #98c379; }
+        code .tf-number { color: #d19a66; }
+        code .tf-variable { color: #e06c75; }
+        code .tf-resource-type { color: #e5c07b; }
+        code .tf-resource-name { color: #61afef; }
+        code .tf-attribute { color: #abb2bf; }
+        .warning-box { background-color: #fff3cd; border: 1px solid #ffeeba; border-left: 5px solid #ffc107; padding: 15px; margin: 15px 0; border-radius: 4px; color: #856404; }
+        .info-box { background-color: #e2f0f9; border: 1px solid #b8daff; border-left: 5px solid #007bff; padding: 15px; margin: 15px 0; border-radius: 4px; color: #004085; }
+        .module-section { padding-bottom: 20px; margin-bottom: 20px; border-bottom: 3px dotted #ced4da; }
+    </style>
+</head>
+<body>
+
+    <h1>NYCPS TMS - Expanded Terraform Module Examples</h1>
+
+    <section id="intro">
+        <p>This document provides more detailed, representative Terraform code examples for key AWS GovCloud services identified in the architecture. Place these within appropriately named subdirectories inside your main `modules/` directory.</p>
+        <div class="warning-box">
+            <strong>CRITICAL:</strong> This is example code. Customize names, CIDRs, ARNs, IAM policies, security groups, instance types, KMS keys, tags, and all other configuration parameters according to NYCPS requirements, security policies, and best practices before deploying to any environment. Always run `terraform plan` and review carefully.
+        </div>
+    </section>
+
+    <!-- Module Example Sections -->
+
+    <section class="module-section" id="module-s3">
+        <h2>Module: Secure S3 Bucket (`modules/s3_bucket/`)</h2>
+        <p>Creates a private S3 bucket with versioning, encryption, access logging, and public access block.</p>
+
+        <h3>`variables.tf`</h3>
+        <code><span class="tf-keyword">variable</span> <span class="tf-variable">"bucket_name_prefix"</span> {
+  <span class="tf-attribute">description</span> = <span class="tf-string">"Prefix for the S3 bucket name (will have env/random suffix)"</span>
+  <span class="tf-attribute">type</span>        = <span class="tf-keyword">string</span>
+}
+
+<span class="tf-keyword">variable</span> <span class="tf-variable">"environment_name"</span> {
+  <span class="tf-attribute">description</span> = <span class="tf-string">"Environment name (e.g., dev, prod)"</span>
+  <span class="tf-attribute">type</span>        = <span class="tf-keyword">string</span>
+}
+
+<span class="tf-keyword">variable</span> <span class="tf-variable">"kms_key_arn"</span> {
+  <span class="tf-attribute">description</span> = <span class="tf-string">"Optional: KMS Key ARN for SSE-KMS encryption"</span>
+  <span class="tf-attribute">type</span>        = <span class="tf-keyword">string</span>
+  <span class="tf-attribute">default</span>     = <span class="tf-keyword">null</span>
+}
+
+<span class="tf-keyword">variable</span> <span class="tf-variable">"access_log_bucket_name"</span> {
+  <span class="tf-attribute">description</span> = <span class="tf-string">"Name of the S3 bucket where access logs should be delivered"</span>
+  <span class="tf-attribute">type</span>        = <span class="tf-keyword">string</span>
+  <span class="tf-attribute">default</span>     = <span class="tf-keyword">null</span> <span class="tf-comment"># Set to enable logging</span>
+}
+
+<span class="tf-keyword">variable</span> <span class="tf-variable">"lifecycle_rules"</span> {
+  <span class="tf-attribute">description</span> = <span class="tf-string">"List of lifecycle rule objects (e.g., for transitions to Glacier)"</span>
+  <span class="tf-attribute">type</span>        = <span class="tf-keyword">any</span> <span class="tf-comment"># Complex type, define structure or use specific object type</span>
+  <span class="tf-attribute">default</span>     = []
+}
+
+<span class="tf-keyword">variable</span> <span class="tf-variable">"tags"</span> {
+  <span class="tf-attribute">description</span> = <span class="tf-string">"Map of tags to assign to the bucket"</span>
+  <span class="tf-attribute">type</span>        = <span class="tf-keyword">map</span>(<span class="tf-keyword">string</span>)
+  <span class="tf-attribute">default</span>     = {}
+}
+</code>
+
+        <h3>`main.tf`</h3>
+        <code><span class="tf-keyword">resource</span> <span class="tf-resource-type">"random_id"</span> <span class="tf-resource-name">"suffix"</span> {
+  <span class="tf-attribute">byte_length</span> = <span class="tf-number">4</span>
+}
+
+<span class="tf-keyword">resource</span> <span class="tf-resource-type">"aws_s3_bucket"</span> <span class="tf-resource-name">"this"</span> {
+  <span class="tf-attribute">bucket</span> = <span class="tf-string">"${var.bucket_name_prefix}-${var.environment_name}-${random_id.suffix.hex}"</span>
+
+  <span class="tf-attribute">tags</span> = <span class="tf-variable">var.tags</span>
+}
+
+<span class="tf-keyword">resource</span> <span class="tf-resource-type">"aws_s3_bucket_versioning"</span> <span class="tf-resource-name">"this"</span> {
+  <span class="tf-attribute">bucket</span> = <span class="tf-resource-type">aws_s3_bucket.this.id</span>
+  <span class="tf-keyword">versioning_configuration</span> {
+    <span class="tf-attribute">status</span> = <span class="tf-string">"Enabled"</span>
+  }
+}
+
+<span class="tf-keyword">resource</span> <span class="tf-resource-type">"aws_s3_bucket_server_side_encryption_configuration"</span> <span class="tf-resource-name">"this"</span> {
+  <span class="tf-attribute">bucket</span> = <span class="tf-resource-type">aws_s3_bucket.this.id</span>
+
+  <span class="tf-keyword">rule</span> {
+    <span class="tf-keyword">apply_server_side_encryption_by_default</span> {
+      <span class="tf-attribute">sse_algorithm</span>     = <span class="tf-variable">var.kms_key_arn</span> == <span class="tf-keyword">null</span> ? <span class="tf-string">"AES256"</span> : <span class="tf-string">"aws:kms"</span>
+      <span class="tf-attribute">kms_master_key_id</span> = <span class="tf-variable">var.kms_key_arn</span>
+    }
+  }
+}
+
+<span class="tf-keyword">resource</span> <span class="tf-resource-type">"aws_s3_bucket_public_access_block"</span> <span class="tf-resource-name">"this"</span> {
+  <span class="tf-attribute">bucket</span>                  = <span class="tf-resource-type">aws_s3_bucket.this.id</span>
+  <span class="tf-attribute">block_public_acls</span>       = <span class="tf-keyword">true</span>
+  <span class="tf-attribute">block_public_policy</span>     = <span class="tf-keyword">true</span>
+  <span class="tf-attribute">ignore_public_acls</span>      = <span class="tf-keyword">true</span>
+  <span class="tf-attribute">restrict_public_buckets</span> = <span class="tf-keyword">true</span>
+}
+
+<span class="tf-keyword">resource</span> <span class="tf-resource-type">"aws_s3_bucket_logging"</span> <span class="tf-resource-name">"this"</span> {
+  <span class="tf-attribute">count</span> = <span class="tf-variable">var.access_log_bucket_name</span> == <span class="tf-keyword">null</span> ? 0 : 1
+
+  <span class="tf-attribute">bucket</span> = <span class="tf-resource-type">aws_s3_bucket.this.id</span>
+
+  <span class="tf-attribute">target_bucket</span> = <span class="tf-variable">var.access_log_bucket_name</span>
+  <span class="tf-attribute">target_prefix</span> = <span class="tf-string">"log/${aws_s3_bucket.this.bucket}/"</span>
+}
+
+<span class="tf-keyword">resource</span> <span class="tf-resource-type">"aws_s3_bucket_lifecycle_configuration"</span> <span class="tf-resource-name">"this"</span> {
+  <span class="tf-attribute">count</span> = <span class="tf-keyword">length</span>(<span class="tf-variable">var.lifecycle_rules</span>) > 0 ? 1 : 0
+
+  <span class="tf-attribute">bucket</span> = <span class="tf-resource-type">aws_s3_bucket.this.id</span>
+
+  <span class="tf-attribute">dynamic</span> <span class="tf-string">"rule"</span> {
+    <span class="tf-attribute">for_each</span> = <span class="tf-variable">var.lifecycle_rules</span>
+    <span class="tf-attribute">content</span> {
+      <span class="tf-attribute">id</span>     = <span class="tf-attribute">rule.value.id</span>
+      <span class="tf-attribute">status</span> = <span class="tf-attribute">lookup</span>(<span class="tf-attribute">rule.value</span>, <span class="tf-string">"status"</span>, <span class="tf-string">"Enabled"</span>)
+
+      <span class="tf-attribute">dynamic</span> <span class="tf-string">"filter"</span> { <span class="tf-comment"># Optional filter block</span>
+        <span class="tf-attribute">for_each</span> = <span class="tf-attribute">lookup</span>(<span class="tf-attribute">rule.value</span>, <span class="tf-string">"filter"</span>, <span class="tf-keyword">null</span>) != <span class="tf-keyword">null</span> ? [1] : []
+        <span class="tf-attribute">content</span> {
+          <span class="tf-attribute">prefix</span> = <span class="tf-attribute">lookup</span>(<span class="tf-attribute">rule.value.filter</span>, <span class="tf-string">"prefix"</span>, <span class="tf-keyword">null</span>)
+          <span class="tf-comment"># Add tags filter if needed</span>
+        }
+      }
+
+      <span class="tf-attribute">dynamic</span> <span class="tf-string">"transition"</span> {
+        <span class="tf-attribute">for_each</span> = <span class="tf-attribute">lookup</span>(<span class="tf-attribute">rule.value</span>, <span class="tf-string">"transition"</span>, [])
+        <span class="tf-attribute">content</span> {
+          <span class="tf-attribute">days</span>          = <span class="tf-attribute">lookup</span>(<span class="tf-attribute">transition.value</span>, <span class="tf-string">"days"</span>, <span class="tf-keyword">null</span>)
+          <span class="tf-attribute">storage_class</span> = <span class="tf-attribute">transition.value.storage_class</span>
+        }
+      }
+
+      <span class="tf-attribute">dynamic</span> <span class="tf-string">"expiration"</span> {
+         <span class="tf-attribute">for_each</span> = <span class="tf-attribute">lookup</span>(<span class="tf-attribute">rule.value</span>, <span class="tf-string">"expiration"</span>, <span class="tf-keyword">null</span>) != <span class="tf-keyword">null</span> ? [1] : []
+         <span class="tf-attribute">content</span> {
+            <span class="tf-attribute">days</span> = <span class="tf-attribute">lookup</span>(<span class="tf-attribute">rule.value.expiration</span>, <span class="tf-string">"days"</span>, <span class="tf-keyword">null</span>)
+            <span class="tf-comment"># expired_object_delete_marker = true # for versioning</span>
+         }
+      }
+       <span class="tf-comment"># Add noncurrent_version_transition/expiration if needed</span>
+    }
+  }
+}
+</code>
+
+        <h3>`outputs.tf`</h3>
+        <code><span class="tf-keyword">output</span> <span class="tf-variable">"bucket_id"</span> {
+  <span class="tf-attribute">description</span> = <span class="tf-string">"The name of the bucket"</span>
+  <span class="tf-attribute">value</span>       = <span class="tf-resource-type">aws_s3_bucket.this.id</span>
+}
+<span class="tf-keyword">output</span> <span class="tf-variable">"bucket_arn"</span> {
+  <span class="tf-attribute">description</span> = <span class="tf-string">"The ARN of the bucket"</span>
+  <span class="tf-attribute">value</span>       = <span class="tf-resource-type">aws_s3_bucket.this.arn</span>
+}
+</code>
+    </section>
+
+    <section class="module-section" id="module-iam-role">
+        <h2>Module: IAM Role (`modules/iam_role/`)</h2>
+        <p>Creates a generic IAM role for an AWS service (e.g., Lambda, EC2, ECS Task) with specified policies.</p>
+
+        <h3>`variables.tf`</h3>
+        <code><span class="tf-keyword">variable</span> <span class="tf-variable">"role_name"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span> }
+<span class="tf-keyword">variable</span> <span class="tf-variable">"description"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span>; <span class="tf-attribute">default</span> = <span class="tf-string">"IAM role"</span> }
+<span class="tf-keyword">variable</span> <span class="tf-variable">"assume_role_policy_json"</span> {
+  <span class="tf-attribute">description</span> = <span class="tf-string">"JSON policy document allowing services (e.g., lambda.amazonaws.com) to assume this role"</span>
+  <span class="tf-attribute">type</span>        = <span class="tf-keyword">string</span>
+}
+<span class="tf-keyword">variable</span> <span class="tf-variable">"managed_policy_arns"</span> {
+  <span class="tf-attribute">description</span> = <span class="tf-string">"List of ARNs for AWS Managed Policies to attach"</span>
+  <span class="tf-attribute">type</span>        = <span class="tf-keyword">list</span>(<span class="tf-keyword">string</span>)
+  <span class="tf-attribute">default</span>     = []
+}
+<span class="tf-keyword">variable</span> <span class="tf-variable">"inline_policy_json"</span> {
+  <span class="tf-attribute">description</span> = <span class="tf-string">"Optional: JSON policy document for an inline policy"</span>
+  <span class="tf-attribute">type</span>        = <span class="tf-keyword">string</span>
+  <span class="tf-attribute">default</span>     = <span class="tf-keyword">null</span>
+}
+<span class="tf-keyword">variable</span> <span class="tf-variable">"inline_policy_name"</span> {
+  <span class="tf-attribute">description</span> = <span class="tf-string">"Name for the inline policy, required if inline_policy_json is set"</span>
+  <span class="tf-attribute">type</span>        = <span class="tf-keyword">string</span>
+  <span class="tf-attribute">default</span>     = <span class="tf-string">"inline-policy"</span>
+}
+<span class="tf-keyword">variable</span> <span class="tf-variable">"tags"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">map</span>(<span class="tf-keyword">string</span>); <span class="tf-attribute">default</span> = {} }
+</code>
+
+        <h3>`main.tf`</h3>
+        <code><span class="tf-keyword">resource</span> <span class="tf-resource-type">"aws_iam_role"</span> <span class="tf-resource-name">"this"</span> {
+  <span class="tf-attribute">name</span>               = <span class="tf-variable">var.role_name</span>
+  <span class="tf-attribute">description</span>        = <span class="tf-variable">var.description</span>
+  <span class="tf-attribute">assume_role_policy</span> = <span class="tf-variable">var.assume_role_policy_json</span>
+  <span class="tf-attribute">tags</span>               = <span class="tf-variable">var.tags</span>
+}
+
+<span class="tf-comment"># Attach Managed Policies</span>
+<span class="tf-keyword">resource</span> <span class="tf-resource-type">"aws_iam_role_policy_attachment"</span> <span class="tf-resource-name">"managed"</span> {
+  <span class="tf-attribute">count</span>      = <span class="tf-keyword">length</span>(<span class="tf-variable">var.managed_policy_arns</span>)
+  <span class="tf-attribute">role</span>       = <span class="tf-resource-type">aws_iam_role.this.name</span>
+  <span class="tf-attribute">policy_arn</span> = <span class="tf-variable">var.managed_policy_arns</span>[<span class="tf-attribute">count.index</span>]
+}
+
+<span class="tf-comment"># Attach Inline Policy (if provided)</span>
+<span class="tf-keyword">resource</span> <span class="tf-resource-type">"aws_iam_role_policy"</span> <span class="tf-resource-name">"inline"</span> {
+  <span class="tf-attribute">count</span>  = <span class="tf-variable">var.inline_policy_json</span> != <span class="tf-keyword">null</span> ? 1 : 0
+  <span class="tf-attribute">name</span>   = <span class="tf-variable">var.inline_policy_name</span>
+  <span class="tf-attribute">role</span>   = <span class="tf-resource-type">aws_iam_role.this.id</span>
+  <span class="tf-attribute">policy</span> = <span class="tf-variable">var.inline_policy_json</span>
+}
+</code>
+
+        <h3>`outputs.tf`</h3>
+        <code><span class="tf-keyword">output</span> <span class="tf-variable">"role_arn"</span> {
+  <span class="tf-attribute">description</span> = <span class="tf-string">"ARN of the created IAM role"</span>
+  <span class="tf-attribute">value</span>       = <span class="tf-resource-type">aws_iam_role.this.arn</span>
+}
+<span class="tf-keyword">output</span> <span class="tf-variable">"role_name"</span> {
+  <span class="tf-attribute">description</span> = <span class="tf-string">"Name of the created IAM role"</span>
+  <span class="tf-attribute">value</span>       = <span class="tf-resource-type">aws_iam_role.this.name</span>
+}
+</code>
+        <div class="warning-box">
+            <strong>IAM Security:</strong> Craft `assume_role_policy_json` and specific policy documents (passed via `inline_policy_json` or created as separate `aws_iam_policy` resources and passed via `managed_policy_arns`) with extreme care, adhering strictly to least privilege. Avoid wildcard (`*`) permissions wherever possible.
+        </div>
+    </section>
+
+     <section class="module-section" id="module-lambda">
+        <h2>Module: Lambda Function (`modules/lambda_function/`)</h2>
+        <p>Creates an AWS Lambda function from a deployment package in S3.</p>
+
+         <h3>`variables.tf`</h3>
+         <code><span class="tf-keyword">variable</span> <span class="tf-variable">"function_name"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span> }
+<span class="tf-keyword">variable</span> <span class="tf-variable">"description"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span>; <span class="tf-attribute">default</span> = <span class="tf-string">"Lambda function"</span> }
+<span class="tf-keyword">variable</span> <span class="tf-variable">"handler"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span> } <span class="tf-comment"># e.g., "index.handler" for Node.js</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"runtime"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span> } <span class="tf-comment"># e.g., "nodejs18.x", "python3.11"</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"iam_role_arn"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span> } <span class="tf-comment"># ARN from the IAM role module</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"s3_bucket"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span> } <span class="tf-comment"># Bucket where deployment package sits</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"s3_key"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span> } <span class="tf-comment"># Key (path) to the .zip file in S3</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"s3_object_version"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span>; <span class="tf-attribute">default</span> = <span class="tf-keyword">null</span> } <span class="tf-comment"># Optional specific version</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"memory_size"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">number</span>; <span class="tf-attribute">default</span> = 128 } <span class="tf-comment"># MB</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"timeout"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">number</span>; <span class="tf-attribute">default</span> = 30 } <span class="tf-comment"># Seconds</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"environment_variables"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">map</span>(<span class="tf-keyword">string</span>); <span class="tf-attribute">default</span> = {} } <span class="tf-comment"># Non-sensitive env vars</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"vpc_subnet_ids"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">list</span>(<span class="tf-keyword">string</span>); <span class="tf-attribute">default</span> = <span class="tf-keyword">null</span> } <span class="tf-comment"># Required if accessing VPC resources</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"vpc_security_group_ids"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">list</span>(<span class="tf-keyword">string</span>); <span class="tf-attribute">default</span> = <span class="tf-keyword">null</span> } <span class="tf-comment"># Required if accessing VPC resources</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"kms_key_arn_environment"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span>; <span class="tf-attribute">default</span> = <span class="tf-keyword">null</span> } <span class="tf-comment"># For encrypting env vars at rest</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"tags"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">map</span>(<span class="tf-keyword">string</span>); <span class="tf-attribute">default</span> = {} }
+</code>
+
+         <h3>`main.tf`</h3>
+         <code><span class="tf-keyword">resource</span> <span class="tf-resource-type">"aws_lambda_function"</span> <span class="tf-resource-name">"this"</span> {
+  <span class="tf-attribute">function_name</span>    = <span class="tf-variable">var.function_name</span>
+  <span class="tf-attribute">description</span>      = <span class="tf-variable">var.description</span>
+  <span class="tf-attribute">role</span>             = <span class="tf-variable">var.iam_role_arn</span>
+  <span class="tf-attribute">handler</span>          = <span class="tf-variable">var.handler</span>
+  <span class="tf-attribute">runtime</span>          = <span class="tf-variable">var.runtime</span>
+  <span class="tf-attribute">memory_size</span>      = <span class="tf-variable">var.memory_size</span>
+  <span class="tf-attribute">timeout</span>          = <span class="tf-variable">var.timeout</span>
+
+  <span class="tf-attribute">s3_bucket</span>        = <span class="tf-variable">var.s3_bucket</span>
+  <span class="tf-attribute">s3_key</span>           = <span class="tf-variable">var.s3_key</span>
+  <span class="tf-attribute">s3_object_version</span>= <span class="tf-variable">var.s3_object_version</span>
+  <span class="tf-comment"># source_code_hash = filebase64sha256("path/to/your/deployment.zip") # Use if uploading directly (less common with CI/CD)</span>
+
+  <span class="tf-attribute">dynamic</span> <span class="tf-string">"environment"</span> {
+    <span class="tf-attribute">for_each</span> = <span class="tf-keyword">length</span>(<span class="tf-keyword">keys</span>(<span class="tf-variable">var.environment_variables</span>)) > 0 ? [1] : []
+    <span class="tf-attribute">content</span> {
+      <span class="tf-attribute">variables</span> = <span class="tf-variable">var.environment_variables</span>
+    }
+  }
+
+  <span class="tf-attribute">dynamic</span> <span class="tf-string">"vpc_config"</span> {
+    <span class="tf-attribute">for_each</span> = <span class="tf-variable">var.vpc_subnet_ids</span> != <span class="tf-keyword">null</span> ? [1] : []
+    <span class="tf-attribute">content</span> {
+      <span class="tf-attribute">subnet_ids</span>         = <span class="tf-variable">var.vpc_subnet_ids</span>
+      <span class="tf-attribute">security_group_ids</span> = <span class="tf-variable">var.vpc_security_group_ids</span>
+    }
+  }
+
+  <span class="tf-attribute">kms_key_arn</span> = <span class="tf-variable">var.kms_key_arn_environment</span>
+
+  <span class="tf-attribute">tags</span> = <span class="tf-variable">var.tags</span>
+
+  <span class="tf-comment"># Ensure the IAM role exists before creating the function</span>
+  <span class="tf-attribute">depends_on</span> = [<span class="tf-resource-type">aws_iam_role.this</span>] <span class="tf-comment"># Assuming role is defined in the same module temporarily, better pass ARN</span>
+}
+
+<span class="tf-comment"># Optional: CloudWatch Log Group for the Lambda function</span>
+<span class="tf-keyword">resource</span> <span class="tf-resource-type">"aws_cloudwatch_log_group"</span> <span class="tf-resource-name">"this"</span> {
+  <span class="tf-attribute">name</span>              = <span class="tf-string">"/aws/lambda/${var.function_name}"</span>
+  <span class="tf-attribute">retention_in_days</span> = 14 <span class="tf-comment"># TODO: Adjust retention</span>
+  <span class="tf-comment"># kms_key_id = var.kms_key_arn # Optional: Encrypt log group</span>
+}
+</code>
+
+         <h3>`outputs.tf`</h3>
+         <code><span class="tf-keyword">output</span> <span class="tf-variable">"function_arn"</span> {
+  <span class="tf-attribute">description</span> = <span class="tf-string">"ARN of the Lambda function"</span>
+  <span class="tf-attribute">value</span>       = <span class="tf-resource-type">aws_lambda_function.this.arn</span>
+}
+<span class="tf-keyword">output</span> <span class="tf-variable">"function_name"</span> {
+  <span class="tf-attribute">description</span> = <span class="tf-string">"Name of the Lambda function"</span>
+  <span class="tf-attribute">value</span>       = <span class="tf-resource-type">aws_lambda_function.this.function_name</span>
+}
+</code>
+         <div class="info-box">
+             <strong>Deployment Packages:</strong> The Lambda function code needs to be packaged (e.g., as a .zip file) and uploaded to the specified S3 bucket, typically as part of your CI/CD pipeline before Terraform runs `apply`. Terraform references the S3 object.
+         </div>
+    </section>
+
+     <section class="module-section" id="module-fargate">
+        <h2>Module: ECS Fargate Service (`modules/ecs_fargate_service/`)</h2>
+        <p>Creates an ECS Cluster (optional, can be shared), Task Definition, and Fargate Service with basic networking and load balancing.</p>
+
+        <h3>`variables.tf`</h3>
+        <code><span class="tf-keyword">variable</span> <span class="tf-variable">"service_name"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span> }
+<span class="tf-keyword">variable</span> <span class="tf-variable">"environment_name"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span> }
+<span class="tf-keyword">variable</span> <span class="tf-variable">"ecs_cluster_arn"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span> } <span class="tf-comment"># ARN of an existing shared cluster or one created by this module</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"task_cpu"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">number</span>; <span class="tf-attribute">default</span> = 256 } <span class="tf-comment"># CPU units (1024 = 1 vCPU)</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"task_memory"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">number</span>; <span class="tf-attribute">default</span> = 512 } <span class="tf-comment"># Memory in MiB</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"container_image"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span> } <span class="tf-comment"># ECR image URI (e.g., ACCOUNT_ID.dkr.ecr.REGION.amazonaws.com/repo:tag)</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"container_port"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">number</span> } <span class="tf-comment"># Port the container listens on</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"desired_count"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">number</span>; <span class="tf-attribute">default</span> = 2 } <span class="tf-comment"># Minimum number of tasks for HA</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"task_execution_role_arn"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span> } <span class="tf-comment"># Role for ECS agent (pull image, send logs)</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"task_role_arn"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span>; <span class="tf-attribute">default</span> = <span class="tf-keyword">null</span> } <span class="tf-comment"># Optional role for the application inside the container</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"vpc_id"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span> }
+<span class="tf-keyword">variable</span> <span class="tf-variable">"private_subnet_ids"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">list</span>(<span class="tf-keyword">string</span>) }
+<span class="tf-keyword">variable</span> <span class="tf-variable">"security_group_ids"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">list</span>(<span class="tf-keyword">string</span>) } <span class="tf-comment"># SG allowing traffic from LB/other services</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"alb_target_group_arn"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span>; <span class="tf-attribute">default</span> = <span class="tf-keyword">null</span> } <span class="tf-comment"># Optional: Link to ALB Target Group</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"container_environment_variables"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">list</span>(<span class="tf-keyword">object</span>({ name = <span class="tf-keyword">string</span>, value = <span class="tf-keyword">string</span> })); <span class="tf-attribute">default</span> = [] }
+<span class="tf-keyword">variable</span> <span class="tf-variable">"container_secrets"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">list</span>(<span class="tf-keyword">object</span>({ name = <span class="tf-keyword">string</span>, valueFrom = <span class="tf-keyword">string</span> })); <span class="tf-attribute">default</span> = [] } <span class="tf-comment"># For Secrets Manager/Parameter Store</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"tags"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">map</span>(<span class="tf-keyword">string</span>); <span class="tf-attribute">default</span> = {} }
+</code>
+
+        <h3>`main.tf`</h3>
+        <code><span class="tf-comment"># Optional: Create ECS Cluster if not using a shared one</span>
+<span class="tf-comment"># resource "aws_ecs_cluster" "this" { ... }</span>
+
+<span class="tf-comment"># CloudWatch Log Group for the container</span>
+<span class="tf-keyword">resource</span> <span class="tf-resource-type">"aws_cloudwatch_log_group"</span> <span class="tf-resource-name">"this"</span> {
+  <span class="tf-attribute">name</span>              = <span class="tf-string">"/ecs/${var.service_name}-${var.environment_name}"</span>
+  <span class="tf-attribute">retention_in_days</span> = 14 <span class="tf-comment"># TODO: Adjust</span>
+}
+
+<span class="tf-keyword">resource</span> <span class="tf-resource-type">"aws_ecs_task_definition"</span> <span class="tf-resource-name">"this"</span> {
+  <span class="tf-attribute">family</span>                   = <span class="tf-string">"${var.service_name}-${var.environment_name}"</span>
+  <span class="tf-attribute">network_mode</span>             = <span class="tf-string">"awsvpc"</span>
+  <span class="tf-attribute">requires_compatibilities</span> = [<span class="tf-string">"FARGATE"</span>]
+  <span class="tf-attribute">cpu</span>                      = <span class="tf-variable">var.task_cpu</span>
+  <span class="tf-attribute">memory</span>                   = <span class="tf-variable">var.task_memory</span>
+  <span class="tf-attribute">execution_role_arn</span>       = <span class="tf-variable">var.task_execution_role_arn</span>
+  <span class="tf-attribute">task_role_arn</span>            = <span class="tf-variable">var.task_role_arn</span>
+
+  <span class="tf-attribute">container_definitions</span> = <span class="tf-keyword">jsonencode</span>([
+    {
+      <span class="tf-attribute">name</span>      = <span class="tf-variable">var.service_name</span>
+      <span class="tf-attribute">image</span>     = <span class="tf-variable">var.container_image</span>
+      <span class="tf-attribute">cpu</span>       = <span class="tf-variable">var.task_cpu</span> <span class="tf-comment"># Often same as task CPU for single container</span>
+      <span class="tf-attribute">memory</span>    = <span class="tf-variable">var.task_memory</span> <span class="tf-comment"># Often same as task Memory</span>
+      <span class="tf-attribute">essential</span> = <span class="tf-keyword">true</span>
+      <span class="tf-attribute">portMappings</span> = [
+        {
+          <span class="tf-attribute">containerPort</span> = <span class="tf-variable">var.container_port</span>
+          <span class="tf-attribute">hostPort</span>      = <span class="tf-variable">var.container_port</span> <span class="tf-comment"># HostPort must match containerPort in awsvpc mode</span>
+          <span class="tf-attribute">protocol</span>      = <span class="tf-string">"tcp"</span>
+        }
+      ]
+      <span class="tf-attribute">environment</span> = <span class="tf-variable">var.container_environment_variables</span>
+      <span class="tf-attribute">secrets</span>     = <span class="tf-variable">var.container_secrets</span>
+      <span class="tf-attribute">logConfiguration</span> = {
+        <span class="tf-attribute">logDriver</span> = <span class="tf-string">"awslogs"</span>
+        <span class="tf-attribute">options</span> = {
+          <span class="tf-string">"awslogs-group"</span>         = <span class="tf-resource-type">aws_cloudwatch_log_group.this.name</span>
+          <span class="tf-string">"awslogs-region"</span>        = <span class="tf-resource-type">data.aws_region.current.name</span>
+          <span class="tf-string">"awslogs-stream-prefix"</span> = <span class="tf-variable">var.service_name</span>
+        }
+      }
+    }
+    <span class="tf-comment"># Add more containers if needed (e.g., sidecars)</span>
+  ])
+
+  <span class="tf-attribute">tags</span> = <span class="tf-variable">var.tags</span>
+}
+
+<span class="tf-keyword">resource</span> <span class="tf-resource-type">"aws_ecs_service"</span> <span class="tf-resource-name">"this"</span> {
+  <span class="tf-attribute">name</span>            = <span class="tf-string">"${var.service_name}-${var.environment_name}"</span>
+  <span class="tf-attribute">cluster</span>         = <span class="tf-variable">var.ecs_cluster_arn</span>
+  <span class="tf-attribute">task_definition</span> = <span class="tf-resource-type">aws_ecs_task_definition.this.arn</span>
+  <span class="tf-attribute">desired_count</span>   = <span class="tf-variable">var.desired_count</span>
+  <span class="tf-attribute">launch_type</span>     = <span class="tf-string">"FARGATE"</span>
+
+  <span class="tf-keyword">network_configuration</span> {
+    <span class="tf-attribute">subnets</span>         = <span class="tf-variable">var.private_subnet_ids</span>
+    <span class="tf-attribute">security_groups</span> = <span class="tf-variable">var.security_group_ids</span>
+    <span class="tf-attribute">assign_public_ip</span> = <span class="tf-keyword">false</span> <span class="tf-comment"># Typically false for private subnets</span>
+  }
+
+  <span class="tf-attribute">dynamic</span> <span class="tf-string">"load_balancer"</span> {
+    <span class="tf-attribute">for_each</span> = <span class="tf-variable">var.alb_target_group_arn</span> != <span class="tf-keyword">null</span> ? [1] : []
+    <span class="tf-attribute">content</span> {
+      <span class="tf-attribute">target_group_arn</span> = <span class="tf-variable">var.alb_target_group_arn</span>
+      <span class="tf-attribute">container_name</span>   = <span class="tf-variable">var.service_name</span>
+      <span class="tf-attribute">container_port</span>   = <span class="tf-variable">var.container_port</span>
+    }
+  }
+
+  <span class="tf-comment"># Optional: Deployment configuration (rolling update, blue/green)</span>
+  <span class="tf-comment"># Optional: Service discovery configuration (Cloud Map)</span>
+  <span class="tf-comment"># Optional: Auto Scaling configuration (aws_appautoscaling_target, aws_appautoscaling_policy)</span>
+
+  <span class="tf-attribute">tags</span> = <span class="tf-variable">var.tags</span>
+}
+
+<span class="tf-keyword">data</span> <span class="tf-resource-type">"aws_region"</span> <span class="tf-resource-name">"current"</span> {}
+</code>
+
+        <h3>`outputs.tf`</h3>
+        <code><span class="tf-keyword">output</span> <span class="tf-variable">"service_name"</span> {
+  <span class="tf-attribute">description</span> = <span class="tf-string">"Name of the ECS service"</span>
+  <span class="tf-attribute">value</span>       = <span class="tf-resource-type">aws_ecs_service.this.name</span>
+}
+<span class="tf-comment"># ... other outputs</span>
+</code>
+    </section>
+
+    <!-- Add more module examples following the same pattern -->
+     <section class="module-section" id="module-dynamodb">
+        <h2>Module: DynamoDB Table (`modules/dynamodb_table/`)</h2>
+        <p>Creates a DynamoDB table with basic configuration.</p>
+        <h3>`variables.tf`</h3>
+        <code><span class="tf-keyword">variable</span> <span class="tf-variable">"table_name"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span> }
+<span class="tf-keyword">variable</span> <span class="tf-variable">"billing_mode"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span>; <span class="tf-attribute">default</span> = <span class="tf-string">"PAY_PER_REQUEST"</span> } <span class="tf-comment"># Or PROVISIONED</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"hash_key"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span> }
+<span class="tf-keyword">variable</span> <span class="tf-variable">"range_key"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span>; <span class="tf-attribute">default</span> = <span class="tf-keyword">null</span> }
+<span class="tf-keyword">variable</span> <span class="tf-variable">"attributes"</span> { <span class="tf-comment"># Define attributes used in keys/indexes</span>
+  <span class="tf-attribute">type</span> = <span class="tf-keyword">list</span>(<span class="tf-keyword">object</span>({
+    <span class="tf-attribute">name</span> = <span class="tf-keyword">string</span>
+    <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span> <span class="tf-comment"># S=String, N=Number, B=Binary</span>
+  }))
+}
+<span class="tf-keyword">variable</span> <span class="tf-variable">"enable_pitr"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">bool</span>; <span class="tf-attribute">default</span> = <span class="tf-keyword">true</span> } <span class="tf-comment"># Point-in-time recovery</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"kms_key_arn"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span>; <span class="tf-attribute">default</span> = <span class="tf-keyword">null</span> } <span class="tf-comment"># For CMK encryption</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"tags"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">map</span>(<span class="tf-keyword">string</span>); <span class="tf-attribute">default</span> = {} }
+<span class="tf-comment"># TODO: Add variables for GSIs, LSIs, Stream Specification if needed</span>
+</code>
+        <h3>`main.tf`</h3>
+        <code><span class="tf-keyword">resource</span> <span class="tf-resource-type">"aws_dynamodb_table"</span> <span class="tf-resource-name">"this"</span> {
+  <span class="tf-attribute">name</span>         = <span class="tf-variable">var.table_name</span>
+  <span class="tf-attribute">billing_mode</span> = <span class="tf-variable">var.billing_mode</span>
+  <span class="tf-attribute">hash_key</span>     = <span class="tf-variable">var.hash_key</span>
+  <span class="tf-attribute">range_key</span>    = <span class="tf-variable">var.range_key</span>
+
+  <span class="tf-attribute">dynamic</span> <span class="tf-string">"attribute"</span> {
+    <span class="tf-attribute">for_each</span> = <span class="tf-variable">var.attributes</span>
+    <span class="tf-attribute">content</span> {
+      <span class="tf-attribute">name</span> = <span class="tf-attribute">attribute.value.name</span>
+      <span class="tf-attribute">type</span> = <span class="tf-attribute">attribute.value.type</span>
+    }
+  }
+
+  <span class="tf-keyword">point_in_time_recovery</span> {
+    <span class="tf-attribute">enabled</span> = <span class="tf-variable">var.enable_pitr</span>
+  }
+
+  <span class="tf-keyword">server_side_encryption</span> {
+    <span class="tf-attribute">enabled</span>     = <span class="tf-keyword">true</span>
+    <span class="tf-attribute">kms_key_arn</span> = <span class="tf-variable">var.kms_key_arn</span> <span class="tf-comment"># If null, uses AWS owned key</span>
+  }
+
+  <span class="tf-comment"># TODO: Add blocks for global_secondary_index, local_secondary_index, stream_specification</span>
+  <span class="tf-comment"># ttl { enabled = false } # Optional TTL configuration</span>
+
+  <span class="tf-attribute">tags</span> = <span class="tf-variable">var.tags</span>
+}
+</code>
+        <h3>`outputs.tf`</h3>
+        <code><span class="tf-keyword">output</span> <span class="tf-variable">"table_name"</span> { <span class="tf-attribute">value</span> = <span class="tf-resource-type">aws_dynamodb_table.this.name</span> }
+<span class="tf-keyword">output</span> <span class="tf-variable">"table_arn"</span> { <span class="tf-attribute">value</span> = <span class="tf-resource-type">aws_dynamodb_table.this.arn</span> }
+</code>
+    </section>
+
+    <section class="module-section" id="module-kinesis">
+        <h2>Module: Kinesis Data Stream (`modules/kinesis_stream/`)</h2>
+        <p>Creates a Kinesis Data Stream.</p>
+        <h3>`variables.tf`</h3>
+        <code><span class="tf-keyword">variable</span> <span class="tf-variable">"stream_name"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span> }
+<span class="tf-keyword">variable</span> <span class="tf-variable">"shard_count"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">number</span>; <span class="tf-attribute">default</span> = 1 }
+<span class="tf-keyword">variable</span> <span class="tf-variable">"retention_period"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">number</span>; <span class="tf-attribute">default</span> = 24 } <span class="tf-comment"># Hours</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"kms_key_id"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span>; <span class="tf-attribute">default</span> = <span class="tf-keyword">null</span> } <span class="tf-comment"># ARN for SSE-KMS</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"tags"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">map</span>(<span class="tf-keyword">string</span>); <span class="tf-attribute">default</span> = {} }
+</code>
+        <h3>`main.tf`</h3>
+        <code><span class="tf-keyword">resource</span> <span class="tf-resource-type">"aws_kinesis_stream"</span> <span class="tf-resource-name">"this"</span> {
+  <span class="tf-attribute">name</span>             = <span class="tf-variable">var.stream_name</span>
+  <span class="tf-attribute">shard_count</span>      = <span class="tf-variable">var.shard_count</span>
+  <span class="tf-attribute">retention_period</span> = <span class="tf-variable">var.retention_period</span>
+
+  <span class="tf-attribute"># Use "PROVISIONED" (default) or "ON_DEMAND"</span>
+  <span class="tf-comment"># shard_level_metrics = ["IncomingBytes", "OutgoingBytes"]</span>
+
+  <span class="tf-keyword">stream_mode_details</span> {
+     <span class="tf-attribute">stream_mode</span> = <span class="tf-string">"PROVISIONED"</span> <span class="tf-comment"># Or "ON_DEMAND"</span>
+  }
+
+  <span class="tf-attribute">encryption_type</span> = <span class="tf-variable">var.kms_key_id</span> == <span class="tf-keyword">null</span> ? <span class="tf-string">"NONE"</span> : <span class="tf-string">"KMS"</span>
+  <span class="tf-attribute">kms_key_id</span>      = <span class="tf-variable">var.kms_key_id</span>
+
+  <span class="tf-attribute">tags</span> = <span class="tf-variable">var.tags</span>
+}
+</code>
+        <h3>`outputs.tf`</h3>
+        <code><span class="tf-keyword">output</span> <span class="tf-variable">"stream_name"</span> { <span class="tf-attribute">value</span> = <span class="tf-resource-type">aws_kinesis_stream.this.name</span> }
+<span class="tf-keyword">output</span> <span class="tf-variable">"stream_arn"</span> { <span class="tf-attribute">value</span> = <span class="tf-resource-type">aws_kinesis_stream.this.arn</span> }
+</code>
+    </section>
+
+    <section class="module-section" id="module-sns">
+        <h2>Module: SNS Topic (`modules/sns_topic/`)</h2>
+        <p>Creates an SNS topic.</p>
+         <h3>`variables.tf`</h3>
+         <code><span class="tf-keyword">variable</span> <span class="tf-variable">"topic_name"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span> }
+<span class="tf-keyword">variable</span> <span class="tf-variable">"kms_master_key_id"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span>; <span class="tf-attribute">default</span> = <span class="tf-keyword">null</span> } <span class="tf-comment"># Optional KMS key for SSE</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"tags"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">map</span>(<span class="tf-keyword">string</span>); <span class="tf-attribute">default</span> = {} }
+</code>
+        <h3>`main.tf`</h3>
+        <code><span class="tf-keyword">resource</span> <span class="tf-resource-type">"aws_sns_topic"</span> <span class="tf-resource-name">"this"</span> {
+  <span class="tf-attribute">name</span>              = <span class="tf-variable">var.topic_name</span>
+  <span class="tf-attribute">kms_master_key_id</span> = <span class="tf-variable">var.kms_master_key_id</span> <span class="tf-comment"># Use "alias/aws/sns" for AWS-managed key</span>
+  <span class="tf-attribute">tags</span>              = <span class="tf-variable">var.tags</span>
+  <span class="tf-comment"># TODO: Add aws_sns_topic_policy if specific cross-account or service access is needed</span>
+}
+</code>
+        <h3>`outputs.tf`</h3>
+        <code><span class="tf-keyword">output</span> <span class="tf-variable">"topic_arn"</span> { <span class="tf-attribute">value</span> = <span class="tf-resource-type">aws_sns_topic.this.arn</span> }
+</code>
+    </section>
+
+    <section class="module-section" id="module-sqs">
+        <h2>Module: SQS Queue (`modules/sqs_queue/`)</h2>
+        <p>Creates a standard SQS queue.</p>
+        <h3>`variables.tf`</h3>
+        <code><span class="tf-keyword">variable</span> <span class="tf-variable">"queue_name"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span> }
+<span class="tf-keyword">variable</span> <span class="tf-variable">"is_fifo_queue"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">bool</span>; <span class="tf-attribute">default</span> = <span class="tf-keyword">false</span> }
+<span class="tf-keyword">variable</span> <span class="tf-variable">"visibility_timeout_seconds"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">number</span>; <span class="tf-attribute">default</span> = 30 }
+<span class="tf-keyword">variable</span> <span class="tf-variable">"message_retention_seconds"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">number</span>; <span class="tf-attribute">default</span> = 345600 } <span class="tf-comment"># 4 days</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"kms_master_key_id"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span>; <span class="tf-attribute">default</span> = <span class="tf-keyword">null</span> } <span class="tf-comment"># Use "alias/aws/sqs" or custom key ARN for SSE</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"kms_data_key_reuse_period_seconds"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">number</span>; <span class="tf-attribute">default</span> = 300 }
+<span class="tf-keyword">variable</span> <span class="tf-variable">"dead_letter_queue_arn"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span>; <span class="tf-attribute">default</span> = <span class="tf-keyword">null</span> } <span class="tf-comment"># ARN of a DLQ</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"max_receive_count"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">number</span>; <span class="tf-attribute">default</span> = 5 } <span class="tf-comment"># Used with DLQ</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"tags"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">map</span>(<span class="tf-keyword">string</span>); <span class="tf-attribute">default</span> = {} }
+</code>
+        <h3>`main.tf`</h3>
+        <code><span class="tf-keyword">resource</span> <span class="tf-resource-type">"aws_sqs_queue"</span> <span class="tf-resource-name">"this"</span> {
+  <span class="tf-attribute">name</span>                              = <span class="tf-variable">var.is_fifo_queue</span> ? <span class="tf-string">"${var.queue_name}.fifo"</span> : <span class="tf-variable">var.queue_name</span>
+  <span class="tf-attribute">fifo_queue</span>                        = <span class="tf-variable">var.is_fifo_queue</span>
+  <span class="tf-attribute">content_based_deduplication</span>       = <span class="tf-variable">var.is_fifo_queue</span> ? <span class="tf-keyword">true</span> : <span class="tf-keyword">false</span> <span class="tf-comment"># Often used with FIFO</span>
+  <span class="tf-attribute">visibility_timeout_seconds</span>        = <span class="tf-variable">var.visibility_timeout_seconds</span>
+  <span class="tf-attribute">message_retention_seconds</span>         = <span class="tf-variable">var.message_retention_seconds</span>
+  <span class="tf-attribute">kms_master_key_id</span>                 = <span class="tf-variable">var.kms_master_key_id</span>
+  <span class="tf-attribute">kms_data_key_reuse_period_seconds</span> = <span class="tf-variable">var.kms_data_key_reuse_period_seconds</span>
+
+  <span class="tf-attribute">redrive_policy</span> = <span class="tf-variable">var.dead_letter_queue_arn</span> == <span class="tf-keyword">null</span> ? <span class="tf-keyword">null</span> : <span class="tf-keyword">jsonencode</span>({
+    <span class="tf-attribute">deadLetterTargetArn</span> = <span class="tf-variable">var.dead_letter_queue_arn</span>
+    <span class="tf-attribute">maxReceiveCount</span>     = <span class="tf-variable">var.max_receive_count</span>
+  })
+
+  <span class="tf-attribute">tags</span> = <span class="tf-variable">var.tags</span>
+  <span class="tf-comment"># TODO: Add aws_sqs_queue_policy if needed</span>
+}
+</code>
+        <h3>`outputs.tf`</h3>
+        <code><span class="tf-keyword">output</span> <span class="tf-variable">"queue_url"</span> { <span class="tf-attribute">value</span> = <span class="tf-resource-type">aws_sqs_queue.this.id</span> } <span class="tf-comment"># Note: id attribute gives URL</span>
+<span class="tf-keyword">output</span> <span class="tf-variable">"queue_arn"</span> { <span class="tf-attribute">value</span> = <span class="tf-resource-type">aws_sqs_queue.this.arn</span> }
+</code>
+    </section>
+
+    <section class="module-section" id="module-api-gateway">
+        <h2>Module: API Gateway (HTTP API Example) (`modules/api_gateway/`)</h2>
+        <p>Creates a basic HTTP API Gateway with Lambda integration.</p>
+        <h3>`variables.tf`</h3>
+        <code><span class="tf-keyword">variable</span> <span class="tf-variable">"api_name"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span> }
+<span class="tf-keyword">variable</span> <span class="tf-variable">"lambda_integration_uri"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span> } <span class="tf-comment"># Invoke ARN of the target Lambda</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"route_key"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span>; <span class="tf-attribute">default</span> = <span class="tf-string">"ANY /{proxy+}"</span> } <span class="tf-comment"># Default catch-all</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"tags"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">map</span>(<span class="tf-keyword">string</span>); <span class="tf-attribute">default</span> = {} }
+<span class="tf-comment"># TODO: Add variables for custom domain, authorizers, CORS, logging, etc.</span>
+</code>
+        <h3>`main.tf`</h3>
+        <code><span class="tf-keyword">resource</span> <span class="tf-resource-type">"aws_apigatewayv2_api"</span> <span class="tf-resource-name">"this"</span> {
+  <span class="tf-attribute">name</span>          = <span class="tf-variable">var.api_name</span>
+  <span class="tf-attribute">protocol_type</span> = <span class="tf-string">"HTTP"</span>
+  <span class="tf-attribute">description</span>   = <span class="tf-string">"HTTP API for ${var.api_name}"</span>
+  <span class="tf-comment"># cors_configuration { ... } # TODO: Configure CORS if needed</span>
+  <span class="tf-attribute">tags</span>          = <span class="tf-variable">var.tags</span>
+}
+
+<span class="tf-keyword">resource</span> <span class="tf-resource-type">"aws_apigatewayv2_integration"</span> <span class="tf-resource-name">"lambda"</span> {
+  <span class="tf-attribute">api_id</span>             = <span class="tf-resource-type">aws_apigatewayv2_api.this.id</span>
+  <span class="tf-attribute">integration_type</span>   = <span class="tf-string">"AWS_PROXY"</span>
+  <span class="tf-attribute">integration_method</span> = <span class="tf-string">"POST"</span> <span class="tf-comment"># Always POST for Lambda proxy</span>
+  <span class="tf-attribute">integration_uri</span>    = <span class="tf-variable">var.lambda_integration_uri</span>
+  <span class="tf-attribute">payload_format_version</span> = <span class="tf-string">"2.0"</span> <span class="tf-comment"># Use payload format 2.0 for HTTP APIs</span>
+}
+
+<span class="tf-keyword">resource</span> <span class="tf-resource-type">"aws_apigatewayv2_route"</span> <span class="tf-resource-name">"proxy"</span> {
+  <span class="tf-attribute">api_id</span>    = <span class="tf-resource-type">aws_apigatewayv2_api.this.id</span>
+  <span class="tf-attribute">route_key</span> = <span class="tf-variable">var.route_key</span>
+  <span class="tf-attribute">target</span>    = <span class="tf-string">"integrations/${aws_apigatewayv2_integration.lambda.id}"</span>
+  <span class="tf-comment"># TODO: Add authorizer configuration if needed</span>
+  <span class="tf-comment"># authorization_type = "JWT" / "AWS_IAM" / "CUSTOM"</span>
+  <span class="tf-comment"># authorizer_id = aws_apigatewayv2_authorizer.this.id</span>
+}
+
+<span class="tf-keyword">resource</span> <span class="tf-resource-type">"aws_apigatewayv2_stage"</span> <span class="tf-resource-name">"default"</span> {
+  <span class="tf-attribute">api_id</span> = <span class="tf-resource-type">aws_apigatewayv2_api.this.id</span>
+  <span class="tf-attribute">name</span>   = <span class="tf-string">"$default"</span> <span class="tf-comment"># Creates a default stage accessible at the base invoke URL</span>
+  <span class="tf-attribute">auto_deploy</span> = <span class="tf-keyword">true</span>
+
+  <span class="tf-comment"># TODO: Configure access logging, throttling, custom domain mapping</span>
+  <span class="tf-comment"># access_log_settings { ... }</span>
+  <span class="tf-comment"># default_route_settings { ... }</span>
+  <span class="tf-comment"># domain_name { ... }</span>
+}
+
+<span class="tf-comment"># Permissions for API Gateway to invoke Lambda</span>
+<span class="tf-keyword">resource</span> <span class="tf-resource-type">"aws_lambda_permission"</span> <span class="tf-resource-name">"api_gw"</span> {
+  <span class="tf-attribute">statement_id</span>  = <span class="tf-string">"AllowAPIGatewayInvoke"</span>
+  <span class="tf-attribute">action</span>        = <span class="tf-string">"lambda:InvokeFunction"</span>
+  <span class="tf-attribute">function_name</span> = <span class="tf-variable">var.lambda_integration_uri</span> <span class="tf-comment"># Use the function name part if using ARN</span>
+  <span class="tf-attribute">principal</span>     = <span class="tf-string">"apigateway.amazonaws.com"</span>
+
+  <span class="tf-comment"># Restrict to the specific API Gateway API</span>
+  <span class="tf-attribute">source_arn</span> = <span class="tf-string">"${aws_apigatewayv2_api.this.execution_arn}/*/*"</span>
+}
+</code>
+        <h3>`outputs.tf`</h3>
+        <code><span class="tf-keyword">output</span> <span class="tf-variable">"api_endpoint"</span> {
+  <span class="tf-attribute">description</span> = <span class="tf-string">"The invoke URL for the API Gateway stage"</span>
+  <span class="tf-attribute">value</span>       = <span class="tf-resource-type">aws_apigatewayv2_stage.default.invoke_url</span>
+}
+<span class="tf-keyword">output</span> <span class="tf-variable">"api_id"</span> {
+  <span class="tf-attribute">description</span> = <span class="tf-string">"The ID of the API Gateway"</span>
+  <span class="tf-attribute">value</span>       = <span class="tf-resource-type">aws_apigatewayv2_api.this.id</span>
+}
+</code>
+    </section>
+
+    <section class="module-section" id="module-cloudwatch-alarm">
+        <h2>Module: CloudWatch Alarm (`modules/cloudwatch_alarm/`)</h2>
+        <p>Creates a basic CloudWatch alarm based on a metric.</p>
+         <h3>`variables.tf`</h3>
+         <code><span class="tf-keyword">variable</span> <span class="tf-variable">"alarm_name"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span> }
+<span class="tf-keyword">variable</span> <span class="tf-variable">"comparison_operator"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span> } <span class="tf-comment"># e.g., "GreaterThanOrEqualToThreshold"</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"evaluation_periods"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">number</span> } <span class="tf-comment"># e.g., 1</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"metric_name"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span> } <span class="tf-comment"># e.g., "Errors"</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"namespace"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span> } <span class="tf-comment"># e.g., "AWS/Lambda"</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"period"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">number</span> } <span class="tf-comment"># Seconds, e.g., 300 (5 minutes)</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"statistic"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span> } <span class="tf-comment"># e.g., "Sum", "Average"</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"threshold"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">number</span> }
+<span class="tf-keyword">variable</span> <span class="tf-variable">"alarm_description"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span>; <span class="tf-attribute">default</span> = <span class="tf-keyword">null</span> }
+<span class="tf-keyword">variable</span> <span class="tf-variable">"dimensions"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">map</span>(<span class="tf-keyword">string</span>); <span class="tf-attribute">default</span> = {} } <span class="tf-comment"># e.g., { FunctionName = "my-function" }</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"alarm_actions"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">list</span>(<span class="tf-keyword">string</span>); <span class="tf-attribute">default</span> = [] } <span class="tf-comment"># List of SNS topic ARNs</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"ok_actions"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">list</span>(<span class="tf-keyword">string</span>); <span class="tf-attribute">default</span> = [] } <span class="tf-comment"># Optional: actions when state returns to OK</span>
+</code>
+        <h3>`main.tf`</h3>
+        <code><span class="tf-keyword">resource</span> <span class="tf-resource-type">"aws_cloudwatch_metric_alarm"</span> <span class="tf-resource-name">"this"</span> {
+  <span class="tf-attribute">alarm_name</span>          = <span class="tf-variable">var.alarm_name</span>
+  <span class="tf-attribute">comparison_operator</span> = <span class="tf-variable">var.comparison_operator</span>
+  <span class="tf-attribute">evaluation_periods</span>  = <span class="tf-variable">var.evaluation_periods</span>
+  <span class="tf-attribute">metric_name</span>         = <span class="tf-variable">var.metric_name</span>
+  <span class="tf-attribute">namespace</span>           = <span class="tf-variable">var.namespace</span>
+  <span class="tf-attribute">period</span>              = <span class="tf-variable">var.period</span>
+  <span class="tf-attribute">statistic</span>           = <span class="tf-variable">var.statistic</span>
+  <span class="tf-attribute">threshold</span>           = <span class="tf-variable">var.threshold</span>
+  <span class="tf-attribute">alarm_description</span>   = <span class="tf-variable">var.alarm_description</span>
+  <span class="tf-attribute">dimensions</span>          = <span class="tf-keyword">length</span>(<span class="tf-keyword">keys</span>(<span class="tf-variable">var.dimensions</span>)) > 0 ? <span class="tf-variable">var.dimensions</span> : <span class="tf-keyword">null</span>
+
+  <span class="tf-attribute">alarm_actions</span> = <span class="tf-variable">var.alarm_actions</span>
+  <span class="tf-attribute">ok_actions</span>    = <span class="tf-variable">var.ok_actions</span>
+
+  <span class="tf-comment"># treat_missing_data = "missing" # Other options: "ignore", "breaching", "notBreaching"</span>
+}
+</code>
+        <h3>`outputs.tf`</h3>
+        <code><span class="tf-keyword">output</span> <span class="tf-variable">"alarm_arn"</span> { <span class="tf-attribute">value</span> = <span class="tf-resource-type">aws_cloudwatch_metric_alarm.this.arn</span> }
+<span class="tf-keyword">output</span> <span class="tf-variable">"alarm_name"</span> { <span class="tf-attribute">value</span> = <span class="tf-resource-type">aws_cloudwatch_metric_alarm.this.alarm_name</span> }
+</code>
+    </section>
+
+     <section class="module-section" id="module-vpc-endpoint">
+        <h2>Module: VPC Interface Endpoint (`modules/vpc_endpoint/`)</h2>
+        <p>Creates a VPC Interface Endpoint for accessing AWS services privately.</p>
+        <h3>`variables.tf`</h3>
+        <code><span class="tf-keyword">variable</span> <span class="tf-variable">"vpc_id"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span> }
+<span class="tf-keyword">variable</span> <span class="tf-variable">"service_name"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span> } <span class="tf-comment"># e.g., "com.amazonaws.us-gov-west-1.secretsmanager"</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"subnet_ids"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">list</span>(<span class="tf-keyword">string</span>) } <span class="tf-comment"># Subnets where the ENI will be placed (usually private)</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"security_group_ids"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">list</span>(<span class="tf-keyword">string</span>) } <span class="tf-comment"># SG allowing HTTPS traffic *to* the endpoint ENI</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"private_dns_enabled"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">bool</span>; <span class="tf-attribute">default</span> = <span class="tf-keyword">true</span> }
+<span class="tf-keyword">variable</span> <span class="tf-variable">"tags"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">map</span>(<span class="tf-keyword">string</span>); <span class="tf-attribute">default</span> = {} }
+</code>
+        <h3>`main.tf`</h3>
+        <code><span class="tf-keyword">resource</span> <span class="tf-resource-type">"aws_vpc_endpoint"</span> <span class="tf-resource-name">"this"</span> {
+  <span class="tf-attribute">vpc_id</span>              = <span class="tf-variable">var.vpc_id</span>
+  <span class="tf-attribute">service_name</span>        = <span class="tf-variable">var.service_name</span>
+  <span class="tf-attribute">vpc_endpoint_type</span>   = <span class="tf-string">"Interface"</span>
+  <span class="tf-attribute">subnet_ids</span>          = <span class="tf-variable">var.subnet_ids</span>
+  <span class="tf-attribute">security_group_ids</span>  = <span class="tf-variable">var.security_group_ids</span>
+  <span class="tf-attribute">private_dns_enabled</span> = <span class="tf-variable">var.private_dns_enabled</span>
+  <span class="tf-attribute">tags</span>                = <span class="tf-variable">var.tags</span>
+}
+</code>
+        <h3>`outputs.tf`</h3>
+        <code><span class="tf-keyword">output</span> <span class="tf-variable">"endpoint_id"</span> { <span class="tf-attribute">value</span> = <span class="tf-resource-type">aws_vpc_endpoint.this.id</span> }
+<span class="tf-keyword">output</span> <span class="tf-variable">"dns_entries"</span> { <span class="tf-attribute">value</span> = <span class="tf-resource-type">aws_vpc_endpoint.this.dns_entry</span> }
+<span class="tf-keyword">output</span> <span class="tf-variable">"network_interface_ids"</span> { <span class="tf-attribute">value</span> = <span class="tf-resource-type">aws_vpc_endpoint.this.network_interface_ids</span> }
+</code>
+    </section>
+
+    <section id="next-steps-final">
+         <h2>Next Steps & Implementation</h2>
+         <div class="phase-description">
+             <p>1. <strong>Create Directories:</strong> Set up the `modules/` and `environments/` directory structure shown in Step 1.</p>
+             <p>2. <strong>Populate Modules:</strong> Copy the example code above into the corresponding module directories (e.g., `modules/s3_bucket/`, `modules/iam_role/`).</p>
+             <p>3. <strong>Develop Remaining Modules:</strong> Using the provided examples as a template, develop the Terraform code (`variables.tf`, `main.tf`, `outputs.tf`) for all other required components identified in the architecture (e.g., ElastiCache, Redshift, MSK, Glue, additional IAM policies, specific Security Groups per tier, Load Balancers, CloudFront, etc.). Remember to focus on modularity and parameterization.</p>
+             <p>4. <strong>Create Environment Files:</strong> Create the `main.tf`, `variables.tf`, `outputs.tf`, and `.tfvars` files within each directory under `environments/` (dev, qa, prod, etc.).</p>
+             <p>5. <strong>Instantiate Modules:</strong> In each `environments/*/main.tf`, add `module` blocks calling the necessary modules from your `modules/` directory, passing outputs from prerequisite modules (like networking) as inputs to dependent modules (like RDS or ECS).</p>
+             <p>6. <strong>Define Variables:</strong> Fill in the `.tfvars` files for each environment with the appropriate configuration values, ensuring sensitive data is handled securely (e.g., referencing Secrets Manager ARNs).</p>
+             <p>7. <strong>Initialize, Plan, Apply (Iteratively):</strong> Follow the workflow in Step 6, starting with the `dev` environment. Initialize, plan carefully, review the plan, and apply. Address any errors. Test the provisioned resources. Repeat iteratively as you build out more components and refine configurations.</p>
+             <p>8. <strong>Version Control:</strong> Commit all code frequently to your Git repository.</p>
+             <p>9. <strong>Integrate with CI/CD:</strong> Once the manual workflow is stable, integrate the `plan` and `apply` steps into your CI/CD pipeline for automated environment management, including appropriate approval steps for Staging and Production environments.</p>
+         </div>
+     </section>
+
+</body>
+</html>

@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NYCPS TMS - Formal Change & Risk Management Plan</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.8; color: #212529; max-width: 1300px; margin: 25px auto; padding: 35px; background-color: #ffffff; border: 1px solid #dee2e6; border-radius: 10px; box-shadow: 0 6px 12px rgba(0,0,0,0.07); }
+        h1, h2, h3, h4, h5, h6 { color: #002b5c; margin-top: 1.8em; margin-bottom: 0.8em; padding-bottom: 8px; font-weight: 600; border-bottom: 2px solid #003366; }
+        h1 { text-align: center; font-size: 2.6em; border-bottom: 4px solid #003366; margin-bottom: 1.5em; }
+        h2 { /* Major Sections */ font-size: 2.1em; border-bottom: 3px solid #003366; background-color: #eaf2f8; padding: 12px 18px; border-radius: 6px 6px 0 0; margin-left: -31px; margin-right: -31px; margin-top: 2.5em; }
+        h3 { /* Plan Sections (Change/Risk) */ font-size: 1.7em; border-bottom: 2px solid #b7d1ed; padding-left: 10px; margin-top: 2.2em;}
+        h4 { /* Process Stages / Key Concepts */ font-size: 1.4em; border-bottom: 1px dashed #ced4da; color: #004080; padding-left: 25px; font-weight: 600; margin-top: 2em; }
+        h5 { /* Specific Steps / Templates */ font-size: 1.2em; border-bottom: none; color: #343a40; padding-left: 40px; font-weight: bold; margin-top: 1.5em; margin-bottom: 0.5em; }
+        h6 { /* Implementation/Tooling Notes */ font-size: 1.05em; border-bottom: none; color: #495057; padding-left: 55px; font-style: italic; margin-top: 1em; margin-bottom: 0.4em; }
+        p, li { margin-bottom: 1em; font-size: 1.1em; }
+        ul { list-style-type: circle; margin-left: 70px; margin-bottom: 1.2em; }
+        ol { list-style-type: decimal; margin-left: 70px; margin-bottom: 1.2em; }
+        ol ol { list-style-type: lower-alpha; margin-left: 90px; }
+        ol ol ol { list-style-type: lower-roman; margin-left: 110px; }
+        strong { font-weight: 700; color: #002b5c; }
+        code { font-family: 'Fira Code', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; display: block; background-color: #2b303b; color: #c0c5ce; padding: 18px; border: 1px solid #3e4451; border-radius: 6px; font-size: 1em; white-space: pre-wrap; word-wrap: break-word; overflow-x: auto; margin: 12px 0; line-height: 1.6; }
+        .section-description { padding: 20px; margin-bottom: 25px; border: 1px solid #e9ecef; background-color: #f8f9fa; border-radius: 5px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.05); }
+        .subsection { padding: 15px; margin: 15px 0; border: 1px solid #f1f1f1; border-left: 5px solid #b7d1ed; background-color: #fff; border-radius: 4px;}
+        .implementation-detail { background-color: #f0fff0; /* Light Green */ border: 1px solid #c3e6c9; border-left: 5px solid #28a745; padding: 15px; margin-top: 15px; border-radius: 4px; color: #155724; font-size: 1.05em;}
+        .implementation-detail h6 { color: #155724; margin-top: 0;}
+        .template-box { background-color: #fefefe; border: 1px dashed #adb5bd; padding: 15px; margin: 15px 40px; border-radius: 4px; font-family: monospace; font-size: 0.95em; }
+        .template-box h5 { color: #495057; font-style: normal; font-size: 1.1em; margin-bottom: 10px; margin-top: 5px; padding-left: 0;}
+        .template-box ul { margin-left: 20px; }
+        .checklist { list-style-type: none; padding-left: 0; }
+        .checklist li::before { content: "☐ "; font-weight: bold; color: #0056b3;}
+        .responsibility { font-weight: bold; color: #6f42c1; /* Bootstrap Purple */ display: block; margin-top: 8px; margin-left: 40px; font-size: 0.95em; }
+        table.matrix { width: 80%; border-collapse: collapse; margin: 20px auto; }
+        table.matrix th, table.matrix td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+        table.matrix th { background-color: #eaf2f8; font-weight: bold; }
+        /* Example PxI Matrix Coloring */
+        .risk-low { background-color: #d4edda; } /* Green */
+        .risk-medium { background-color: #fff3cd; } /* Yellow */
+        .risk-high { background-color: #f8d7da; } /* Red */
+        .risk-critical { background-color: #f5c6cb; font-weight: bold; } /* Darker Red */
+    </style>
+</head>
+<body>
+
+    <h1>NYCPS TMS: Formal Change & Risk Management Plan</h1>
+
+    <!-- Introduction -->
+    <section id="intro">
+        <h2>I. Introduction & Integration with Agile/DevOps</h2>
+        <div class="section-description">
+            <p>This document defines the formal Change Management and Risk Management processes supplementing the core Agile (Scrum) and DevSecOps practices for the NYCPS Transportation Management System (TMS) project. While Agile methodologies embrace iterative refinement within sprints based on feedback and backlog grooming, the scale, complexity, contractual nature, and public sector context of this project necessitate a formal structure for managing significant changes to baselined scope, schedule, or budget, and for proactively managing project risks.</p>
+            <p><strong>Integration Principle:</strong> These formal processes are designed to work *with*, not against, the Agile workflow. They provide a framework for control and accountability for substantial deviations or potential threats, while day-to-day development and refinement continue within the sprint cadence.</p>
+            <ul>
+                <li>Approved Change Requests (CRs) translate into prioritized Epics/Features/User Stories within the Product Backlog.</li>
+                <li>Risk Mitigation actions become tasks within the Sprint Backlog.</li>
+                <li>Regular Agile ceremonies (Reviews, Retrospectives, Grooming) serve as inputs for identifying potential changes and risks.</li>
+                <li>Automation via Jira/ADO and Confluence streamlines tracking and reporting for both Agile execution and formal PM processes.</li>
+            </ul>
+            <p>Adherence to these Change and Risk Management procedures is mandatory for all project team members and stakeholders to ensure controlled execution, transparency, and successful delivery against commitments.</p>
+        </div>
+    </section>
+
+    <!-- Governance Context -->
+    <section id="governance-context">
+         <h2>II. Governance Context for Change & Risk</h2>
+         <div class="section-description">
+             <p>The effectiveness of these plans relies on the established project governance structure. Key bodies involved include:</p>
+             <ul>
+                 <li><strong>Project Managers (Vendor & NYCPS):</strong> Co-manage day-to-day execution, facilitate processes, perform initial CR/Risk assessment, prepare reports.</li>
+                 <li><strong>Product Owner(s) (NYCPS):</strong> Owns the Product Backlog, key decision-maker for functional scope changes within Agile framework, provides input on CR impact/value.</li>
+                 <li><strong>Change Control Board (CCB):</strong> Formal body (membership defined: e.g., PMs, PO, Key Tech Leads, Sponsor Rep) responsible for reviewing and approving/rejecting significant Change Requests impacting baseline scope, schedule, or cost. Meets regularly (e.g., bi-weekly) or ad-hoc as needed.</li>
+                 <li><strong>Technical Review Board (TRB):</strong> Reviews technical impact of changes, assesses technical risks.</li>
+                 <li><strong>Security Review Board (SRB):</strong> Reviews security implications of changes, assesses security risks.</li>
+                 <li><strong>Steering Committee:</strong> Provides highest-level oversight, resolves escalated risks/issues, approves major strategic changes or budget adjustments recommended by the CCB.</li>
+             </ul>
+         </div>
+    </section>
+
+    <!-- Change Management Plan -->
+    <section id="change-management">
+        <h2>III. Detailed Change Management Plan</h2>
+        <div class="section-description">
+            <h3>A. Purpose & Scope</h3>
+            <div class="subsection">
+                <p><strong>Purpose:</strong> To provide a structured, documented, and controlled process for managing requests to change the agreed-upon project scope, schedule, cost, or technical approach *after* the initial requirements baseline for a major phase or release has been formally approved (typically post Phase 1 requirements sign-off).</p>
+                <p><strong>Scope - What Requires a Formal Change Request (CR):</strong></p>
+                <ul>
+                    <li>Requests for significant new features or functionality not included in the baselined requirements for the current or upcoming planned release/phase.</li>
+                    <li>Changes that materially impact the project schedule (e.g., delay a major milestone by more than one sprint) or budget (e.g., require additional resources or licenses).</li>
+                    <li>Changes impacting contractual obligations or deliverables.</li>
+                    <li>Significant alterations to the approved technical architecture or core security controls.</li>
+                    <li>Changes requested by NYCPS stakeholders *after* UAT sign-off for a specific release increment.</li>
+                </ul>
+                <p><strong>Out of Scope (Handled via Agile Backlog Management):</strong></p>
+                <ul>
+                    <li>Clarifications or refinements of existing user stories during backlog grooming or sprint execution.</li>
+                    <li>Bug fixes for implemented functionality (managed via defect tracking).</li>
+                    <li>Minor technical implementation details decided by the development team that do not impact external interfaces, NFRs, or overall architecture.</li>
+                    <li>Reprioritization of *existing* backlog items by the Product Owner (unless it significantly impacts major milestones requiring CCB notification).</li>
+                </ul>
+            </div>
+
+            <h3>B. Change Request (CR) Workflow & Process Steps</h3>
+             <div class="subsection">
+                 <ol>
+                     <li>
+                         <strong>Step 1: CR Initiation & Submission</strong>
+                         <h5>Description:</h5>
+                         <p>Any project stakeholder (Vendor team member, NYCPS stakeholder) identifies a potential need for change that falls within the scope defined above.</p>
+                         <h5>Implementation How-To:</h5>
+                         <ol>
+                            <li>Requestor creates a new issue of type "Change Request" in the project's Jira/ADO board.</li>
+                            <li>Requestor completes the mandatory fields defined in the **Change Request Form Template** (see below). This includes a clear description, strong justification/business value, requestor details, date, and initial thoughts on impact/priority.</li>
+                            <li>Attach any supporting documentation (e.g., mockups, requirement documents).</li>
+                         </ol>
+                         <p class="responsibility">Responsibility: Any Stakeholder (Initiation), Requestor (Documentation).</p>
+                     </li>
+                      <li>
+                         <strong>Step 2: CR Logging & Initial Assessment</strong>
+                         <h5>Description:</h5>
+                         <p>The Project Manager (or designated Change Manager) reviews the submitted CR for completeness and logs it formally.</p>
+                         <h5>Implementation How-To:</h5>
+                         <ol>
+                             <li>Project Manager reviews the submitted Jira ticket for clarity and required information within 1-2 business days.</li>
+                             <li>If incomplete, PM requests clarification from the Requestor via Jira comments.</li>
+                             <li>If complete, PM assigns a unique CR ID (can be the Jira key), updates the status to "Under Assessment", and adds it to the central Change Register (maintained as a Jira Filter/Dashboard and potentially summarized on a Confluence page).</li>
+                             <li>PM performs a quick initial assessment: Does this clearly require CCB review, or could it potentially be addressed as a backlog refinement/bug? Assigns initial priority estimate.</li>
+                         </ol>
+                          <p class="responsibility">Responsibility: Project Manager.</p>
+                      </li>
+                      <li>
+                         <strong>Step 3: Detailed Impact Assessment</strong>
+                         <h5>Description:</h5>
+                         <p>Relevant Subject Matter Experts (SMEs) conduct a thorough analysis of the proposed change's impact across multiple dimensions.</p>
+                         <h5>Implementation How-To:</h5>
+                         <ol>
+                            <li>PM assigns assessment tasks to relevant SMEs via linked Jira tasks or comments (e.g., Tech Lead for technical feasibility/effort, QA Lead for testing impact, Security Architect for security implications, PO for value/priority reassessment, PM for schedule/cost).</li>
+                            <li>SMEs perform analysis within an agreed timeframe (e.g., 3-5 business days).</li>
+                            <li>SMEs document their findings using the **Impact Assessment Template** (see below), typically on a linked Confluence page or within dedicated Jira custom fields. Analysis must cover:
+                                <ul>
+                                    <li>**Scope:** How does this change functionality? What other areas/stories are affected?</li>
+                                    <li>**Schedule:** Estimated effort (e.g., Story Points, Person-Days), impact on current sprint, impact on major milestones/release dates.</li>
+                                    <li>**Cost:** Additional resource needs, software/licensing costs, AWS GovCloud cost implications.</li>
+                                    <li>**Technical:** Feasibility, architectural impact, complexity, impact on performance/scalability/reliability.</li>
+                                    <li>**Testing:** Additional testing required (automated/manual), impact on existing test suites.</li>
+                                    <li>**Security:** Potential new vulnerabilities, impact on existing controls, compliance implications.</li>
+                                    <li>**Risk:** New risks introduced, impact on existing risks.</li>
+                                    <li>**Dependencies:** Impact on or from other teams/systems/features.</li>
+                                </ul>
+                            </li>
+                         </ol>
+                         <p class="responsibility">Responsibility: Assigned SMEs (Tech Lead, QA Lead, Sec Lead, PO, PM, Arch, etc.).</p>
+                      </li>
+                      <li>
+                         <strong>Step 4: PM Review & Recommendation</strong>
+                         <h5>Description:</h5>
+                         <p>The Project Manager consolidates the impact assessment and formulates a recommendation for the CCB.</p>
+                         <h5>Implementation How-To:</h5>
+                         <ol>
+                             <li>PM reviews the completed impact assessments for thoroughness and consistency.</li>
+                             <li>PM synthesizes the findings into a summary.</li>
+                             <li>PM develops a formal recommendation: Approve, Reject, Defer, or Request More Information, including rationale based on the impact analysis vs. the original justification/value.</li>
+                             <li>PM updates the CR status in Jira/ADO to "Ready for CCB Review" and adds it to the agenda for the next CCB meeting.</li>
+                         </ol>
+                         <p class="responsibility">Responsibility: Project Manager.</p>
+                     </li>
+                      <li>
+                         <strong>Step 5: Change Control Board (CCB) Review & Decision</strong>
+                         <h5>Description:</h5>
+                         <p>The formally constituted CCB reviews the CR, impact assessment, and recommendation to make a final, documented decision.</p>
+                         <h5>Implementation How-To:</h5>
+                         <ol>
+                             <li>CCB meeting held at regular cadence (e.g., bi-weekly) or convened ad-hoc for urgent requests. Agenda circulated beforehand.</li>
+                             <li>PM or Requestor presents the CR, justification, and summary of impact assessment.</li>
+                             <li>SMEs present details of impact assessment as needed.</li>
+                             <li>CCB discusses benefits, costs, risks, and alignment with project goals/constraints.</li>
+                             <li>CCB makes a formal decision:
+                                 <ul>
+                                     <li>**Approved:** Change proceeds to implementation.</li>
+                                     <li>**Approved with Conditions:** Change proceeds but specific conditions must be met.</li>
+                                     <li>**Rejected:** Change will not be implemented. Rationale documented.</li>
+                                     <li>**Deferred:** Decision postponed pending more information or strategic timing. CR placed on hold.</li>
+                                     <li>**More Information Required:** CR returned to Impact Assessment stage with specific questions.</li>
+                                 </ul>
+                             </li>
+                            <li>Decision and rationale are formally documented in CCB meeting minutes (Confluence) and the CR status/resolution updated in Jira/ADO.</li>
+                         </ol>
+                         <p class="responsibility">Responsibility: CCB Chairperson, CCB Members, PM (Presentation/Documentation).</p>
+                          <div class="quality-gate">
+                            <strong>Governance Gate:</strong> Formal CCB approval required for any significant changes impacting baselined scope, schedule, or budget.
+                          </div>
+                     </li>
+                     <li>
+                         <strong>Step 6: Implementation & Communication</strong>
+                         <h5>Description:</h5>
+                         <p>If approved, the change is integrated into the project plan and backlog; the decision is communicated.</p>
+                         <h5>Implementation How-To:</h5>
+                         <ol>
+                             <li>PM updates project schedule, budget forecast, and potentially risk register based on the approved change.</li>
+                             <li>Product Owner works with the BA/Team to translate the approved CR into well-defined Epics/Features/User Stories in the Product Backlog.</li>
+                             <li>Prioritize the new backlog items according to standard backlog refinement process.</li>
+                             <li>PM communicates the CCB decision and its implications (updated schedule, added features) to the wider project team and relevant stakeholders via meeting minutes summary and status reports.</li>
+                             <li>Update the Change Register with the final decision and link to implementation backlog items.</li>
+                         </ol>
+                         <p class="responsibility">Responsibility: Project Manager, Product Owner, Business Analyst, Scrum Master.</p>
+                     </li>
+                 </ol>
+             </div>
+
+            <h3>C. Change Management Tools & Artifacts</h3>
+             <div class="subsection">
+                <ul>
+                    <li><strong>Change Request Tracker:</strong> Jira/ADO Project configured with:
+                        <ul>
+                            <li>Custom Issue Type: "Change Request".</li>
+                            <li>Custom Workflow: Submitted -> Under Assessment -> Ready for CCB -> CCB Review -> Approved / Rejected / Deferred -> Implemented / Closed.</li>
+                            <li>Custom Fields: CR ID, Requestor, Date Submitted, Justification, Business Value, Priority (Initial/Final), Impact Summaries (Scope, Schedule, Cost, Tech, Sec, Risk), CCB Decision, Decision Date, Link to Implementation Tickets, Link to Confluence Impact Doc.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Change Register:</strong> A saved Filter/Dashboard in Jira/ADO showing all "Change Request" issues and their current status. Potentially summarized on a Confluence page.</li>
+                    <li><strong>Confluence Space:</strong> Dedicated area for:
+                        <ul>
+                            <li>Change Management Plan (this document).</li>
+                            <li>CCB Charter & Membership.</li>
+                            <li>CCB Meeting Minutes Archive.</li>
+                            <li>Detailed Impact Assessment Documents (using template).</li>
+                        </ul>
+                    </li>
+                     <li><strong>Change Request Form Template (Conceptual - implemented as Jira fields):</strong>
+                        <div class="template-box">
+                             <h6>CR Template Fields:</h6>
+                             <ul>
+                                <li>CR ID: (Auto-generated or Jira Key)</li>
+                                <li>Title: (Concise summary)</li>
+                                <li>Requestor:</li>
+                                <li>Date Submitted:</li>
+                                <li>Change Description: (Detailed 'What')</li>
+                                <li>Justification / Business Value: (Detailed 'Why', benefits, alignment with goals)</li>
+                                <li>Proposed Solution (if known):</li>
+                                <li>Urgency/Requested Implementation Date:</li>
+                                <li>Initial Impact Assessment (Requestor's view - High/Med/Low on Scope/Sched/Cost):</li>
+                                <li>Affected Components/Modules:</li>
+                                <li>Attachments:</li>
+                             </ul>
+                        </div>
+                     </li>
+                     <li><strong>Impact Assessment Template (Conceptual - implemented on Confluence page linked to Jira CR):</strong>
+                         <div class="template-box">
+                             <h6>Impact Assessment Template Sections:</h6>
+                             <ul>
+                                 <li>CR ID & Title:</li>
+                                 <li>Assessment Date:</li>
+                                 <li>Assessor(s) / Role(s):</li>
+                                 <li>Scope Impact Analysis: (Detailed changes to functionality, interfaces, data)</li>
+                                 <li>Schedule Impact Analysis: (Estimated effort - Story Points/Days, impact on sprint/milestones)</li>
+                                 <li>Cost Impact Analysis: (Resource needs, licensing, infra costs)</li>
+                                 <li>Technical Impact Analysis: (Feasibility, complexity, architectural changes, performance/scalability effects)</li>
+                                 <li>Testing Impact Analysis: (New test cases needed, automation effort, regression scope)</li>
+                                 <li>Security Impact Analysis: (New threats/vulnerabilities, control effectiveness impact, compliance check)</li>
+                                 <li>Risk Impact Analysis: (New risks created, existing risks impacted)</li>
+                                 <li>Dependency Impact Analysis: (Impact on/from other teams/systems)</li>
+                                 <li>Alternatives Considered (Optional):</li>
+                                 <li>Overall Assessment Summary & Recommendation:</li>
+                             </ul>
+                         </div>
+                     </li>
+                </ul>
+             </div>
+
+            <h3>D. Roles & Responsibilities Summary (Change Management)</h3>
+             <div class="subsection">
+                 <ul>
+                    <li><strong>Requestor:</strong> Initiates CR, provides justification.</li>
+                    <li><strong>Project Manager:</strong> Logs CR, facilitates impact assessment, prepares recommendation, manages Change Register, communicates decisions, updates plans.</li>
+                    <li><strong>SMEs (Tech, QA, Sec, PO, etc.):</strong> Perform detailed impact analysis in their area of expertise.</li>
+                    <li><strong>Change Control Board (CCB):</strong> Reviews significant CRs, makes Approve/Reject/Defer decisions based on overall project goals and constraints.</li>
+                    <li><strong>Product Owner:</strong> Assesses business value/priority, incorporates approved changes into backlog.</li>
+                    <li><strong>Development Team:</strong> Implements approved changes via backlog items.</li>
+                 </ul>
+             </div>
+        </div>
+    </section>
+
+    <!-- Risk Management Plan -->
+    <section id="risk-management">
+        <h2>IV. Detailed Risk Management Plan</h2>
+        <div class="section-description">
+            <h3>A. Purpose & Scope</h3>
+             <div class="subsection">
+                <p><strong>Purpose:</strong> To systematically identify, analyze, plan responses for, monitor, and control potential events or conditions (risks) that could negatively impact the successful achievement of the NYCPS TMS project objectives (scope, schedule, budget, quality, security, stakeholder satisfaction).</p>
+                <p><strong>Scope:</strong> This plan covers all phases of the project lifecycle, from initiation through operations. Risks can be internal (e.g., technical challenges, resource constraints, process failures) or external (e.g., changing regulations, vendor dependencies, infrastructure outages).</p>
+             </div>
+
+            <h3>B. Risk Management Methodology & Process</h3>
+             <div class="subsection">
+                <ol>
+                    <li>
+                        <strong>Step 1: Risk Identification (Continuous)</strong>
+                        <h5>Description:</h5>
+                        <p>Proactively and continuously identify potential risks throughout the project.</p>
+                        <h5>Implementation How-To:</h5>
+                        <ol>
+                            <li><strong>Initial Risk Workshop:</strong> Conduct a dedicated workshop early in the project (Phase 1) with key stakeholders (PMs, Leads, PO, OPT/DIIT SMEs, Security) using brainstorming techniques.</li>
+                            <li><strong>Ongoing Identification Techniques:</strong>
+                                <ul>
+                                    <li>**Checklist Analysis:** Use checklists based on common project risks, AWS GovCloud considerations, complex system integrations, and past NYCPS project lessons learned.</li>
+                                    <li>**Assumption Analysis:** Review key project assumptions and identify risks if assumptions prove false.</li>
+                                    <li>**SWOT Analysis:** Periodically analyze Strengths, Weaknesses, Opportunities, Threats related to the project.</li>
+                                    <li>**Agile Ceremonies:** Encourage risk identification during Daily Stand-ups (impediments), Sprint Reviews (feedback indicating unmet needs), Sprint Retrospectives (process issues), and Backlog Grooming (unclear requirements).</li>
+                                    <li>**Expert Interviews:** Discuss potential risks with technical architects, security specialists, and domain experts.</li>
+                                    <li>**Document Review:** Analyze RFP, contracts, designs, plans for potential risks.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Logging Risks:** Any identified potential risk is logged immediately as a "Risk" issue type in Jira/ADO, including a clear description, potential impact, and identifier.</li>
+                        </ol>
+                        <p class="responsibility">Responsibility: All Team Members & Stakeholders (Identification), PM/Scrum Master (Facilitation/Logging).</p>
+                    </li>
+                    <li>
+                        <strong>Step 2: Qualitative Risk Analysis</strong>
+                        <h5>Description:</h5>
+                        <p>Assess the likelihood (Probability) and potential impact of identified risks to prioritize them.</p>
+                        <h5>Implementation How-To:</h5>
+                        <ol>
+                            <li>For each logged risk in Jira/ADO, the PM and relevant SMEs assess:
+                                <ul>
+                                    <li><strong>Probability (P):</strong> Estimate the likelihood of the risk occurring using a defined scale (e.g., 1-Very Low, 2-Low, 3-Medium, 4-High, 5-Very High). Define criteria for each level (e.g., High = >75% chance).</li>
+                                    <li><strong>Impact (I):</strong> Estimate the potential negative effect on project objectives (schedule, cost, scope, quality, security) if the risk occurs, using a defined scale (e.g., 1-Very Low, 2-Low, 3-Medium, 4-High, 5-Very High). Define criteria (e.g., High Impact = >1 month schedule delay OR >10% budget increase OR critical functionality failure OR significant security breach).</li>
+                                </ul>
+                            </li>
+                            <li>Calculate **Risk Score/Level:** Use a Probability/Impact (PxI) Matrix (see template below) to determine the overall risk level (e.g., Critical, High, Medium, Low) based on P and I ratings. Store P, I, and Score/Level in Jira custom fields.</li>
+                            <li>Prioritize risks based on their Score/Level for response planning.</li>
+                        </ol>
+                        <p class="responsibility">Responsibility: Project Manager, Relevant SMEs (Tech Lead, QA Lead, Sec Lead, PO).</p>
+                        <h6>Probability/Impact Matrix Example:</h6>
+                        <table class="matrix">
+                            <thead><tr><th>Probability ↓ / Impact →</th><th>1 (VL)</th><th>2 (L)</th><th>3 (M)</th><th>4 (H)</th><th>5 (VH)</th></tr></thead>
+                            <tbody>
+                                <tr><th>5 (VH)</th><td class="risk-medium">M</td><td class="risk-high">H</td><td class="risk-high">H</td><td class="risk-critical">C</td><td class="risk-critical">C</td></tr>
+                                <tr><th>4 (H)</th><td class="risk-low">L</td><td class="risk-medium">M</td><td class="risk-high">H</td><td class="risk-high">H</td><td class="risk-critical">C</td></tr>
+                                <tr><th>3 (M)</th><td class="risk-low">L</td><td class="risk-low">L</td><td class="risk-medium">M</td><td class="risk-high">H</td><td class="risk-high">H</td></tr>
+                                <tr><th>2 (L)</th><td class="risk-low">L</td><td class="risk-low">L</td><td class="risk-low">L</td><td class="risk-medium">M</td><td class="risk-medium">M</td></tr>
+                                <tr><th>1 (VL)</th><td class="risk-low">L</td><td class="risk-low">L</td><td class="risk-low">L</td><td class="risk-low">L</td><td class="risk-medium">M</td></tr>
+                            </tbody>
+                        </table>
+                        <p style="text-align:center; font-size:0.9em;">(L=Low, M=Medium, H=High, C=Critical - Define specific score ranges for each level)</p>
+                    </li>
+                    <li>
+                         <strong>Step 3: Quantitative Risk Analysis (Optional)</strong>
+                         <h5>Description:</h5>
+                         <p>For select Critical or High-impact risks where more data is available, perform numerical analysis of the potential effect.</p>
+                         <h5>Implementation How-To:</h5>
+                         <ol>
+                            <li>Only performed if deemed necessary by PM/Steering Committee for specific high-stakes risks (e.g., major schedule delays with financial penalties, significant budget overruns).</li>
+                            <li>Techniques might include:
+                                <ul>
+                                    <li><strong>Expected Monetary Value (EMV):</strong> EMV = Probability (%) * Cost Impact ($). Used to compare cost-effectiveness of response strategies.</li>
+                                    <li><strong>Monte Carlo Simulation:</strong> Use software to model uncertainty in task durations or costs based on probability distributions to forecast overall project schedule/cost ranges.</li>
+                                </ul>
+                            </li>
+                         </ol>
+                         <p class="responsibility">Responsibility: Project Manager, Specialized Analyst (if needed).</p>
+                    </li>
+                    <li>
+                        <strong>Step 4: Risk Response Planning</strong>
+                        <h5>Description:</h5>
+                        <p>Develop strategies and specific actions to address identified risks, prioritizing based on risk score.</p>
+                        <h5>Implementation How-To:</h5>
+                        <ol>
+                            <li>For each Critical and High risk (and Medium risks as appropriate), determine the optimal response strategy:
+                                <ul>
+                                    <li>**Avoid:** Change the project plan to eliminate the risk entirely (e.g., remove a high-risk feature, change a technical approach).</li>
+                                    <li>**Mitigate:** Take actions to reduce the Probability or Impact (e.g., add extra testing for complex modules, conduct security training, build redundancy, prototype high-risk tech early).</li>
+                                    <li>**Transfer:** Shift risk to a third party (rare in this context, potentially specific insurance or contractual clauses with hardware suppliers).</li>
+                                    <li>**Accept:** Consciously decide to take no action, typically for Low risks or where response cost outweighs potential impact. **Contingency Planning** is often required for accepted Medium/High risks: Define trigger conditions and specific actions to take *if* the risk occurs.</li>
+                                </ul>
+                            </li>
+                            <li>Document the chosen strategy and detailed response plan (specific actions, steps) within the Jira/ADO Risk ticket or linked Confluence page.</li>
+                            <li>Assign a specific **Risk Owner** responsible for overseeing the implementation of the response plan.</li>
+                            <li>If mitigation/avoidance actions require development effort, create corresponding User Stories/Tasks in the Product Backlog and prioritize appropriately.</li>
+                        </ol>
+                        <p class="responsibility">Responsibility: Risk Owner, Project Manager, Relevant SMEs, Product Owner (for backlog integration).</p>
+                    </li>
+                    <li>
+                        <strong>Step 5: Risk Monitoring & Control (Continuous)</strong>
+                        <h5>Description:</h5>
+                        <p>Track identified risks, monitor trigger conditions, implement response plans, identify new risks, and communicate status.</p>
+                        <h5>Implementation How-To:</h5>
+                        <ol>
+                            <li>**Risk Register Review:** Review the Risk Register (Jira/ADO query/dashboard) in:
+                                <ul>
+                                    <li>**Weekly Project Status Meetings:** Discuss status updates for top High/Critical risks, review progress on response actions, identify any newly emerged risks.</li>
+                                    <li>**MBR/Steering Committee Meetings:** Present summary of key strategic risks, required decisions, or escalations.</li>
+                                    <li>**Sprint Retrospectives:** Use as a forum to identify new process-related or team-related risks.</li>
+                                </ul>
+                            </li>
+                            <li>**Risk Owner Responsibility:** Risk Owners actively monitor their assigned risks and trigger conditions, implement planned responses, and report status changes to the PM.</li>
+                            <li>**Re-assessment:** Periodically re-assess probability and impact of existing risks as the project progresses and more information becomes available. Update Risk Register accordingly.</li>
+                            <li>**New Risk Identification:** Continuously log new risks as they are identified through any channel.</li>
+                            <li>**Risk Closure:** Formally close risks in the register when they are no longer relevant, have occurred (becoming issues), or mitigation is fully implemented and verified.</li>
+                        </ol>
+                        <p class="responsibility">Responsibility: Project Manager (overall process), Risk Owners (specific risks), All Team Members (ongoing identification).</p>
+                    </li>
+                </ol>
+            </div>
+
+            <h3>C. Risk Management Tools & Artifacts</h3>
+            <div class="subsection">
+                <ul>
+                    <li><strong>Risk Management Plan:** This document (stored in Confluence). Defines methodology, roles, scales, matrix, reporting.</li>
+                    <li><strong>Risk Register:** The central artifact. Implemented as:
+                        <ul>
+                            <li>**Preferred:** Jira/ADO Project configured with:
+                                <ul>
+                                    <li>Custom Issue Type: "Risk".</li>
+                                    <li>Custom Workflow: Open -> Analyzing -> Responding (Mitigate/Avoid/Transfer) / Monitoring (Accept) -> Closed / Occurred.</li>
+                                    <li>Custom Fields: Risk ID, Description, Category, Date Identified, Identified By, Probability (Dropdown/Number), Impact (Dropdown/Number), Risk Score (Calculated Field or Manual), Response Strategy, Response Plan Summary, Risk Owner, Status, Trigger Conditions, Contingency Plan Summary, Last Reviewed Date, Link to related Issues/CRs.</li>
+                                </ul>
+                            </li>
+                            <li>**Alternative:** Dedicated Confluence page using tables, dynamically updated or linked to Jira queries.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Probability & Impact Matrix:** Defined matrix (like the example above) documented in Confluence as part of the Risk Management Plan.</li>
+                    <li><strong>Risk Breakdown Structure (RBS - Optional):** A hierarchical decomposition of potential risk sources (e.g., Technical, External, Organizational, Project Management) used during identification workshops. Documented in Confluence.</li>
+                    <li><strong>Meeting Minutes:** Weekly Status, MBR, Retrospectives capturing risk discussions and decisions (Confluence).</li>
+                    <li><strong>Reports:** Risk sections integrated into Weekly Status Reports and MBR Presentations. Jira/ADO dashboards visualizing risk exposure (e.g., number of open risks by score/owner).</li>
+                </ul>
+            </div>
+
+            <h3>D. Roles & Responsibilities Summary (Risk Management)</h3>
+            <div class="subsection">
+                <ul>
+                   <li><strong>All Team Members/Stakeholders:</strong> Responsible for identifying and raising potential risks.</li>
+                   <li><strong>Project Manager:</strong> Owns and facilitates the overall risk management process, maintains the Risk Register, ensures risks are analyzed and have owners, reports on risk status.</li>
+                   <li><strong>Risk Owner:</strong> Assigned individual responsible for developing, implementing, and monitoring the response plan for a specific risk.</li>
+                   <li><strong>SMEs:</strong> Provide expert input during risk identification, analysis, and response planning.</li>
+                   <li><strong>Scrum Master:</strong> Facilitates risk identification during Agile ceremonies.</li>
+                   <li><strong>Steering Committee:</strong> Provides oversight, makes decisions on high-impact risks, accepts residual strategic risks.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+     <!-- Integration -->
+    <section id="integration-pm-agile">
+         <h2>V. Integrating Formal PM with Agile/DevOps</h2>
+         <div class="section-description">
+            <p>These formal Change and Risk Management processes are designed to overlay, not replace, the Agile framework:</p>
+            <ul>
+                <li>**Change vs. Backlog:** The CCB handles changes *to the baseline*. The Product Owner manages priority and refinement *within* the baseline via the backlog. Small adjustments or clarifications identified during grooming are typically *not* formal CRs. Significant deviations emerging from grooming *should* trigger a CR.</li>
+                <li>**Risk Actions in Sprints:** Mitigation or contingency actions identified in the Risk Plan become concrete tasks or User Stories in the Product Backlog, prioritized by the PO alongside features. The work gets done within sprints.</li>
+                <li>**Transparency:** Jira/ADO serves as the central hub. CRs and Risks are issue types alongside User Stories and Bugs, providing integrated visibility on project boards and dashboards.</li>
+                <li>**Cadence Alignment:** CCB meetings and Risk reviews are scheduled to align with sprint cadences and MBR reporting cycles, ensuring timely information flow.</li>
+                <li>**Focus:** Agile focuses on *delivering value iteratively within defined boundaries*. Formal PM focuses on *managing changes to those boundaries* and *proactively addressing threats* to achieving the overall objectives.</li>
+            </ul>
+         </div>
+     </section>
+
+    <!-- Implementation -->
+    <section id="implementation-summary">
+         <h2>VI. Implementation How-To Summary</h2>
+         <div class="section-description">
+             <ol>
+                 <li><strong>Configure Tools:</strong> Set up custom issue types, workflows, and fields for "Change Request" and "Risk" in Jira/ADO. Create associated dashboards and filters for Registers.</li>
+                 <li><strong>Develop Templates:</strong> Create Confluence page templates for the Change Management Plan, Risk Management Plan, CCB Charter, CCB Minutes, Impact Assessment, Risk Register details (if using Confluence), and meeting agendas.</li>
+                 <li><strong>Establish CCB:</strong> Formally define CCB membership, charter (scope, authority, decision process), meeting schedule, and operating procedures.</li>
+                 <li><strong>Conduct Initial Workshops:</strong> Run the project kick-off, initial requirements workshops, and the initial Risk Identification workshop.</li>
+                 <li><strong>Train the Team:</strong> Conduct dedicated training sessions for the entire project team and key stakeholders on the defined Change Management and Risk Management processes and associated tools (Jira, Confluence).</li>
+                 <li><strong>Integrate into Cadence:</strong> Incorporate CCB meetings and Risk Register reviews into the regular project meeting schedule defined in the Communications Plan.</li>
+                 <li><strong>Monitor & Refine:</strong> Continuously monitor the effectiveness of the processes via retrospectives and stakeholder feedback, making adjustments as needed.</li>
+             </ol>
+             <p class="responsibility">Responsibility: Project Manager, Jira/Confluence Administrator, Scrum Master, CCB Chair.</p>
+         </div>
+    </section>
+
+</body>
+</html>

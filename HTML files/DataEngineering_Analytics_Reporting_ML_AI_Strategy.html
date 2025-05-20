@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NYCPS TMS - Prescriptive Data, Analytics & AI/ML Strategy</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.8; color: #212529; max-width: 1400px; margin: 25px auto; padding: 35px; background-color: #ffffff; border: 1px solid #dee2e6; border-radius: 10px; box-shadow: 0 6px 12px rgba(0,0,0,0.07); }
+        h1, h2, h3, h4, h5, h6 { color: #002b5c; margin-top: 1.8em; margin-bottom: 0.8em; padding-bottom: 8px; font-weight: 700; border-bottom: 2px solid #003366; }
+        h1 { text-align: center; font-size: 2.6em; border-bottom: 4px solid #003366; margin-bottom: 1.5em; }
+        h2 { /* Major Sections */ font-size: 2.1em; border-bottom: 3px solid #003366; background-color: #eaf2f8; padding: 12px 18px; border-radius: 6px 6px 0 0; margin-left: -36px; margin-right: -36px; margin-top: 2.5em; }
+        h3 { /* Primary Strategy Components */ font-size: 1.7em; border-bottom: 2px solid #b7d1ed; padding-left: 10px; margin-top: 2.2em;}
+        h4 { /* Key Processes / Concepts */ font-size: 1.4em; border-bottom: 1px dashed #ced4da; color: #004080; padding-left: 25px; font-weight: 600; margin-top: 2em; }
+        h5 { /* Specific Steps / Details */ font-size: 1.2em; border-bottom: none; color: #343a40; padding-left: 40px; font-weight: bold; margin-top: 1.5em; margin-bottom: 0.5em; }
+        h6 { /* Implementation/Tooling Notes */ font-size: 1.05em; border-bottom: none; color: #495057; padding-left: 55px; font-style: italic; margin-top: 1em; margin-bottom: 0.4em; }
+        p, li { margin-bottom: 1em; font-size: 1.1em; }
+        ul { list-style-type: disc; margin-left: 70px; margin-bottom: 1.2em; }
+        ol { list-style-type: decimal; margin-left: 70px; margin-bottom: 1.2em; }
+        ol ol { list-style-type: lower-alpha; margin-left: 90px; }
+        ol ol ol { list-style-type: lower-roman; margin-left: 110px; }
+        strong { font-weight: 700; color: #002b5c; }
+        code { font-family: 'Fira Code', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; display: block; background-color: #2b303b; color: #c0c5ce; padding: 18px; border: 1px solid #3e4451; border-radius: 6px; font-size: 1em; white-space: pre-wrap; word-wrap: break-word; overflow-x: auto; margin: 12px 0; line-height: 1.6; }
+        .section-description { padding: 20px; margin-bottom: 25px; border: 1px solid #e9ecef; background-color: #f8f9fa; border-radius: 5px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.05); }
+        .subsection { padding: 15px; margin: 15px 0; border: 1px solid #f1f1f1; border-left: 5px solid #b7d1ed; background-color: #fff; border-radius: 4px;}
+        .implementation-detail { background-color: #f0fff0; border: 1px solid #c3e6c9; border-left: 5px solid #28a745; padding: 15px; margin-top: 15px; border-radius: 4px; color: #155724; font-size: 1.05em;}
+        .implementation-detail h5 { color: #155724; margin-top: 0;}
+        .responsibility { font-weight: bold; color: #6f42c1; /* Bootstrap Purple */ display: block; margin-top: 8px; margin-left: 40px; font-size: 0.95em; }
+        .governance-note { background-color: #fff8e1; border-left: 5px solid #ffc107; padding: 10px 15px; margin: 15px 0; border-radius: 4px; color: #856404; font-style: italic;}
+        .compliance-note { background-color: #f8d7da; border-left: 5px solid #dc3545; padding: 10px 15px; margin: 15px 0; border-radius: 4px; color: #721c24; font-style: italic; font-weight: bold;}
+        .risk-note { background-color: #f8d7da; border-left: 5px solid #dc3545; padding: 10px 15px; margin: 15px 0; border-radius: 4px; color: #721c24; font-weight: bold;}
+        .automation-note { background-color: #d1ecf1; border-left: 5px solid #17a2b8; padding: 10px 15px; margin: 15px 0; border-radius: 4px; color: #0c5460; font-style: italic;}
+        .tool-note { font-style: italic; color: #6c757d; font-size: 0.98em; margin-top: -0.6em; padding-left: 55px; }
+        .emphasis { color: #0056b3; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <h1>NYCPS TMS: Prescriptive Data Engineering, Analytics & AI/ML Strategy</h1>
+
+    <!-- Introduction -->
+    <section id="intro-data">
+        <h2>I. Introduction: Data as a Strategic Asset</h2>
+        <div class="section-description">
+            <p>This document establishes the comprehensive, best-in-class strategy for managing the entire data and AI/ML lifecycle within the NYCPS Transportation Management System (TMS) project. Recognizing that data is not just a byproduct but a core strategic asset for optimizing operations, ensuring safety, providing transparency, and driving continuous improvement, this strategy mandates rigorous, modern practices across Data Engineering (DE), Data Quality (DQ), Data Performance, Reporting, Visualization, Analytics, Data Science (DS), Machine Learning (ML), and Artificial Intelligence (AI).</p>
+            <p>Given the project's complexity, the sensitivity of PII/MNPI data, the diverse data ecosystem (streaming IoT, batch feeds, on-premise systems, 3rd party data, cloud services), and the absolute criticality of compliance and reliability, this strategy integrates DataOps, MLOps, and elements of AIOps principles within the overarching DevSecOps framework. It details the "what" and the "how" for building and operating a robust, secure, compliant, and high-performance data platform on AWS GovCloud using GitLab for CI/CD.</p>
+            <div class="compliance-note">Adherence to this strategy, alongside the overarching Data Governance & Management Strategy, is mandatory to mitigate risks and ensure the responsible, ethical, and effective use of data.</div>
+        </div>
+    </section>
+
+    <!-- Guiding Principles -->
+    <section id="data-principles">
+        <h2>II. Guiding Principles for Data & AI/ML</h2>
+        <div class="section-description">
+            <div class="principle-box">
+                <h4>Core Data & AI/ML Principles (Mandatory Adherence):</h4>
+                <ul>
+                    <li><strong>Governance & Compliance First:</strong> All data activities *must* align with the formal TMS Data Governance Policy, FERPA, NY Ed Law 2-d, NYCPS A-820, and all relevant security/privacy mandates.</li>
+                    <li><strong>DataOps Manifesto Alignment:</strong> Embrace DataOps principles – automate everything possible, monitor quality/performance continuously, orchestrate workflows, foster collaboration between DE, Analytics, DS, and Ops.</li>
+                    <li><strong>MLOps Lifecycle Management:</strong> Implement a structured MLOps approach for repeatable, reliable development, deployment, and monitoring of ML models.</li>
+                    <li><strong>Security & Privacy Embedded:</strong> Apply security controls (encryption, access control, masking) consistently across data pipelines, storage, analytics environments, and ML workflows.</li>
+                    <li><strong>Data Quality as a Product:</strong> Treat data quality not as an afterthought but as a critical feature, with defined metrics, automated testing, and clear ownership.</li>
+                    <li><strong>Automation & Self-Service (Governed):</strong> Automate data pipelines, testing, and deployment. Enable governed self-service access to data and analytics tools for authorized users where appropriate.</li>
+                    <li><strong>Modularity & Reusability:</strong> Build reusable data pipeline components, ETL/ELT logic (e.g., dbt models), feature engineering steps, and reporting templates.</li>
+                    <li><strong>Performance & Scalability by Design:</strong> Architect data infrastructure and pipelines to handle current and future data volumes and processing needs efficiently within AWS GovCloud.</li>
+                    <li><strong>Ethical & Responsible AI:</strong> Ensure fairness, transparency, explainability, and bias mitigation are considered and tested throughout the ML development lifecycle.</li>
+                    <li><strong>Continuous Improvement:</strong> Regularly measure and analyze the performance, quality, and cost-effectiveness of data processes and models, feeding insights back into refinement cycles.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Structure & Roles -->
+    <section id="data-team">
+        <h2>III. Data & Analytics Team Structure & Roles</h2>
+        <div class="section-description">
+            <p>We propose a hybrid model with a central Data Platform & Insights team providing core infrastructure, standards, and specialized expertise, potentially supplemented by analysts or data-savvy engineers embedded within domain-focused feature teams.</p>
+            <h4>A. Central Data Platform & Insights Team</h4>
+            <ul>
+                <li><strong>Data Engineering Lead:</strong> Oversees DE strategy, architecture, pipeline development, DataOps practices.</li>
+                <li><strong>Data Engineers (Multiple):</strong> Design, build, test, deploy, and monitor data ingestion/transformation pipelines (streaming & batch), data lake/warehouse infrastructure. Implement DataOps CI/CD. Collaborate with DevOps on IaC for data resources.</li>
+                <li><strong>Data Quality Analyst / Engineer:</strong> Defines/implements DQ rules & monitoring, develops automated DQ tests, analyzes quality issues, works with Stewards/DE on remediation.</li>
+                <li><strong>Data Performance Engineer (or DE focus):</strong> Designs/executes performance tests for data pipelines and queries, analyzes bottlenecks, works with DE/DBA on optimization.</li>
+                <li><strong>BI / Analytics Lead:</strong> Oversees reporting/visualization strategy, defines standards, manages BI platform (QuickSight).</li>
+                <li><strong>BI Developers / Data Analysts (Multiple):</strong> Develop certified dashboards/reports, support ad-hoc analysis requests, train business users on self-service tools, work with Data Stewards on requirements.</li>
+                <li><strong>Data Science Lead:</strong> Oversees ML/AI strategy, use case validation, ethical AI guidelines, MLOps practices.</li>
+                <li><strong>Data Scientists (Multiple):</strong> Explore data, develop/train ML models, perform advanced statistical analysis, evaluate model performance/bias.</li>
+                <li><strong>Machine Learning Engineer (MLE - potentially overlapping DE):</strong> Focuses on operationalizing ML models – building robust training/inference pipelines, deploying models as services, monitoring production models (MLOps/AIOps).</li>
+                <li><strong>Database Administrator (DBA - potentially shared w/ Ops):</strong> Manages performance tuning, security configuration, backup/recovery specifically for core databases (RDS, Redshift).</li>
+            </ul>
+            <h4>B. Embedded Roles (Potential)</h4>
+            <ul>
+                <li><strong>Embedded Data Analyst:</strong> Works within a specific feature team (e.g., Routing Optimization) performing domain-specific analysis and reporting, leveraging central platform/tools.</li>
+                <li><strong>Data-Savvy Software Engineer:</strong> Feature team developers trained in basic data engineering/quality practices to implement simple data pipelines or quality checks specific to their microservice.</li>
+            </ul>
+            <h4>C. Collaboration Model</h4>
+             <div class="implementation-detail">
+                <h6>Implementation How-To:</h6>
+                <ol>
+                    <li>Central Data Platform team defines standards, builds core infrastructure (lake, warehouse, pipelines, ML platform), and provides tools/support via established processes (e.g., Jira request queue for new pipelines/reports).</li>
+                    <li>Feature teams consume data via defined APIs or governed views in the data warehouse/lake.</li>
+                    <li>Embedded analysts/engineers work closely with both their feature team and the central data team, adhering to central standards.</li>
+                    <li>Regular sync meetings between central data team leads and feature team leads to discuss dependencies, requirements, and standards.</li>
+                    <li>Utilize shared Slack/Teams channels for cross-team data-related communication.</li>
+                </ol>
+                <p class="responsibility">Responsibility: Project Leadership, Data Engineering Lead, Analytics Lead, DS Lead.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Data Engineering Strategy -->
+    <section id="data-engineering">
+        <h2>IV. Prescriptive Data Engineering Strategy</h2>
+        <div class="section-description">
+            <p>Data Engineering provides the reliable foundation for all data-driven activities, ensuring data is available, accurate, secure, and performant across all environments.</p>
+
+            <h3>A. Data Infrastructure Provisioning & Management (Non-Prod & Prod)</h3>
+            <div class="subsection">
+                <h4>1. Non-Production Environments (Dev, QA, Staging, Perf, DS Sandboxes)</h4>
+                <h5>What:</h5> Provide isolated, scalable, and cost-effective environments with production-like architecture but using masked/synthetic data for development, testing, and data science experimentation.
+                <h5>How (Implementation):</h5>
+                <ol>
+                    <li>**IaC for Data Resources:** Use dedicated Terraform modules (from the central `infra-tf/modules/` repo) to provision all data infrastructure (RDS, DynamoDB, Kinesis, SQS, S3, Glue Jobs, Redshift clusters/schemas, SageMaker instances/notebook environments) per environment.</li>
+                    <li>**Environment Parameterization:** Use environment-specific `.tfvars` files (`dev.tfvars`, `qa.tfvars`, etc.) to control instance sizes, cluster counts, storage allocation, IAM roles, security groups, KMS keys, and *crucially, pointers to masked/synthetic data sources*.</li>
+                    <li>**Data Isolation:** Ensure strict network isolation (separate VPCs or subnets/SGs) and IAM controls prevent non-prod environments from accessing production data stores.</li>
+                    <li>**Masked/Synthetic Data Pipelines:** Implement automated ETL pipelines (Glue, Lambda) to populate non-prod databases/S3 buckets with refreshed, structurally valid, but anonymized/synthesized data according to the TDM strategy (see Testing Strategy) and Data Governance Policy. Schedule regular refreshes.</li>
+                    <li>**Cost Controls:** Implement aggressive auto-scaling down/shutdown policies for non-prod resources during off-hours (via Lambda/EventBridge or instance scheduler). Use smaller instance types where feasible. Set strict AWS Budgets alerts for non-prod accounts/tags.</li>
+                    <li>**DS Sandboxes:** Provision isolated sandbox environments (potentially using SageMaker Studio user profiles or dedicated accounts/VPCs) with access only to approved, anonymized datasets for experimentation.</li>
+                </ol>
+                <p class="responsibility">Responsibility: DevOps Team (IaC Execution), Data Engineers (Data-specific IaC modules, Masking Pipelines), Cloud Ops/FinOps (Cost Controls), Security Team (IAM/Network Policies).</p>
+            </div>
+
+            <div class="subsection">
+                <h4>2. Production Environment</h4>
+                <h5>What:</h5> Provision highly available, scalable, secure, performant, and meticulously monitored production data infrastructure.
+                <h5>How (Implementation):</h5>
+                <ol>
+                    <li>**IaC Deployment:** All production data infrastructure provisioned and managed *exclusively* via the approved Terraform code base deployed through the rigorous GitLab CI/CD pipeline (requiring manual approvals). No manual console changes allowed.</li>
+                    <li>**High Availability:** Deploy stateful resources (RDS, ElastiCache, MSK) across multiple (typically 3) Availability Zones using built-in HA features (Multi-AZ RDS, Redis cluster mode, MSK multi-broker replication). Ensure stateless processing layers (Lambda, Fargate) run across multiple AZs behind load balancers.</li>
+                    <li>**Scalability:** Configure auto-scaling for compute (Fargate/ECS Services, Lambda Provisioned Concurrency if needed) and potentially databases (RDS Read Replicas, DynamoDB On-Demand/Auto Scaling). Monitor capacity proactively (see SRE practices).</li>
+                    <li>**Security:** Apply strictest security controls: least-privilege IAM roles, granular Security Groups/NACLs, encryption at rest (KMS CMKs) and in transit (TLS 1.2+), private subnets, VPC Endpoints, mandatory audit logging.</li>
+                    <li>**Backup & DR:** Implement automated, encrypted backups (AWS Backup, RDS/DynamoDB native) with cross-region replication to the DR AWS GovCloud region. Regularly test restore procedures and full DR failover (as per DR Plan).</li>
+                </ol>
+                 <p class="responsibility">Responsibility: DevOps Team (IaC Execution), SRE/Ops Team (Monitoring, HA/DR Config), Security Team (Control Validation), DBA (DB Config).</p>
+            </div>
+
+            <h3>B. Data Ingestion Pipelines (Streaming & Batch)</h3>
+            <div class="subsection">
+                 <h4>1. Streaming Ingestion (e.g., GPS, Real-time Ridership)</h4>
+                 <h5>What:</h5> Ingest high-volume, low-latency data reliably from devices and applications.
+                 <h5>How (Implementation):</h5>
+                 <ol>
+                    <li>**Endpoint:** Use AWS IoT Core (for MQTT devices) with rules forwarding to Kinesis/MSK, OR use API Gateway (HTTP API for performance) invoking Lambda or directly integrating with Kinesis/MSK.</li>
+                    <li>**Transport:** Use Kinesis Data Streams (easier management) or Managed Streaming for Kafka (MSK - for Kafka ecosystem compatibility/control) as the primary streaming backbone. Provision sufficient shards/brokers based on load testing. Enable server-side encryption.</li>
+                    <li>**Processing:** Use Lambda functions triggered by Kinesis/MSK streams OR Fargate/ECS services consuming from streams for validation, transformation, enrichment, and routing to downstream stores (e.g., DynamoDB for real-time state, S3 data lake for raw/processed records, potentially other SQS queues).</li>
+                    <li>**Error Handling:** Implement DLQs for Lambda triggers or robust error handling within consumer applications to route failed messages for investigation without blocking the stream. Monitor processing lag (`IteratorAge` for Kinesis).</li>
+                    <li>**Schema Enforcement:** Use Glue Schema Registry (if using Kafka/Kinesis with Avro/Protobuf) or implement schema validation within ingestion Lambdas/services.</li>
+                 </ol>
+                 <p class="responsibility">Responsibility: Data Engineers, Backend Developers, DevOps Team (Infra).</p>
+
+                <h4>2. Batch Ingestion (e.g., Daily extracts from ATS/NPSIS, 3rd party files)</h4>
+                 <h5>What:</h5> Reliably ingest bulk data from files or database extracts on a scheduled basis.
+                 <h5>How (Implementation):</h5>
+                 <ol>
+                    <li>**Transport:** Use AWS Transfer Family for secure SFTP endpoints where external systems push files. Use S3 Event Notifications to trigger processing when files arrive in designated landing zone buckets. For DB extracts, use AWS DMS (if feasible/approved for direct connection) or scheduled export jobs pushing files to S3.</li>
+                    <li>**Orchestration:** Use AWS Step Functions or AWS Glue Workflows to orchestrate multi-step batch processing jobs (e.g., download -> validate -> transform -> load -> quality check -> archive).</li>
+                    <li>**Processing:** Use AWS Glue ETL jobs (PySpark/Scala) for complex transformations and large volumes. Use Lambda functions for simpler tasks (file validation, triggering jobs).</li>
+                    <li>**Validation & Quality:** Integrate data validation and Glue Data Quality checks within the batch workflow. Route failed files/records to an error location/queue.</li>
+                    <li>**Scheduling:** Use EventBridge (CloudWatch Events) Scheduler or Glue Triggers to run batch jobs on the required cadence.</li>
+                    <li>**Monitoring:** Monitor job success/failure, duration, and data quality results via CloudWatch Logs/Metrics and Glue Job metrics. Set alarms on failures or excessive runtimes.</li>
+                 </ol>
+                  <p class="responsibility">Responsibility: Data Engineers, ETL Developers, DevOps Team (Infra/Scheduling).</p>
+            </div>
+
+             <h3>C. Data Transformation & Modeling (Lakehouse Approach)</h3>
+             <div class="subsection">
+                <h4>What:</h4> Transform raw ingested data into cleaned, structured, and modeled datasets suitable for reporting, analytics, and ML, utilizing a Lakehouse architecture (combining Data Lake flexibility with Data Warehouse structure).
+                <h4>How (Implementation):</h4>
+                <ol>
+                    <li>**Data Lake (S3):**
+                        <ul>
+                            <li>Store raw, immutable ingested data in a dedicated S3 "Raw Zone" bucket (partitioned by source/date).</li>
+                            <li>Store cleaned, standardized, validated data (e.g., in Parquet format) in an S3 "Processed Zone" or "Staging Zone" bucket (partitioned appropriately for query performance).</li>
+                            <li>Store highly curated, aggregated, or feature-engineered data for ML/Analytics in an S3 "Curated Zone" or "Gold Zone".</li>
+                            <li>Utilize AWS Glue Data Catalog to catalog schemas and partitions across all zones, enabling query engines like Athena and Redshift Spectrum to access S3 data.</li>
+                        </ul>
+                    </li>
+                    <li>**Data Warehouse (Redshift):**
+                        <ul>
+                           <li>Provision an AWS Redshift cluster (Serverless for variable workloads or Provisioned RA3 nodes for predictable high performance) for storing modeled, aggregated data optimized for BI and analytics queries.</li>
+                           <li>Design dimensional models (Star/Snowflake schemas) within Redshift for key business domains (Ridership Performance, Route Efficiency, Student Transportation Needs).</li>
+                           <li>Load data into Redshift from the S3 Processed/Curated Zone using `COPY` commands, Glue ETL jobs, or Redshift Spectrum external tables (querying S3 directly).</li>
+                        </ul>
+                    </li>
+                    <li>**Transformation Logic (ETL/ELT):**
+                        <ul>
+                           <li>Implement transformations primarily using **AWS Glue** (PySpark/Scala for complex logic) or potentially **dbt (Data Build Tool)** running on EC2/ECS/Glue interacting with Redshift/Athena/S3 for SQL-based transformations and modeling.</li>
+                           <li>Code/Scripts version controlled in GitLab.</li>
+                           <li>Integrate data quality checks directly into transformation jobs (Glue DQ, dbt tests).</li>
+                           <li>Orchestrate transformation jobs using Step Functions or Glue Workflows.</li>
+                        </ul>
+                    </li>
+                 </ol>
+                  <p class="responsibility">Responsibility: Data Engineers, Data Architects, ETL Developers, potentially Analytics Engineers (using dbt).</p>
+             </div>
+
+            <h3>D. DataOps Pipelines & Practices</h3>
+            <div class="subsection">
+                <div class="automation-note">DataOps applies DevOps principles to data pipelines, focusing on automation, testing, collaboration, and monitoring to improve speed and reliability.</div>
+                <h4>Implementation How-To:</h4>
+                <ol>
+                    <li>**CI/CD for Data Pipelines:**
+                        <ul>
+                           <li>Store all data pipeline code (Glue scripts, Python Lambda functions, SQL transformation scripts, dbt models, Terraform for data infra) in GitLab.</li>
+                           <li>Implement dedicated GitLab CI/CD pipelines for data jobs:
+                               <ul>
+                                   <li>Lint code (SQLFluff, Pylint).</li>
+                                   <li>Unit test transformation logic (pytest for Python, dbt test for dbt models).</li>
+                                   <li>Integration test pipeline components against test environments (e.g., run Glue job against test S3 data/Redshift schema).</li>
+                                   <li>Package code (e.g., zip Lambda, package Glue scripts).</li>
+                                   <li>Deploy infrastructure changes (Terraform apply for Glue jobs, Lambda functions, Step Functions).</li>
+                                   <li>Deploy updated pipeline logic/code.</li>
+                               </ul>
+                           </li>
+                            <li>Use environment branches or parameterization for deploying pipelines to Dev/QA/Prod environments.</li>
+                        </ul>
+                    </li>
+                    <li>**Automated Data Quality Testing:** Integrate automated DQ checks (Glue DQ, Great Expectations, dbt tests) directly into pipeline execution. Fail pipelines if critical quality thresholds are breached.</li>
+                    <li>**Automated Schema Management:** Use tools like Glue Schema Registry or manage database schema changes via migration tools (Flyway/Liquibase triggered by CI/CD) integrated with pipeline deployments.</li>
+                    <li>**Pipeline Monitoring & Alerting:** Implement detailed monitoring for pipeline execution (Glue/Step Functions metrics, CloudWatch logs). Alert on failures, excessive runtimes, or data quality issues detected within the pipeline.</li>
+                    <li>**Data Lineage Tracking:** Utilize Glue Data Catalog and potentially third-party tools to automatically track data lineage from source through transformations to consumption layers (Warehouse/Reports).</li>
+                    <li>**Collaboration:** Use shared code repositories (GitLab), documented processes (Confluence), and integrated tracking (Jira) for collaboration between DE, Analytics, DS, and Ops.</li>
+                 </ol>
+                  <p class="responsibility">Responsibility: Data Engineers, DevOps Team, QA Team (DQ aspects), Analytics/DS Teams (Consumers/Collaborators).</p>
+            </div>
+        </div>
+    </section>
+
+     <!-- Data Quality & Performance Testing -->
+    <section id="data-quality-perf">
+        <h2>V. Prescriptive Data Quality & Performance Testing</h2>
+        <div class="section-description">
+            <p>Ensuring the quality and performance of data itself, and the pipelines processing it, is critical for trust and usability.</p>
+            <h3>A. Data Quality Framework & Testing</h3>
+             <div class="implementation-detail">
+                <h5>Implementation How-To:</h5>
+                <ol>
+                    <li>**Rule Definition:** Data Stewards, working with BAs and Analysts, define specific, measurable Data Quality rules for CDEs in the TMS Data Governance Policy / Data Dictionary (e.g., `student_id` must exist in ATS/NPSIS master, `gps_timestamp` must be within +/- 5 mins of system time, `route_eta` must not be null for active routes, `vehicle_capacity_used` <= `vehicle_capacity_total`).</li>
+                    <li>**DQ Check Implementation:**
+                        <ul>
+                           <li>**Ingestion:** Implement basic format/type validation at ingestion points (APIs, Lambdas).</li>
+                           <li>**Transformation (ETL/ELT):** Embed complex DQ rule checks directly into Glue jobs (using Glue Data Quality) or dbt models (using `dbt test`). Checks can include uniqueness, referential integrity, accepted values, null checks, range checks, regex patterns, custom SQL assertions.</li>
+                           <li>**At Rest:** Develop scheduled Lambda functions or use tools like Great Expectations (potentially run via Glue/EMR) to run quality checks directly against Data Lake (S3/Athena) or Warehouse (Redshift) tables periodically.</li>
+                        </ul>
+                    </li>
+                    <li>**Automation & Gating:** Integrate DQ check execution into DataOps CI/CD pipelines. **Quality Gate:** Fail pipeline builds/deployments if critical DQ checks fail (e.g., > X% nulls in required field, referential integrity broken).</li>
+                    <li>**Monitoring & Reporting:** Send DQ check results (pass/fail counts, specific failing records) to CloudWatch Metrics/Logs. Create Data Quality Dashboards (QuickSight/Grafana) visualizing quality scores/trends per data domain/source. Alert Data Stewards/Support on critical DQ failures.</li>
+                    <li>**Issue Management:** Log DQ failures as defects in Jira/ADO, assign to Data Stewards for triage and relevant DE/Source System team for remediation. Track resolution.</li>
+                </ol>
+                <p class="tool-note">Tools: AWS Glue Data Quality, Great Expectations, dbt test, Custom SQL/Python Scripts, CloudWatch, Jira/ADO, QuickSight/Grafana.</p>
+                <p class="responsibility">Responsibility: Data Stewards (Rules), Data Engineers (Implementation), QA Team (Verification/Reporting), Data Governance Lead (Process Owner).</p>
+                 <div class="compliance-note">Demonstrable data quality processes and metrics are essential for building trust in reports and analytics derived from TMS data.</div>
+            </div>
+
+            <h3>B. Data Performance Testing</h3>
+             <div class="implementation-detail">
+                <h5>Implementation How-To:</h5>
+                <ol>
+                   <li>**Identify Critical Paths:** Determine key data pipelines (e.g., GPS stream processing -> real-time location update) and critical analytical queries/reports with performance NFRs (throughput, latency).</li>
+                   <li>**Define Performance NFRs:** Set specific, measurable targets (e.g., GPS end-to-end latency P99 < 10 seconds, Daily reporting ETL must complete within 1 hour, Dashboard load time < 5 seconds).</li>
+                   <li>**Environment Setup:** Use the dedicated, production-scaled PERF environment. Ensure realistic, anonymized data volumes representative of peak load.</li>
+                   <li>**Test Script Development:**
+                       <ul>
+                           <li>**Pipeline Load:** Use tools (e.g., Kinesis Data Generator, custom Python scripts, JMeter feeding API Gateway) to generate realistic high-volume streaming or batch input data.</li>
+                           <li>**Query/Report Load:** Use tools (e.g., Apache Bench, JMeter, custom scripts using DB drivers/QuickSight API) to simulate concurrent user queries against Redshift/Athena/QuickSight dashboards.</li>
+                       </ul>
+                   </li>
+                    <li>**Execution & Monitoring:** Run performance test scripts against the PERF environment while closely monitoring relevant system metrics (CloudWatch, Redshift/DB metrics, Glue job metrics, Lambda metrics).</li>
+                    <li>**Analysis:** Analyze results against NFRs. Identify bottlenecks (e.g., insufficient Kinesis shards, under-provisioned Redshift capacity, inefficient SQL queries, Lambda timeouts, slow ETL transformations). Use CloudWatch, X-Ray, DB performance insights tools.</li>
+                    <li>**Optimization & Retesting:** Work with DE/DBA/Dev teams to implement optimizations (tune queries, adjust partitioning/distribution keys, scale resources, refactor code). Rerun tests to verify improvement.</li>
+                    <li>**Gating:** Include performance test execution and result validation as a mandatory step/quality gate before major production releases impacting critical data paths.</li>
+                </ol>
+                 <p class="tool-note">Tools: k6, JMeter, Gatling, Kinesis Data Generator, Custom Scripts, CloudWatch, Redshift Performance Dashboards, X-Ray, Athena Query Stats.</p>
+                 <p class="responsibility">Responsibility: Performance Engineer/QA, Data Engineers, DBAs, SRE/Ops.</p>
+                 <div class="quality-gate">
+                    <strong>Quality Gate (Pre-Release):</strong> Documented performance test results must meet defined NFRs for critical data pipelines and queries before production deployment.
+                 </div>
+            </div>
+        </div>
+    </section>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>NYCPS TMS - Expanded Data, Analytics & AI/ML Strategy</title>
+         <style>
+            body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.8; color: #212529; max-width: 1400px; margin: 25px auto; padding: 35px; background-color: #ffffff; border: 1px solid #dee2e6; border-radius: 10px; box-shadow: 0 6px 12px rgba(0,0,0,0.07); }
+            h1, h2, h3, h4, h5, h6 { color: #002b5c; margin-top: 1.8em; margin-bottom: 0.8em; padding-bottom: 8px; font-weight: 700; border-bottom: 2px solid #003366; }
+            h1 { text-align: center; font-size: 2.6em; border-bottom: 4px solid #003366; margin-bottom: 1.5em; }
+            h2 { /* Major Sections */ font-size: 2.1em; border-bottom: 3px solid #003366; background-color: #eaf2f8; padding: 12px 18px; border-radius: 6px 6px 0 0; margin-left: -36px; margin-right: -36px; margin-top: 2.5em; }
+            h3 { /* Primary Strategy Components */ font-size: 1.7em; border-bottom: 2px solid #b7d1ed; padding-left: 10px; margin-top: 2.2em;}
+            h4 { /* Key Processes / Concepts */ font-size: 1.4em; border-bottom: 1px dashed #ced4da; color: #004080; padding-left: 25px; font-weight: 600; margin-top: 2em; }
+            h5 { /* Specific Steps / Details */ font-size: 1.2em; border-bottom: none; color: #343a40; padding-left: 40px; font-weight: bold; margin-top: 1.5em; margin-bottom: 0.5em; }
+            h6 { /* Implementation/Tooling Notes */ font-size: 1.05em; border-bottom: none; color: #495057; padding-left: 55px; font-style: italic; margin-top: 1em; margin-bottom: 0.4em; }
+            p, li { margin-bottom: 1em; font-size: 1.1em; }
+            ul { list-style-type: disc; margin-left: 70px; margin-bottom: 1.2em; }
+            ol { list-style-type: decimal; margin-left: 70px; margin-bottom: 1.2em; }
+            ol ol { list-style-type: lower-alpha; margin-left: 90px; }
+            ol ol ol { list-style-type: lower-roman; margin-left: 110px; }
+            strong { font-weight: 700; color: #002b5c; }
+            code { font-family: 'Fira Code', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; display: block; background-color: #2b303b; color: #c0c5ce; padding: 18px; border: 1px solid #3e4451; border-radius: 6px; font-size: 1em; white-space: pre-wrap; word-wrap: break-word; overflow-x: auto; margin: 12px 0; line-height: 1.6; }
+            .section-description { padding: 20px; margin-bottom: 25px; border: 1px solid #e9ecef; background-color: #f8f9fa; border-radius: 5px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.05); }
+            .subsection { padding: 15px; margin: 15px 0; border: 1px solid #f1f1f1; border-left: 5px solid #b7d1ed; background-color: #fff; border-radius: 4px;}
+            .implementation-detail { background-color: #f0fff0; border: 1px solid #c3e6c9; border-left: 5px solid #28a745; padding: 15px; margin-top: 15px; border-radius: 4px; color: #155724; font-size: 1.05em;}
+            .implementation-detail h5 { color: #155724; margin-top: 0;}
+            .responsibility { font-weight: bold; color: #6f42c1; /* Bootstrap Purple */ display: block; margin-top: 8px; margin-left: 40px; font-size: 0.95em; }
+            .governance-note { background-color: #fff8e1; border-left: 5px solid #ffc107; padding: 10px 15px; margin: 15px 0; border-radius: 4px; color: #856404; font-style: italic;}
+            .compliance-note { background-color: #f8d7da; border-left: 5px solid #dc3545; padding: 10px 15px; margin: 15px 0; border-radius: 4px; color: #721c24; font-style: italic; font-weight: bold;}
+            .risk-note { background-color: #f8d7da; border-left: 5px solid #dc3545; padding: 10px 15px; margin: 15px 0; border-radius: 4px; color: #721c24; font-weight: bold;}
+            .automation-note { background-color: #d1ecf1; border-left: 5px solid #17a2b8; padding: 10px 15px; margin: 15px 0; border-radius: 4px; color: #0c5460; font-style: italic;}
+            .tool-note { font-style: italic; color: #6c757d; font-size: 0.98em; margin-top: -0.6em; padding-left: 55px; }
+            .emphasis { color: #0056b3; font-weight: bold; } /* Blue emphasis */
+            table.kpi-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 1em;} /* Slightly smaller table */
+            table.kpi-table th, table.kpi-table td { border: 1px solid #ccc; padding: 8px 10px; text-align: left; vertical-align: top;}
+            table.kpi-table th { background-color: #eaf2f8; font-weight: bold; }
+            table.kpi-table ul { margin-left: 20px; margin-bottom: 0; padding-left: 15px;}
+        </style>
+    </head>
+    <body>
+    
+        <h1>NYCPS TMS: Prescriptive Data, Analytics & AI/ML Strategy</h1>
+    
+        <!-- Replace Section VI from the previous file with this expanded version -->
+         <section id="reporting-analytics">
+            <h2>VI. Reporting, Visualization & Analytics Strategy (Expanded)</h2>
+             <div class="section-description">
+                <p>This section details the comprehensive strategy for transforming raw TMS data into actionable insights, delivered through intuitive reports and visualizations to the right stakeholders at the right time. It emphasizes a governed approach combining certified enterprise reporting with controlled self-service capabilities, underpinned by robust data quality and performance.</p>
+    
+                <h3>A. Reporting & Visualization Philosophy</h3>
+                 <div class="subsection">
+                     <ul>
+                        <li><strong>Audience-Centric Design:** Reports and dashboards *must* be designed with the specific needs, context, and data literacy level of the target audience in mind. Avoid information overload; prioritize clarity and actionability.</li>
+                        <li><strong>Data Storytelling:** Go beyond simply presenting data; structure reports and visualizations to tell a clear story, answer key business questions, highlight significant trends, and guide decision-making.</li>
+                        <li><strong>Consistency & Standardization:** Utilize standard templates, color palettes (aligned with NYCPS branding), chart types, and terminology across all official reports and dashboards to ensure a consistent user experience and facilitate understanding.</li>
+                        <li><strong>Performance First:** Dashboards and reports, especially operational ones, *must* load quickly and respond interactively. Performance considerations (data modeling, query tuning, caching) are integral to the design process.</li>
+                        <li>**Governance & Trust:** Implement clear distinctions and processes for certified, centrally managed reports versus user-generated self-service analyses to maintain trust in official metrics.</li>
+                        <li><strong>Actionability:** Reports should facilitate action, whether it's identifying operational issues, tracking progress against goals, informing strategic decisions, or demonstrating compliance. Include clear definitions, context, and potential next steps where appropriate.</li>
+                     </ul>
+                 </div>
+    
+                <h3>B. Reporting Tiers, Content & Tools (Detailed)</h3>
+                <div class="subsection">
+                    <p>We will implement the previously defined tiers with enhanced detail:</p>
+                     <ul>
+                        <li>
+                            <h5>Tier 1: Operational Dashboards (Near Real-Time)</h5>
+                            <ul>
+                                <li><strong>Purpose:</strong> Provide immediate situational awareness for ongoing operations.</li>
+                                <li><strong>Audience:</strong> OPT Dispatchers, Routers, SRE/Ops, Support L1/L2, potentially School Admins (limited views).</li>
+                                <li><strong>Content Examples:**
+                                    <ul>
+                                        <li>Live Map: Bus locations (color-coded by status: on-time, delayed, off-route), route paths, traffic overlays.</li>
+                                        <li>Route Status Board: List of active routes, current status (pending, in-progress, completed), next stop ETA, delay indicators, assigned driver/vehicle.</li>
+                                        <li>Ridership Monitor: Real-time count of scanned boardings/alightings per route/school, absence alerts.</li>
+                                        <li>Alert Feed: Critical operational alerts (bus breakdown, major delays, security alerts, geofence breaches).</li>
+                                        <li>System Health Vitals: Core infrastructure metrics (API latency, error rates, queue depths).</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Key Characteristics:** High data freshness (seconds to minutes), highly interactive (filtering, zooming), focused on immediate action/awareness.</li>
+                                <li><strong>Primary Tool:** **AWS QuickSight** dashboards utilizing **SPICE** datasets configured for frequent refresh (e.g., every 15 or 60 minutes, depending on data source latency and SPICE capacity/cost tradeoffs). Potentially supplement with direct CloudWatch Dashboards for pure infrastructure metrics or Grafana if needed.</li>
+                                <li><strong>Implementation:** BI Developers build certified dashboards based on requirements from operational teams. Data sourced from operational databases (DynamoDB, RDS) and potentially Kinesis Data Analytics for real-time aggregation.</li>
+                            </ul>
+                        </li>
+                         <li>
+                            <h5>Tier 2: Tactical Reporting & Analysis (Daily/Weekly/Monthly)</h5>
+                            <ul>
+                                <li><strong>Purpose:</strong> Track performance against targets, identify trends, analyze operational efficiency, fulfill compliance reporting needs, support managerial oversight.</li>
+                                <li><strong>Audience:</strong> OPT Management, School Principals/Admins, Data Analysts, PMs, Contract Managers, Compliance Officers.</li>
+                                <li><strong>Content Examples:**
+                                    <ul>
+                                        <li>**NYC Council Compliance Reports:** Automated generation of reports mandated by legislation (Attachment 6): Route duration breakdowns, On-time performance (pick-up/drop-off per stop, per route, per vendor), Delay summaries, Complaint/Investigation summaries.</li>
+                                        <li>**Operational Performance:** Ridership trends (by school, district, time), Route efficiency metrics (miles vs planned, duration vs planned, student travel time analysis), Vehicle utilization, On-time performance deep dives.</li>
+                                        <li>**Vendor Performance Scorecards:** Tracking contractual SLAs (as detailed in Vendor Mgmt plan).</li>
+                                        <li>**Data Quality Reports:** Summary of DQ rule violations and trends.</li>
+                                        <li>**System Usage/Adoption:** Parent/Student/Driver app usage statistics.</li>
+                                        <li>**Cost Analysis Summaries:** AWS cost trends by service/tag.</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Key Characteristics:** Focus on trends, comparisons (vs. target, vs. previous period), aggregations, drill-down capabilities. Data typically refreshed daily or weekly.</li>
+                                <li><strong>Primary Tool:** **AWS QuickSight** (using scheduled SPICE refreshes or direct query against Redshift/Athena). Use both interactive dashboards and paginated reports (for formatted, exportable documents like compliance reports). Allow export to CSV/Excel for further analysis.</li>
+                                <li><strong>Implementation:** BI Developers/Data Analysts create certified reports/dashboards based on stakeholder requirements. Data primarily sourced from the Data Warehouse (Redshift) or curated Data Lake views (Athena). Rigorous QA validation required before publishing.</li>
+                            </ul>
+                        </li>
+                         <li>
+                            <h5>Tier 3: Strategic Insights & Ad-Hoc Analysis</h5>
+                            <ul>
+                                <li><strong>Purpose:</strong> Support long-term planning, strategic decision-making, policy impact assessment, root cause analysis of complex issues, and exploratory data science.</li>
+                                <li><strong>Audience:</strong> OPT Leadership, Steering Committee, Data Scientists, Senior Data Analysts, Policy Analysts.</li>
+                                <li><strong>Content Examples:**
+                                    <ul>
+                                        <li>Long-term trend analysis (multi-year performance, cost evolution).</li>
+                                        <li>Predictive modeling results (ETA accuracy analysis, demand forecasting explorations).</li>
+                                        <li>Scenario modeling impact ("What-if" analysis based on potential policy changes or route restructuring simulations).</li>
+                                        <li>Deep-dive analysis correlating various factors (e.g., impact of traffic patterns on specific route types, correlation between driver behavior metrics and incidents).</li>
+                                        <li>Customized analysis supporting specific strategic initiatives or investigations.</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Key Characteristics:** Often involves complex queries, statistical analysis, joining diverse datasets, potentially unstructured data. Less frequent reporting cadence, often project-based or ad-hoc.</li>
+                                <li><strong>Primary Tools:** **AWS QuickSight** (for visualizing results), **AWS Athena** (for querying data lake directly), **AWS Redshift Query Editor / SQL Clients** (for complex data warehouse queries), **AWS SageMaker Studio Notebooks** (for DS/ML exploration and analysis using Python libraries like Pandas, Matplotlib, Scikit-learn).</li>
+                                <li><strong>Implementation:** Performed by Data Scientists and Senior Analysts using governed self-service access (see below) or via formal analysis requests. Results often presented in custom reports or presentations.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+    
+                <h3>C. Visualization Standards & Data Storytelling</h3>
+                 <div class="implementation-detail">
+                     <h5>Implementation How-To:</h5>
+                     <ol>
+                         <li><strong>Standard Chart Types:** Define appropriate usage guidelines for common chart types (Bar charts for comparison, Line charts for trends, Scatter plots for correlation, Maps for geospatial data, KPI widgets for key metrics). Avoid misleading visualizations (e.g., truncated axes, 3D charts).</li>
+                         <li>**NYCPS Branding:** Strictly adhere to the NYCPS Visual Style Guide (RFP Attachment 4) for color palettes, fonts, and logo usage in all QuickSight dashboards and reports. Create and enforce use of QuickSight themes.</li>
+                         <li>**Clarity & Context:** Ensure all charts and tables have clear titles, axis labels, legends, units of measure, and data source information. Provide context (e.g., definitions, comparison points, targets) directly within the dashboard/report or via linked documentation.</li>
+                         <li>**Interactivity:** Leverage QuickSight features for interactivity where appropriate (filtering, drill-down, on-click actions) to allow users to explore data within defined boundaries.</li>
+                         <li>**Dashboard Design:** Design dashboards logically, placing key summary information (KPIs) prominently (top-left). Group related visualizations. Use whitespace effectively. Avoid clutter. Ensure responsiveness across different screen sizes.</li>
+                         <li>**Data Storytelling Training:** Provide training to BI Developers/Analysts on principles of data storytelling – structuring insights logically, highlighting key findings, using visuals effectively to support the narrative.</li>
+                     </ol>
+                     <p class="responsibility">Responsibility: Analytics Lead (Standards), BI Developers/Analysts (Implementation), UX Team (Consultation).</p>
+                 </div>
+    
+                 <h3>D. Performance Optimization for Reporting</h3>
+                 <div class="implementation-detail">
+                     <h6>Implementation How-To:</h6>
+                     <ol>
+                         <li>**QuickSight SPICE Management:**
+                            <ul>
+                               <li>Use SPICE (QuickSight's in-memory engine) strategically for dashboards requiring fast interactivity and frequent use, especially Tier 1 operational dashboards.</li>
+                               <li>Optimize SPICE dataset size by including only necessary fields and potentially pre-aggregating data during ingestion.</li>
+                               <li>Configure appropriate SPICE refresh schedules (e.g., hourly, daily) based on data freshness requirements and cost considerations. Monitor SPICE capacity usage.</li>
+                            </ul>
+                        </li>
+                         <li>**Direct Query Optimization (Redshift/Athena):**
+                             <ul>
+                                <li>For dashboards/reports using Direct Query, optimize underlying database structures and queries.</li>
+                                <li>**Redshift:** Utilize appropriate distribution keys, sort keys, materialized views, workload management (WLM) queues, and query monitoring tools to tune performance.</li>
+                                <li>**Athena:** Partition data effectively in S3 (e.g., by date, school ID). Use columnar formats (Parquet, ORC). Optimize SQL queries (avoid `SELECT *`, use `WHERE` clauses effectively, leverage partitions). Monitor query costs and performance using Athena query history/metrics.</li>
+                             </ul>
+                         </li>
+                         <li>**Dashboard Design for Performance:** Limit the number of visuals per sheet in QuickSight. Avoid overly complex calculations within QuickSight where possible; perform them upstream in Redshift/Glue/dbt. Use filters effectively.</li>
+                         <li>**Monitoring:** Monitor dashboard load times and query performance using QuickSight usage metrics and underlying database/Athena metrics. Set alarms for slow-loading critical dashboards.</li>
+                     </ol>
+                      <p class="responsibility">Responsibility: BI Developers, Data Engineers, DBAs, Cloud Ops.</p>
+                 </div>
+    
+                 <h3>E. Governed Self-Service Analytics Framework</h3>
+                  <div class="implementation-detail">
+                     <h6>Implementation How-To:</h6>
+                     <ol>
+                        <li>**Certified Datasets:** Create and maintain a library of "Certified" datasets in QuickSight (using SPICE or Direct Query against curated Redshift views/Athena tables). These datasets are validated, documented, adhere to governance policies, and serve as the trusted source for self-service users. Data Stewards formally approve certified datasets.</li>
+                        <li>**User Segmentation & Access Control:** Define user groups/roles for self-service (e.g., `OPT_Analyst`, `School_Power_User`). Grant access *only* to specific certified datasets in QuickSight or specific schemas/views in Redshift/Athena using IAM/Lake Formation/QuickSight permissions/RLS. Deny access to raw or non-certified data layers by default.</li>
+                        <li>**Tool Access:** Provide access to QuickSight Author licenses for approved self-service users. Provide read-only SQL access via Athena/Redshift Query Editor if necessary for advanced analysts, subject to strict query limits and monitoring.</li>
+                        <li>**Mandatory Training:** Require all self-service users to complete mandatory training covering: Data Governance Policy, available certified datasets & definitions (Data Dictionary), QuickSight authoring basics, data interpretation best practices, and how to request support. Track training completion.</li>
+                        <li>**Support Model:** Establish a dedicated support channel (e.g., Slack channel, Jira queue) managed by the central Analytics/BI team for self-service user questions and assistance. Hold regular office hours.</li>
+                        <li>**Usage Monitoring & Auditing:** Monitor self-service query patterns, costs (especially Athena), and dashboard usage. Periodically audit user-created reports for compliance with usage policies or potential misinterpretations.</li>
+                        <li>**Promotion Path:** Define a process for potentially promoting well-built, widely useful user-created dashboards into the "Certified" reporting tier after review and refinement by the central BI team.</li>
+                     </ol>
+                      <p class="responsibility">Responsibility: Analytics Lead (Framework), BI Developers (Certified Datasets), Data Stewards (Approval), Training Team, Support Team, Cloud Ops (Cost Monitoring), Security (Access Control).</p>
+                       <div class="governance-note">Strong governance (certified datasets, access controls, training) is essential for enabling self-service analytics responsibly and maintaining trust in data.</div>
+                 </div>
+            </div>
+        </section>
+    
+        <!-- ML/AI Strategy -->
+        <section id="ds-ml-ai-expanded">
+            <h2>VII. Data Science, Machine Learning & AI Strategy (Expanded - MLOps/AIOps/GenAI)</h2>
+            <div class="section-description">
+                 <p>This section details our strategy for leveraging advanced analytics, Machine Learning (ML), Artificial Intelligence (AI), and potentially Generative AI (GenAI) responsibly and effectively to enhance TMS operations, alongside the rigorous MLOps/AIOps practices required for reliable deployment and management.</p>
+    
+                 <h3>A. Potential ML/AI Use Cases & Prioritization</h3>
+                  <div class="subsection">
+                     <h4>1. Identification & Validation Process</h4>
+                     <div class="implementation-detail">
+                        <h6>Implementation How-To:</h6>
+                        <ol>
+                            <li>Convene the cross-functional **AI/ML Working Group** (DS Lead, MLE Lead, PO, OPT SMEs, Architect, Ethics/Compliance Rep) regularly (e.g., quarterly) to brainstorm, evaluate, and prioritize potential use cases.</li>
+                            <li>Evaluate proposals against defined criteria:
+                                <ul>
+                                    <li>**Business Value:** Quantifiable impact on efficiency (route miles reduced, time saved), cost reduction, student safety improvement, user satisfaction enhancement, compliance support.</li>
+                                    <li>**Technical Feasibility:** Availability of suitable algorithms, required compute resources (GPU needs?), complexity of implementation.</li>
+                                    <li>**Data Readiness:** Availability, volume, quality, and relevance of required training/evaluation data (historical GPS, ridership, routes, traffic, weather, student needs, etc.). Requires access only to *anonymized* data during initial exploration.</li>
+                                    <li>**Ethical & Fairness Assessment:** Mandatory review using the AI Ethics framework (see Section VII.D). Does it risk bias? Is it explainable? What's the impact of errors?</li>
+                                    <li>**Operational Impact:** How will the model integrate into existing workflows? What are the monitoring and maintenance requirements?</li>
+                                </ul>
+                            </li>
+                            <li>Prioritize feasible, high-value, ethically sound use cases.</li>
+                            <li>Conduct time-boxed **Proof-of-Concept (POC) projects** in isolated DS sandbox environments using anonymized data to validate feasibility and estimate potential impact *before* committing to full MLOps lifecycle development. Document POC results and Go/No-Go decision.</li>
+                        </ol>
+                        <p class="responsibility">Responsibility: AI/ML Working Group, Data Scientists (POC Execution).</p>
+                     </div>
+    
+                     <h4>2. Potential Initial Use Cases (Examples - Subject to Validation)</h4>
+                     <ul>
+                         <li><strong>Enhanced ETA Prediction:** Improve accuracy of bus arrival times by incorporating real-time traffic (from 3rd party API), historical route performance, weather data, time of day, vehicle characteristics, and potentially real-time GPS deviations using models like Gradient Boosting Machines (XGBoost, LightGBM), LSTMs, or Graph Neural Networks (considering road network). Requires high-quality historical time-series data.</li>
+                         <li><strong>Route Optimization Input:** Use ML to predict segment travel times under varying conditions more accurately than static averages, feeding these predictions into the *existing* constraint-based optimization engine (potentially improving efficiency without replacing the core solver). Requires labeled historical travel time data linked to features.</li>
+                         <li><strong>Ridership Anomaly Detection:** Identify unusual patterns in ridership scans (e.g., sudden drop-off on a route, scans at unexpected locations/times) that might indicate data quality issues, operational problems, or potential fraud. Models like Isolation Forests, One-Class SVM, or Autoencoders could be used on historical ridership logs.</li>
+                         <li><strong>Bus Delay Anomaly Detection:** Use historical GPS, route schedule, and traffic data to identify buses exhibiting statistically significant delays or unusual stopping patterns indicative of potential breakdowns or operational issues, triggering proactive alerts. Time-series anomaly detection models applicable.</li>
+                         <li><strong>Predictive Maintenance (Future - Requires OBD Data):** If/when vehicle diagnostic data (OBDII) becomes available and integrated, ML models could predict potential component failures based on sensor readings and fault codes. (Not in initial scope based on RFP).</li>
+                         <li><strong>Sentiment Analysis:** Analyze text feedback submitted through Parent/Student apps or support channels to categorize issues, identify trends, and gauge user sentiment using NLP models (e.g., BERT variants fine-tuned on relevant data, potentially via SageMaker). Requires labeled feedback data.</li>
+                     </ul>
+                  </div>
+    
+                 <h3>B. Prescriptive MLOps Lifecycle Implementation (Using AWS SageMaker)</h3>
+                 <div class="subsection">
+                     <p>We will mandate a standardized MLOps workflow leveraging AWS SageMaker components within AWS GovCloud for consistency, reproducibility, governance, and operational efficiency.</p>
+                     <div class="implementation-detail">
+                        <h6>Implementation How-To:</h6>
+                        <ol>
+                            <li><strong>1. Data Preparation & Feature Engineering (SageMaker Focus):</strong>
+                                <ul>
+                                    <li>Utilize **AWS Glue** jobs (PySpark) or **SageMaker Processing Jobs** (with Scikit-learn/Spark containers) for scalable data cleaning, transformation, and feature extraction based on DS exploration. Code versioned in GitLab, jobs defined via Terraform/CloudFormation.</li>
+                                    <li>Leverage **SageMaker Feature Store** as the central repository for curated, versioned ML features. Implement automated pipelines (Glue/Processing Jobs) to ingest features into the store from the S3 Data Lake (Processed/Curated Zones). Define Feature Groups with clear schemas and metadata. Ensures consistency between training and inference.</li>
+                                    <li>**Data Access Control:** Use IAM roles and Lake Formation permissions to grant SageMaker execution roles specific, least-privilege access only to necessary S3 locations, Glue Data Catalog resources, and Feature Store groups.</li>
+                                </ul>
+                                <p class="responsibility">Responsibility: Data Engineers, MLEs, Data Scientists (Feature definition).</p>
+                            </li>
+                            <li><strong>2. Experimentation & Model Training (SageMaker Focus):</strong>
+                                <ul>
+                                    <li>Use **SageMaker Studio** as the primary IDE for Data Scientists, providing managed Jupyter notebooks, Git integration, experiment tracking UI, and access to other SageMaker components. Use dedicated user profiles with scoped IAM permissions.</li>
+                                    <li>Track *all* experiments (code versions via Git integration, hyperparameters, datasets used, metrics) automatically using **SageMaker Experiments**. Log parameters and metrics using SageMaker SDK or MLflow (if preferred for tracking UI, potentially logging to SageMaker Experiments backend).</li>
+                                    <li>Execute training jobs using **SageMaker Training Jobs**. Select appropriate built-in algorithms (XGBoost, Linear Learner, DeepAR for forecasting) or provide custom training scripts/containers (Python/Scikit-learn, TensorFlow, PyTorch). Utilize managed infrastructure (spot instances, distributed training options) for efficiency. Code versioned in GitLab.</li>
+                                </ul>
+                                <p class="responsibility">Responsibility: Data Scientists.</p>
+                            </li>
+                            <li><strong>3. Model Evaluation & Responsible AI (SageMaker Focus):</strong>
+                                <ul>
+                                    <li>Define standard evaluation metrics per model type (regression, classification, forecasting, anomaly). Log metrics during training/evaluation jobs to SageMaker Experiments/MLflow.</li>
+                                    <li>Use **SageMaker Processing Jobs** to run evaluation scripts against holdout datasets.</li>
+                                    <li>**Mandatory:** Utilize **SageMaker Clarify** processing jobs to assess:
+                                        <ul><li>Pre-training bias in datasets.</li><li>Post-training bias in model predictions (across sensitive groups like district, potentially demographics if ethically permissible and available in anonymized form).</li><li>Model explainability (SHAP values for feature importance).</li></ul>
+                                    <li>Document evaluation results, bias analysis, and explainability reports in Confluence, linked to the model version in the registry.</li>
+                                </ul>
+                                <p class="responsibility">Responsibility: Data Scientists, MLEs, AI Ethics Review Group.</p>
+                                <div class="compliance-note">Bias and fairness analysis using tools like SageMaker Clarify is mandatory before model deployment.</div>
+                            </li>
+                            <li><strong>4. Model Registry & Governance (SageMaker Focus):</strong>
+                                <ul>
+                                   <li>Use **SageMaker Model Registry** as the central catalog for *all* approved models.</li>
+                                   <li>Create Model Package Groups per use case (e.g., `tms-eta-prediction`, `tms-ridership-anomaly`).</li>
+                                   <li>Register validated model versions (champion models from experiments) as Model Packages, including artifacts (model weights from S3), inference container image URI (ECR), performance/bias metrics, lineage (link to training job/experiment), and required metadata/tags.</li>
+                                   <li>Implement **Model Approval Workflows** within the Registry. Define statuses (e.g., `PendingApproval`, `Approved`, `Rejected`). Require formal approval from DS Lead, Tech Lead, potentially Product Owner/Compliance Officer based on documented evaluation/bias reports before a model version can be marked `Approved` for production deployment.</li>
+                                </ul>
+                               <p class="responsibility">Responsibility: MLEs (Registration), DS Lead/Tech Lead/PO/Compliance (Approval Workflow).</p>
+                                <div class="governance-note">The Model Registry with its approval workflow acts as a critical governance gate before ML models reach production.</div>
+                            </li>
+                            <li><strong>5. Model Deployment Pipelines (ML CI/CD):**
+                                <ul>
+                                   <li>Implement dedicated **GitLab CI/CD pipelines** triggered by model approval in the SageMaker Model Registry (potentially via EventBridge event -> Lambda -> GitLab trigger) or manual trigger.</li>
+                                   <li>Pipeline retrieves the approved Model Package details from the Registry.</li>
+                                   <li>Pipeline provisions/updates the inference infrastructure using **Terraform** (e.g., SageMaker Endpoint configuration, Batch Transform job definition, Lambda function for inference).</li>
+                                   <li>Deploys the model using safe deployment strategies:
+                                       <ul><li>**SageMaker Endpoints:** Use Blue/Green or Canary deployments managed via Endpoint configuration updates (handled by Terraform/CLI in pipeline). Monitor metrics during rollout.</li><li>**Batch Transform:** Deploy new job definition.</li><li>**Lambda:** Update function code/layers pointing to new model artifact.</li></ul>
+                                   </li>
+                                   <li>Run post-deployment smoke tests against the new model endpoint/batch job.</li>
+                                </ul>
+                               <p class="responsibility">Responsibility: MLEs, DevOps Team.</p>
+                            </li>
+                             <li><strong>6. Production Model Monitoring (AIOps):**
+                                <ul>
+                                   <li>Configure **SageMaker Model Monitor** for deployed SageMaker Endpoints. Schedule monitoring jobs to:
+                                       <ul><li>Compare live inference data statistics/schema against a baseline generated from training data (**Data Drift** detection using `DataQuality` check).</li><li>Compare model prediction quality against ground truth (if available via feedback loop) (**Model Quality** check).</li><li>Check for drift in feature attribution/importance (**Feature Attribution Drift**).</li><li>Re-run bias checks on live traffic (**Bias Drift** using Clarify integration).</li></ul>
+                                   </li>
+                                   <li>Configure **CloudWatch Alarms** based on Model Monitor violations (drift detected, constraint violation) and Endpoint operational metrics (latency, invocation errors 5xx).</li>
+                                   <li>Alerts routed via SNS to MLE/DS on-call rotation using PagerDuty/Opsgenie.</li>
+                                   <li>Develop dashboards (CloudWatch/QuickSight) visualizing model performance, drift metrics, and operational health over time.</li>
+                                </ul>
+                               <p class="responsibility">Responsibility: MLEs, SRE/Ops Team (Alerting infra).</p>
+                                <div class="automation-note">SageMaker Model Monitor provides significant automation for detecting model degradation in production.</div>
+                            </li>
+                             <li><strong>7. Automated Retraining Pipelines:**
+                                 <ul>
+                                    <li>Develop **SageMaker Pipelines** or **Step Functions** state machines orchestrating the end-to-end retraining workflow (Data Prep -> Training -> Evaluation -> Registry (Conditional Approval)).</li>
+                                    <li>Trigger pipelines based on Model Monitor alerts (signifying degradation) or on a regular schedule (e.g., weekly/monthly) using EventBridge Scheduler.</li>
+                                    <li>Ensure pipelines use versioned code/containers and log execution details rigorously.</li>
+                                    <li>Require manual approval step (via Registry workflow) before automatically deploying a newly retrained model to production.</li>
+                                 </ul>
+                                <p class="responsibility">Responsibility: MLEs, Data Engineers.</p>
+                             </li>
+                        </ol>
+                     </div>
+                </div>
+    
+                 <h3>C. Generative AI (GenAI) Strategy & Governance (Highly Restricted Use)</h3>
+                  <div class="subsection">
+                     <div class="risk-note">WARNING: Use of Generative AI, especially Large Language Models (LLMs), carries significant risks in this context due to potential for hallucinations (generating incorrect information), data privacy leakage (if PII/Confidential data enters prompts or training data), bias amplification, security vulnerabilities, and high costs. Use MUST be extremely limited, rigorously governed, and approved only for low-risk, high-value internal applications with mandatory human oversight.</div>
+                     <h4>1. Permissible Use Cases (Strictly Limited & Subject to Approval):</h4>
+                        <ul>
+                            <li>**Synthetic Data Generation (Anonymized):** Potential use of LLMs or specialized models to generate *realistic but entirely synthetic* (non-PII) data for testing purposes, *after* rigorous validation of its non-identifiability and representativeness. Requires expert oversight.</li>
+                            <li>**Documentation Assistance:** Using LLMs to *draft* initial versions of technical documentation, runbooks, or KB articles based on existing resources (e.g., code comments, design docs). **Mandatory human review, editing, and verification required before finalization.**</li>
+                            <li>**Report Summarization (Non-Sensitive Data Only):** Potential use to summarize *aggregated, non-sensitive, non-PII* operational reports or incident post-mortem findings *after* human review and redaction of any sensitive details.</li>
+                            <li>**Internal Knowledge Q&A (Highly Controlled RAG):** Potential development of an internal chatbot for *project team members only* to query *approved, non-sensitive* project documentation (Confluence pages, technical docs) using Retrieval-Augmented Generation (RAG). **Strict controls needed:** Must run entirely within secure GovCloud environment, use approved models (see below), ensure no PII enters prompts/logs, implement strong access controls, and clearly label outputs as AI-generated and potentially imperfect.</li>
+                        </ul>
+                     <h4>2. Prohibited Use Cases (Non-Negotiable):</h4>
+                        <ul>
+                            <li>**Direct interaction with PII/MNPI/Confidential Student Data:** No GenAI model should process or generate outputs based on raw sensitive data.</li>
+                            <li>**Automated Decision Making:** GenAI *must not* make operational decisions (e.g., route changes, student assignments, incident resolution actions). Human oversight and decision-making are mandatory.</li>
+                            <li>**External-Facing Chatbots/Interfaces:** No GenAI interfaces directly exposed to parents, students, or the public.</li>
+                            <li>**Code Generation for Production:** While LLMs can assist developers, generated code *must* undergo the same rigorous review, testing, and security scanning as human-written code. It cannot be deployed directly.</li>
+                            <li>**Training/Fine-tuning on NYCPS Data:** Unless explicitly approved under a separate, highly governed protocol involving anonymization and legal/privacy/security sign-off, NYCPS data *must not* be used to fine-tune foundation models.</li>
+                        </ul>
+                     <h4>3. Governance & Implementation (Mandatory Controls):</h4>
+                     <ol>
+                        <li>**Formal Approval Required:** Any proposed use of GenAI requires a formal proposal detailing the use case, data involved (proving no PII), model chosen, security controls, ethical review, and risk assessment, submitted to and approved by the **AI Ethics Review Group, CISO, CPO, and potentially Legal Counsel.**</li>
+                        <li>**Approved Models & Platforms:** Use only approved foundation models available through secure AWS GovCloud services like **Amazon Bedrock** or **SageMaker JumpStart** (subject to availability and approval within GovCloud). Avoid direct calls to external, commercial LLM APIs outside the secure boundary.</li>
+                        <li>**Data Handling:** Implement strict technical controls (e.g., prompt filtering, data masking gateways) to prevent PII/Confidential data from ever reaching the GenAI model endpoints or being logged.</li>
+                        <li>**Secure Infrastructure:** Deploy any custom GenAI applications (like RAG systems) within the secure TMS VPC infrastructure following all standard security practices (private subnets, IAM least privilege, encryption).</li>
+                        <li>**Human Review & Oversight:** *Mandatory* human review and verification required for *all* outputs generated by GenAI before they are used or published (documentation drafts, report summaries, synthetic data validation).</li>
+                        <li>**Logging & Auditing:** Log all prompts sent to and responses received from GenAI models (ensuring no PII is logged). Audit usage patterns.</li>
+                        <li>**User Training:** Train users on the approved uses, limitations, risks, and responsibilities when interacting with authorized internal GenAI tools.</li>
+                      </ol>
+                       <p class="responsibility">Responsibility: AI Ethics Review Group (Approval), CISO/CPO (Policy/Oversight), Security Team (Technical Controls), Developers/MLEs (Implementation), End Users (Responsible Use).</p>
+                       <div class="compliance-note">Unauthorized or improperly governed use of GenAI poses extreme compliance and reputational risks. Adherence to these strict limitations is mandatory.</div>
+                  </div>
+    
+                 <h3>D. Ethical AI & Responsible Development (Integrated)</h3>
+                 <div class="subsection">
+                    <h4>Implementation How-To:</h4>
+                     <ol>
+                        <li>**AI Ethics Review Group:** Maintain the cross-functional group established during Use Case Identification.</li>
+                        <li>**Mandatory Ethical Review:** Conduct formal ethical reviews (documented in Confluence) for *all* ML/AI models *before* production deployment, assessing potential bias, fairness implications across demographics (using SageMaker Clarify/Fairlearn), transparency needs, and societal impact.</li>
+                        <li>**Bias Mitigation Strategies:** If bias is detected, implement mitigation techniques (e.g., data re-sampling/re-weighting during preprocessing, applying fairness constraints during training, post-processing adjustments) and document the approach and results. Re-evaluate fairness post-mitigation.</li>
+                        <li>**Explainability:** For high-impact models (e.g., potentially influencing route assignments even indirectly), prioritize models with higher inherent interpretability or utilize post-hoc explanation techniques (SHAP, LIME via SageMaker Clarify) to understand feature importance. Document explanations.</li>
+                        <li>**Human Oversight:** Ensure critical decisions influenced by AI/ML outputs always have a human-in-the-loop for review and final decision-making, especially where safety or equity is concerned.</li>
+                        <li>**Transparency:** Document model purpose, limitations, key features driving predictions, and fairness metrics clearly for relevant stakeholders (e.g., OPT management reviewing model performance).</li>
+                     </ol>
+                     <p class="responsibility">Responsibility: AI Ethics Review Group, Data Scientists, MLEs, Product Owner, Compliance Officer.</p>
+                 </div>
+            </div>
+        </section>
+    
+    
+        <!-- Conclusion -->
+        <section id="conclusion-data-ai">
+            <h2>VIII. Conclusion: Enabling Data-Driven Excellence</h2>
+            <div class="section-description">
+                <p>This prescriptive Data, Analytics, and AI/ML Strategy provides the comprehensive framework required to manage and leverage data as a strategic asset for the NYCPS TMS project effectively, securely, and responsibly. By mandating best-in-class practices in Data Engineering (DataOps), Data Quality, Performance Testing, Reporting/Visualization, Data Science, and MLOps/AIOps, integrated with stringent governance and ethical AI considerations, we establish a foundation for trust, reliability, and continuous improvement.</p>
+                <p>The detailed implementation steps, focus on automation (especially via AWS SageMaker and GitLab CI/CD), clear role definitions, and embedded quality/security gates ensure that data pipelines are robust, analytics are insightful, ML models are reliable and fair, and all activities comply with the critical legal and policy requirements governing NYCPS data. Adherence to this strategy is fundamental to unlocking the full potential of data to optimize transportation, enhance safety, ensure compliance, and ultimately deliver superior value to the NYCPS community.</p>
+            </div>
+        </section>
+    
+    </body>
+    </html>

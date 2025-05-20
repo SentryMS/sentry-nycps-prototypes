@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NYCPS TMS - Prescriptive Financial Management & Communications Plan</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.8; color: #212529; max-width: 1300px; margin: 25px auto; padding: 35px; background-color: #ffffff; border: 1px solid #dee2e6; border-radius: 10px; box-shadow: 0 6px 12px rgba(0,0,0,0.07); }
+        h1, h2, h3, h4, h5, h6 { color: #002b5c; margin-top: 1.8em; margin-bottom: 0.8em; padding-bottom: 8px; font-weight: 600; border-bottom: 2px solid #003366; }
+        h1 { text-align: center; font-size: 2.6em; border-bottom: 4px solid #003366; margin-bottom: 1.5em; }
+        h2 { /* Major Sections */ font-size: 2.1em; border-bottom: 3px solid #003366; background-color: #eaf2f8; padding: 12px 18px; border-radius: 6px 6px 0 0; margin-left: -36px; margin-right: -36px; margin-top: 2.5em; }
+        h3 { /* Primary Plan Components */ font-size: 1.7em; border-bottom: 2px solid #b7d1ed; padding-left: 10px; margin-top: 2.2em;}
+        h4 { /* Key Processes / Concepts */ font-size: 1.4em; border-bottom: 1px dashed #ced4da; color: #004080; padding-left: 25px; font-weight: 600; margin-top: 2em; }
+        h5 { /* Specific Steps / Details */ font-size: 1.2em; border-bottom: none; color: #343a40; padding-left: 40px; font-weight: bold; margin-top: 1.5em; margin-bottom: 0.5em; }
+        h6 { /* Implementation/Tooling Notes */ font-size: 1.05em; border-bottom: none; color: #495057; padding-left: 55px; font-style: italic; margin-top: 1em; margin-bottom: 0.4em; }
+        p, li { margin-bottom: 1em; font-size: 1.1em; }
+        ul { list-style-type: disc; margin-left: 70px; margin-bottom: 1.2em; } /* Changed from circle */
+        ol { list-style-type: decimal; margin-left: 70px; margin-bottom: 1.2em; }
+        ol ol { list-style-type: lower-alpha; margin-left: 90px; }
+        ol ol ol { list-style-type: lower-roman; margin-left: 110px; }
+        strong { font-weight: 700; color: #002b5c; }
+        code { font-family: 'Fira Code', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; display: block; background-color: #2b303b; color: #c0c5ce; padding: 18px; border: 1px solid #3e4451; border-radius: 6px; font-size: 1em; white-space: pre-wrap; word-wrap: break-word; overflow-x: auto; margin: 12px 0; line-height: 1.6; }
+        .section-description { padding: 20px; margin-bottom: 25px; border: 1px solid #e9ecef; background-color: #f8f9fa; border-radius: 5px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.05); }
+        .subsection { padding: 15px; margin: 15px 0; border: 1px solid #f1f1f1; border-left: 5px solid #b7d1ed; background-color: #fff; border-radius: 4px;}
+        .implementation-detail { background-color: #f0fff0; border: 1px solid #c3e6c9; border-left: 5px solid #28a745; padding: 15px; margin-top: 15px; border-radius: 4px; color: #155724; font-size: 1.05em;}
+        .implementation-detail h5 { color: #155724; margin-top: 0;}
+        .template-box { background-color: #fefefe; border: 1px dashed #adb5bd; padding: 15px; margin: 15px 40px; border-radius: 4px; font-family: monospace; font-size: 0.95em; }
+        .template-box h5 { color: #495057; font-style: normal; font-size: 1.1em; margin-bottom: 10px; margin-top: 5px; padding-left: 0;}
+        .template-box ul { margin-left: 20px; }
+        .checklist { list-style-type: none; padding-left: 0; }
+        .checklist li::before { content: "☐ "; font-weight: bold; color: #0056b3;}
+        .responsibility { font-weight: bold; color: #6f42c1; /* Bootstrap Purple */ display: block; margin-top: 8px; margin-left: 40px; font-size: 0.95em; }
+        .governance-note { background-color: #fff8e1; border-left: 5px solid #ffc107; padding: 10px 15px; margin: 15px 0; border-radius: 4px; color: #856404; font-style: italic;}
+        .compliance-note { background-color: #f8d7da; border-left: 5px solid #dc3545; padding: 10px 15px; margin: 15px 0; border-radius: 4px; color: #721c24; font-style: italic;}
+    </style>
+</head>
+<body>
+
+    <h1>NYCPS TMS: Hyper-Detailed Financial Management & Communications Plan</h1>
+
+    <!-- Introduction -->
+    <section id="intro">
+        <h2>I. Introduction: Purpose, Scope & Principles</h2>
+        <div class="section-description">
+            <p>This document mandates the comprehensive Financial Planning & Analysis (FP&A), Budget Tracking, Management, and associated Communications Plan for the NYCPS Transportation Management System (TMS) project. Given the project's substantial budget, inherent technical complexities, potential unknowns, extended duration, and the critical need for fiscal accountability within a public sector context, this plan establishes rigorous, conservative, and transparent financial controls integrated throughout the project lifecycle.</p>
+            <p><strong>Purpose:</strong> To ensure the TMS project is delivered within the allocated budget baseline, provide accurate forecasting of future costs, enable proactive identification and management of financial risks and variances, ensure compliance with NYCPS financial policies and contractual obligations, and facilitate transparent financial communication to all relevant stakeholders.</p>
+            <p><strong>Scope:</strong> This plan covers the entire project lifecycle, from initial budget baselining through development, deployment, and into the operational phase (specifically concerning ongoing cloud costs, licenses, and support). It encompasses all anticipated cost categories: vendor labor, hardware procurement and maintenance, software licensing, AWS GovCloud infrastructure and services, and other direct project costs.</p>
+            <div class="principle-box">
+                 <h4>Core Financial Management Principles:</h4>
+                <ul>
+                    <li><strong>Accountability & Control:</strong> Establish clear ownership for budget lines and spending authorization. Implement controls to prevent unapproved expenditures.</li>
+                    <li><strong>Accuracy & Timeliness:</strong> Ensure all financial data (actuals, forecasts) is accurate, up-to-date, and reported promptly according to the defined cadence.</li>
+                    <li><strong>Transparency & Documentation:</strong> Maintain a clear, auditable trail for all financial transactions, budget changes, forecasts, and variance analyses. Communicate financial status openly to appropriate stakeholders.</li>
+                    <li><strong>Proactive Variance Management:</strong> Systematically identify, analyze, and address budget variances early. Focus on root cause analysis and corrective actions, not just reporting deviations.</li>
+                    <li><strong>Conservatism & Contingency:</strong> Employ conservative forecasting methods. Maintain and manage budget contingency appropriately to address identified risks and unavoidable unknowns.</li>
+                    <li><strong>Compliance & Auditability:</strong> Ensure all financial processes adhere to NYCPS financial policies, contractual terms, and government auditing standards. Maintain meticulous records.</li>
+                    <li><strong>Integration:</strong> Financial management is intrinsically linked to Scope/Change Management, Risk Management, Resource Management, and Schedule Management.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Governance & Roles -->
+    <section id="financial-governance">
+        <h2>II. Financial Governance & Roles</h2>
+        <div class="section-description">
+            <p>Clear roles and responsibilities are essential for effective financial oversight and control.</p>
+            <ul>
+                <li><strong>Project Sponsor / Steering Committee:</strong>
+                    <ul><li><strong>Role:</strong> Provides ultimate budget authority. Approves the initial Budget Baseline and any subsequent baseline changes requiring additional funding or significant reallocation (> defined threshold). Reviews and approves major financial variance explanations and corrective action plans. Makes strategic decisions with significant financial impact.</li></ul>
+                </li>
+                 <li><strong>NYCPS Project Manager:</strong>
+                    <ul><li><strong>Role:</strong> Co-manages the overall project budget. Responsible for tracking overall actuals vs. budget, consolidating forecasts, performing variance analysis, preparing financial reports for Steering Committee/MBR, initiating budget-related Change Requests, and day-to-day budget monitoring. Primary point of contact for financial inquiries.</li></ul>
+                </li>
+                <li><strong>Vendor Project Manager:</strong>
+                    <ul><li><strong>Role:</strong> Manages the vendor portion of the budget. Tracks vendor labor hours/costs against estimates/SOWs. Provides input for forecasting vendor costs. Validates vendor invoices for accuracy against deliverables/timesheets. Assists NYCPS PM with variance analysis related to vendor activities.</li></ul>
+                </li>
+                 <li><strong>NYCPS Finance Liaison / Contract Manager:</strong>
+                    <ul><li><strong>Role:</strong> Official liaison with NYCPS finance/procurement departments. Ensures adherence to DOE financial policies and reporting requirements. Oversees PO creation/management and invoice payment processing according to contractual terms. Verifies budget availability. Point of contact for financial audits.</li></ul>
+                </li>
+                 <li><strong>Technical Leads / Workstream Leads (Vendor & NYCPS):</strong>
+                    <ul><li><strong>Role:</strong> Provide input for initial effort estimation (feeding into budget). Track resource time allocation against specific tasks/features within their domain. Validate technical deliverables associated with vendor invoices. Identify potential cost impacts of technical decisions or risks.</li></ul>
+                </li>
+                <li><strong>Cloud Ops / FinOps Lead:</strong>
+                    <ul><li><strong>Role:</strong> Responsible for implementing AWS tagging strategy, monitoring AWS GovCloud costs using Cost Explorer/CUR, identifying optimization opportunities (right-sizing, RIs/Savings Plans), setting up AWS Budgets alerts, and providing detailed cloud cost reports/forecasts to the PMs.</li></ul>
+                </li>
+                 <li><strong>Procurement / Logistics Lead:</strong>
+                    <ul><li><strong>Role:</strong> Tracks hardware procurement costs against budget. Manages inventory receiving and potentially RMA cost tracking. Validates hardware/software invoices against POs and delivery confirmation.</li></ul>
+                </li>
+            </ul>
+             <div class="governance-note">Clear segregation of duties between budget approval (Steering Committee), spending authorization (PMs based on approved budget/CRs), technical validation (Leads), and payment processing (Finance Liaison) will be maintained where practical.</div>
+        </div>
+    </section>
+
+    <!-- Budget Baseline -->
+    <section id="budget-baseline">
+        <h2>III. Budget Baseline Establishment & Management</h2>
+        <div class="section-description">
+            <p>The Budget Baseline is the approved, time-phased financial plan against which project performance will be measured.</p>
+            <h4>A. Baseline Establishment Process</h4>
+            <div class="implementation-detail">
+                <h6>Implementation How-To:</h6>
+                <ol>
+                    <li><strong>Source Data:</strong> Use the final, agreed-upon contract pricing (RFP Appendices F/F1, G and any negotiated BAFO/contract modifications) as the total budget envelope.</li>
+                    <li><strong>Detailed Breakdown:</strong> Decompose the total contract value into time-phased budgets (e.g., monthly or quarterly) aligned with the 12-month Project Plan phases and major deliverables. Break down costs by category (Vendor Labor, Hardware, Software Licenses, AWS Cloud Costs, ODCs, Contingency). Further break down labor/cloud costs by major workstream or system component where feasible based on initial estimates.</li>
+                    <li><strong>Tooling:</strong> Input the detailed, time-phased baseline into the chosen Financial Tracking System (e.g., dedicated software, or initially, a rigorously structured and version-controlled spreadsheet).</li>
+                    <li><strong>Formal Approval:** Submit the detailed Budget Baseline document (exported from tracking tool or as a separate document) to the Project Sponsor / Steering Committee for formal review and documented sign-off *before* significant spending commences.</li>
+                    <li><strong>Version Control:** Store the signed-off Budget Baseline document in the central Confluence repository. Maintain strict version control for any subsequent *approved* changes.</li>
+                </ol>
+                 <p class="responsibility">Responsibility: Project Managers (Development), Finance Liaison (Review/Input), Steering Committee (Approval).</p>
+            </div>
+
+            <h4>B. Baseline Change Control</h4>
+            <div class="implementation-detail">
+                 <h6>Implementation How-To:</h6>
+                <ol>
+                    <li>The Budget Baseline can **only** be changed through the **Formal Change Management Process** (Section III of the overarching Formal PM Plan).</li>
+                    <li>Any approved Change Request (CR) that impacts cost *must* specify the approved budget adjustment (increase or reallocation).</li>
+                    <li>Upon CCB/Steering Committee approval of a cost-impacting CR, the Project Manager formally updates the Budget Baseline in the Financial Tracking System and the version-controlled document in Confluence, clearly referencing the approved CR number.</li>
+                    <li>Minor reallocations *between* budget categories within a phase *might* be permissible with only PM approval up to a pre-defined threshold (e.g., 5% of phase budget), but *any change increasing the total project budget or shifting significant funds between major phases requires formal CCB/Steering Committee approval via a CR*. This threshold must be formally documented and approved.</li>
+                 </ol>
+                 <p class="responsibility">Responsibility: Project Managers (Initiating update post-CR), CCB/Steering Committee (Approving baseline changes).</p>
+                  <div class="compliance-note">Maintain a clear audit trail linking every change in the Budget Baseline back to an approved Change Request document.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cost Tracking -->
+    <section id="cost-tracking">
+        <h2>IV. Detailed Cost Category Tracking Mechanisms</h2>
+        <div class="section-description">
+            <p>Accurate and timely tracking of actual costs incurred across all categories is fundamental.</p>
+
+            <div class="subsection">
+                <h4>A. Vendor Labor Costs (Professional Services)</h4>
+                <h5>What:</h5> All costs associated with vendor personnel (developers, architects, PMs, testers, trainers, support staff, etc.) working on the project.
+                <h5>How (Implementation):</h5>
+                <ol>
+                    <li>Vendor personnel *must* submit detailed weekly or bi-weekly timesheets indicating hours worked against specific project tasks/user stories (ideally referencing Jira/ADO ticket IDs).</li>
+                    <li>Vendor PM compiles timesheets and includes a summary breakdown (e.g., by role, by workstream/phase) with the formal monthly invoice.</li>
+                    <li>NYCPS PM and relevant Technical Leads *must* review and validate invoiced hours against project progress, deliverables achieved during the period, and task assignments in Jira/ADO *before* approving the invoice for payment processing. Discrepancies must be formally documented and resolved with the Vendor PM.</li>
+                    <li>Approved labor costs are recorded against the appropriate budget lines in the Financial Tracking System monthly.</li>
+                </ol>
+                <p class="responsibility">Responsibility: Vendor PM (Submission/Compilation), NYCPS PM & Tech Leads (Validation/Approval), Finance Liaison (Payment Processing).</p>
+            </div>
+
+            <div class="subsection">
+                 <h4>B. Hardware Costs (Devices, Peripherals, Infrastructure)</h4>
+                <h5>What:</h5> Costs for procuring GPS devices, mounts, chargers, QR tag stock, scanners, and any necessary on-premises hardware (if applicable, though architecture is cloud-focused). Includes initial purchase and ongoing replacement costs.
+                <h5>How (Implementation):</h5>
+                <ol>
+                    <li>All hardware procurement requires an approved Purchase Order (PO) aligned with the project budget and phases.</li>
+                    <li>Procurement/Logistics Lead tracks POs and vendor invoices for hardware deliveries.</li>
+                    <li>Physical receipt of hardware must be confirmed (e.g., by Logistics Lead or receiving SBCs via documented process) before invoice approval.</li>
+                    <li>Vendor invoices *must* reference the corresponding PO number.</li>
+                    <li>Procurement/Logistics Lead validates invoice details (quantity, unit price) against PO and delivery confirmation. NYCPS PM provides final approval.</li>
+                    <li>Costs for replacements (distinguishing warranty vs. non-warranty) are tracked separately against the relevant budget line/contingency.</li>
+                    <li>Actual costs recorded monthly in the Financial Tracking System.</li>
+                </ol>
+                <p class="responsibility">Responsibility: Procurement/Logistics Lead (Tracking, Validation), NYCPS PM (Approval), Finance Liaison (Payment Processing).</p>
+            </div>
+
+             <div class="subsection">
+                 <h4>C. Software Licensing & Subscription Costs</h4>
+                <h5>What:</h5> Costs for any Commercial-Off-The-Shelf (COTS) software licenses, SaaS subscriptions (beyond core vendor platform included in labor/service fees), or specific OSS maintenance contracts required for the project.
+                <h5>How (Implementation):</h5>
+                <ol>
+                    <li>Identify all required commercial licenses/subscriptions during design/planning. Budget allocated accordingly.</li>
+                    <li>Track via POs and vendor invoices.</li>
+                    <li>Contract Manager/PM verifies license terms (users, duration, scope) and usage against contractual entitlements before approving invoices.</li>
+                    <li>Utilize Software Asset Management (SAM) tools or maintain a detailed license tracking spreadsheet (stored in Confluence/SharePoint) including renewal dates, costs, and assigned users/servers.</li>
+                    <li>Actual costs recorded monthly/annually as appropriate in the Financial Tracking System.</li>
+                </ol>
+                <p class="responsibility">Responsibility: Contract Manager/PM (Validation/Approval), SAM Specialist (Tracking, if available).</p>
+            </div>
+
+             <div class="subsection">
+                 <h4>D. AWS GovCloud Costs</h4>
+                 <h5>What:</h5> All costs associated with utilizing AWS services (compute, storage, database, networking, messaging, security tools, etc.) across all environments (Dev, Test, QA, Staging, Perf, Prod).
+                 <h5>How (Implementation):</h5>
+                 <ol>
+                    <li>**Mandatory Tagging:** Implement and *strictly enforce* a comprehensive AWS resource tagging strategy via IaC (Terraform `provider` block defaults and resource-level tags) and AWS Config rules (to detect untagged resources). Minimum tags: `environment` (dev/qa/prod/etc.), `project` (e.g., `nycps-tms`), `service-component` (e.g., `gps-ingestion`, `routing-engine`, `parent-api`), `owner-team` (e.g., `alpha-dev`, `platform-ops`).</li>
+                    <li>**AWS Cost Explorer:** Use Cost Explorer (with GovCloud support) for regular visualization and analysis of costs, filtered by tags, services, accounts, time periods.</li>
+                    <li>**Cost and Usage Report (CUR):** Configure CUR delivery to a central S3 bucket. Use Athena or QuickSight (or third-party tools) to query CUR data for highly granular cost allocation and trend analysis based on tags.</li>
+                    <li>**AWS Budgets:** Create multiple AWS Budgets:
+                        <ul>
+                            <li>Overall project budget alert (threshold: e.g., 80% of monthly/quarterly budget).</li>
+                            <li>Environment-specific budgets (especially for non-prod to control costs).</li>
+                            <li>Service-specific budgets for high-cost services (e.g., EC2, RDS, Kinesis, Nat Gateway data transfer).</li>
+                            <li>Configure Budget Actions to send alerts via SNS to PMs, Cloud Ops/FinOps Lead, and relevant Tech Leads when forecast or actual spend exceeds thresholds.</li>
+                        </ul>
+                    </li>
+                    <li>**Monthly Reconciliation:** Cloud Ops/FinOps Lead analyzes monthly AWS invoice and detailed CUR data, allocates costs based on tags, compares against budget/forecast, identifies anomalies or optimization opportunities, and provides a detailed report to PMs.</li>
+                    <li>Actual costs recorded monthly in the Financial Tracking System, broken down by environment/major component where possible.</li>
+                 </ol>
+                 <p class="responsibility">Responsibility: Cloud Ops/FinOps Lead (Monitoring, Analysis, Reporting, Tagging Enforcement), DevOps Team (Implementing tagging in IaC), PMs (Budget oversight).</p>
+                  <div class="compliance-note">AWS cost allocation via tagging is critical for demonstrating fiscal responsibility and justifying spend against project components/phases.</div>
+             </div>
+
+             <div class="subsection">
+                  <h4>E. Other Direct Costs (ODCs)</h4>
+                 <h5>What:</h5> Specific, pre-approved costs directly related to the project, not fitting other categories (e.g., exceptional pre-approved travel for critical on-site work, specialized third-party testing tools/services, dedicated training material production).
+                 <h5>How (Implementation):</h5>
+                 <ol>
+                    <li>ODCs require explicit pre-approval from the NYCPS PM and must be line-itemed in the budget baseline or added via an approved CR.</li>
+                    <li>Tracked via expense reports (following standard NYCPS procedures) or specific vendor invoices/POs.</li>
+                    <li>All ODC documentation must clearly justify the expense's direct relation to the TMS project.</li>
+                    <li>PM approves ODC expenses against the budget before payment processing.</li>
+                    <li>Actual costs recorded monthly in the Financial Tracking System.</li>
+                 </ol>
+                 <p class="responsibility">Responsibility: Requestor (Justification), NYCPS PM (Pre-Approval, Invoice Approval).</p>
+             </div>
+
+             <div class="subsection">
+                  <h4>F. Contingency Budget Management</h4>
+                 <h5>What:</h5> A separately allocated budget line item to cover the cost impact of accepted risks materializing or minor, unforeseen issues not warranting a full CR.
+                 <h5>How (Implementation):</h5>
+                 <ol>
+                    <li>Establish initial contingency amount during baselining (e.g., 5-10% of total budget, based on initial risk assessment).</li>
+                    <li>Access to contingency funds *requires formal approval*.
+                        <ul>
+                            <li>For activating documented contingency plans for accepted risks: Approval by PM (up to a certain threshold) or Steering Committee (for larger impacts), referencing the Risk Register ID.</li>
+                            <li>For minor unforeseen issues: Requires a mini-justification/request approved by the PM.</li>
+                        </ul>
+                    </li>
+                    <li>All draws against contingency *must* be meticulously documented, tracked separately in the Financial Tracking System, and reported regularly (detailing what risk/issue the funds addressed).</li>
+                    <li>Contingency amount should be reviewed and potentially adjusted during major phase gate reviews based on remaining project risks and uncertainty.</li>
+                 </ol>
+                 <p class="responsibility">Responsibility: Project Manager (Manages requests/tracking), Steering Committee (Approves significant draws).</p>
+                  <div class="governance-note">Contingency is not for covering poor estimation or unapproved scope creep. Its use requires justification and traceability.</div>
+             </div>
+        </div>
+    </section>
+
+    <!-- Forecasting -->
+    <section id="forecasting">
+        <h2>V. Forecasting Methodology</h2>
+        <div class="section-description">
+            <p>Accurate forecasting is crucial for proactive financial management and preventing budget overruns.</p>
+            <h4>A. Primary Methodology: Estimate At Completion (EAC)</h4>
+            <div class="subsection">
+                <p>Our primary forecasting method will be EAC, calculated monthly.</p>
+                <p><strong>Formula: EAC = AC + ETC</strong></p>
+                <ul>
+                    <li><strong>AC (Actual Cost):</strong> Actual costs incurred to date, pulled directly from the Financial Tracking System.</li>
+                    <li><strong>ETC (Estimate To Complete):</strong> The projected cost to complete the remaining project work.</li>
+                </ul>
+            </div>
+
+            <h4>B. ETC Calculation Process (Monthly)</h4>
+             <div class="implementation-detail">
+                 <h6>Implementation How-To:</h6>
+                 <ol>
+                    <li><strong>Remaining Labor ETC:**
+                        <ul>
+                           <li>Identify all remaining User Stories/Tasks in the Product Backlog (Jira/ADO) planned for completion within the project timeline.</li>
+                           <li>Estimate total remaining effort (e.g., in Story Points or Person-Days).</li>
+                           <li>Calculate ETC based on remaining effort and projected team velocity/burn rate (using historical averages, adjusted for known future team changes). Factor in resource allocation plans and blended rates if applicable.
+                               <code>ETC_Labor = (Remaining Story Points / Average Velocity per Sprint) * Cost per Sprint</code>
+                               OR
+                               <code>ETC_Labor = Sum(Remaining Task Person-Days * Blended Daily Rate)</code>
+                           </li>
+                            <li>PMs and Tech Leads review and validate labor ETC.</li>
+                        </ul>
+                    </li>
+                     <li><strong>Remaining Hardware/Software ETC:**
+                        <ul>
+                           <li>Identify all planned future purchases based on the project plan and hardware rollout schedule (POs, license renewals).</li>
+                           <li>Sum the known future costs.</li>
+                           <li>Include estimated costs for projected hardware replacements based on historical rates (or contractual % if applicable).</li>
+                        </ul>
+                     </li>
+                     <li><strong>Remaining AWS Cloud Cost ETC:**
+                        <ul>
+                           <li>Analyze recent AWS cost trends (from Cost Explorer/CUR) for existing deployed resources.</li>
+                           <li>Project future costs based on current run rate, adjusting for planned deployments of new services/features (estimate impact based on architecture/scaling expectations) and planned decommissioning of temporary resources.</li>
+                           <li>Factor in anticipated impact of planned cost optimization efforts.</li>
+                        </ul>
+                     </li>
+                     <li><strong>Remaining ODC ETC:** Include any known, pre-approved future ODCs.</li>
+                     <li><strong>Contingency Needs:** Review the Risk Register. Estimate potential cost impact of high-probability/high-impact remaining risks and compare against remaining contingency budget. Factor potential contingency draws into the overall EAC forecast.</li>
+                     <li><strong>Consolidate:** Sum all ETC components and add to AC to get the final EAC forecast.</li>
+                 </ol>
+                 <p class="responsibility">Responsibility: Project Managers (Consolidation/Overall Forecast), Tech Leads/Resource Managers (Labor ETC Input), Cloud Ops/FinOps Lead (AWS ETC Input), Procurement Lead (Hardware/Software ETC Input).</p>
+             </div>
+
+             <h4>C. Forecasting Tools</h4>
+              <div class="subsection">
+                 <ul>
+                     <li>Financial Tracking System / Master Spreadsheet</li>
+                     <li>Jira/ADO (for backlog effort)</li>
+                     <li>Resource Allocation Plans (Spreadsheet or PPM tool)</li>
+                     <li>AWS Cost Explorer & Forecasting Tools</li>
+                     <li>Risk Register (Jira/ADO)</li>
+                 </ul>
+             </div>
+        </div>
+    </section>
+
+     <!-- Variance Analysis -->
+    <section id="variance-analysis">
+        <h2>VI. Variance Analysis & Control</h2>
+        <div class="section-description">
+            <p>We will systematically analyze deviations between planned budgets, forecasts, and actual expenditures to identify issues early and implement corrective actions.</p>
+
+            <h4>A. Key Variance Metrics (Calculated Monthly)</h4>
+            <div class="subsection">
+                <ul>
+                    <li><strong>Budget vs. Actual (Month & Cumulative):</strong> Tracks spending against the approved baseline.</li>
+                    <li><strong>Forecast (Previous EAC) vs. Actual:** Tracks accuracy of previous forecasts.</li>
+                    <li><strong>Budget vs. Forecast (Current EAC):** Indicates projected overrun or underrun against the baseline.</li>
+                    <li>*(Optional - Requires EVM)* Cost Variance (CV = EV - AC): Are we getting the value planned for the money spent?</li>
+                    <li>*(Optional - Requires EVM)* Schedule Variance (SV = EV - PV): Are we accomplishing the work planned?</li>
+                </ul>
+            </div>
+
+             <h4>B. Variance Thresholds (To be finalized & approved)</h4>
+             <div class="subsection">
+                 <p>Thresholds triggering mandatory investigation and reporting:</p>
+                 <ul>
+                     <li><strong>Monthly Actual vs. Budget Variance:</strong> +/- 5% (Example)</li>
+                     <li><strong>Cumulative Actual vs. Budget Variance:</strong> +/- 10% (Example)</li>
+                     <li><strong>EAC vs. Original Budget Baseline Variance:</strong> +/- 5% (Example - triggers deeper review/potential CR)</li>
+                 </ul>
+             </div>
+
+             <h4>C. Variance Analysis & Corrective Action Process</h4>
+             <div class="implementation-detail">
+                  <h6>Implementation How-To:</h6>
+                 <ol>
+                    <li><strong>Monthly Calculation:** PMs calculate variance metrics after month-end actuals are recorded in the Financial Tracking System.</li>
+                    <li><strong>Threshold Check:** Identify variances exceeding defined thresholds.</li>
+                    <li><strong>Root Cause Analysis:** For significant variances, PMs collaborate with relevant leads (Tech, Cloud Ops, QA, Vendor PM) to investigate the underlying cause(s):
+                        <ul>
+                           <li>Was effort underestimated? (Review estimation process)</li>
+                           <li>Did scope creep occur without a formal CR? (Reinforce Change Management)</li>
+                           <li>Are resources performing below expected velocity? (Address performance/blockers)</li>
+                           <li>Was AWS usage higher/lower than expected? (Investigate specific service costs, optimize resources)</li>
+                           <li>Was a risk realized? (Draw from contingency if appropriate, review risk plan)</li>
+                           <li>External delay or dependency issue?</li>
+                           <li>Invoice timing discrepancy vs. work performed?</li>
+                        </ul>
+                    </li>
+                    <li><strong>Develop Corrective Action Plan:** Based on root cause, define specific actions to bring spending/forecast back in line or adjust expectations. Examples:
+                        <ul>
+                           <li>Re-baseline estimates for remaining work.</li>
+                           <li>Implement AWS cost optimizations (right-sizing, scheduling off non-prod).</li>
+                           <li>Discuss scope reduction/tradeoffs with PO (requires CR if impacts baseline).</li>
+                           <li>Address team performance/process issues in Retrospectives.</li>
+                           <li>Request additional funding/schedule extension via formal CR process if variance is due to approved scope change or unavoidable external factors.</li>
+                         </ul>
+                    </li>
+                     <li><strong>Document & Track:** Document variance analysis, root cause, and corrective action plan in Monthly Financial Review minutes (Confluence) and track action items in Jira/ADO.</li>
+                     <li><strong>Report:** Summarize significant variances, causes, and corrective actions in Weekly Status Reports and MBR presentations.</li>
+                 </ol>
+                 <p class="responsibility">Responsibility: Project Managers (Lead Analysis & Reporting), Tech Leads/Cloud Ops/QA (Input on Causes), Product Owner (Scope decisions), CCB/Steering Committee (Approve corrective actions impacting baseline).</p>
+             </div>
+        </div>
+    </section>
+
+    <!-- Reporting & Communication -->
+    <section id="financial-reporting">
+        <h2>VII. Financial Reporting & Communication Cadence</h2>
+        <div class="section-description">
+            <p>Transparent and timely communication of financial status is crucial for stakeholder confidence and effective governance.</p>
+            <div class="subsection">
+                <h4>A. Report Types, Audience, Frequency, Content & Automation</h4>
+                <ul>
+                    <li>
+                        <strong>1. Weekly Status Report Snippet</strong> <span class="audience-tag">Project Team</span> <span class="audience-tag">Leadership</span> <span class="frequency-tag">Weekly</span> <span class="medium-tag">Confluence/Email</span>
+                        <ul><li><strong>Content:</strong> High-level budget status (RAG), brief note on any significant new variances or financial risks identified during the week.</li><li><strong>Automation:</strong> RAG status potentially derived from Financial Tracking System summary.</li></ul>
+                    </li>
+                     <li>
+                        <strong>2. Monthly Internal Financial Review Meeting</strong> <span class="audience-tag">PMs</span> <span class="audience-tag">Leads</span> <span class="audience-tag">Finance Liaison</span> <span class="audience-tag">Cloud Ops</span> <span class="frequency-tag">Monthly</span> <span class="medium-tag">Meeting</span>
+                        <ul><li><strong>Content:</strong> Detailed review of Actuals vs. Budget vs. Forecast; Detailed Variance Analysis; Resource Burn Rate Review; AWS Cost Breakdown & Trends; Updated EAC Calculation; Review Contingency Usage; Identify actions/escalations needed.</li><li><strong>Automation:</strong> Input data pulled from Financial System, AWS Cost Explorer, Jira, Timesheets.</li></ul>
+                    </li>
+                    <li>
+                        <strong>3. Monthly Business Review (MBR) / Steering Committee Financial Update</strong> <span class="audience-tag">Steering Committee</span> <span class="audience-tag">Sponsors</span> <span class="audience-tag">Execs</span> <span class="frequency-tag">Monthly/Bi-Monthly</span> <span class="medium-tag">Presentation/Meeting</span>
+                        <ul><li><strong>Content:</strong> Executive summary slide(s) covering: Overall Financial Health (RAG); Budget vs. Actual (Month/Cumulative) Charts; Budget vs. EAC Chart (Trend); Summary of Major Variances (>threshold) with Root Cause & Action Plan; Contingency Status; Upcoming Major Expenditures; Financial Risks requiring attention; Funding Request/Status (if applicable).</li><li><strong>Automation:</strong> Charts generated from Financial Tracking System/Spreadsheets summarizing data from internal review.</li></ul>
+                    </li>
+                     <li>
+                        <strong>4. Change Request Cost Impact Assessment</strong> <span class="audience-tag">CCB</span> <span class="audience-tag">PMs</span> <span class="frequency-tag">As Needed</span> <span class="medium-tag">Confluence/Jira</span>
+                        <ul><li><strong>Content:</strong> Detailed breakdown of estimated cost impact (labor, hardware, software, cloud) of the proposed change, effect on overall budget/EAC.</li><li><strong>Automation:</strong> N/A (Manual analysis required).</li></ul>
+                    </li>
+                     <li>
+                        <strong>5. Ad-Hoc Financial Reports</strong> <span class="audience-tag">Various (as requested)</span> <span class="frequency-tag">As Needed</span> <span class="medium-tag">Spreadsheet/Email/Confluence</span>
+                        <ul><li><strong>Content:</strong> Specific cost breakdowns (e.g., by feature, by vendor), burn rate analysis, cost-benefit analysis for specific decisions.</li><li><strong>Automation:</strong> Leverage existing data sources and tracking tool capabilities.</li></ul>
+                    </li>
+                </ul>
+            </div>
+             <div class="subsection">
+                 <h4>B. Implementation & Tooling</h4>
+                 <ol>
+                    <li>Establish the central **Financial Tracking System** (this could be dedicated PPM software with financial modules, or initially, a very well-structured, multi-tabbed, version-controlled Master Budget Spreadsheet stored securely, e.g., SharePoint/OneDrive). This system must hold the baseline, track actuals by category/phase, calculate variances, and store EAC forecasts.</li>
+                    <li>Configure **Jira/ADO** to track labor time (via built-in time logging or integration with external timesheet system) against specific tasks/stories/epics.</li>
+                    <li>Implement **AWS Cost Allocation Tagging** rigorously via Terraform and enforce via AWS Config Rules. Configure **AWS Budgets** with SNS alerts. Set up automated **CUR** delivery and Athena/QuickSight queries for analysis.</li>
+                    <li>Develop standardized **Report Templates** in Confluence/PowerPoint for Weekly Status, MBR Financial Updates, and potentially the internal Monthly Financial Review.</li>
+                    <li>Define process for **automating data aggregation** where possible (e.g., scripts to pull AWS costs by tag, scripts to aggregate timesheet data based on Jira links).</li>
+                 </ol>
+                 <p class="responsibility">Responsibility: Project Managers, Finance Liaison, Cloud Ops Lead, DevOps Team (for automation).</p>
+             </div>
+        </div>
+    </section>
+
+    <!-- Integration & Compliance -->
+    <section id="integration-compliance">
+        <h2>VIII. Integration with Other Processes & Compliance</h2>
+        <div class="section-description">
+            <h4>A. Integration with Change Management:</h4>
+            <ul>
+                <li>Cost impact *must* be a mandatory part of the CR Impact Assessment.</li>
+                <li>Approved CRs *must* have defined budget adjustments.</li>
+                <li>Budget Baseline *only* updated via approved CRs.</li>
+            </ul>
+            <h4>B. Integration with Risk Management:</h4>
+            <ul>
+                <li>Quantitative risk analysis informs contingency budget needs.</li>
+                <li>Cost of mitigation/avoidance actions tracked against budget/forecast (may require CR if significant).</li>
+                <li>Contingency budget drawdowns tracked against specific realized risks or contingency plan activations.</li>
+                <li>Financial risks (e.g., budget overrun, funding cuts) tracked explicitly in the Risk Register.</li>
+            </ul>
+             <h4>C. Compliance & Audit Readiness:</h4>
+             <ul>
+                <li>**Record Keeping:** Maintain meticulous, organized records of all financial artifacts (Baseline versions, CRs, POs, Invoices, Timesheet approvals, AWS Cost Reports, Variance Analyses, Forecasts, Meeting Minutes with financial decisions) in designated repositories (Confluence, Financial System, SharePoint) for the required retention period (often 6+ years post-project).</li>
+                <li>**Invoice Validation Protocol:** Implement a multi-step invoice validation process: Vendor submits invoice referencing PO -> Vendor PM validates internal accuracy -> NYCPS PM/Tech Lead validates against deliverables/timesheets/contract rates -> Contract/Finance Liaison validates against contract terms/PO balance -> Final Approval -> Payment Processing. Document each step.</li>
+                <li>**Audit Support:** Designate points of contact (PM, Finance Liaison) and establish procedures for responding to internal/external audit requests promptly and providing required documentation.</li>
+                <li>**Policy Adherence:** Ensure all processes align with NYCPS financial policies, procurement regulations, and any specific funding source requirements.</li>
+             </ul>
+             <p class="compliance-note">A clear, documented audit trail for all financial decisions, budget changes, and expenditures is non-negotiable for compliance and accountability.</p>
+             <p class="responsibility">Responsibility: Project Managers, Finance Liaison, Contract Manager, All Team Leads, Compliance Officer.</p>
+        </div>
+    </section>
+
+     <!-- Conclusion -->
+    <section id="conclusion">
+        <h2>IX. Conclusion: Ensuring Fiscal Responsibility & Success</h2>
+        <div class="section-description">
+            <p>This hyper-detailed Financial Management and Communications Plan establishes the framework for rigorous fiscal control, analysis, and transparency necessary for the successful delivery of the NYCPS TMS project within its budgetary constraints. By integrating conservative forecasting, proactive variance management, automated data collection where possible, clear roles, defined processes, and robust governance checkpoints, we will provide NYCPS leadership with the confidence and visibility required for effective oversight of this critical investment. Strict adherence to this plan by all project participants is paramount to managing financial risk and ensuring the project delivers maximum value to the NYCPS community.</p>
+        </div>
+    </section>
+
+</body>
+</html>

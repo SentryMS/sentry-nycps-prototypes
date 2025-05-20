@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NYCPS TMS - Consolidated Prescriptive Data Strategy</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.8; color: #212529; max-width: 1400px; margin: 25px auto; padding: 35px; background-color: #ffffff; border: 1px solid #dee2e6; border-radius: 10px; box-shadow: 0 6px 12px rgba(0,0,0,0.07); }
+        h1, h2, h3, h4, h5, h6 { color: #002b5c; margin-top: 1.8em; margin-bottom: 0.8em; padding-bottom: 8px; font-weight: 700; border-bottom: 2px solid #003366; }
+        h1 { text-align: center; font-size: 2.6em; border-bottom: 4px solid #003366; margin-bottom: 1.5em; }
+        h2 { /* Major Sections */ font-size: 2.1em; border-bottom: 3px solid #003366; background-color: #eaf2f8; padding: 12px 18px; border-radius: 6px 6px 0 0; margin-left: -36px; margin-right: -36px; margin-top: 2.5em; }
+        h3 { /* Primary Strategy Components */ font-size: 1.7em; border-bottom: 2px solid #b7d1ed; padding-left: 10px; margin-top: 2.2em;}
+        h4 { /* Key Processes / Concepts */ font-size: 1.4em; border-bottom: 1px dashed #ced4da; color: #004080; padding-left: 25px; font-weight: 600; margin-top: 2em; }
+        h5 { /* Specific Steps / Details */ font-size: 1.2em; border-bottom: none; color: #343a40; padding-left: 40px; font-weight: bold; margin-top: 1.5em; margin-bottom: 0.5em; }
+        h6 { /* Implementation/Tooling Notes */ font-size: 1.05em; border-bottom: none; color: #495057; padding-left: 55px; font-style: italic; margin-top: 1em; margin-bottom: 0.4em; }
+        p, li { margin-bottom: 1em; font-size: 1.1em; }
+        ul { list-style-type: disc; margin-left: 70px; margin-bottom: 1.2em; }
+        ol { list-style-type: decimal; margin-left: 70px; margin-bottom: 1.2em; }
+        ol ol { list-style-type: lower-alpha; margin-left: 90px; }
+        ol ol ol { list-style-type: lower-roman; margin-left: 110px; }
+        strong { font-weight: 700; color: #002b5c; }
+        code { font-family: 'Fira Code', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; display: block; background-color: #2b303b; color: #c0c5ce; padding: 18px; border: 1px solid #3e4451; border-radius: 6px; font-size: 1em; white-space: pre-wrap; word-wrap: break-word; overflow-x: auto; margin: 12px 0; line-height: 1.6; }
+        .section-description { padding: 20px; margin-bottom: 25px; border: 1px solid #e9ecef; background-color: #f8f9fa; border-radius: 5px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.05); }
+        .subsection { padding: 15px; margin: 15px 0; border: 1px solid #f1f1f1; border-left: 5px solid #b7d1ed; background-color: #fff; border-radius: 4px;}
+        .implementation-detail { background-color: #f0fff0; border: 1px solid #c3e6c9; border-left: 5px solid #28a745; padding: 15px; margin-top: 15px; border-radius: 4px; color: #155724; font-size: 1.05em;}
+        .implementation-detail h5 { color: #155724; margin-top: 0;}
+        .responsibility { font-weight: bold; color: #6f42c1; display: block; margin-top: 8px; margin-left: 40px; font-size: 0.95em; }
+        .governance-note { background-color: #fff8e1; border-left: 5px solid #ffc107; padding: 10px 15px; margin: 15px 0; border-radius: 4px; color: #856404; font-style: italic;}
+        .compliance-note { background-color: #f8d7da; border-left: 5px solid #dc3545; padding: 10px 15px; margin: 15px 0; border-radius: 4px; color: #721c24; font-style: italic; font-weight: bold;}
+        .risk-note { background-color: #f8d7da; border-left: 5px solid #dc3545; padding: 10px 15px; margin: 15px 0; border-radius: 4px; color: #721c24; font-weight: bold;}
+        .automation-note { background-color: #d1ecf1; border-left: 5px solid #17a2b8; padding: 10px 15px; margin: 15px 0; border-radius: 4px; color: #0c5460; font-style: italic;}
+        table.dataTable { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.95em;}
+        table.dataTable th, table.dataTable td { border: 1px solid #ccc; padding: 8px 10px; text-align: left; vertical-align: top;}
+        table.dataTable th { background-color: #eaf2f8; font-weight: bold; }
+        table.dataTable ul { margin-left: 20px; margin-bottom: 0; padding-left: 15px;}
+    </style>
+</head>
+<body>
+
+    <h1>NYCPS TMS: Consolidated Prescriptive Data Governance, Management, Security & Compliance Strategy</h1>
+
+    <!-- Introduction -->
+    <section id="intro">
+        <h2>I. Introduction: The Data Imperative</h2>
+        <div class="section-description">
+            <p>The NYCPS Transportation Management System (TMS) is fundamentally a data-driven system, handling vast quantities of highly sensitive information critical to student safety, operational efficiency, and regulatory compliance. This document establishes the **single, authoritative, and non-negotiable strategy** governing every aspect of data within the TMS project. It consolidates and details all requirements for data governance, management across the full lifecycle, security controls, privacy protection, compliance adherence, migration, archival, and destruction.</p>
+            <p>Given the involvement of Personally Identifiable Information (PII) pertaining to minors, Material Non-Public Information (MNPI), diverse data sources (cloud, on-premise, IoT, third-party), and the stringent legal landscape (FERPA, NY Education Law § 2-d, CIPA, HIPAA implications, NYC3/OTI/DIIT policies), **our approach embodies zero tolerance for non-compliance or security lapses.** Every process, technical control, and human action involving TMS data must strictly adhere to the principles and procedures mandated herein.</p>
+            <div class="risk-note">Failure to adhere meticulously to this strategy constitutes a critical project risk, potentially leading to regulatory penalties, legal action, loss of public trust, operational disruption, and project termination.</div>
+        </div>
+    </section>
+
+    <!-- Guiding Principles -->
+     <section id="principles">
+        <h2>II. Foundational Principles (Mandatory)</h2>
+        <div class="section-description">
+             <p>All data-related activities MUST adhere to these core principles:</p>
+            <ol>
+                <li><strong>Compliance is Paramount:</strong> Explicit adherence to FERPA, NY Ed Law 2-d, NYCPS A-820, NYC3/OTI/DIIT security policies, contractual data clauses, and all other applicable federal, state, and local laws is the absolute baseline.</li>
+                <li><strong>Security & Privacy by Design and Default:</strong> Controls are embedded from the start; assume data is sensitive; least privilege is the default; security is everyone's responsibility.</li>
+                <li><strong>Data Minimization:</strong> Only collect, process, and retain data absolutely essential for defined, legitimate TMS functions. Question the necessity of every data element.</li>
+                <li><strong>Purpose Limitation:</strong> Use data solely for the specific purpose for which it was collected and authorized. Prohibit repurposing without formal review and approval.</li>
+                <li><strong>Controlled Access (Need-to-Know):</strong> Implement strict Role-Based Access Control (RBAC) and attribute-based controls technically enforced at all layers. Access is granted only based on verified job function and legitimate need.</li>
+                <li><strong>Data Quality & Integrity:</strong> Data must be accurate, complete, consistent, and timely. Implement validation and quality monitoring.</li>
+                <li><strong>Full Lifecycle Management:</strong> Every data element has a defined, managed lifecycle from creation/ingestion to verifiable destruction.</li>
+                <li><strong>Accountability & Verifiable Auditability:</strong> All access, modification, and deletion of sensitive data *must* be logged immutably and reviewed periodically. Actions must be traceable to specific users or systems.</li>
+                <li><strong>Transparency (Internal):</strong> Data policies, classifications, standards, and procedures are clearly documented, accessible, and communicated to all relevant personnel via the TMS Data Governance Policy.</li>
+            </ol>
+        </div>
+    </section>
+
+     <!-- Governance Framework -->
+    <section id="data-governance-framework">
+        <h2>III. Formal Data Governance Framework</h2>
+        <div class="section-description">
+            <p>A robust governance structure ensures policies are defined, implemented, and enforced consistently.</p>
+            <h3>A. Defined Data Governance Roles & Responsibilities</h3>
+             <div class="implementation-detail">
+                 <h5>Implementation How-To:</h5>
+                 <ol>
+                    <li>Formally assign and document the following roles within the project organization chart and RACI matrix. These roles *must* be filled and actively engaged.
+                        <ul>
+                            <li><strong>Data Owner(s):</strong> Senior NYCPS officials (Director level or above from OPT, potentially DIIT) designated as ultimately accountable for specific data domains (e.g., Student Transportation Records, Operational Route Data, Ridership Data, Vendor Performance Data). <strong>Responsibilities:</strong> Approve domain-specific policies (access, usage, quality, retention), resolve stewardship disputes, provide final approval for high-risk data sharing or usage requests, champion data governance within their directorate.</li>
+                            <li><strong>Data Steward(s):</strong> Designated NYCPS SMEs (e.g., Lead Router, OPT Operations Manager, Data Analyst Lead) responsible for the day-to-day management of specific data domains. <strong>Responsibilities:</strong> Define and document business terms/definitions (Data Dictionary), define data quality rules, define data access requirements based on business needs, review/approve access requests routed from technical teams, act as primary SME for data meaning/usage, monitor data quality metrics for their domain, identify data issues.</li>
+                            <li><strong>Data Custodian(s):</strong> Technical teams (Vendor Dev/Ops/SRE, DIIT Infrastructure/DBAs where applicable) responsible for the secure technical implementation and operation of data systems. <strong>Responsibilities:</strong> Implement and operate databases, storage systems, data pipelines; implement security controls (encryption, access controls based on IAM/RBAC policies defined via governance); manage backups/recovery; execute data archival/destruction procedures; monitor system health related to data stores. *Custodians do not define data policy or grant business access.*</li>
+                            <li><strong>NYCPS Chief Privacy Officer (CPO) / Designee:</strong> Mandatory reviewer and approver for the TMS Data Governance Policy and any procedures impacting PII handling, student privacy rights, data sharing agreements, and incident response for privacy breaches. Ensures alignment with FERPA, NY Ed Law 2-d, etc.</li>
+                            <li><strong>NYCPS Chief Information Security Officer (CISO) / Designee:</strong> Mandatory reviewer and approver for data security architecture, technical security controls (encryption, IAM, network segmentation related to data), vendor security assessments, security incident response plans related to data breaches. Ensures alignment with NYC3/OTI/DIIT standards.</li>
+                            <li><strong>Legal Counsel (NYCPS OLS):</strong> Provides legal interpretation of regulations, reviews contractual data clauses, advises on data sharing agreements, reviews data breach notifications.</li>
+                            <li><strong>Data Governance Lead (Project Role - e.g., Lead BA or dedicated PM function):</strong> Facilitates the overall data governance process for the project. Coordinates between Owners, Stewards, Custodians, CPO, CISO. Manages the Data Governance Policy document. Tracks data-related risks and issues. Organizes Data Steward meetings. Reports on data governance status.</li>
+                        </ul>
+                    </li>
+                    <li>Document detailed responsibilities and decision rights matrix in the TMS Data Governance Policy.</li>
+                 </ol>
+                <p class="responsibility">Responsibility: Project Leadership, NYCPS Directorate Leadership (to assign Owners/Stewards), PMO.</p>
+            </div>
+
+            <h3>B. Formal TMS Data Governance Policy (The Controlling Document)</h3>
+            <div class="implementation-detail">
+                <h5>Implementation How-To:</h5>
+                <ol>
+                    <li>Develop the dedicated **TMS Data Governance Policy** document as the *absolute source of truth* for all data handling within the project. This is a mandatory, non-negotiable deliverable requiring formal sign-off before production data processing begins.</li>
+                    <li>Store centrally in Confluence, under strict version control, with access controlled but viewable by all project members.</li>
+                    <li>**Mandatory Sections (Exhaustive Detail Required):**
+                        <ol type="a">
+                            <li>**Introduction:** Purpose, Scope (all TMS data, all lifecycle stages), Mandatory Compliance Statement, Link to Guiding Principles.</li>
+                            <li>**Governance Structure:** Detailed Roles & Responsibilities (as defined above), Data Domains mapped to Owners/Stewards, Meeting Cadences (e.g., Quarterly Data Steward Forum), Decision Rights Matrix, Escalation Paths for data-related issues.</li>
+                            <li>**Data Classification Standard:** Reference and link to official NYCPS standard. Provide a **TMS Data Inventory & Classification Matrix** (as an appendix or linked page) explicitly listing key TMS data elements (database fields, API attributes, report fields) and their assigned classification (Highly Restricted, Confidential, Private, Public). This matrix must be maintained throughout the project.</li>
+                            <li>**Data Quality Framework:** Overall approach, roles (Stewards define rules). Define standard Data Quality Dimensions (e.g., Accuracy, Completeness, Consistency, Timeliness, Validity). Detail the process for defining, implementing, and monitoring quality rules per domain. Define data quality issue reporting and resolution process.</li>
+                            <li>**Data Security Policy:** Reference mandatory adherence to NYCPS security policies (NYC3/OTI/DIIT) and the project's specific security architecture. Mandate specific controls based on data classification (e.g., encryption types/levels for Highly Restricted vs. Confidential, specific IAM controls).</li>
+                            <li>**Data Access Control Policy:** Define the principle of least privilege. Detail the *formal process* for requesting, reviewing (by Data Steward/Owner), approving (by Data Owner for sensitive data), implementing (by Data Custodian), periodically recertifying (e.g., quarterly/annually by manager/Steward), and revoking data access for individuals and systems based on defined roles (RBAC). Maintain an access control matrix/log.</li>
+                            <li>**Data Usage Policy:** Explicitly define *approved* uses for TMS data based on project objectives. Strictly *prohibit* unauthorized uses, including commercial exploitation, marketing, sale, or sharing beyond approved integrations/agreements. Outline consequences for policy violation.</li>
+                            <li>**Data Privacy Policy:** Explicitly detail procedures for ensuring compliance with FERPA (Parental access/amendment rights handled via DOE process), NY Ed Law 2-d (including Parent Bill of Rights integration, restrictions on disclosure, encryption requirements), CIPA/COPPA considerations for student-facing interfaces, and HIPAA considerations for health-related data. Define process for handling privacy inquiries or complaints.</li>
+                            <li>**Data Sharing Policy (Internal & External):** Define strict criteria and approval workflow for any data sharing. Internal sharing between TMS components must follow least privilege and secure protocols. External sharing requires formal Data Sharing Agreement (DSA) reviewed by Legal/CPO/CISO/Data Owner, specifying purpose, exact data elements, security controls, usage limits, and destruction requirements. Maintain register of all DSAs.</li>
+                            <li>**Data Masking/Anonymization Standard:** Define approved techniques (e.g., hashing+salting for identifiers, randomization, generalization, k-anonymity principles) and processes for creating non-production datasets. Mandate verification of effectiveness. Prohibit re-identification attempts.</li>
+                            <li>**Data Lifecycle Management Policy:** Reference the mandatory 7-year retention period from RFP. Detail procedures for archival and destruction (linking to the formal procedure document - see Section VI).</li>
+                            <li>**Auditing & Monitoring Policy:** Mandate logging requirements for data access/modification. Define frequency and responsibility for reviewing audit logs and data quality metrics.</li>
+                            <li>**Compliance & Incident Reporting:** Define process for reporting potential data governance/privacy/security policy violations or data breaches internally and coordination with official DOE incident response procedures.</li>
+                            <li>**Policy Exception Process:** Define a *highly restrictive* process for requesting exceptions, requiring strong justification, risk assessment, mitigation plan, and documented approval from Data Owner, CPO, CISO, and potentially Legal/Steering Committee. Exceptions must be time-bound and regularly reviewed.</li>
+                            <li>**Training & Awareness:** Mandate initial and annual refresher training on this policy and relevant regulations (FERPA, 2-d) for all personnel with access to TMS data. Track training completion.</li>
+                            <li>**Policy Enforcement & Review:** State consequences for non-compliance. Mandate annual review and update cycle for the policy itself, approved by governance.</li>
+                        </ol>
+                    </li>
+                    <li>Obtain formal, documented sign-off on the policy and its appendices (especially Data Classification Matrix) from all designated approvers (Data Owners, CPO, CISO, Project Sponsor, Legal) via the established governance process.</li>
+                 </ol>
+                <p class="responsibility">Responsibility: Data Governance Lead/PM (Facilitation/Drafting), Data Owners/Stewards, CPO, CISO, Legal (Content/Approval), Steering Committee (Final Approval).</p>
+                <div class="governance-note">This policy is the cornerstone of data management; its development, approval, and enforcement are critical path items.</div>
+             </div>
+        </div>
+    </section>
+
+    <!-- Lifecycle Management -->
+    <section id="data-lifecycle">
+        <h2>IV. Prescriptive Data Lifecycle Management Controls</h2>
+        <div class="section-description">
+            <p>We will implement specific, verifiable controls at each data lifecycle stage.</p>
+
+        <div class="subsection">
+            <h4>A. Stage: Data Identification & Classification</h4>
+            <div class="implementation-detail">
+                <h5>Detailed Implementation:</h5>
+                <ol>
+                    <li>**Data Inventory Process:** During design of any new feature/service, developers/BAs *must* identify all data elements created, read, updated, or deleted (CRUD).</li>
+                    <li>**Classification Mandate:** Each identified element *must* be assigned a classification (Highly Restricted, Confidential, Private, Public) according to the **TMS Data Governance Policy** and NYCPS standards. Use the **TMS Data Inventory & Classification Matrix** (living document in Confluence, linked from Policy) as the authoritative source. Updates require Data Steward review/approval.</li>
+                    <li>**Tooling:** While tools like AWS Macie may *assist* in discovery on S3, the authoritative classification is the manually curated and approved matrix/dictionary. Macie alerts for potential misclassified PII found in unexpected locations will trigger investigation.</li>
+                    <li>**Documentation:** Classification *must* be documented in the Data Dictionary, API Specifications (e.g., using custom OpenAPI extensions or descriptions), and database schema comments.</li>
+                </ol>
+                <p class="responsibility">Responsibility: BAs/Developers (Initial Identification), Data Stewards (Classification Approval/Matrix Update), Security Team (Tool Config/Oversight).</p>
+                <div class="compliance-note">Accurate, documented classification is mandatory for applying correct downstream controls.</div>
+            </div>
+        </div>
+
+        <div class="subsection">
+             <h4>B. Stage: Data Collection & Ingestion</h4>
+             <div class="implementation-detail">
+                <h5>Detailed Implementation:</h5>
+                <ol>
+                    <li>**Secure Transport Protocols:** Mandate TLS 1.2+ with strong cipher suites for all API endpoints (API Gateway custom domains with ACM certs), IoT Core endpoints (MQTTS), SFTP servers (AWS Transfer Family), and database connections. Configure services to reject insecure protocols/ciphers.</li>
+                    <li>**Rigorous Input Validation (Server-Side):**
+                        <ul>
+                            <li>API Gateway: Use Request Validation features based on OpenAPI schema.</li>
+                            <li>Lambda/Application Code: Implement strict validation for *all* parameters, request bodies, headers using libraries (e.g., Pydantic for FastAPI, class-validator for NestJS, standard framework validation). Validate type, format (regex), length, range, allowed values (enum). Use allow-lists. Sanitize inputs intended for downstream interpreters (SQL, OS, XML).</li>
+                            <li>Log validation failures clearly (without logging sensitive input data). Return specific 4xx error codes.</li>
+                        </ul>
+                    </li>
+                    <li>**Data Minimization Enforcement:** Code reviews *must* verify that only necessary data fields defined in approved API contracts/data models are being accepted and processed. Reject requests with extraneous data.</li>
+                    <li>**Source Authentication/Authorization:**
+                        <ul>
+                            <li>External APIs: Use API Gateway API Keys/Usage Plans or Lambda Authorizers (validating JWTs or custom tokens).</li>
+                            <li>IoT Devices: Use X.509 certificates managed via IoT Core registry and policies.</li>
+                            <li>User Inputs (Apps): Rely on user authentication tokens (JWT validated by API Gateway/backend).</li>
+                            <li>SFTP: Use SSH key authentication managed by AWS Transfer Family.</li>
+                        </ul>
+                    </li>
+                    <li>**Reliable Ingestion Architecture:**
+                        <ul>
+                            <li>Use highly available services (API GW, IoT Core, Kinesis, MSK, SQS, Lambda, Fargate).</li>
+                            <li>Configure Dead-Letter Queues (DLQs) for SQS queues and Lambda asynchronous invocations to capture processing failures. Set up CloudWatch Alarms on DLQ message counts.</li>
+                            <li>Implement appropriate retry logic within processing Lambdas/services for transient failures talking to downstream systems.</li>
+                            <li>Monitor Kinesis/MSK `IteratorAge` or Lag metrics to detect processing delays.</li>
+                        </ul>
+                    </li>
+                </ol>
+                <p class="responsibility">Responsibility: Developers (Code Implementation), DevOps (Service Config/IaC), Security (Review/Auth Config).</p>
+            </div>
+        </div>
+
+        <div class="subsection">
+            <h4>C. Stage: Data Processing & Transformation</h4>
+            <div class="implementation-detail">
+                <h5>Detailed Implementation:</h5>
+                <ol>
+                    <li>**Secure Compute Environment:** All processing *must* occur in private VPC subnets using approved compute services (Lambda, Fargate/ECS). IAM Roles attached to compute resources *must* follow least privilege, granting only necessary permissions to specific resources (e.g., read from specific SQS queue, write to specific DynamoDB table).</li>
+                    <li>**Data Validation Checks:** Re-validate critical data elements after transformations or enrichments, especially before writing to persistent stores or sharing externally. Use defined data quality rules.</li>
+                    <li>**Robust Error Handling:** Implement comprehensive try/catch blocks and error handling logic. Log errors with correlation IDs and context (no PII). Failed processing steps should trigger alerts and route problematic data/messages to DLQs or error repositories for manual review, ensuring no data loss for critical streams.</li>
+                    <li>**ETL/ELT Security & Quality (AWS Glue):**
+                        <ul>
+                           <li>Run Glue jobs using IAM roles with least-privilege access to source/target data stores (S3, RDS).</li>
+                           <li>Integrate data quality checks using Glue Data Quality rules based on Data Steward definitions. Log quality violations.</li>
+                           <li>Parameterize Glue jobs and manage code in Git, deploying via CI/CD.</li>
+                           <li>Encrypt data processed and stored by Glue jobs (using Security Configurations).</li>
+                        </ul>
+                    </li>
+                    <li>**Data Masking/Anonymization Implementation (Mandatory for Non-Prod):**
+                        <ul>
+                           <li>Implement as part of the ETL pipeline (Glue job, Lambda script) that populates non-prod environments (QA, Staging).</li>
+                           <li>Use approved techniques from Data Governance Policy consistently (e.g., SHA-256+Salt for identifiers, Faker for names/addresses, k-anonymization logic).</li>
+                           <li>**Verification:** Include steps in the ETL/masking process and QA testing to *verify* that PII/Highly Restricted data has been effectively removed/masked and cannot be easily reversed in non-prod environments. Document verification results.</li>
+                        </ul>
+                    </li>
+                    <li>**Audit Logging:** Log start/end/success/failure of major processing jobs (ETL, batch routing). Log significant data transformations if required for auditability.</li>
+                </ol>
+                 <p class="responsibility">Responsibility: Developers/Data Engineers (Code/ETL), DevOps (Compute/IAM), Data Stewards (Quality Rules), Security (Verification of Masking).</p>
+                 <div class="compliance-note">Failure to properly mask/anonymize data in non-production environments is a major compliance violation and security risk. Verification is mandatory.</div>
+            </div>
+        </div>
+
+        <div class="subsection">
+            <h4>D. Stage: Data Storage & Security (At Rest & In Transit)</h4>
+             <div class="implementation-detail">
+                <h5>Detailed Implementation:</h5>
+                <ol>
+                     <li>**Encryption at Rest (Mandatory Configuration):**
+                        <ul>
+                            <li>Configure *all* S3 buckets storing project data (logs, archives, intermediate files) with SSE-S3 or SSE-KMS (using dedicated, environment-specific CMKs for Highly Restricted/Confidential data) via Terraform/IaC. **Enforce encryption via bucket policies.**</li>
+                            <li>Enable encryption by default for *all* EBS volumes in the GovCloud region. Use specific KMS CMKs for volumes handling Highly Restricted data. Configure via Launch Templates/Terraform.</li>
+                            <li>Enable encryption at rest using KMS (dedicated CMKs preferred for sensitive DBs) for *all* RDS instances and automated/manual snapshots. Configure via Terraform.</li>
+                            <li>Enable encryption at rest using KMS (dedicated CMKs preferred) for *all* DynamoDB tables storing sensitive data. Configure via Terraform.</li>
+                            <li>Enable Server-Side Encryption (SSE) using KMS (AWS-managed `alias/aws/sqs` or dedicated CMKs) for *all* SQS queues handling sensitive data. Configure via Terraform.</li>
+                            <li>Enable SSE using KMS for *all* SNS topics transmitting sensitive data. Configure via Terraform.</li>
+                            <li>Implement strict KMS Key Policies granting key usage permissions only to necessary IAM roles/users (least privilege). Enable key rotation for CMKs.</li>
+                        </ul>
+                    </li>
+                    <li>**Encryption in Transit (Mandatory Configuration):**
+                        <ul>
+                            <li>Configure *all* Application Load Balancers (ALBs) and API Gateways with HTTPS listeners using ACM certificates and secure TLS policies (e.g., `ELBSecurityPolicy-TLS-1-2-Ext-2018-06` or newer). Redirect HTTP to HTTPS.</li>
+                            <li>Ensure all application code and AWS SDK clients connect to internal services (RDS, ElastiCache, other APIs) using TLS/SSL endpoints. Verify certificate validation is enabled.</li>
+                            <li>Configure AWS Transfer Family SFTP servers to use secure protocols only.</li>
+                        </ul>
+                    </li>
+                    <li>**Network Access Controls (Mandatory Configuration via IaC):**
+                        <ul>
+                            <li>Place all databases (RDS), caches (ElastiCache), and backend processing compute (Fargate/Lambda accessing VPC) in **private subnets**.</li>
+                            <li>Implement granular Security Groups:
+                                <ul>
+                                    <li>DB Security Group: Allows ingress *only* on the database port (e.g., 5432 for Postgres) *only* from the specific Security Group(s) of the application tier microservices that need access. Deny all other ingress. Allow all egress (or restrict to specific needed endpoints if feasible).</li>
+                                    <li>App Tier Security Group: Allows ingress *only* on the application port(s) *only* from the Security Group of the ALB or API Gateway (or other internal services that call it). Allows egress to necessary dependencies (DB SG, Cache SG, SQS/SNS VPC Endpoints, external APIs via NAT GW).</li>
+                                    <li>Load Balancer Security Group: Allows ingress *only* on HTTPS (443) from the internet (or specific source IPs if restricted). Allows egress only to the App Tier Security Group on the application port.</li>
+                                </ul>
+                            </li>
+                            <li>Implement restrictive Network ACLs as a secondary defense layer (stateless filtering), although primary reliance is on Security Groups.</li>
+                            <li>Utilize VPC Endpoints (Gateway for S3/DynamoDB, Interface for KMS, Secrets Manager, SQS, SNS, ECR, etc.) to keep traffic to AWS services within the AWS network, accessed from private subnets.</li>
+                        </ul>
+                    </li>
+                     <li>**Backup Security:** Ensure all backups (RDS snapshots, DynamoDB backups, S3 versions) are encrypted using the same KMS keys as the source data. Restrict access to backups via IAM policies.</li>
+                </ol>
+                <p class="responsibility">Responsibility: DevOps/Cloud Team (IaC Implementation), Security Team (Policy Definition/Review), DBA (DB Encryption Config).</p>
+                <div class="risk-note">Misconfigured Security Groups or lack of encryption are primary causes of data breaches. Rigorous implementation and auditing via IaC and AWS Config are essential.</div>
+            </div>
+        </div>
+
+        <div class="subsection">
+            <h4>E. Stage: Data Access & Use Control (Least Privilege Enforcement)</h4>
+             <div class="implementation-detail">
+                <h5>Detailed Implementation:</h5>
+                <ol>
+                    <li>**Role-Based Access Control (RBAC) Implementation:**
+                        <ul>
+                            <li>Define application-specific roles (e.g., `TMS_OPT_ROUTER`, `TMS_PARENT`, `TMS_SCHOOL_ADMIN`, `TMS_L1_SUPPORT`) within the application or a central authorization service.</li>
+                            <li>Map authenticated users (from SAML/Cognito/DB) to these roles.</li>
+                            <li>Backend APIs and microservices *must* check the user's role (e.g., from JWT claims or session context) before allowing access to specific functions/endpoints. Implement using decorators, middleware, or framework security features.</li>
+                            <li>Frontend UIs should conditionally render components/actions based on the user's role to provide a clear UX, but *server-side authorization is mandatory* as the definitive control.</li>
+                        </ul>
+                    </li>
+                    <li>**Attribute-Based Access Control (ABAC) / Scope Limitation:**
+                        <ul>
+                            <li>Implement fine-grained checks *in addition* to RBAC where necessary. E.g., A `TMS_SCHOOL_ADMIN` can only access student/route data associated with their specific `school_id`. A `TMS_PARENT` can only access data linked to their authorized `student_id`(s).</li>
+                            <li>Authorization logic within backend services *must* incorporate these scope checks, typically by filtering database queries or checking resource attributes based on the user's context (their school ID, their linked student IDs).</li>
+                        </ul>
+                    </li>
+                    <li>**IAM for System Access (Least Privilege):**
+                        <ul>
+                            <li>IAM Roles used by Lambda, ECS/Fargate, EC2 *must* have policies granting *only* the specific permissions needed (e.g., `dynamodb:GetItem` on `table/SpecificTable`, `s3:GetObject` on `bucket/SpecificBucket/prefix/*`, `kms:Decrypt` on a specific key). **Avoid `*:*` permissions.**</li>
+                            <li>Use IAM Condition Keys where possible for further restriction (e.g., restrict access based on source IP, VPC endpoint, tags).</li>
+                        </ul>
+                    </li>
+                    <li>**Data Masking Implementation:** Implement server-side masking logic within APIs/services serving roles that need partial data visibility (e.g., L1 Support seeing `Student ID: ******1234`, `Address: REDACTED`). Masking rules defined by Data Stewards.</li>
+                    <li>**Auditing Access (Mandatory):**
+                        <ul>
+                           <li>Configure applications to log *every* successful and *failed* attempt to access or modify Highly Restricted or Confidential data. Log must include: Timestamp, User ID, Source IP, Role Used, Data Resource Accessed (e.g., Student ID, Route ID), Action Performed (Read/Update/Delete), Success/Failure Status.</li>
+                           <li>Enable CloudTrail data events for critical S3 buckets containing sensitive data.</li>
+                           <li>Enable RDS audit logging if detailed database access tracking is required by compliance.</li>
+                           <li>Forward relevant audit logs to a secure, central logging system (CloudWatch Logs or SIEM) with long-term retention and restricted access.</li>
+                           <li>Implement CloudWatch Alarms or SIEM rules to detect anomalous access patterns (e.g., excessive access by one user, access outside business hours, attempts to access unauthorized data scope).</li>
+                        </ul>
+                    </li>
+                    <li>**Access Recertification:** Implement a mandatory quarterly or semi-annual process where managers or Data Stewards review and re-approve access permissions for users and system roles under their purview. Document certifications. Automate reporting of current permissions for review.</li>
+                 </ol>
+                 <p class="responsibility">Responsibility: Developers (App RBAC/ABAC/Masking), Security Team (IAM Policies, Audit Config/Review), Data Stewards/Owners (Access Rules/Approval), Compliance Officer (Recertification Process).</p>
+            </div>
+        </div>
+
+         <div class="subsection">
+            <h4>F. Stage: Data Sharing & Integration Security</h4>
+             <div class="implementation-detail">
+                <h5>Detailed Implementation:</h5>
+                <ol>
+                     <li>**Internal Microservice Security:** Enforce mTLS or use JWT-based service-to-service authentication for internal API calls within the cluster/VPC. Use IAM roles for AWS service interactions (SQS, SNS, S3, etc.).</li>
+                     <li>**NYCPS System Integration Security:**
+                        <ul>
+                           <li>Use secure protocols (HTTPS APIs with robust auth, SFTP).</li>
+                           <li>Strictly validate data exchanged against defined schemas/formats.</li>
+                           <li>Grant least privilege access via API keys (rotated, stored in Secrets Manager) or specific IAM roles if using AWS native integration (e.g., Glue accessing S3).</li>
+                           <li>Log all data transfer events (success/failure, records transferred).</li>
+                        </ul>
+                     </li>
+                     <li>**Third-Party Sharing Controls:**
+                         <ul>
+                             <li>**Mandatory DSA:** No external sharing of PII/Confidential data without a fully executed Data Sharing Agreement reviewed by Legal/CPO/CISO/Data Owner.</li>
+                             <li>**Technical Enforcement:** Implement sharing mechanism (secure API, SFTP) with strict authentication, authorization, and logging based on DSA terms. Transfer only specified data elements.</li>
+                             <li>**Auditing:** Regularly audit third-party access logs and compliance with DSA terms.</li>
+                         </ul>
+                     </li>
+                 </ol>
+                <p class="responsibility">Responsibility: Developers/Data Engineers (Implementation), Architect (Design), Security Team (Review/Auth Config), Legal/CPO/Data Owner (DSAs).</p>
+            </div>
+        </div>
+
+        <div class="subsection">
+            <h4>G. Stage: Data Quality Management Implementation</h4>
+             <div class="implementation-detail">
+                 <h5>Detailed Implementation:</h5>
+                 <ol>
+                    <li>**Rule Definition:** Data Stewards document specific Data Quality rules (using SMART criteria) in the Data Dictionary (Confluence) for CDEs within their domain.</li>
+                    <li>**Rule Implementation:** Developers/Data Engineers implement these rules as:
+                        <ul>
+                            <li>Input validation constraints (API schemas, database constraints).</li>
+                            <li>Checks within ETL/processing jobs (AWS Glue Data Quality rules, custom assertions in scripts).</li>
+                            <li>Scheduled validation queries/scripts (Lambda running SQL against RDS, Athena against S3 data lake) checking for consistency, completeness, validity across datasets.</li>
+                        </ul>
+                    </li>
+                    <li>**Monitoring & Reporting:**
+                        <ul>
+                           <li>Configure validation jobs/scripts to output quality metrics (e.g., % valid addresses, % complete records, count of duplicates) to CloudWatch Metrics or a dedicated quality database.</li>
+                           <li>Create Data Quality Dashboards (QuickSight/Grafana) visualizing these metrics and trends over time, filterable by data domain/source.</li>
+                           <li>Set CloudWatch Alarms on critical data quality metric thresholds (e.g., validation error rate > X%) to alert Data Stewards/Support.</li>
+                        </ul>
+                    </li>
+                     <li>**Issue Resolution Workflow:** Use Jira/ADO with a dedicated "Data Quality Issue" type. Automated checks or manual identification create tickets. Data Stewards triage and assign to relevant teams (e.g., source system team, ETL team, application team) for correction. Track resolution progress and verify fixes.</li>
+                 </ol>
+                 <p class="responsibility">Responsibility: Data Stewards (Rules), Developers/Data Engineers (Implementation), QA (Testing Checks), Data Governance Lead (Monitoring Process).</p>
+             </div>
+        </div>
+
+        <div class="subsection">
+            <h4>H. Stage: Data Archival & Retention Enforcement</h4>
+             <div class="implementation-detail">
+                 <h5>Detailed Implementation:</h5>
+                 <ol>
+                    <li>**Policy Implementation:** Configure S3 Lifecycle Policies via Terraform for all relevant buckets to automatically transition data based on age (e.g., -> Glacier -> Deep Archive) and expire data after 7 years (2557 days). **Mandatory review and testing of lifecycle policies in non-prod before applying to production.**</li>
+                    <li>**Database Archival:** Implement and schedule thoroughly tested Lambda/Glue jobs to export historical data (> active window) from RDS/DynamoDB to S3 archive buckets (partitioned by date/type, in Parquet format) before database deletion (if applicable). Ensure export includes retention calculation metadata.</li>
+                    <li>**Audit Log Archival:** Ensure CloudTrail and critical application audit logs are configured for delivery to dedicated S3 buckets with lifecycle policies ensuring 7-year retention (potentially in Glacier/Deep Archive).</li>
+                    <li>**Retrieval Testing:** Periodically (e.g., annually) test the retrieval process for data from Glacier/Deep Archive for key datasets to ensure feasibility and validate expected timelines/costs. Document test results.</li>
+                 </ol>
+                 <p class="responsibility">Responsibility: DevOps/Cloud Team (S3 Policies), Data Engineers (DB Archival Scripts), Compliance Officer (Policy Validation).</p>
+                 <div class="compliance-note">Failure to implement correct lifecycle policies can lead to premature data loss or non-compliant retention. Rigorous testing is essential.</div>
+            </div>
+        </div>
+
+        <div class="subsection">
+            <h4>I. Stage: Secure Data Destruction & Disposal Verification</h4>
+             <div class="implementation-detail">
+                 <h5>Detailed Implementation:</h5>
+                 <ol>
+                    <li>**Primary Method (Automation):** Rely on tested and verified S3 Lifecycle Policy expiration actions for automated, permanent deletion after 7 years.</li>
+                    <li>**Verification Logging:** Configure S3 Server Access Logging and potentially CloudTrail data events (for critical buckets) to capture deletion events initiated by lifecycle policies or direct API calls.</li>
+                    <li>**Destruction Audit:** Conduct annual internal audits:
+                        <ul>
+                            <li>Review S3 inventory reports/metrics to confirm objects older than 7 years are no longer present (consider object versions/delete markers).</li>
+                            <li>Sample CloudTrail/S3 access logs to verify deletion actions.</li>
+                            <li>Query active databases to confirm records successfully exported/archived previously are now deleted (if applicable).</li>
+                        </ul>
+                    </li>
+                    <li>**Manual Deletion Control:** Prohibit direct deletion capabilities in production except via highly restricted, audited break-glass procedures requiring multiple approvals (including Compliance/Legal) and specific justification tied to legal/privacy obligations.</li>
+                    <li>**Formal Certification:** Generate and securely store annual **Certificates of Data Destruction** (as per template/process defined in Risk Plan Section VI), signed by Compliance Officer/Data Custodian Lead, based on automated logs and audit verification.</li>
+                 </ol>
+                 <p class="responsibility">Responsibility: DevOps/Cloud Team (Lifecycle Policy), Security/Compliance Officer (Audit, Certification), Internal Audit.</p>
+                  <div class="compliance-note">Maintaining verifiable proof of destruction via logs and formal certification is mandatory for audit and compliance.</div>
+            </div>
+        </div>
+    </section>
+
+     <!-- Data Migration -->
+     <section id="data-migration-detailed">
+        <h2>VI. Prescriptive Data Migration Strategy (Legacy Systems)</h2>
+         <div class="section-description">
+            <p>Migrating data from legacy systems like MapInfo/FoxPro and Edulog extracts requires extreme care due to potential data quality issues, format differences, and the need to avoid disrupting cutover. This process will be managed as a distinct sub-project with dedicated testing and validation.</p>
+
+            <h4>A. Planning, Analysis & Design</h4>
+            <div class="implementation-detail">
+                 <h6>Implementation How-To:</h6>
+                 <ol>
+                    <li><strong>Scope Freeze & Data Identification:** Absolutely finalize the *minimum essential* legacy data required for Day 1 operation of TMS (e.g., currently active routes/stops/student assignments, critical historical data needed for specific functions identified by OPT SMEs). **Resist migrating non-essential historical data unless explicitly required and justified.** Document scope in Confluence.</li>
+                    <li><strong>Deep Source Analysis:** Perform detailed profiling of legacy source data (MapInfo/FoxPro DBFs, Edulog files/DB extracts). Identify data types, formats, constraints, relationships, NULL values, inconsistencies, known quality issues. Document thoroughly.</li>
+                    <li>**Target Schema Mapping & Transformation Logic:** Create detailed source-to-target mapping documents (spreadsheet/Confluence) for every required field. Define *explicit* transformation rules (e.g., data type conversion `VARCHAR`->`INTEGER`, code translation `LegacyCode`->`NewCode`, address standardization/validation using GIS, default value handling, data cleansing logic for known issues). Obtain Data Steward sign-off on mapping and rules.</li>
+                    <li>**Tool Selection & Proof of Concept (POC):**
+                        <ul>
+                           <li>Select primary tool (AWS Glue strongly preferred for ETL, Data Quality integration, scalability; Python/Lambda for simpler tasks).</li>
+                           <li>Conduct small-scale POCs with representative sample data to validate tool capabilities, transformation logic feasibility, and performance characteristics *before* full development.</li>
+                        </ul>
+                    </li>
+                    <li>**Environment Setup:** Provision dedicated resources (S3 buckets for extracts, Glue crawlers/jobs/connections, Lambda functions, IAM roles with least privilege) in non-prod AWS environments specifically for migration development and testing. Ensure secure connectivity to legacy data sources or secure mechanisms for receiving extracts.</li>
+                    <li>**Detailed Migration Test Plan:** Create a comprehensive test plan covering:
+                        <ul>
+                            <li>Pre-migration source data validation (counts, basic checks).</li>
+                            <li>Migration script execution validation (logs, error handling).</li>
+                            <li>Post-migration target data validation (record counts source vs. target, schema validation, referential integrity checks, spot checks on critical fields, validation of transformation logic via sampling, data quality rule checks on migrated data).</li>
+                            <li>Performance testing results.</li>
+                            <li>Rollback test results.</li>
+                        </ul>
+                    </li>
+                 </ol>
+                  <p class="responsibility">Responsibility: Data Architect, Data Engineers, ETL Developers, OPT SMEs (Source knowledge/Validation), DBA, QA Lead (Test Plan).</p>
+                  <div class="risk-note">Data migration is high-risk. Inaccurate scope definition, poor source analysis, incorrect transformations, or inadequate testing can lead to critical go-live failures.</div>
+            </div>
+
+            <h4>B. Migration Development & Testing Cycles</h4>
+            <div class="implementation-detail">
+                 <h6>Implementation How-To:</h6>
+                 <ol>
+                     <li>Develop migration scripts/jobs (Glue/Python) iteratively, following project coding standards (version control in GitLab, code reviews).</li>
+                     <li>Unit test individual transformation functions/logic components within the scripts.</li>
+                     <li>Execute test migrations against *anonymized* or synthetic legacy data extracts in the DEV environment frequently. Validate results using automated checks where possible (e.g., SQL queries comparing source/target counts, Python scripts checking transformations).</li>
+                     <li>Conduct full test migrations in the dedicated QA environment using the Migration Test Plan. QA team formally executes validation procedures and logs defects in Jira.</li>
+                     <li>Iteratively fix bugs found in scripts or transformation logic. Re-run tests until QA validation passes according to predefined quality criteria.</li>
+                     <li>Execute performance tests using anonymized, production-volume data to finalize runtime estimates and identify scaling needs for the production cutover. Optimize scripts/jobs as needed.</li>
+                 </ol>
+                 <p class="responsibility">Responsibility: Data Engineers, ETL Developers, QA Team, DBA (Performance Tuning).</p>
+                 <div class="quality-gate">
+                    <strong>Quality Gate:</strong> QA sign-off on migration scripts and validation results in QA environment, confirming scripts run reliably and migrated data meets accuracy/completeness/quality targets defined in test plan. Performance test results meet cutover window constraints.
+                 </div>
+            </div>
+
+            <h4>C. Production Cutover Execution (Meticulously Planned)</h4>
+            <div class="implementation-detail">
+                 <h6>Implementation How-To:</h6>
+                 <ol>
+                    <li>**Finalize Cutover Strategy:** Based on testing and dependencies, finalize the approach (Big Bang preferred for simplicity if feasible within downtime window, otherwise Phased with clear data sync strategy). Obtain formal approval from Steering Committee/Project Sponsors.</li>
+                    <li>**Create Hyper-Detailed Cutover Runbook:** Document every step, including:
+                        <ul>
+                            <li>Precise timings and durations for each step.</li>
+                            <li>Responsible individuals/teams for each action.</li>
+                            <li>Pre-cutover activities (communication freeze, legacy system quiesce, final legacy backup, environment checks).</li>
+                            <li>Migration script execution commands/procedures.</li>
+                            <li>Mandatory validation checkpoints (specific queries/counts to run at key stages).</li>
+                            <li>Go/No-Go decision points based on validation results.</li>
+                            <li>Detailed Rollback Plan (see below).</li>
+                            <li>Post-migration steps (enable TMS access, final validation, communications).</li>
+                            <li>War room setup and communication plan *during* cutover.</li>
+                        </ul>
+                    </li>
+                     <li>**Conduct Full Dress Rehearsal:** Execute the *entire* Cutover Runbook (including rollback steps where safe) in the Staging/UAT environment using a recent, full (anonymized) data set. Time all steps accurately. Identify and resolve any issues in the runbook or scripts. Obtain formal UAT sign-off on the rehearsal outcome.</li>
+                     <li>**Schedule Production Cutover Window:** Negotiate and communicate a clear downtime window with all stakeholders (including OPT operations, schools if impacted).</li>
+                     <li>**Execute Production Cutover:** Follow the rehearsed Runbook *precisely*. Maintain constant communication in the war room. Perform all validation checks at defined points. Make Go/No-Go decisions based on validation results and timelines. Escalate issues immediately per defined incident process.</li>
+                     <li>**Post-Cutover Hypercare:** Provide heightened monitoring and support immediately following go-live to quickly address any migration-related issues.</li>
+                 </ol>
+                 <p class="responsibility">Responsibility: Cutover Manager (PM/Ops Lead), Data Engineers, DBAs, SRE/Ops, QA, OPT SMEs.</p>
+                 <div class="governance-note">Production data migration cutover requires executive awareness and a highly controlled execution window.</div>
+            </div>
+
+            <h4>D. Migration Rollback Plan (Mandatory)</h4>
+             <div class="implementation-detail">
+                  <h6>Implementation How-To:</h6>
+                  <ol>
+                    <li>Develop a detailed, step-by-step Rollback Plan as an integral part of the Cutover Runbook.</li>
+                    <li>Plan *must* include:
+                        <ul>
+                            <li>Clear trigger criteria for initiating rollback (e.g., validation check failure threshold, exceeding time window for critical step).</li>
+                            <li>Decision authority for invoking rollback (e.g., Cutover Manager with PM/Sponsor concurrence).</li>
+                            <li>Steps to safely stop/undo migration activities in progress.</li>
+                            <li>Procedures to restore legacy systems from pre-cutover backups.</li>
+                            <li>Steps to revert any supporting configuration changes (DNS, firewalls, etc.).</li>
+                            <li>Communication plan for rollback status.</li>
+                        </ul>
+                    </li>
+                     <li>Test critical elements of the rollback plan during the dress rehearsal (e.g., restoring legacy DB backup to a test instance).</li>
+                 </ol>
+                 <p class="responsibility">Responsibility: Data Architect/Engineer, DBA, Ops/SRE, Cutover Manager.</p>
+                  <div class="risk-note">An untested or inadequate rollback plan significantly increases cutover risk.</div>
+             </div>
+        </div>
+    </section>
+
+
+    <!-- Conclusion -->
+    <section id="conclusion-data">
+        <h2>IX. Conclusion: Commitment to Data Integrity, Security & Compliance</h2>
+        <div class="section-description">
+            <p>This Consolidated Data Governance, Management, Security, and Compliance Strategy establishes the non-negotiable framework for all data handling within the NYCPS TMS project. Through the meticulous implementation and enforcement of these detailed policies, procedures, technical controls (leveraging AWS GovCloud capabilities), automated checks, rigorous testing, continuous monitoring, and clear governance structures, we will ensure the absolute confidentiality, integrity, availability, quality, and regulatory compliance of sensitive student and operational data. There is zero tolerance for deviation. This comprehensive, "water-tight" approach is fundamental to mitigating risks, meeting legal and ethical obligations, maintaining public trust, and delivering a secure, reliable, and successful Transportation Management System that serves the NYCPS community effectively and responsibly.</p>
+        </div>
+    </section>
+
+</body>
+</html>

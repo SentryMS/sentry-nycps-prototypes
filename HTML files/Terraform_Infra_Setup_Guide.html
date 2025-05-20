@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NYCPS TMS - Infrastructure Provisioning with Terraform</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            color: #212529;
+            max-width: 1200px; /* Wider */
+            margin: 25px auto;
+            padding: 25px;
+            background-color: #fdfdfe;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+        }
+        h1, h2, h3, h4 {
+            color: #003366; /* NYC DOE Blue */
+            margin-top: 1.8em;
+            margin-bottom: 0.8em;
+            padding-bottom: 6px;
+            font-weight: 600;
+        }
+        h1 {
+            text-align: center;
+            font-size: 2.4em;
+            border-bottom: 3px solid #003366;
+            margin-bottom: 1.2em;
+        }
+        h2 { /* Major Steps */
+            font-size: 2.0em;
+            border-bottom: 2px solid #003366;
+            background-color: #eaf2f8;
+            padding: 10px 15px;
+            border-radius: 5px 5px 0 0;
+            margin-left: -26px;
+            margin-right: -26px;
+            margin-top: 2em;
+        }
+        h3 { /* Sub-steps or Module Sections */
+            font-size: 1.6em;
+            border-bottom: 1px solid #b7d1ed;
+            padding-left: 15px;
+        }
+        h4 { /* Code File Examples or Detail Areas */
+            font-size: 1.3em;
+            border-bottom: none;
+            color: #0056b3;
+            padding-left: 30px;
+            font-weight: 500;
+        }
+        p, li {
+            margin-bottom: 0.9em;
+            font-size: 1.08em;
+        }
+        ul {
+            list-style-type: square;
+            margin-left: 60px;
+            margin-bottom: 1em;
+        }
+        ol {
+            list-style-type: decimal;
+            margin-left: 60px;
+            margin-bottom: 1em;
+        }
+         ol ol { list-style-type: lower-alpha; }
+         ol ol ol { list-style-type: lower-roman; }
+        strong {
+            font-weight: 600;
+            color: #003366;
+        }
+        code {
+            font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+            display: block; /* Make code blocks */
+            background-color: #282c34; /* Dark background */
+            color: #abb2bf; /* Light text */
+            padding: 15px;
+            border: 1px solid #3e4451;
+            border-radius: 5px;
+            font-size: 0.95em;
+            white-space: pre; /* Preserve whitespace */
+            overflow-x: auto; /* Allow horizontal scrolling */
+            margin: 10px 0;
+        }
+        code .tf-comment { color: #5c6370; font-style: italic; }
+        code .tf-keyword { color: #c678dd; } /* purple */
+        code .tf-string { color: #98c379; } /* green */
+        code .tf-number { color: #d19a66; } /* orange */
+        code .tf-variable { color: #e06c75; } /* red */
+        code .tf-resource-type { color: #e5c07b; } /* yellow */
+        code .tf-resource-name { color: #61afef; } /* blue */
+        code .tf-attribute { color: #abb2bf; } /* default light text */
+        .warning-box {
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            border-left: 5px solid #ffc107; /* Yellow */
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+            color: #856404;
+        }
+         .info-box {
+            background-color: #e2f0f9;
+            border: 1px solid #b8daff;
+            border-left: 5px solid #007bff; /* Blue */
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+            color: #004085;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>NYCPS TMS: Infrastructure Provisioning with Terraform</h1>
+
+    <section id="intro">
+        <h2>Introduction & Prerequisites</h2>
+        <div class="phase-description">
+            <p>This document provides detailed, step-by-step instructions for provisioning the AWS GovCloud infrastructure required for the NYCPS Transportation Management System, using Terraform. It follows modern Infrastructure as Code (IaC) best practices, emphasizing modularity, environment separation, security, and automation.</p>
+            <div class="warning-box">
+                <strong>Important:</strong> The Terraform code provided here is <strong>representative and requires customization</strong>. It includes placeholders (marked with `TODO:` or using variable names like `var.specific_cidr`) that MUST be replaced with values specific to the NYCPS environment and requirements. <strong>Do not deploy this code directly to production without thorough review, customization, and testing by experienced cloud and security engineers familiar with AWS GovCloud and NYCPS policies.</strong> This guide assumes a foundational understanding of Terraform concepts (providers, resources, variables, modules, state).
+            </div>
+            <h4>Prerequisites:</h4>
+            <ul>
+                <li><strong>Terraform CLI:</strong> Installed locally or on a build server (latest stable version recommended).</li>
+                <li><strong>AWS CLI:</strong> Installed and configured with credentials possessing sufficient permissions in the target AWS GovCloud accounts (preferably via STS AssumeRole from a central management account).</li>
+                <li><strong>Git:</strong> Installed for version control.</li>
+                <li><strong>Code Editor:</strong> VS Code with Terraform extension, or similar.</li>
+                <li><strong>AWS GovCloud Access:</strong> Confirmed access and necessary base configuration (e.g., organization structure if used).</li>
+                <li><strong>NYCPS Specific Info:</strong> Required CIDR ranges, domain names, specific integration endpoints, compliance requirements details, KMS key policies, etc.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="structure">
+        <h2>Step 1: Establish Project Structure</h2>
+        <div class="phase-description">
+            <p>We will organize the Terraform code into reusable modules and environment-specific configurations. This promotes consistency and simplifies management.</p>
+            <h4>Recommended Directory Structure:</h4>
+            <code><span class="tf-comment"># Root of your Git repository</span>
+infra-tf/
+├── environments/
+│   ├── _common/             <span class="tf-comment"># (Optional) Common variables/locals</span>
+│   │   └── common.tfvars
+│   ├── dev/
+│   │   ├── main.tf          <span class="tf-comment"># Instantiates modules for dev</span>
+│   │   ├── variables.tf     <span class="tf-comment"># Environment-specific variable declarations</span>
+│   │   ├── outputs.tf       <span class="tf-comment"># Environment-level outputs</span>
+│   │   └── dev.tfvars       <span class="tf-comment"># Values for variables specific to dev</span>
+│   ├── qa/
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   ├── outputs.tf
+│   │   └── qa.tfvars
+│   ├── uat/
+│   │   ├── ...
+│   ├── staging/
+│   │   ├── ...
+│   └── prod/
+│       ├── main.tf
+│       ├── variables.tf
+│       ├── outputs.tf
+│       └── prod.tfvars
+├── modules/
+│   ├── networking/          <span class="tf-comment"># VPC, Subnets, Route Tables, GWs, Endpoints, SGs</span>
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   └── outputs.tf
+│   ├── iam/                 <span class="tf-comment"># IAM Roles, Policies, Instance Profiles</span>
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   └── outputs.tf
+│   ├── security/            <span class="tf-comment"># Security Groups (alternative), WAF, GuardDuty config</span>
+│   │   ├── ...
+│   ├── rds_postgres/        <span class="tf-comment"># RDS PostgreSQL + PostGIS specific module</span>
+│   │   ├── ...
+│   ├── dynamodb_table/      <span class="tf-comment"># Reusable DynamoDB table module</span>
+│   │   ├── ...
+│   ├── kinesis_stream/      <span class="tf-comment"># Kinesis Data Stream module</span>
+│   │   ├── ...
+│   ├── s3_bucket/           <span class="tf-comment"># Secure S3 bucket module (logging, encryption, etc.)</span>
+│   │   ├── ...
+│   ├── ecs_fargate_service/ <span class="tf-comment"># Module for a standard Fargate service</span>
+│   │   ├── ...
+│   ├── lambda_function/     <span class="tf-comment"># Module for a standard Lambda function</span>
+│   │   ├── ...
+│   ├── api_gateway/         <span class="tf-comment"># Module for API Gateway setup</span>
+│   │   ├── ...
+│   ├── sns_topic/           <span class="tf-comment"># SNS Topic module</span>
+│   │   └── ... <span class="tf-comment"># etc. for other reusable components (ElastiCache, MSK, Redshift...)</span>
+│
+├── main.tf                  <span class="tf-comment"># Root configuration (optional, mainly for backend)</span>
+├── variables.tf             <span class="tf-comment"># Global variable declarations (region, etc.)</span>
+├── outputs.tf               <span class="tf-comment"># Global outputs</span>
+└── backend.tf               <span class="tf-comment"># Defines S3 remote state backend</span>
+</code>
+            <h4>Explanation:</h4>
+            <ul>
+                <li><strong>`environments/`</strong>: Contains directories for each deployment environment (dev, qa, prod, etc.). Each environment directory has its own `main.tf` that calls the reusable modules, and a `.tfvars` file containing the specific input values for that environment.</li>
+                <li><strong>`modules/`</strong>: Contains reusable Terraform modules for logical infrastructure components (e.g., a VPC setup, an RDS instance, an ECS service). This promotes Don't Repeat Yourself (DRY) principles.</li>
+                <li><strong>Root Files (`main.tf`, `variables.tf`, `backend.tf`):</strong> Define the S3 backend for remote state management and potentially global variables like the AWS region.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="backend-setup">
+         <h2>Step 2: Configure S3 Backend for Remote State</h2>
+         <div class="phase-description">
+            <p>Terraform needs to store its state file, which maps resources to your configuration. Using an S3 backend is crucial for team collaboration and state locking, preventing conflicts.</p>
+            <div class="warning-box">
+                <strong>Manual Step Required:</strong> The S3 bucket and DynamoDB table for state locking must exist *before* you can initialize Terraform with this backend. Create these manually in your primary AWS GovCloud region (or via a separate, simple Terraform config applied once). Ensure the bucket has versioning and encryption enabled. The DynamoDB table needs a primary key named `LockID` (Type: String).
+            </div>
+            <h4>File: `infra-tf/backend.tf`</h4>
+            <code><span class="tf-keyword">terraform</span> {
+  <span class="tf-keyword">backend</span> <span class="tf-string">"s3"</span> {
+    <span class="tf-comment"># TODO: Replace with your globally unique S3 bucket name in GovCloud</span>
+    <span class="tf-attribute">bucket</span>         = <span class="tf-string">"nycps-tms-tfstate-bucket-unique-name"</span>
+    <span class="tf-comment"># Key will be overridden in environment-specific backend configs</span>
+    <span class="tf-attribute">key</span>            = <span class="tf-string">"tfstate/global.tfstate"</span>
+    <span class="tf-comment"># TODO: Ensure this matches the GovCloud region of your S3 bucket</span>
+    <span class="tf-attribute">region</span>         = <span class="tf-string">"us-gov-west-1"</span>
+    <span class="tf-comment"># TODO: Replace with the name of your DynamoDB lock table</span>
+    <span class="tf-attribute">dynamodb_table</span> = <span class="tf-string">"nycps-tms-tfstate-lock"</span>
+    <span class="tf-attribute">encrypt</span>        = <span class="tf-keyword">true</span>
+  }
+}
+</code>
+             <h4>File: `infra-tf/environments/dev/main.tf` (Backend Re-configuration)</h4>
+             <p>Inside each environment's `main.tf`, you re-declare the backend block but change the `key` to store state separately per environment.</p>
+             <code> <span class="tf-keyword">terraform</span> {
+  # Define required providers within the environment config too
+  <span class="tf-keyword">required_providers</span> {
+    <span class="tf-attribute">aws</span> = {
+      <span class="tf-attribute">source</span>  = <span class="tf-string">"hashicorp/aws"</span>
+      <span class="tf-attribute">version</span> = <span class="tf-string">"~> 4.0"</span> <span class="tf-comment"># Or latest appropriate version</span>
+    }
+  }
+
+  <span class="tf-keyword">backend</span> <span class="tf-string">"s3"</span> {
+    <span class="tf-comment"># NOTE: Bucket, Region, Table MUST match the root backend.tf</span>
+    <span class="tf-attribute">bucket</span>         = <span class="tf-string">"nycps-tms-tfstate-bucket-unique-name"</span> <span class="tf-comment"># Same bucket as root</span>
+    <span class="tf-attribute">key</span>            = <span class="tf-string">"tfstate/dev/terraform.tfstate"</span>     <span class="tf-comment"># Environment-specific key</span>
+    <span class="tf-attribute">region</span>         = <span class="tf-string">"us-gov-west-1"</span>             <span class="tf-comment"># Same region as root</span>
+    <span class="tf-attribute">dynamodb_table</span> = <span class="tf-string">"nycps-tms-tfstate-lock"</span>      <span class="tf-comment"># Same table as root</span>
+    <span class="tf-attribute">encrypt</span>        = <span class="tf-keyword">true</span>
+  }
+}
+</code>
+             <div class="info-box">
+                 <strong>Note:</strong> Repeat the backend re-configuration block in `main.tf` for *each* environment directory (qa, prod, etc.), changing only the `key` value (e.g., `"tfstate/qa/terraform.tfstate"`).
+             </div>
+         </div>
+    </section>
+
+    <section id="modules">
+        <h2>Step 3: Develop Reusable Infrastructure Modules</h2>
+        <div class="phase-description">
+            <p>Create modules for common infrastructure patterns. This involves defining resources, input variables, and outputs for each module.</p>
+
+            <h4>Example: Networking Module (`modules/networking/`)</h4>
+            <p>This module creates the VPC, subnets, routing, gateways, and baseline security groups.</p>
+            <h5>File: `modules/networking/variables.tf`</h5>
+            <code><span class="tf-keyword">variable</span> <span class="tf-variable">"environment_name"</span> {
+  <span class="tf-attribute">description</span> = <span class="tf-string">"Name of the environment (e.g., dev, qa, prod)"</span>
+  <span class="tf-attribute">type</span>        = <span class="tf-keyword">string</span>
+}
+
+<span class="tf-keyword">variable</span> <span class="tf-variable">"vpc_cidr"</span> {
+  <span class="tf-attribute">description</span> = <span class="tf-string">"CIDR block for the VPC"</span>
+  <span class="tf-attribute">type</span>        = <span class="tf-keyword">string</span>
+}
+
+<span class="tf-keyword">variable</span> <span class="tf-variable">"public_subnet_cidrs"</span> {
+  <span class="tf-attribute">description</span> = <span class="tf-string">"List of CIDR blocks for public subnets (one per AZ)"</span>
+  <span class="tf-attribute">type</span>        = <span class="tf-keyword">list</span>(<span class="tf-keyword">string</span>)
+}
+
+<span class="tf-keyword">variable</span> <span class="tf-variable">"private_subnet_cidrs"</span> {
+  <span class="tf-attribute">description</span> = <span class="tf-string">"List of CIDR blocks for private subnets (one per AZ)"</span>
+  <span class="tf-attribute">type</span>        = <span class="tf-keyword">list</span>(<span class="tf-keyword">string</span>)
+}
+
+<span class="tf-keyword">variable</span> <span class="tf-variable">"availability_zones"</span> {
+  <span class="tf-attribute">description</span> = <span class="tf-string">"List of Availability Zones to use"</span>
+  <span class="tf-attribute">type</span>        = <span class="tf-keyword">list</span>(<span class="tf-keyword">string</span>)
+  <span class="tf-comment"># TODO: Ensure these are valid AZs in your GovCloud region</span>
+}
+
+<span class="tf-comment"># TODO: Add variables for tags, specific endpoint services, etc.</span>
+</code>
+
+            <h5>File: `modules/networking/main.tf`</h5>
+            <code><span class="tf-comment"># --- VPC ---</span>
+<span class="tf-keyword">resource</span> <span class="tf-resource-type">"aws_vpc"</span> <span class="tf-resource-name">"main"</span> {
+  <span class="tf-attribute">cidr_block</span>           = <span class="tf-variable">var.vpc_cidr</span>
+  <span class="tf-attribute">enable_dns_support</span>   = <span class="tf-keyword">true</span>
+  <span class="tf-attribute">enable_dns_hostnames</span> = <span class="tf-keyword">true</span>
+
+  <span class="tf-attribute">tags</span> = {
+    <span class="tf-string">"Name"</span>        = <span class="tf-string">"vpc-${var.environment_name}"</span>
+    <span class="tf-string">"Environment"</span> = <span class="tf-variable">var.environment_name</span>
+  }
+}
+
+<span class="tf-comment"># --- Subnets ---</span>
+<span class="tf-keyword">resource</span> <span class="tf-resource-type">"aws_subnet"</span> <span class="tf-resource-name">"public"</span> {
+  <span class="tf-attribute">count</span>             = <span class="tf-keyword">length</span>(<span class="tf-variable">var.public_subnet_cidrs</span>)
+  <span class="tf-attribute">vpc_id</span>            = <span class="tf-resource-type">aws_vpc.main.id</span>
+  <span class="tf-attribute">cidr_block</span>        = <span class="tf-variable">var.public_subnet_cidrs</span>[<span class="tf-attribute">count.index</span>]
+  <span class="tf-attribute">availability_zone</span> = <span class="tf-variable">var.availability_zones</span>[<span class="tf-attribute">count.index</span>]
+  <span class="tf-attribute">map_public_ip_on_launch</span> = <span class="tf-keyword">true</span>
+
+  <span class="tf-attribute">tags</span> = {
+    <span class="tf-string">"Name"</span> = <span class="tf-string">"public-subnet-${var.environment_name}-${count.index}"</span>
+    <span class="tf-comment"># ... other tags</span>
+  }
+}
+
+<span class="tf-keyword">resource</span> <span class="tf-resource-type">"aws_subnet"</span> <span class="tf-resource-name">"private"</span> {
+  <span class="tf-attribute">count</span>             = <span class="tf-keyword">length</span>(<span class="tf-variable">var.private_subnet_cidrs</span>)
+  <span class="tf-attribute">vpc_id</span>            = <span class="tf-resource-type">aws_vpc.main.id</span>
+  <span class="tf-attribute">cidr_block</span>        = <span class="tf-variable">var.private_subnet_cidrs</span>[<span class="tf-attribute">count.index</span>]
+  <span class="tf-attribute">availability_zone</span> = <span class="tf-variable">var.availability_zones</span>[<span class="tf-attribute">count.index</span>]
+
+  <span class="tf-attribute">tags</span> = {
+    <span class="tf-string">"Name"</span> = <span class="tf-string">"private-subnet-${var.environment_name}-${count.index}"</span>
+     <span class="tf-comment"># ... other tags</span>
+  }
+}
+
+<span class="tf-comment"># --- Gateways (IGW, NAT) ---</span>
+<span class="tf-keyword">resource</span> <span class="tf-resource-type">"aws_internet_gateway"</span> <span class="tf-resource-name">"gw"</span> {
+  <span class="tf-attribute">vpc_id</span> = <span class="tf-resource-type">aws_vpc.main.id</span>
+  <span class="tf-comment"># ... tags</span>
+}
+
+<span class="tf-comment"># Allocate Elastic IPs for NAT Gateways (one per AZ for HA)</span>
+<span class="tf-keyword">resource</span> <span class="tf-resource-type">"aws_eip"</span> <span class="tf-resource-name">"nat"</span> {
+  <span class="tf-attribute">count</span> = <span class="tf-keyword">length</span>(<span class="tf-variable">var.public_subnet_cidrs</span>)
+  <span class="tf-attribute">vpc</span>   = <span class="tf-keyword">true</span>
+}
+
+<span class="tf-keyword">resource</span> <span class="tf-resource-type">"aws_nat_gateway"</span> <span class="tf-resource-name">"nat"</span> {
+  <span class="tf-attribute">count</span>         = <span class="tf-keyword">length</span>(<span class="tf-variable">var.public_subnet_cidrs</span>)
+  <span class="tf-attribute">allocation_id</span> = <span class="tf-resource-type">aws_eip.nat</span>[<span class="tf-attribute">count.index</span>].<span class="tf-attribute">id</span>
+  <span class="tf-attribute">subnet_id</span>     = <span class="tf-resource-type">aws_subnet.public</span>[<span class="tf-attribute">count.index</span>].<span class="tf-attribute">id</span>
+
+  <span class="tf-attribute">tags</span> = {
+    <span class="tf-string">"Name"</span> = <span class="tf-string">"nat-gw-${var.environment_name}-${count.index}"</span>
+  }
+  <span class="tf-comment"># Ensure IGW is created first</span>
+  <span class="tf-attribute">depends_on</span> = [<span class="tf-resource-type">aws_internet_gateway.gw</span>]
+}
+
+<span class="tf-comment"># --- Route Tables ---</span>
+<span class="tf-comment"># Public Route Table (points to IGW)</span>
+<span class="tf-keyword">resource</span> <span class="tf-resource-type">"aws_route_table"</span> <span class="tf-resource-name">"public"</span> {
+  <span class="tf-attribute">vpc_id</span> = <span class="tf-resource-type">aws_vpc.main.id</span>
+
+  <span class="tf-keyword">route</span> {
+    <span class="tf-attribute">cidr_block</span> = <span class="tf-string">"0.0.0.0/0"</span>
+    <span class="tf-attribute">gateway_id</span> = <span class="tf-resource-type">aws_internet_gateway.gw.id</span>
+  }
+  <span class="tf-comment"># ... tags</span>
+}
+<span class="tf-comment"># Associate public subnets</span>
+<span class="tf-keyword">resource</span> <span class="tf-resource-type">"aws_route_table_association"</span> <span class="tf-resource-name">"public"</span> {
+  <span class="tf-attribute">count</span>          = <span class="tf-keyword">length</span>(<span class="tf-variable">var.public_subnet_cidrs</span>)
+  <span class="tf-attribute">subnet_id</span>      = <span class="tf-resource-type">aws_subnet.public</span>[<span class="tf-attribute">count.index</span>].<span class="tf-attribute">id</span>
+  <span class="tf-attribute">route_table_id</span> = <span class="tf-resource-type">aws_route_table.public.id</span>
+}
+
+<span class="tf-comment"># Private Route Tables (one per AZ, pointing to NAT GW in that AZ)</span>
+<span class="tf-keyword">resource</span> <span class="tf-resource-type">"aws_route_table"</span> <span class="tf-resource-name">"private"</span> {
+  <span class="tf-attribute">count</span>  = <span class="tf-keyword">length</span>(<span class="tf-variable">var.private_subnet_cidrs</span>)
+  <span class="tf-attribute">vpc_id</span> = <span class="tf-resource-type">aws_vpc.main.id</span>
+
+  <span class="tf-keyword">route</span> {
+    <span class="tf-attribute">cidr_block</span>     = <span class="tf-string">"0.0.0.0/0"</span>
+    <span class="tf-attribute">nat_gateway_id</span> = <span class="tf-resource-type">aws_nat_gateway.nat</span>[<span class="tf-attribute">count.index</span>].<span class="tf-attribute">id</span>
+  }
+  <span class="tf-comment"># ... tags</span>
+}
+<span class="tf-comment"># Associate private subnets</span>
+<span class="tf-keyword">resource</span> <span class="tf-resource-type">"aws_route_table_association"</span> <span class="tf-resource-name">"private"</span> {
+  <span class="tf-attribute">count</span>          = <span class="tf-keyword">length</span>(<span class="tf-variable">var.private_subnet_cidrs</span>)
+  <span class="tf-attribute">subnet_id</span>      = <span class="tf-resource-type">aws_subnet.private</span>[<span class="tf-attribute">count.index</span>].<span class="tf-attribute">id</span>
+  <span class="tf-attribute">route_table_id</span> = <span class="tf-resource-type">aws_route_table.private</span>[<span class="tf-attribute">count.index</span>].<span class="tf-attribute">id</span>
+}
+
+<span class="tf-comment"># --- Security Groups (Baseline Example) ---</span>
+<span class="tf-keyword">resource</span> <span class="tf-resource-type">"aws_security_group"</span> <span class="tf-resource-name">"allow_internal"</span> {
+  <span class="tf-attribute">name</span>        = <span class="tf-string">"allow-internal-${var.environment_name}"</span>
+  <span class="tf-attribute">description</span> = <span class="tf-string">"Allow all internal traffic within the VPC"</span>
+  <span class="tf-attribute">vpc_id</span>      = <span class="tf-resource-type">aws_vpc.main.id</span>
+
+  <span class="tf-keyword">ingress</span> {
+    <span class="tf-attribute">from_port</span>   = 0
+    <span class="tf-attribute">to_port</span>     = 0
+    <span class="tf-attribute">protocol</span>    = <span class="tf-string">"-1"</span> <span class="tf-comment"># All protocols</span>
+    <span class="tf-attribute">cidr_blocks</span> = [<span class="tf-variable">var.vpc_cidr</span>] <span class="tf-comment"># Only allow from within the VPC</span>
+  }
+
+  <span class="tf-keyword">egress</span> {
+    <span class="tf-attribute">from_port</span>   = 0
+    <span class="tf-attribute">to_port</span>     = 0
+    <span class="tf-attribute">protocol</span>    = <span class="tf-string">"-1"</span>
+    <span class="tf-attribute">cidr_blocks</span> = [<span class="tf-string">"0.0.0.0/0"</span>]
+  }
+  <span class="tf-comment"># TODO: Implement more granular security groups per component</span>
+  <span class="tf-comment"># e.g., Web SG allowing 443 from LB, App SG allowing traffic from Web SG, DB SG allowing traffic from App SG</span>
+}
+
+<span class="tf-comment"># --- VPC Endpoints (Example: S3 Gateway Endpoint) ---</span>
+<span class="tf-keyword">resource</span> <span class="tf-resource-type">"aws_vpc_endpoint"</span> <span class="tf-resource-name">"s3"</span> {
+  <span class="tf-attribute">vpc_id</span>            = <span class="tf-resource-type">aws_vpc.main.id</span>
+  <span class="tf-attribute">service_name</span>      = <span class="tf-string">"com.amazonaws.${data.aws_region.current.name}.s3"</span> <span class="tf-comment"># Use current region data source</span>
+  <span class="tf-attribute">route_table_ids</span>   = <span class="tf-keyword">concat</span>(<span class="tf-resource-type">aws_route_table.public</span>[*].id, <span class="tf-resource-type">aws_route_table.private</span>[*].id)
+}
+
+<span class="tf-keyword">data</span> <span class="tf-resource-type">"aws_region"</span> <span class="tf-resource-name">"current"</span> {} <span class="tf-comment"># Helper to get current region</span>
+
+<span class="tf-comment"># TODO: Add Interface Endpoints for other services (Kinesis, SQS, KMS, Secrets Manager, ECR API/DKR, etc.)</span>
+</code>
+
+            <h5>File: `modules/networking/outputs.tf`</h5>
+            <code><span class="tf-keyword">output</span> <span class="tf-variable">"vpc_id"</span> {
+  <span class="tf-attribute">description</span> = <span class="tf-string">"The ID of the VPC"</span>
+  <span class="tf-attribute">value</span>       = <span class="tf-resource-type">aws_vpc.main.id</span>
+}
+
+<span class="tf-keyword">output</span> <span class="tf-variable">"public_subnet_ids"</span> {
+  <span class="tf-attribute">description</span> = <span class="tf-string">"List of IDs of public subnets"</span>
+  <span class="tf-attribute">value</span>       = <span class="tf-resource-type">aws_subnet.public</span>[*].<span class="tf-attribute">id</span>
+}
+
+<span class="tf-keyword">output</span> <span class="tf-variable">"private_subnet_ids"</span> {
+  <span class="tf-attribute">description</span> = <span class="tf-string">"List of IDs of private subnets"</span>
+  <span class="tf-attribute">value</span>       = <span class="tf-resource-type">aws_subnet.private</span>[*].<span class="tf-attribute">id</span>
+}
+
+<span class="tf-keyword">output</span> <span class="tf-variable">"baseline_internal_sg_id"</span> {
+  <span class="tf-attribute">description</span> = <span class="tf-string">"ID of the baseline security group allowing internal VPC traffic"</span>
+  <span class="tf-attribute">value</span>       = <span class="tf-resource-type">aws_security_group.allow_internal.id</span>
+}
+
+<span class="tf-comment"># TODO: Add outputs for specific Security Group IDs (Web, App, DB) once created</span>
+</code>
+
+            <h4>Example: RDS PostgreSQL Module (`modules/rds_postgres/`)</h4>
+            <p>This module provisions an RDS PostgreSQL instance with PostGIS, configured for HA.</p>
+             <h5>File: `modules/rds_postgres/variables.tf`</h5>
+             <code><span class="tf-keyword">variable</span> <span class="tf-variable">"environment_name"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span> }
+<span class="tf-keyword">variable</span> <span class="tf-variable">"allocated_storage"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">number</span>; <span class="tf-attribute">default</span> = 100 } <span class="tf-comment"># GB</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"instance_class"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span>; <span class="tf-attribute">default</span> = <span class="tf-string">"db.m5.large"</span> } <span class="tf-comment"># TODO: Adjust instance class per env</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"db_name"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span>; <span class="tf-attribute">default</span> = <span class="tf-string">"nycps_tms_db"</span> }
+<span class="tf-keyword">variable</span> <span class="tf-variable">"db_subnet_group_name"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span> } <span class="tf-comment"># Will be created based on private subnet IDs passed in</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"vpc_security_group_ids"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">list</span>(<span class="tf-keyword">string</span>) } <span class="tf-comment"># Pass the specific DB Security Group ID</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"kms_key_id"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span> } <span class="tf-comment"># ARN of the KMS key for encryption</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"multi_az"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">bool</span>; <span class="tf-attribute">default</span> = <span class="tf-keyword">true</span> } <span class="tf-comment"># Enable Multi-AZ for HA</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"backup_retention_period"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">number</span>; <span class="tf-attribute">default</span> = 7 } <span class="tf-comment"># Days. Adjust as needed.</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"engine_version"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span>; <span class="tf-attribute">default</span> = <span class="tf-string">"14"</span> } <span class="tf-comment"># Specify desired PostgreSQL version</span>
+
+<span class="tf-comment"># TODO: Variables for username/password - USE SECRETS MANAGER!</span>
+<span class="tf-keyword">variable</span> <span class="tf-variable">"db_master_username_secret_arn"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span> }
+<span class="tf-keyword">variable</span> <span class="tf-variable">"db_master_password_secret_arn"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span> }
+</code>
+
+            <h5>File: `modules/rds_postgres/main.tf`</h5>
+            <code><span class="tf-comment"># Data source to retrieve secrets from Secrets Manager</span>
+<span class="tf-keyword">data</span> <span class="tf-resource-type">"aws_secretsmanager_secret_version"</span> <span class="tf-resource-name">"db_username"</span> {
+  <span class="tf-attribute">secret_id</span> = <span class="tf-variable">var.db_master_username_secret_arn</span>
+}
+<span class="tf-keyword">data</span> <span class="tf-resource-type">"aws_secretsmanager_secret_version"</span> <span class="tf-resource-name">"db_password"</span> {
+  <span class="tf-attribute">secret_id</span> = <span class="tf-variable">var.db_master_password_secret_arn</span>
+}
+
+<span class="tf-keyword">resource</span> <span class="tf-resource-type">"aws_db_instance"</span> <span class="tf-resource-name">"postgres_gis"</span> {
+  <span class="tf-attribute">identifier</span>           = <span class="tf-string">"nycps-tms-rds-${var.environment_name}"</span>
+  <span class="tf-attribute">allocated_storage</span>    = <span class="tf-variable">var.allocated_storage</span>
+  <span class="tf-attribute">engine</span>               = <span class="tf-string">"postgres"</span>
+  <span class="tf-attribute">engine_version</span>       = <span class="tf-variable">var.engine_version</span>
+  <span class="tf-attribute">instance_class</span>       = <span class="tf-variable">var.instance_class</span>
+  <span class="tf-attribute">db_name</span>              = <span class="tf-variable">var.db_name</span>
+  <span class="tf-attribute">username</span>             = <span class="tf-resource-type">data.aws_secretsmanager_secret_version.db_username.secret_string</span> <span class="tf-comment"># Fetch from Secrets Manager</span>
+  <span class="tf-attribute">password</span>             = <span class="tf-resource-type">data.aws_secretsmanager_secret_version.db_password.secret_string</span> <span class="tf-comment"># Fetch from Secrets Manager</span>
+  <span class="tf-attribute">db_subnet_group_name</span> = <span class="tf-variable">var.db_subnet_group_name</span>
+  <span class="tf-attribute">vpc_security_group_ids</span> = <span class="tf-variable">var.vpc_security_group_ids</span>
+  <span class="tf-attribute">parameter_group_name</span> = <span class="tf-resource-type">aws_db_parameter_group.postgres_gis.name</span> <span class="tf-comment"># Reference parameter group below</span>
+
+  <span class="tf-attribute">storage_encrypted</span>   = <span class="tf-keyword">true</span>
+  <span class="tf-attribute">kms_key_id</span>          = <span class="tf-variable">var.kms_key_id</span>
+  <span class="tf-attribute">multi_az</span>            = <span class="tf-variable">var.multi_az</span>
+  <span class="tf-attribute">publicly_accessible</span> = <span class="tf-keyword">false</span>
+  <span class="tf-attribute">skip_final_snapshot</span> = <span class="tf-keyword">false</span> <span class="tf-comment"># Typically false for prod, maybe true for dev/test</span>
+  <span class="tf-attribute">backup_retention_period</span> = <span class="tf-variable">var.backup_retention_period</span>
+  <span class="tf-attribute">apply_immediately</span>   = <span class="tf-keyword">false</span> <span class="tf-comment"># Apply changes during maintenance window</span>
+
+  <span class="tf-comment"># Enable PostGIS extension requires specific parameter group settings</span>
+  <span class="tf-comment"># Ensure CloudWatch Logs exports are enabled</span>
+  <span class="tf-attribute">enabled_cloudwatch_logs_exports</span> = [<span class="tf-string">"postgresql"</span>, <span class="tf-string">"upgrade"</span>]
+
+  <span class="tf-attribute">tags</span> = {
+    <span class="tf-string">"Name"</span>        = <span class="tf-string">"rds-postgres-gis-${var.environment_name}"</span>
+    <span class="tf-string">"Environment"</span> = <span class="tf-variable">var.environment_name</span>
+  }
+}
+
+<span class="tf-comment"># Parameter group to enable PostGIS</span>
+<span class="tf-keyword">resource</span> <span class="tf-resource-type">"aws_db_parameter_group"</span> <span class="tf-resource-name">"postgres_gis"</span> {
+  <span class="tf-attribute">name_prefix</span> = <span class="tf-string">"rds-pg-gis-${var.environment_name}-"</span>
+  <span class="tf-attribute">family</span>      = <span class="tf-string">"postgres${var.engine_version}"</span> <span class="tf-comment"># e.g., postgres14</span>
+
+  <span class="tf-keyword">parameter</span> {
+    <span class="tf-attribute">name</span>  = <span class="tf-string">"shared_preload_libraries"</span>
+    <span class="tf-attribute">value</span> = <span class="tf-string">"pg_stat_statements,postgis-3"</span> <span class="tf-comment"># Check exact PostGIS version name</span>
+    <span class="tf-attribute">apply_method</span> = <span class="tf-string">"pending-reboot"</span>
+  }
+  <span class="tf-comment"># TODO: Add other necessary parameters (logging, performance tuning)</span>
+}
+
+<span class="tf-comment"># TODO: Define aws_db_subnet_group resource based on private subnet IDs</span>
+<span class="tf-comment"># TODO: Define specific DB Security Group allowing access only from App tier SGs</span>
+</code>
+
+            <h5>File: `modules/rds_postgres/outputs.tf`</h5>
+             <code><span class="tf-keyword">output</span> <span class="tf-variable">"db_instance_endpoint"</span> {
+  <span class="tf-attribute">description</span> = <span class="tf-string">"The connection endpoint for the database instance"</span>
+  <span class="tf-attribute">value</span>       = <span class="tf-resource-type">aws_db_instance.postgres_gis.endpoint</span>
+  <span class="tf-attribute">sensitive</span>   = <span class="tf-keyword">true</span>
+}
+<span class="tf-keyword">output</span> <span class="tf-variable">"db_instance_id"</span> {
+  <span class="tf-attribute">description</span> = <span class="tf-string">"The ID of the database instance"</span>
+  <span class="tf-attribute">value</span>       = <span class="tf-resource-type">aws_db_instance.postgres_gis.id</span>
+}
+<span class="tf-comment"># ... other relevant outputs ...</span>
+</code>
+
+            <h4>Other Modules (Conceptual Examples):</h4>
+             <ul>
+                 <li><strong>IAM Module (`modules/iam/`):</strong> Define reusable resources for creating IAM roles (e.g., Lambda execution role, EC2 instance profile role, ECS task role) and attaching managed or custom IAM policies. Use variables for naming and policy specifics. Output Role ARNs.</li>
+                 <li><strong>S3 Bucket Module (`modules/s3_bucket/`):</strong> Create S3 buckets with standardized configurations: versioning enabled, server-side encryption (SSE-S3 or SSE-KMS), access logging enabled, lifecycle rules (for transitions/expiration), public access blocked, appropriate bucket policies. Use variables for bucket name prefix, KMS key, lifecycle rules. Output bucket name/ARN.</li>
+                 <li><strong>ECS Fargate Service Module (`modules/ecs_fargate_service/`):</strong> Define resources for an ECS cluster (if not shared), Task Definition (referencing ECR image URI, CPU/Memory, IAM roles, environment variables/secrets), Fargate Service (desired count, subnets, security groups, load balancer target group association), Auto Scaling configuration. Use variables for image URI, CPU/Memory, environment variables, scaling thresholds, LB details.</li>
+                 <li><strong>Kinesis Stream Module (`modules/kinesis_stream/`):</strong> Provision Kinesis Data Stream with variables for shard count, retention period, encryption (KMS). Output stream ARN/name.</li>
+                 <li><strong>DynamoDB Table Module (`modules/dynamodb_table/`):</strong> Create DynamoDB tables with variables for table name, primary key (hash/range), attributes, billing mode (provisioned/on-demand), GSIs/LSIs, stream specification, Point-in-Time Recovery (PITR) enabled, encryption (KMS). Output table ARN/name.</li>
+             </ul>
+             <div class="info-box">
+                 <strong>Best Practice:</strong> Keep modules focused on a single logical component (e.g., an RDS database, a VPC, an ECS service). Use module outputs to pass necessary information (like VPC ID, subnet IDs, security group IDs) as inputs to other modules.
+             </div>
+        </div>
+    </section>
+
+     <section id="environments">
+        <h2>Step 4: Configure Environment Variables (`.tfvars`)</h2>
+        <div class="phase-description">
+            <p>Create `.tfvars` files for each environment to define the specific values for the variables declared in your modules and environment-level `variables.tf` files.</p>
+            <h4>File: `infra-tf/environments/dev/variables.tf` (Example Declarations)</h4>
+            <code><span class="tf-keyword">variable</span> <span class="tf-variable">"aws_region"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span>; <span class="tf-attribute">default</span> = <span class="tf-string">"us-gov-west-1"</span> }
+<span class="tf-keyword">variable</span> <span class="tf-variable">"environment_name"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span> }
+<span class="tf-keyword">variable</span> <span class="tf-variable">"vpc_cidr"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span> }
+<span class="tf-keyword">variable</span> <span class="tf-variable">"public_subnet_cidrs"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">list</span>(<span class="tf-keyword">string</span>) }
+<span class="tf-keyword">variable</span> <span class="tf-variable">"private_subnet_cidrs"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">list</span>(<span class="tf-keyword">string</span>) }
+<span class="tf-keyword">variable</span> <span class="tf-variable">"availability_zones"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">list</span>(<span class="tf-keyword">string</span>) }
+<span class="tf-keyword">variable</span> <span class="tf-variable">"rds_instance_class"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span> }
+<span class="tf-keyword">variable</span> <span class="tf-variable">"rds_allocated_storage"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">number</span> }
+<span class="tf-keyword">variable</span> <span class="tf-variable">"db_master_username_secret_arn"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span> }
+<span class="tf-keyword">variable</span> <span class="tf-variable">"db_master_password_secret_arn"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span> }
+<span class="tf-keyword">variable</span> <span class="tf-variable">"kms_key_id"</span> { <span class="tf-attribute">type</span> = <span class="tf-keyword">string</span> }
+<span class="tf-comment"># TODO: Add declarations for all variables used in environments/dev/main.tf</span>
+</code>
+            <h4>File: `infra-tf/environments/dev/dev.tfvars` (Example Values)</h4>
+            <code><span class="tf-comment"># Networking</span>
+<span class="tf-attribute">environment_name</span>     = <span class="tf-string">"dev"</span>
+<span class="tf-attribute">vpc_cidr</span>             = <span class="tf-string">"10.10.0.0/16"</span>
+<span class="tf-attribute">public_subnet_cidrs</span>  = [<span class="tf-string">"10.10.1.0/24"</span>, <span class="tf-string">"10.10.2.0/24"</span>, <span class="tf-string">"10.10.3.0/24"</span>]
+<span class="tf-attribute">private_subnet_cidrs</span> = [<span class="tf-string">"10.10.101.0/24"</span>, <span class="tf-string">"10.10.102.0/24"</span>, <span class="tf-string">"10.10.103.0/24"</span>]
+<span class="tf-attribute">availability_zones</span>   = [<span class="tf-string">"us-gov-west-1a"</span>, <span class="tf-string">"us-gov-west-1b"</span>, <span class="tf-string">"us-gov-west-1c"</span>] <span class="tf-comment"># TODO: Verify GovCloud AZ names</span>
+
+<span class="tf-comment"># RDS</span>
+<span class="tf-attribute">rds_instance_class</span>    = <span class="tf-string">"db.t3.medium"</span>
+<span class="tf-attribute">rds_allocated_storage</span> = <span class="tf-number">50</span>
+<span class="tf-attribute">kms_key_id</span>            = <span class="tf-string">"arn:aws-us-gov:kms:us-gov-west-1:ACCOUNT_ID:key/YOUR_KMS_KEY_UUID"</span> <span class="tf-comment"># TODO: Replace</span>
+
+<span class="tf-comment"># Secrets</span>
+<span class="tf-attribute">db_master_username_secret_arn</span> = <span class="tf-string">"arn:aws-us-gov:secretsmanager:us-gov-west-1:ACCOUNT_ID:secret:dev/rds/master/username-XXXXXX"</span> <span class="tf-comment"># TODO: Replace</span>
+<span class="tf-attribute">db_master_password_secret_arn</span> = <span class="tf-string">"arn:aws-us-gov:secretsmanager:us-gov-west-1:ACCOUNT_ID:secret:dev/rds/master/password-XXXXXX"</span> <span class="tf-comment"># TODO: Replace</span>
+
+<span class="tf-comment"># TODO: Define values for all other variables needed by the modules called in dev/main.tf</span>
+<span class="tf-comment"># e.g., Kinesis shard counts, ECS task definitions, specific security group rules, etc.</span>
+</code>
+             <div class="warning-box">
+                 <strong>Security:</strong> NEVER commit `.tfvars` files containing sensitive information (like passwords or API keys) directly to version control. Use a secure method like AWS Secrets Manager, HashiCorp Vault, environment variables injected by the CI/CD system, or SOPS for managing secrets. The example above uses ARNs pointing to Secrets Manager secrets, which is a recommended approach.
+             </div>
+             <div class="info-box">
+                 <strong>Note:</strong> Create similar `.tfvars` files (e.g., `qa.tfvars`, `prod.tfvars`) in the respective environment directories, adjusting values like CIDR blocks, instance sizes, scaling parameters, KMS keys, and secret ARNs as needed for each environment.
+             </div>
+        </div>
+    </section>
+
+    <section id="instantiation">
+        <h2>Step 5: Instantiate Modules Per Environment</h2>
+        <div class="phase-description">
+            <p>In each environment's `main.tf` file, call the reusable modules defined in Step 3, passing in the environment-specific configuration values via variables (which will be loaded from the corresponding `.tfvars` file).</p>
+            <h4>File: `infra-tf/environments/dev/main.tf` (Example Instantiation)</h4>
+             <code><span class="tf-comment"># Backend re-configuration block (from Step 2) should be here</span>
+<span class="tf-keyword">terraform</span> { ... }
+
+<span class="tf-comment"># Provider block ensures resources are created in the correct region</span>
+<span class="tf-keyword">provider</span> <span class="tf-string">"aws"</span> {
+  <span class="tf-attribute">region</span> = <span class="tf-variable">var.aws_region</span> <span class="tf-comment"># Using variable defined in environments/dev/variables.tf</span>
+}
+
+<span class="tf-comment"># --- Networking ---</span>
+<span class="tf-keyword">module</span> <span class="tf-resource-name">"networking"</span> {
+  <span class="tf-attribute">source</span>             = <span class="tf-string">"../../modules/networking"</span> <span class="tf-comment"># Relative path to the module</span>
+
+  <span class="tf-comment"># Pass variables defined in dev.tfvars (or defaults)</span>
+  <span class="tf-attribute">environment_name</span>   = <span class="tf-variable">var.environment_name</span>
+  <span class="tf-attribute">vpc_cidr</span>           = <span class="tf-variable">var.vpc_cidr</span>
+  <span class="tf-attribute">public_subnet_cidrs</span>= <span class="tf-variable">var.public_subnet_cidrs</span>
+  <span class="tf-attribute">private_subnet_cidrs</span>= <span class="tf-variable">var.private_subnet_cidrs</span>
+  <span class="tf-attribute">availability_zones</span> = <span class="tf-variable">var.availability_zones</span>
+  <span class="tf-comment"># ... other networking variables ...</span>
+}
+
+<span class="tf-comment"># --- RDS Database (depends on networking) ---</span>
+<span class="tf-comment"># First, create the DB subnet group using the private subnet IDs output by the networking module</span>
+<span class="tf-keyword">resource</span> <span class="tf-resource-type">"aws_db_subnet_group"</span> <span class="tf-resource-name">"rds_subnet_group"</span> {
+  <span class="tf-attribute">name</span>       = <span class="tf-string">"sng-rds-${var.environment_name}"</span>
+  <span class="tf-attribute">subnet_ids</span> = <span class="tf-keyword">module.networking.private_subnet_ids</span>
+  <span class="tf-comment"># ... tags</span>
+}
+
+<span class="tf-comment"># TODO: Define a specific Security Group for RDS access</span>
+<span class="tf-keyword">resource</span> <span class="tf-resource-type">"aws_security_group"</span> <span class="tf-resource-name">"rds_sg"</span> {
+   <span class="tf-attribute">name</span>        = <span class="tf-string">"sg-rds-${var.environment_name}"</span>
+   <span class="tf-attribute">description</span> = <span class="tf-string">"Allow PostgreSQL access from App tier"</span>
+   <span class="tf-attribute">vpc_id</span>      = <span class="tf-keyword">module.networking.vpc_id</span>
+
+   <span class="tf-keyword">ingress</span> {
+     <span class="tf-attribute">description</span>       = <span class="tf-string">"PostgreSQL from App Security Group"</span>
+     <span class="tf-attribute">from_port</span>         = 5432
+     <span class="tf-attribute">to_port</span>           = 5432
+     <span class="tf-attribute">protocol</span>          = <span class="tf-string">"tcp"</span>
+     <span class="tf-comment"># TODO: Reference the Security Group ID of your Application tier</span>
+     <span class="tf-attribute">security_groups</span>   = [<span class="tf-string">"sg-xxxxxxxxxxxxxxxxx"</span>] <span class="tf-comment"># Replace with actual App SG ID</span>
+   }
+   <span class="tf-comment"># Egress typically allows all outbound</span>
+    <span class="tf-keyword">egress</span> {
+      <span class="tf-attribute">from_port</span>   = 0
+      <span class="tf-attribute">to_port</span>     = 0
+      <span class="tf-attribute">protocol</span>    = <span class="tf-string">"-1"</span>
+      <span class="tf-attribute">cidr_blocks</span> = [<span class="tf-string">"0.0.0.0/0"</span>]
+   }
+    <span class="tf-comment"># ... tags</span>
+}
+
+<span class="tf-keyword">module</span> <span class="tf-resource-name">"rds_postgres_main"</span> {
+  <span class="tf-attribute">source</span>                 = <span class="tf-string">"../../modules/rds_postgres"</span>
+
+  <span class="tf-attribute">environment_name</span>       = <span class="tf-variable">var.environment_name</span>
+  <span class="tf-attribute">instance_class</span>       = <span class="tf-variable">var.rds_instance_class</span>
+  <span class="tf-attribute">allocated_storage</span>    = <span class="tf-variable">var.rds_allocated_storage</span>
+  <span class="tf-attribute">db_subnet_group_name</span> = <span class="tf-resource-type">aws_db_subnet_group.rds_subnet_group.name</span>
+  <span class="tf-attribute">vpc_security_group_ids</span> = [<span class="tf-resource-type">aws_security_group.rds_sg.id</span>]
+  <span class="tf-attribute">kms_key_id</span>             = <span class="tf-variable">var.kms_key_id</span>
+  <span class="tf-attribute">db_master_username_secret_arn</span> = <span class="tf-variable">var.db_master_username_secret_arn</span>
+  <span class="tf-attribute">db_master_password_secret_arn</span> = <span class="tf-variable">var.db_master_password_secret_arn</span>
+  <span class="tf-comment"># ... other RDS variables ...</span>
+}
+
+<span class="tf-comment"># --- Other Modules ---</span>
+<span class="tf-comment"># Instantiate modules for S3 buckets, IAM roles, Kinesis, DynamoDB, ECS/Fargate services,</span>
+<span class="tf-comment"># Lambda functions, API Gateway, SNS topics, etc., passing necessary variables</span>
+<span class="tf-comment"># and referencing outputs from other modules (like VPC ID, subnet IDs, SG IDs).</span>
+
+<span class="tf-keyword">module</span> <span class="tf-resource-name">"data_ingest_stream"</span> {
+  <span class="tf-attribute">source</span>      = <span class="tf-string">"../../modules/kinesis_stream"</span>
+  <span class="tf-attribute">stream_name</span> = <span class="tf-string">"gps-data-stream-${var.environment_name}"</span>
+  <span class="tf-attribute">shard_count</span> = <span class="tf-number">2</span> <span class="tf-comment"># TODO: Parameterize based on environment load</span>
+  <span class="tf-comment"># ...</span>
+}
+
+<span class="tf-keyword">module</span> <span class="tf-resource-name">"location_table"</span> {
+  <span class="tf-attribute">source</span>     = <span class="tf-string">"../../modules/dynamodb_table"</span>
+  <span class="tf-attribute">table_name</span> = <span class="tf-string">"RealTimeBusLocation-${var.environment_name}"</span>
+  <span class="tf-attribute">hash_key</span>   = <span class="tf-string">"DeviceId"</span>
+  <span class="tf-comment"># ... define attributes, keys, throughput/billing mode ...</span>
+}
+
+<span class="tf-comment"># ... etc. for all components defined in the architecture ...</span>
+</code>
+        </div>
+    </section>
+
+     <section id="execution">
+        <h2>Step 6: Initialize, Plan, and Apply Terraform</h2>
+        <div class="phase-description">
+            <p>Run Terraform commands within the specific environment directory to manage that environment's infrastructure.</p>
+            <ol>
+                <li><strong>Navigate to Environment Directory:</strong>
+                    <code>cd infra-tf/environments/dev</code>
+                </li>
+                <li><strong>Initialize Terraform:</strong> Downloads provider plugins and configures the backend. Run this once per environment directory initially, and if you add new modules or change backend configuration.
+                    <code>terraform init</code>
+                </li>
+                 <li><strong>(Optional) Select Workspace:</strong> If using Terraform workspaces instead of separate directories per environment (less common with module structure shown but possible), select the workspace:
+                    <code>terraform workspace select dev || terraform workspace new dev</code>
+                </li>
+                <li><strong>Plan Changes:</strong> Terraform determines what actions are needed to achieve the desired state defined in your `.tf` files, using variables from the specified `.tfvars` file. Review the plan carefully.
+                    <code>terraform plan -var-file="dev.tfvars" -out="tfplan.out"</code>
+                     <div class="info-box">
+                         <strong>Note:</strong> The `-out="tfplan.out"` saves the plan to a file. This is best practice, especially in CI/CD, to ensure that what you `apply` is exactly what you `plan`ned.
+                     </div>
+                 </li>
+                 <li><strong>Apply Changes:</strong> Executes the actions proposed in the plan file.
+                    <code>terraform apply "tfplan.out"</code>
+                     <p>Terraform will prompt for confirmation before making changes unless the `-auto-approve` flag is used (use with extreme caution, mainly in automated pipelines after thorough review).</p>
+                 </li>
+                 <li><strong>Repeat for Other Environments:</strong> Follow steps 1-5 for `qa`, `prod`, etc., using their respective directories and `.tfvars` files (e.g., `cd ../qa`, `terraform init`, `terraform plan -var-file="qa.tfvars" ...`).</li>
+            </ol>
+        </div>
+    </section>
+
+    <section id="auxiliary">
+        <h2>Step 7: Integrating Auxiliary Scripts & Application Code Deployment</h2>
+        <div class="phase-description">
+            <p>Terraform primarily manages infrastructure resources. Application code deployment and some configurations are typically handled *after* Terraform runs, often orchestrated by the CI/CD pipeline.</p>
+            <ul>
+                <li><strong>Application Code:</strong> Use AWS CodeDeploy, ECS/EKS deployment mechanisms (triggered by CodePipeline), Lambda deployment packages (managed by CI/CD or Terraform's `aws_lambda_function` resource pointing to an S3 artifact), or manual deployment scripts to deploy your application code onto the provisioned infrastructure (EC2, Fargate, Lambda).</li>
+                <li><strong>Database Migrations:</strong> Use database migration tools (like Flyway, Liquibase, or framework-specific tools like Alembic/Django Migrations). These scripts should be version-controlled and executed as a step in your CI/CD pipeline *after* the database infrastructure is provisioned/updated by Terraform, but *before* the application requiring the new schema is fully deployed or receives traffic.</li>
+                <li><strong>EC2 User Data / Configuration Management:</strong> For EC2 instances (if used, e.g., for the routing engine or ArcGIS), use EC2 User Data scripts (defined within the Terraform `aws_instance` or `aws_launch_template` resource) to bootstrap instances (install agents, configure base settings). For more complex configuration, consider AWS Systems Manager State Manager or tools like Ansible/Chef/Puppet, potentially triggered after instance creation.</li>
+                <li><strong>Terraform Provisioners (`local-exec`, `remote-exec`):</strong> Use these sparingly. They run scripts locally or remotely during `terraform apply`. They can be brittle and make state management complex. Prefer integrating script execution into your CI/CD pipeline or using EC2 User Data/Cloud-Init where possible.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="secrets">
+        <h2>Step 8: Securely Managing Secrets</h2>
+         <div class="phase-description">
+             <p>Never store secrets directly in Terraform code or `.tfvars` files committed to version control.</p>
+             <ul>
+                 <li><strong>AWS Secrets Manager / Parameter Store (SecureString):</strong>
+                     <ul>
+                         <li>Create secrets manually in the AWS console or via AWS CLI/SDK in a secure manner (e.g., from a secure workstation or CI/CD secret variable).</li>
+                         <li>Store database passwords, API keys, third-party credentials, etc.</li>
+                         <li>Configure fine-grained IAM permissions controlling who/what can access these secrets.</li>
+                         <li>In Terraform, use `data` sources (like `aws_secretsmanager_secret_version`) to fetch secret values at *plan/apply time* and pass them to resource configurations (e.g., RDS password, Lambda environment variables referencing secrets). See RDS module example above.</li>
+                         <li>Alternatively, and often preferred for applications, grant the application's IAM Role permission to read specific secrets directly from Secrets Manager/Parameter Store at *runtime* using the AWS SDK. This avoids exposing the secret even in the Terraform state file or plan output.</li>
+                     </ul>
+                 </li>
+                 <li><strong>Environment Variables (CI/CD):</strong> For secrets needed *only* during the CI/CD process itself (e.g., API tokens for interacting with external services during build), use the secure environment variable or secrets management features of your CI/CD platform (CodeBuild secrets, Jenkins Credentials, GitLab CI variables).</li>
+             </ul>
+         </div>
+    </section>
+
+     <section id="iteration">
+        <h2>Step 9: Iteration and Maintenance</h2>
+        <div class="phase-description">
+            <p>Infrastructure evolves. Use the same workflow to manage changes:</p>
+            <ol>
+                <li>Modify your Terraform code (`.tf` files in modules or environment configurations) or variable values (`.tfvars` files).</li>
+                <li>Navigate to the relevant environment directory (`cd environments/dev`).</li>
+                <li>Run `terraform plan -var-file="dev.tfvars" -out="tfplan.out"` to see the planned changes. Carefully review the output.</li>
+                <li>Run `terraform apply "tfplan.out"` to apply the reviewed changes.</li>
+                <li>Commit all changes (code and `.tfvars` if appropriate) to version control.</li>
+            </ol>
+            <div class="info-box">
+                <strong>State Locking:</strong> The DynamoDB table configured in the backend ensures that only one person or CI/CD job can run `terraform apply` on a specific environment's state at a time, preventing corruption.
+            </div>
+        </div>
+    </section>
+
+     <section id="next-steps">
+         <h2>Important Considerations & Next Steps</h2>
+          <div class="phase-description">
+            <ul>
+                <li><strong>GovCloud Region:</strong> Ensure all `provider` blocks and service endpoint references consistently use the correct AWS GovCloud region (`us-gov-west-1` or `us-gov-east-1`).</li>
+                <li><strong>Service Availability:</strong> Double-check that all desired AWS services and specific features (e.g., certain instance types, specific Kinesis/MSK features, AWS Location Service) are available in your chosen GovCloud region.</li>
+                <li><strong>Detailed IAM Policies:</strong> The example IAM policies are placeholders. Define granular, least-privilege policies for every role based on the specific actions each component needs to perform.</li>
+                <li><strong>Security Group Rules:</strong> The example security groups are basic. Define specific, strict ingress and egress rules for each application tier and service based on required communication paths. Deny all by default.</li>
+                <li><strong>Cost Estimation:</strong> Use the AWS Pricing Calculator (specifically for GovCloud regions) to estimate costs based on chosen instance types, storage amounts, data transfer, etc., defined in your `.tfvars` files.</li>
+                <li><strong>Testing IaC:</strong> Develop a strategy for testing Terraform modules and configurations (e.g., using Terratest, pre-commit hooks with `terraform validate` and `tflint`, deploying to temporary test environments).</li>
+                <li><strong>CI/CD Integration:</strong> Integrate the Terraform plan and apply steps into your CI/CD pipeline for automated environment provisioning and updates, including necessary approval stages for production deployments.</li>
+                <li>**Senior Engineer Review:** ALL infrastructure code, especially IAM policies and security group rules, MUST be reviewed by senior cloud/security engineers before applying to any environment, especially production.</li>
+            </ul>
+         </div>
+     </section>
+
+</body>
+</html>

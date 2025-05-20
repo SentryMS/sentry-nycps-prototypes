@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NYCPS Transportation Management System - AWS GovCloud Architecture</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1000px; /* Wider for table */
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        h1, h2, h3, h4 {
+            color: #003366; /* NYC DOE Blue */
+            border-bottom: 2px solid #003366;
+            padding-bottom: 5px;
+            margin-top: 1.5em;
+        }
+        h1 {
+            text-align: center;
+            font-size: 2em;
+            margin-bottom: 1em;
+        }
+        h2 {
+            font-size: 1.6em;
+            margin-bottom: 0.8em;
+        }
+        h3 {
+            font-size: 1.3em;
+            margin-bottom: 0.6em;
+        }
+         h4 {
+            font-size: 1.1em;
+            margin-bottom: 0.5em;
+            border-bottom: 1px dashed #ccc;
+        }
+        p {
+            margin-bottom: 1em;
+        }
+        ul {
+            list-style-type: disc;
+            margin-left: 20px;
+            margin-bottom: 1em;
+        }
+        li {
+            margin-bottom: 0.5em;
+        }
+        strong {
+            font-weight: bold;
+            color: #0056b3; /* Slightly darker blue for emphasis */
+        }
+        code {
+            font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+            background-color: #eef;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-size: 0.95em;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5em;
+            font-size: 0.95em;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+            vertical-align: top;
+        }
+        th {
+            background-color: #eaf2f8; /* Light blue header */
+            font-weight: bold;
+            color: #003366;
+        }
+        tbody tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+         tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>NYCPS Transportation Management System - AWS GovCloud Architecture (RFP R1804)</h1>
+
+    <section id="introduction">
+        <h2>1. Introduction</h2>
+        <p>This document outlines the technical architecture for the NYCPS Transportation Management System, designed to meet the functional requirements specified in the Solution Design and the stringent non-functional requirements (performance, scalability, security, availability, compliance) outlined in RFP R1804. The architecture prioritizes deployment within <strong>AWS GovCloud (US)</strong> regions, leveraging managed services where possible to enhance reliability, scalability, and security while adhering to necessary compliance standards (e.g., FedRAMP High, ITAR, CJIS, HIPAA as applicable within GovCloud).</p>
+    </section>
+
+    <section id="principles">
+        <h2>2. Architectural Principles</h2>
+        <ul>
+            <li><strong>GovCloud Native:</strong> Utilize AWS services available within the GovCloud (US) regions.</li>
+            <li><strong>Security by Design:</strong> Implement security controls at every layer (network, compute, data, application). Assume a Zero Trust posture.</li>
+            <li><strong>High Availability & Resilience:</strong> Design for fault tolerance using multi-AZ deployments and managed services with built-in HA. Implement robust Disaster Recovery (DR).</li>
+            <li><strong>Scalability & Elasticity:</strong> Employ auto-scaling, serverless components, and elastic managed services to handle variable loads (daily peaks, seasonal changes) efficiently.</li>
+            <li><strong>Modularity (Microservices):</strong> Utilize a microservices architecture to promote independent development, deployment, scaling, and fault isolation of components.</li>
+            <li><strong>Event-Driven:</strong> Leverage asynchronous messaging and event streams for decoupling components and enabling real-time processing.</li>
+            <li><strong>Infrastructure as Code (IaC):</strong> Manage infrastructure provisioning and configuration through code for consistency, repeatability, and auditability.</li>
+            <li><strong>Managed Services Preference:</strong> Utilize AWS managed services (<code>RDS</code>, <code>Kinesis</code>, <code>DynamoDB</code>, <code>SQS</code>, <code>SNS</code>, <code>Lambda</code>, <code>Fargate</code>, etc.) to reduce operational overhead and leverage AWS expertise.</li>
+        </ul>
+    </section>
+
+    <section id="pattern">
+        <h2>3. Overall Architecture Pattern</h2>
+        <p>The proposed architecture is a <strong>cloud-native, event-driven microservices architecture</strong> deployed across multiple Availability Zones (AZs) within an AWS GovCloud (US) region.</p>
+        <ul>
+            <li><strong>Data Ingestion:</strong> GPS devices communicate via MQTT/HTTPS to <code>AWS IoT Core</code> or directly to <code>API Gateway</code> endpoints. Data flows through streaming services (<code>Kinesis</code>/<code>MSK</code>).</li>
+            <li><strong>Processing:</strong> <code>Lambda</code> functions and containerized services (on <code>Fargate</code>/<code>ECS</code>/<code>EKS</code>) process events and data streams. The Routing Engine may use dedicated <code>EC2</code> instances for intensive computation.</li>
+            <li><strong>Data Storage:</strong> A mix of databases (<code>RDS PostgreSQL/PostGIS</code>, <code>DynamoDB</code>, <code>ElastiCache</code>) and object storage (<code>S3</code>, <code>Glacier</code>) is used based on data type and access patterns.</li>
+            <li><strong>APIs & Communication:</strong> RESTful APIs exposed via <code>API Gateway</code> serve front-end applications and internal service communication. <code>SNS</code>/<code>SQS</code>/<code>SES</code> handle asynchronous messaging and notifications.</li>
+            <li><strong>Frontend:</strong> Mobile applications (iOS/Android) and Web applications (React/Angular/Vue hosted on <code>S3</code>/<code>CloudFront</code>) interact with backend APIs.</li>
+        </ul>
+    </section>
+
+    <section id="service-mapping">
+        <h2>4. Component-to-AWS Service Mapping</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Functional Component</th>
+                    <th>Primary AWS GovCloud Service(s)</th>
+                    <th>Rationale & Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>GPS Data Ingestion & Processing</strong></td>
+                    <td><code>IoT Core</code> (optional, for MQTT), <code>API Gateway</code> + <code>Lambda</code>/<code>Fargate</code>, <code>Kinesis Data Streams</code> or <code>MSK</code>, <code>S3</code> (raw data), <code>DynamoDB</code> (real-time location), <code>RDS PostgreSQL w/ PostGIS</code> (processed tracks, geofences), <code>Lambda</code>/<code>Fargate</code> (ETA calc, geofence logic), <code>CloudWatch</code> (device status)</td>
+                    <td>IoT Core provides scalable MQTT ingestion if devices support it. Kinesis/MSK handles high-throughput streaming data. Lambda/Fargate enables scalable, event-driven processing. DynamoDB offers low-latency reads/writes for real-time location. RDS/PostGIS handles complex spatial queries & history.</td>
+                </tr>
+                <tr>
+                    <td><strong>Ridership Tracking Module</strong></td>
+                    <td><code>API Gateway</code> + <code>Lambda</code>/<code>Fargate</code>, <code>DynamoDB</code> or <code>RDS PostgreSQL</code>, <code>S3</code> (for ID scan images if needed)</td>
+                    <td>API endpoints handle scan/manual entry events. DynamoDB or RDS store ridership records, depending on query patterns. Lambda/Fargate process events, validate against rosters (from Student Mgmt).</td>
+                </tr>
+                <tr>
+                    <td><strong>Dynamic Routing Engine</strong></td>
+                    <td><code>EC2</code>/<code>ECS</code>/<code>EKS</code> (potentially w/ GPU instances), <code>RDS PostgreSQL w/ PostGIS</code>, <code>ElastiCache</code> (Redis/Memcached), <code>AWS Location Service</code> (if available/suitable) or self-managed <code>ESRI ArcGIS</code> on <code>EC2</code>/<code>RDS</code>, <code>SQS</code>/<code>Step Functions</code> (async tasks), <code>Lambda</code> (rule triggers)</td>
+                    <td>EC2/Containers needed for complex, potentially long-running routing algorithms. RDS/PostGIS stores road network, stops, routes, constraints. ElastiCache speeds up access to frequently used data (e.g., traffic, routes). AWS Location or ESRI for mapping/geocoding/traffic. SQS/Step Functions for orchestration.</td>
+                 </tr>
+                 <tr>
+                     <td><strong>Notification & Communication</strong></td>
+                     <td><code>SNS</code> (Push, SMS), <code>SES</code> (Email), <code>Amazon Connect</code> (optional, for Robocalls/IVR), <code>Lambda</code>/<code>Fargate</code> (notification logic), <code>API Gateway</code> (for internal communication APIs)</td>
+                     <td>SNS/SES provide scalable, managed notification delivery. Connect offers programmable voice capabilities. Lambda/Fargate implement business logic for triggering and formatting notifications based on events from other systems.</td>
+                 </tr>
+                 <tr>
+                     <td><strong>User Modules (Frontend)</strong></td>
+                     <td><code>S3</code> + <code>CloudFront</code> (Web Apps), Native iOS/Android SDKs, <code>Amplify</code> (optional, for mobile/web dev acceleration)</td>
+                     <td>S3/CloudFront provide scalable, secure, low-latency hosting for web frontends. Native SDKs for mobile apps. Amplify can streamline frontend development and backend integration.</td>
+                 </tr>
+                 <tr>
+                     <td><strong>User Modules (Backend APIs)</strong></td>
+                     <td><code>API Gateway</code>, <code>Lambda</code> / <code>Fargate</code> (ECS/EKS), <code>Cognito</code> or SAML integration via backend, <code>IAM</code></td>
+                     <td>API Gateway provides secure, scalable API endpoints. Lambda/Fargate host backend microservices logic. Cognito handles user authentication/pools if direct DOE integration isn't used. IAM secures service-to-service communication.</td>
+                 </tr>
+                 <tr>
+                     <td><strong>Student Management Backend</strong></td>
+                     <td><code>API Gateway</code> + <code>Lambda</code>/<code>Fargate</code>, <code>RDS PostgreSQL</code> or <code>DynamoDB</code>, <code>Glue</code> (for ETL from NYCPS systems if needed), <code>SFTP</code>/<code>DataSync</code> (for file-based integration if needed)</td>
+                     <td>Standard API-driven microservice pattern. Choice of DB depends on data model complexity and query patterns. Glue/SFTP/DataSync facilitate integration with potentially legacy NYCPS systems.</td>
+                 </tr>
+                 <tr>
+                     <td><strong>Reporting & Analytics</strong></td>
+                     <td><code>S3</code> (Data Lake), <code>Glue</code> (ETL/Catalog), <code>Athena</code>, <code>Redshift</code>, <code>QuickSight</code>, <code>Kinesis Data Analytics</code> (optional, real-time KPIs), <code>Lambda</code> (scheduled report generation)</td>
+                     <td>S3 provides a scalable data lake. Glue handles ETL and cataloging. Athena for ad-hoc queries on S3. Redshift for performant data warehousing. QuickSight for dashboards/visualizations. Kinesis Data Analytics for streaming analytics. Lambda for automated report generation.</td>
+                 </tr>
+                 <tr>
+                     <td><strong>Device Management & Inventory</strong></td>
+                     <td><code>DynamoDB</code> or <code>RDS PostgreSQL</code>, <code>IoT Core</code> (Device Shadow/Registry), <code>Systems Manager</code> (potentially for config), API integration with MDM & Ticketing</td>
+                     <td>DynamoDB/RDS stores inventory data. IoT Core can track device state/metadata if devices connect via MQTT. Systems Manager might assist with certain configurations. Requires integration points.</td>
+                 </tr>
+                 <tr>
+                     <td><strong>Ticketing System Integration</strong></td>
+                     <td><code>API Gateway</code> + <code>Lambda</code>/<code>Fargate</code></td>
+                     <td>Acts as a secure facade/adapter layer to mediate API calls between AWS environment and the NYCPS/Vendor ticketing systems.</td>
+                 </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section id="networking-security">
+        <h2>5. Networking & Security (AWS GovCloud)</h2>
+        <ul>
+            <li><strong>VPC Structure:</strong> Multiple VPCs may be used (e.g., Prod, Dev, Test). Each VPC spans multiple AZs. Use of public subnets restricted to necessary components (e.g., Load Balancers, NAT Gateways). Private subnets host core application/database resources. VPC Endpoints (Gateway and Interface) used for private access to AWS services (<code>S3</code>, <code>DynamoDB</code>, <code>Kinesis</code>, etc.).</li>
+            <li><strong>Segmentation:</strong> Security Groups (stateful) and Network ACLs (stateless) enforce strict ingress/egress rules based on the principle of least privilege between application tiers and components.</li>
+            <li><strong>Connectivity:</strong> <code>AWS Direct Connect</code> or <code>Site-to-Site VPN</code> established between AWS GovCloud VPC and NYCPS data centers for secure, private access to internal resources/databases.</li>
+            <li><strong>Edge Security:</strong> <code>CloudFront</code> for caching and DDoS protection for web applications. <code>AWS WAF</code> deployed with API Gateway and CloudFront to filter malicious requests (SQLi, XSS). <code>AWS Shield Advanced</code> for enhanced DDoS protection.</li>
+            <li><strong>Encryption:</strong>
+                <ul>
+                    <li><em>In Transit:</em> TLS 1.2+ enforced for all external and internal API Gateway endpoints, CloudFront distributions, Load Balancers, and direct service communications.</li>
+                    <li><em>At Rest:</em> Server-side encryption enabled for <code>S3</code> (SSE-S3 or SSE-KMS), <code>EBS</code> volumes, <code>RDS</code> instances/snapshots, <code>DynamoDB</code> tables, <code>SQS</code> queues, <code>SNS</code> topics using <code>AWS KMS</code> with customer-managed keys (CMKs) where appropriate for enhanced control and auditability.</li>
+                </ul>
+            </li>
+            <li><strong>Identity & Access Management (IAM):</strong>
+                <ul>
+                    <li>Strict use of IAM Roles for EC2 instances, Lambda functions, ECS/EKS tasks (via IAM Roles for Service Accounts - IRSA - in EKS). Avoid long-lived access keys.</li>
+                    <li>Fine-grained IAM Policies adhering to least privilege.</li>
+                    <li>Multi-Factor Authentication (MFA) enforced for all human access to the AWS Management Console and API, especially for privileged accounts.</li>
+                    <li>Federated identity management via SAML 2.0 integration with NYCPS's Identity Provider (e.g., ADFS, Azure AD) for console/API access if feasible, otherwise stringent controls on IAM users.</li>
+                </ul>
+            </li>
+            <li><strong>Secrets Management:</strong> <code>AWS Secrets Manager</code> used to store and rotate database credentials, API keys, and other secrets securely. Applications retrieve secrets at runtime via IAM roles.</li>
+            <li><strong>Monitoring & Logging:</strong>
+                <ul>
+                    <li><code>CloudTrail</code> enabled in all regions, logging to a central, secured S3 bucket with log file validation enabled.</li>
+                    <li><code>CloudWatch</code> Logs collected from all services (Lambda, Fargate, EC2, RDS, etc.). CloudWatch Alarms configured for critical metrics (CPU, memory, latency, error rates, queue depths).</li>
+                    <li><code>AWS Config</code> used to track resource configurations and compliance.</li>
+                    <li><code>Security Hub</code> aggregated findings from GuardDuty, Inspector, Macie (if used), Config, and partner integrations.</li>
+                    <li><code>GuardDuty</code> enabled for intelligent threat detection.</li>
+                    <li><code>Inspector</code> used for vulnerability assessments on EC2 instances (if used).</li>
+                 </ul>
+            </li>
+        </ul>
+    </section>
+
+     <section id="data-management">
+        <h2>6. Data Management</h2>
+        <ul>
+            <li><strong>Storage:</strong> Tiered storage using <code>S3</code> Standard, S3 Intelligent-Tiering, <code>S3 Glacier</code>, and S3 Glacier Deep Archive to meet access needs and 7-year retention requirements cost-effectively.</li>
+            <li><strong>Databases:</strong> Use appropriate databases per component needs (<code>RDS</code> for relational/spatial, <code>DynamoDB</code> for key-value/high-throughput, <code>ElastiCache</code> for caching). Regular backups and point-in-time recovery configured.</li>
+            <li><strong>Data Privacy:</strong> Implement controls aligned with Solution Design, including encryption, RBAC, audit logging, and data minimization principles.</li>
+            <li><strong>Data Ownership & Export:</strong> Mechanisms (e.g., APIs, data exports to S3) provided for NYCPS to access and extract their data on demand, reaffirming DOE data ownership.</li>
+        </ul>
+    </section>
+
+    <section id="deployment-ops">
+        <h2>7. Deployment & Operations (DevSecOps)</h2>
+        <ul>
+            <li><strong>Infrastructure as Code (IaC):</strong> <code>AWS CloudFormation</code>, <code>AWS CDK</code>, or <code>Terraform</code> used to define and provision all infrastructure resources. Templates stored in version control (<code>AWS CodeCommit</code> or GitHub/GitLab).</li>
+            <li><strong>CI/CD Pipeline:</strong> <code>AWS CodePipeline</code> orchestrating <code>CodeCommit</code> (source), <code>CodeBuild</code> (build/test, including SAST/DAST scans), and <code>CodeDeploy</code> or ECS/EKS deployment strategies (blue/green, canary) for automated, secure deployments across environments (Dev, Test, Staging, Prod).</li>
+            <li><strong>Monitoring:</strong> Leverage <code>CloudWatch</code> dashboards, alarms, and logs. Integrate with centralized logging/monitoring solutions if used by NYCPS. Potentially use APM tools (e.g., Datadog, Dynatrace, configured appropriately for GovCloud) for deeper application insights.</li>
+        </ul>
+    </section>
+
+    <section id="ha-dr">
+        <h2>8. High Availability & Disaster Recovery (DR)</h2>
+        <ul>
+            <li><strong>High Availability (HA):</strong>
+                <ul>
+                    <li>Deploy critical components (API Gateway, Lambda, Fargate/ECS/EKS clusters, RDS, ElastiCache, DynamoDB) across multiple AZs (typically 3) within the primary GovCloud region.</li>
+                    <li>Use Elastic Load Balancing (ALB/NLB) to distribute traffic across AZs.</li>
+                    <li>Configure RDS Multi-AZ deployments for automatic failover.</li>
+                    <li>Leverage DynamoDB global tables (if cross-region active-active is needed and available) or rely on inherent multi-AZ replication.</li>
+                </ul>
+            </li>
+             <li><strong>Disaster Recovery (DR):</strong>
+                <ul>
+                    <li>Establish a DR strategy (e.g., Pilot Light, Warm Standby) in a second AWS GovCloud (US) region.</li>
+                    <li>Regularly back up data (using <code>AWS Backup</code>, RDS snapshots, DynamoDB backups) and replicate backups/snapshots to the DR region.</li>
+                    <li>Use IaC to provision infrastructure in the DR region quickly.</li>
+                    <li>Utilize <code>Route 53</code> health checks and DNS failover mechanisms.</li>
+                    <li>Regularly test the DR plan (at least annually).</li>
+                    <li>Design to meet RFP RPO/RTO targets (RPO=0 for GPS, RPO&lt;=1hr for Routing/Notifications; RTO=0 for GPS, RTO&lt;=15min for Routing/Notifications). Achieving RTO=0/RPO=0 for GPS likely requires an active-active or hot standby approach across AZs/regions for critical ingestion/processing components.</li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+
+    <section id="compliance">
+        <h2>9. Compliance</h2>
+        <ul>
+            <li>The architecture leverages services within AWS GovCloud (US), designed to host sensitive data and regulated workloads, meeting standards like FedRAMP High, ITAR, CJIS, DoD SRG IL4/5.</li>
+            <li>Specific configurations (encryption, logging, IAM, network controls) align with security requirements from NYCPS, NYC3, OTI, DIIT, FERPA, CIPA, HIPAA (as applicable within GovCloud).</li>
+            <li>Regular audits and security testing (as required by RFP) will validate ongoing compliance.</li>
+        </ul>
+    </section>
+
+</body>
+</html>

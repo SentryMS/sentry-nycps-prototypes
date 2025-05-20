@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NYCPS Transportation Management System - 12-Month Project Plan</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1000px; /* Wider for table */
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        h1, h2, h3 {
+            color: #003366; /* NYC DOE Blue */
+            border-bottom: 2px solid #003366;
+            padding-bottom: 5px;
+            margin-top: 1.5em;
+        }
+        h1 {
+            text-align: center;
+            font-size: 2em;
+            margin-bottom: 1em;
+        }
+        h2 {
+            font-size: 1.6em;
+            margin-bottom: 0.8em;
+        }
+        h3 {
+            font-size: 1.3em;
+            margin-bottom: 0.6em;
+            border-bottom: 1px dashed #ccc;
+        }
+        p {
+            margin-bottom: 1em;
+        }
+         ul {
+            list-style-type: disc;
+            margin-left: 20px;
+            margin-bottom: 1em;
+        }
+        li {
+            margin-bottom: 0.5em;
+        }
+        strong {
+            font-weight: bold;
+            color: #0056b3; /* Slightly darker blue for emphasis */
+        }
+        code {
+            font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+            background-color: #eef;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-size: 0.95em;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5em;
+            font-size: 0.95em;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+            vertical-align: top;
+        }
+        th {
+            background-color: #eaf2f8; /* Light blue header */
+            font-weight: bold;
+            color: #003366;
+        }
+        tbody tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+         tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+        .resource-section {
+             background-color: #fff8e1; /* Light yellow */
+             padding: 15px;
+             margin-top: 20px;
+             border-radius: 5px;
+             border: 1px solid #ffecb3; /* Lighter yellow border */
+        }
+        .resource-section h3 {
+            color: #c77700; /* Orange/Brown */
+            border-bottom-color: #ffe082;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>NYCPS Transportation Management System - 12-Month Project Plan (RFP R1804)</h1>
+
+    <section id="introduction">
+        <h2>1. Introduction</h2>
+        <p>This document outlines a high-level project plan and timeline for the successful delivery of the NYCPS Transportation Management System within a 12-month period, following contract registration/notice to proceed. This plan is based on the Solution Design, AWS GovCloud Architecture, and Step-by-Step Execution Plan previously provided.</p>
+        <p>The timeline is aggressive and assumes the immediate availability of appropriately skilled resources (as outlined below) and decisive action from all stakeholders. It incorporates the phased rollout approach mandated by the RFP, starting with foundational work and incrementally delivering functionality, culminating in full system deployment and training within 12 months.</p>
+        <p><strong>Note:</strong> This is a planning estimate. Specific start/end dates and durations are indicative and subject to refinement during detailed project planning and execution, especially considering dependencies on external integrations and feedback cycles.</p>
+    </section>
+
+    <section id="timeline">
+        <h2>2. 12-Month Phased Timeline & Key Milestones</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Phase</th>
+                    <th>Primary Focus</th>
+                    <th>Estimated Timeline (Months Post-Start)</th>
+                    <th>Key Activities & Milestones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Phase 0:</strong> Setup & Foundation</td>
+                    <td>AWS GovCloud Environment Setup, IAM, Networking, Security Baseline, CI/CD, IaC</td>
+                    <td>Month 1</td>
+                    <td>
+                        <ul>
+                            <li>AWS GovCloud Accounts Ready</li>
+                            <li>Core IAM Roles & Policies Defined</li>
+                            <li>VPC Structure Established (Prod/Test/Dev)</li>
+                            <li>Secure NYCPS Connectivity Verified</li>
+                            <li>CI/CD Pipeline Operational (Basic)</li>
+                            <li><strong>Milestone:</strong> Secure & Compliant AWS Foundation Ready</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Phase 1:</strong> Core Infrastructure & Data Ingestion</td>
+                    <td>GPS Data Pipeline, Core Databases (RDS, DynamoDB), S3/Glacier Storage, Basic Device Mgmt</td>
+                    <td>Months 1-2</td>
+                    <td>
+                        <ul>
+                            <li>GPS Ingestion Endpoints Live (API GW/IoT)</li>
+                            <li>Kinesis/MSK Stream Operational</li>
+                            <li>Core Databases Provisioned & Configured</li>
+                            <li>Raw Data Landing in S3</li>
+                            <li><strong>Milestone:</strong> Foundational Data Infrastructure Ready</li>
+                        </ul>
+                    </td>
+                </tr>
+                 <tr>
+                    <td><strong>Phase 2:</strong> Foundational Modules & Device Deployment</td>
+                    <td>Driver & OPT Admin Backend Stubs, Core Driver App, Pilot Device Deployment & Testing</td>
+                    <td>Months 2-4</td>
+                    <td>
+                        <ul>
+                            <li>Core Driver App (Login, GPS Tx) Developed (iOS/Android)</li>
+                            <li>OPT Admin Basic Map View Developed</li>
+                            <li>Pilot Device Deployment & Installation Complete</li>
+                            <li><strong>Milestone:</strong> End-to-End GPS Data Flow Validated (Pilot)</li>
+                            <li><strong>Milestone:</strong> Core Driver App Ready for Pilot Use</li>
+                        </ul>
+                    </td>
+                </tr>
+                 <tr>
+                    <td><strong>Phase 3:</strong> Routing & Ridership Core</td>
+                    <td>GIS Integration, Core Routing Logic, Ridership Backend, Initial Student Data Sync</td>
+                    <td>Months 3-5</td>
+                    <td>
+                        <ul>
+                            <li>LION ArcGIS Data Loaded & Accessible</li>
+                            <li>Basic Route Generation Algorithms Developed</li>
+                            <li>Ridership Event Processing Service Live</li>
+                            <li>Initial Student Data Sync Operational</li>
+                            <li>Stop/Session Time Mgmt Backend Ready</li>
+                            <li><strong>Milestone:</strong> Core Routing & Ridership Backend Services Ready</li>
+                        </ul>
+                     </td>
+                 </tr>
+                 <tr>
+                    <td><strong>Phase 4:</strong> User Modules Rollout</td>
+                    <td>Parent/Student Apps, School Admin Module, Driver/OPT Admin Enhancements</td>
+                    <td>Months 4-7</td>
+                    <td>
+                        <ul>
+                            <li>Parent/Student App (iOS/Android) Beta Ready</li>
+                            <li>School Admin Module Beta Ready</li>
+                            <li>Driver App Navigation & Ridership Features Complete</li>
+                            <li>OPT Admin Communication & Reporting Stubs Implemented</li>
+                            <li><strong>Milestone:</strong> All User Modules Functionally Complete (Beta)</li>
+                        </ul>
+                     </td>
+                 </tr>
+                 <tr>
+                    <td><strong>Phase 5:</strong> Integration & Enhancement</td>
+                    <td>External System Integrations, Dynamic Routing Features, Full Reporting</td>
+                    <td>Months 6-9</td>
+                    <td>
+                        <ul>
+                            <li>Integration with Ticketing System Complete</li>
+                            <li>Real-time Traffic Integration Live</li>
+                            <li>Dynamic Route Adjustment Logic Deployed</li>
+                            <li>Full Notification System Operational (incl. Robocalls if selected)</li>
+                            <li>Required Canned Reports Available</li>
+                            <li>Custom Reporting Interface Ready</li>
+                            <li>Data Warehouse/Lake Populated</li>
+                            <li><strong>Milestone:</strong> Dynamic Routing & Full Reporting Capabilities Ready</li>
+                            <li><strong>Milestone:</strong> Key External Integrations Complete</li>
+                         </ul>
+                     </td>
+                 </tr>
+                 <tr>
+                     <td><strong>Phase 6:</strong> Testing & Hardening</td>
+                     <td>Integration, Performance, Security Testing, UAT, Accessibility Audit, DR Test</td>
+                     <td>Months 8-10</td>
+                     <td>
+                        <ul>
+                            <li>Comprehensive Test Cycles Completed</li>
+                            <li>Performance Testing Passed (Meeting SLAs)</li>
+                            <li>Penetration Test Completed & Findings Remediated</li>
+                            <li>UAT Completed & Signed Off</li>
+                            <li>WCAG 2.0 AA Audit Passed/Remediated</li>
+                            <li>DR Test Successful</li>
+                            <li>Final Documentation Delivered</li>
+                            <li><strong>Milestone:</strong> System Hardened & Ready for Phased Rollout</li>
+                         </ul>
+                     </td>
+                 </tr>
+                 <tr>
+                     <td><strong>Phase 7:</strong> Phased Deployment & Training</td>
+                     <td>Hardware Deployment, Software Rollout (Phased), User Training</td>
+                     <td>Months 9-12</td>
+                     <td>
+                         <ul>
+                             <li>Full Hardware Fleet Deployment Completed</li>
+                             <li>Phased Software Rollout Executed (e.g., Borough by Borough)</li>
+                             <li>All User Groups Trained</li>
+                             <li>Hypercare Support Provided During Rollout</li>
+                             <li><strong>Milestone:</strong> Full System Deployed to Production</li>
+                             <li><strong>Milestone:</strong> Training Program Completed</li>
+                         </ul>
+                     </td>
+                 </tr>
+                 <tr>
+                     <td><strong>Phase 8:</strong> Operations & Optimization</td>
+                     <td>Transition to Operations, Monitoring, Maintenance, Continuous Improvement</td>
+                     <td>Month 12+ (Ongoing)</td>
+                     <td>
+                         <ul>
+                             <li>Formal Handover to OPT Operations/Support Teams</li>
+                             <li>Establish Ongoing Monitoring & Maintenance Cadence</li>
+                             <li>Initiate Continuous Improvement Cycle based on Feedback/Data</li>
+                             <li><strong>Milestone:</strong> Transition to Steady-State Operations</li>
+                         </ul>
+                     </td>
+                 </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="resource-section" id="resources">
+        <h2>3. Resource Assumptions</h2>
+        <p>Achieving the deliverables outlined in this 12-month plan requires a dedicated, co-located (or effectively virtually co-located) project team with significant expertise and capacity. The following represents an *assumed* team structure and skillset required from the vendor and potentially NYCPS resources working collaboratively. Actual team size and composition would be finalized during detailed project planning.</p>
+        <p><strong>Key Roles & Skillsets (Vendor Provided):</strong></p>
+        <ul>
+            <li><strong>Project Management:</strong> Dedicated Project Manager(s) (PMP/Agile certified), Scrum Master(s).</li>
+            <li><strong>Business Analysis:</strong> Business Analyst(s) with experience in transportation/logistics and requirement gathering.</li>
+            <li><strong>Architecture:</strong> Cloud Solution Architect(s) (AWS GovCloud expert), Security Architect(s).</li>
+            <li><strong>Development:</strong>
+                <ul>
+                    <li>Backend Engineers (Microservices, Java/Python/Node.js, API development, Database interaction).</li>
+                    <li>Frontend Engineers (React/Angular/Vue, HTML, CSS, JavaScript, Accessibility).</li>
+                    <li>Mobile Engineers (iOS - Swift/Objective-C, Android - Kotlin/Java).</li>
+                    <li>GIS Specialists/Developers (ESRI ArcGIS, PostGIS, Geospatial algorithms).</li>
+                    <li>Data Engineers (ETL, Kinesis/Kafka, Glue, Redshift, SQL, NoSQL).</li>
+                 </ul>
+             </li>
+             <li><strong>DevSecOps:</strong> DevOps Engineers (IaC - CloudFormation/Terraform, CI/CD - AWS CodeSuite, Container Orchestration - ECS/EKS, Monitoring - CloudWatch), Security Engineers (IAM, WAF, GuardDuty, Pen Testing coordination).</li>
+             <li><strong>Quality Assurance:</strong> QA Lead, Manual Testers, Automation Engineers (Selenium, Appium, etc.), Performance Test Engineers.</li>
+             <li><strong>UX/UI Design:</strong> UX Researchers, UI Designers (Web & Mobile).</li>
+             <li><strong>Data Science:</strong> Data Scientists (for algorithm tuning, analytics, potential ML features).</li>
+             <li><strong>Technical Writing:</strong> Technical Writer(s) for system documentation and user manuals.</li>
+             <li><strong>Training:</strong> Instructional Designer(s), Trainers (capable of delivering remote and potentially in-person training, multi-lingual capabilities desirable).</li>
+             <li><strong>Ground Support/Hardware:</strong> Field Technicians (for device installation/repair coordination - potentially via sub-contractor managed by vendor), Logistics Coordinator.</li>
+         </ul>
+         <p><strong>Key Roles & Skillsets (NYCPS Provided/Collaborating):</strong></p>
+         <ul>
+             <li><strong>Project Sponsorship & Leadership:</strong> OPT Leadership, DIIT Leadership.</li>
+             <li><strong>Project Management:</strong> DOE Project Manager counterpart.</li>
+             <li><strong>Subject Matter Experts (SMEs):</strong> OPT Operations Staff (Routers, Dispatchers, Admin), School Administrators (Pilot group), DIIT Technical Staff (Networking, Security, Database, Existing Systems Integration), GIS Group, Legal/Compliance.</li>
+             <li><strong>Infrastructure/Security Liaisons:</strong> Points of contact within DIIT/OTI/NYC3 for infrastructure provisioning, security reviews, compliance adherence, network connectivity.</li>
+             <li><strong>User Representatives:</strong> Pilot groups for UAT (Drivers, Parents, Students, School Admins).</li>
+             <li><strong>Training & Communication Coordination:</strong> OPT/DOE staff to facilitate scheduling, logistics, and internal communications for training and rollout.</li>
+          </ul>
+         <p><strong>Assumption:</strong> The plan assumes sufficient resources from both the vendor and NYCPS are allocated and available throughout the 12-month period to meet the demands of parallel work streams and the aggressive timeline.</p>
+    </section>
+
+    <section id="conclusion">
+        <h2>4. Conclusion</h2>
+        <p>This 12-month project plan provides a feasible, albeit challenging, roadmap for delivering the NYCPS Transportation Management System. Success hinges on strong collaboration between the vendor and NYCPS teams, agile execution within phases, proactive risk management, and the availability of necessary resources. Continuous monitoring of progress against milestones and open communication will be critical throughout the project lifecycle.</p>
+    </section>
+
+</body>
+</html>

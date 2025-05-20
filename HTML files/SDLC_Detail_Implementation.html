@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NYCPS Transportation Management System - Prescriptive SDLC & Setup</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7; /* Increased line height */
+            color: #212529; /* Darker text */
+            max-width: 1100px; /* Wider */
+            margin: 25px auto;
+            padding: 25px;
+            background-color: #fdfdfe; /* Slightly off-white */
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+        }
+        h1, h2, h3, h4, h5 {
+            color: #003366; /* NYC DOE Blue */
+            margin-top: 1.8em;
+            margin-bottom: 0.8em; /* Increased bottom margin */
+            padding-bottom: 6px;
+            font-weight: 600; /* Slightly bolder */
+        }
+        h1 {
+            text-align: center;
+            font-size: 2.4em;
+            border-bottom: 3px solid #003366;
+            margin-bottom: 1.2em;
+        }
+        h2 { /* SDLC Phases / Setup Sections */
+            font-size: 2.0em;
+            border-bottom: 2px solid #003366;
+            background-color: #eaf2f8; /* Light blue background */
+            padding: 10px 15px;
+            border-radius: 5px 5px 0 0;
+            margin-left: -26px; /* Align with body padding */
+            margin-right: -26px;
+            margin-top: 2em; /* More space between sections */
+        }
+        h3 { /* Major sections within a phase */
+            font-size: 1.6em;
+            border-bottom: 1px solid #b7d1ed; /* Lighter blue */
+            padding-left: 15px;
+        }
+        h4 { /* Sub-sections */
+            font-size: 1.3em;
+            border-bottom: none;
+            color: #0056b3;
+            padding-left: 30px;
+            font-weight: 500;
+        }
+        h5 { /* Granular activity titles */
+             font-size: 1.1em;
+             border-bottom: none;
+             color: #333;
+             padding-left: 45px;
+             font-weight: bold;
+             margin-top: 1em;
+             margin-bottom: 0.3em;
+        }
+        p, li {
+            margin-bottom: 0.9em;
+            font-size: 1.08em;
+        }
+        ul {
+            list-style-type: square;
+            margin-left: 60px; /* Increased indent */
+            margin-bottom: 1em;
+        }
+        ol {
+            list-style-type: decimal;
+            margin-left: 60px; /* Increased indent */
+            margin-bottom: 1em;
+        }
+         ol ol { /* Nested lists */
+            list-style-type: lower-alpha;
+         }
+         ol ol ol {
+             list-style-type: lower-roman;
+         }
+        strong {
+            font-weight: 600; /* Bolder */
+            color: #003366;
+        }
+        code {
+            font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+            background-color: #e8f0fe;
+            padding: 3px 6px;
+            border: 1px solid #c6d9f0;
+            border-radius: 4px;
+            font-size: 1em; /* Match base font size */
+            color: #333;
+        }
+        .phase-description, .setup-description {
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #e0e0e0;
+            background-color: #fff;
+            border-radius: 4px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+         .setup-section ol {
+             list-style-type: none;
+             counter-reset: setup-step;
+             padding-left: 0;
+         }
+         .setup-section li {
+             counter-increment: setup-step;
+             margin-bottom: 20px;
+             padding-left: 45px;
+             position: relative;
+         }
+        .setup-section li::before {
+             content: counter(setup-step);
+             position: absolute;
+             left: 0;
+             top: 0;
+             background-color: #FF9933; /* NYC DOE Orange */
+             color: white;
+             font-weight: bold;
+             width: 30px; /* Larger */
+             height: 30px;
+             border-radius: 50%;
+             display: flex;
+             justify-content: center;
+             align-items: center;
+             font-size: 1em;
+        }
+        .governance-box {
+            background-color: #fff8e1;
+            border: 1px solid #ffe082;
+            border-left: 5px solid #ffc107; /* Amber */
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        .governance-box h4 { color: #856404; margin-top: 0; padding-left: 0;}
+        .best-practice-box {
+             background-color: #eaf2f8;
+             border: 1px solid #b7d1ed;
+             border-left: 5px solid #0056b3;
+             padding: 15px;
+             margin: 15px 0;
+             border-radius: 4px;
+        }
+         .best-practice-box h4 { color: #003366; margin-top: 0; padding-left: 0;}
+        .tool-examples {
+            font-style: italic;
+            color: #5a6268;
+            font-size: 0.95em;
+            margin-top: -0.5em;
+            margin-left: 0px;
+            padding-left: 15px;
+            border-left: 3px solid #ced4da;
+        }
+        .exit-criteria {
+             font-weight: bold;
+             color: #28a745; /* Green */
+             margin-top: 1em;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>NYCPS Transportation Management System: Prescriptive SDLC & Setup</h1>
+
+    <!-- Introduction & Methodology -->
+    <section id="introduction-methodology">
+        <h2>Introduction & Methodology</h2>
+        <div class="phase-description">
+            <p>This document establishes the definitive Software Development Lifecycle (SDLC) to be rigorously followed for the NYCPS Transportation Management System project (RFP R1804). Recognizing the project's criticality, scale, security sensitivities, AWS GovCloud deployment context, and demanding 12-month delivery timeframe, this SDLC mandates an <strong>Agile (Scrum-based) methodology deeply integrated with DevSecOps principles.</strong></p>
+            <p>Adherence to this SDLC is mandatory. Its core tenets are:</p>
+            <ul>
+                <li><strong>Iterative & Incremental Delivery:</strong> We will deliver functional, tested software increments in defined Sprints (typically 2 weeks), aligned with the major project phases. Each Sprint delivers a potentially shippable product increment.</li>
+                <li><strong>Stakeholder Collaboration:</strong> Continuous, structured engagement with NYCPS (OPT, DIIT, Security, Schools, etc.) is embedded in the process through defined meetings and review cycles.</li>
+                <li><strong>Pervasive Automation:</strong> We will automate testing (unit, integration, E2E, performance, security), infrastructure provisioning (IaC), builds, deployments, and monitoring to the maximum extent feasible.</li>
+                <li><strong>Integrated Security ("Shift Left"):</strong> Security is not an afterthought. Security requirements, threat modeling, secure coding practices, code analysis (SAST), vulnerability scanning (SCA, DAST), and security reviews are integral to every phase.</li>
+                <li><strong>Transparency & Adaptability:</strong> Project progress, risks, and decisions will be transparent via dashboards and regular reporting. The Agile framework allows for controlled adaptation based on feedback and evolving understanding.</li>
+                <li><strong>Built-in Quality:</strong> Quality assurance is embedded through TDD/BDD, stringent code reviews, comprehensive automated testing, clear Definitions of Ready (DoR) and Done (DoD), and dedicated QA resources.</li>
+                <li><strong>Governance & Compliance:</strong> Formal governance checkpoints and stakeholder sign-offs ensure alignment and compliance throughout the lifecycle.</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- SDLC Phases -->
+    <section class="phase-section" id="phase1-requirements">
+        <h2>Phase 1: Project Initiation, Planning & Requirements Definition</h2>
+        <p><strong>Goal:</strong> Formally initiate the project, establish governance, define the detailed scope and roadmap, and elicit, analyze, document, and validate requirements for the initial project phases.</p>
+        <div class="phase-description">
+            <h3>1.1 Project Kick-off & Governance Setup</h3>
+            <ul>
+                <li><strong>Activity:</strong> Conduct formal Project Kick-off Meeting.
+                    <ul>
+                        <li>Define project vision, goals, and critical success factors.</li>
+                        <li>Introduce key team members and stakeholders (Vendor & NYCPS).</li>
+                        <li>Establish communication plan, meeting cadences, and reporting structure.</li>
+                        <li>Review and confirm understanding of contractual obligations and RFP requirements.</li>
+                    </ul>
+                </li>
+                <li><strong>Activity:</strong> Establish Project Governance Structure.
+                    <ul>
+                        <li>Define roles and responsibilities for Steering Committee, Project Management Team, Technical Review Board, Security Review Board, Change Control Board.</li>
+                        <li>Schedule recurring governance meetings (e.g., Bi-weekly Steering Committee, Weekly Project Status).</li>
+                    </ul>
+                </li>
+                <li><strong>Activity:</strong> Finalize High-Level Project Plan & Roadmap.
+                    <ul>
+                        <li>Review and refine the 12-month phased roadmap and timeline (from proposal).</li>
+                        <li>Identify major dependencies and critical path items.</li>
+                        <li>Establish initial risk register.</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3>1.2 Detailed Requirements Elicitation & Analysis (Focus: Initial Phases)</h3>
+            <ul>
+                <li><strong>Activity:</strong> Conduct Requirements Workshops with NYCPS Stakeholders (OPT, DIIT, Security, Pilot Schools, etc.).
+                    <ul>
+                        <li>Utilize techniques like user interviews, process mapping, use case modeling, prototyping.</li>
+                        <li>Focus on core GPS tracking, driver login/assignment, basic admin view, and initial device deployment requirements (aligned with Phases 0-2).</li>
+                        <li>Elicit detailed functional requirements, non-functional requirements (performance, usability, accessibility targets), data requirements, integration points, and security/compliance constraints.</li>
+                    </ul>
+                </li>
+                <li><strong>Activity:</strong> Analyze and Document Requirements.
+                    <ul>
+                        <li>Translate elicited needs into clear, concise, testable requirements (e.g., User Stories with detailed Acceptance Criteria).</li>
+                        <li>Document business process flows (current and future state).</li>
+                        <li>Develop initial data dictionary and conceptual data models.</li>
+                    </ul>
+                </li>
+                 <li><strong>Activity:</strong> Requirements Validation & Prioritization.
+                    <ul>
+                        <li>Review documented requirements with stakeholders for accuracy and completeness.</li>
+                        <li>Prioritize requirements for the initial sprints/phases using methods like MoSCoW (Must have, Should have, Could have, Won't have) or Value vs. Effort.</li>
+                    </ul>
+                </li>
+            </ul>
+
+             <h3>1.3 Product Backlog Creation & Initial Grooming</h3>
+             <ul>
+                <li><strong>Activity:</strong> Populate Project Management Tool (e.g., Jira) with defined Epics, Features, and User Stories.</li>
+                <li><strong>Activity:</strong> Conduct initial Backlog Grooming sessions with the development team and Product Owner (NYCPS designated) to refine stories, estimate effort (e.g., story points), and ensure Definition of Ready (DoR) is met for upcoming sprint(s).</li>
+             </ul>
+
+            <div class="governance-box">
+                <h4>Governance & Sign-offs:</h4>
+                <ul>
+                    <li><strong>Project Charter Review:</strong> Steering Committee review and approval of the formal Project Charter outlining scope, goals, governance, and high-level plan.</li>
+                    <li><strong>Requirements Baseline Sign-off:</strong> Formal sign-off by designated NYCPS Product Owner(s) and key stakeholders on the prioritized backlog and detailed requirements for the initial project phase(s).</li>
+                    <li><strong>Weekly Project Status Meetings:</strong> Review progress, risks, issues, and upcoming activities.</li>
+                </ul>
+            </div>
+
+            <div class="best-practice-box">
+                <h4>Best Practices Emphasized:</h4>
+                <ul>
+                    <li>Agile Requirements Gathering (User Stories, Acceptance Criteria)</li>
+                    <li>Stakeholder Collaboration & Workshops</li>
+                    <li>Backlog Management & Prioritization</li>
+                    <li>Formal Governance Setup</li>
+                    <li>Risk Identification</li>
+                </ul>
+            </div>
+
+            <p class="exit-criteria"><strong>Exit Criteria:</strong> Approved Project Charter; Prioritized Product Backlog for initial phases with signed-off User Stories meeting DoR; Established Governance Structure & Communication Plan.</p>
+        </div>
+    </section>
+
+    <section class="phase-section" id="phase2-design">
+        <h2>Phase 2: Architecture & Design</h2>
+        <p><strong>Goal:</strong> Translate validated requirements into detailed technical designs for the system architecture, components, interfaces, data models, and user interfaces, ensuring security, scalability, and compliance are designed in.</p>
+         <div class="phase-description">
+            <h3>2.1 System Architecture Definition</h3>
+            <ul>
+                <li><strong>Activity:</strong> Refine AWS GovCloud Architecture Document.
+                    <ul>
+                        <li>Finalize selection of specific AWS services, instance types, storage configurations, database engines based on detailed NFRs and cost analysis.</li>
+                        <li>Detail network architecture: VPC/subnet layout, routing, Security Group/NACL rules, VPN/Direct Connect configuration, VPC Endpoints strategy.</li>
+                        <li>Document HA/DR strategy: Multi-AZ deployment patterns, database replication, backup/restore procedures, cross-region DR setup (if applicable).</li>
+                    </ul>
+                </li>
+                <li><strong>Activity:</strong> Define Microservice Boundaries & Interactions.
+                    <ul>
+                        <li>Apply DDD principles to confirm service boundaries.</li>
+                        <li>Define communication patterns (Synchronous REST via API Gateway vs. Asynchronous Events via Kinesis/MSK/SQS/SNS).</li>
+                        <li>Specify API contracts using OpenAPI Specification (Swagger) for all inter-service communication. Version control API specifications.</li>
+                    </ul>
+                </li>
+            </ul>
+            <h3>2.2 Component & Interface Design</h3>
+            <ul>
+                <li><strong>Activity:</strong> Design Individual Microservices.
+                    <ul>
+                        <li>Create detailed design documents for each microservice, outlining internal logic, data access patterns, error handling, and dependencies.</li>
+                        <li>Define technology stack for each service (e.g., language, framework, libraries).</li>
+                    </ul>
+                </li>
+                <li><strong>Activity:</strong> Design Data Models.
+                    <ul>
+                        <li>Create detailed logical and physical data models for relational databases (RDS PostgreSQL/PostGIS).</li>
+                        <li>Design data structures and access patterns for NoSQL databases (DynamoDB).</li>
+                        <li>Define schemas for data streams (Kinesis/MSK).</li>
+                        <li>Plan data migration approach for existing NYCPS data (if applicable).</li>
+                    </ul>
+                </li>
+                 <li><strong>Activity:</strong> Design User Interfaces (UI) & User Experience (UX).
+                    <ul>
+                        <li>Develop detailed wireframes and high-fidelity mockups based on stakeholder feedback.</li>
+                        <li>Create interactive prototypes for key user flows.</li>
+                        <li>Conduct usability testing sessions with representative users (drivers, parents, admins).</li>
+                        <li>Finalize UI style guide (leveraging NYCPS style guide) and component library.</li>
+                        <li>Ensure designs meet WCAG 2.0 AA requirements.</li>
+                    </ul>
+                </li>
+                 <li><strong>Activity:</strong> Design Integrations.
+                    <ul>
+                        <li>Define detailed specifications for APIs or file formats for integrating with internal NYCPS systems (ATS, NPSIS, Ticketing, etc.) and external services (Traffic data, Maps).</li>
+                    </ul>
+                </li>
+            </ul>
+            <h3>2.3 Security Design & Infrastructure as Code Planning</h3>
+             <ul>
+                <li><strong>Activity:</strong> Conduct Detailed Threat Modeling.
+                    <ul>
+                        <li>Perform STRIDE/DREAD analysis on critical components (authentication, PII handling, routing engine, public-facing APIs).</li>
+                        <li>Identify potential attack vectors and define specific mitigation controls in the design.</li>
+                    </ul>
+                </li>
+                 <li><strong>Activity:</strong> Design Security Controls.
+                    <ul>
+                        <li>Detail authentication flows (SAML/OIDC integration, Cognito setup).</li>
+                        <li>Design fine-grained authorization logic (RBAC implementation).</li>
+                        <li>Specify encryption methods and key management strategy (KMS usage).</li>
+                        <li>Define logging/auditing requirements for security events.</li>
+                        <li>Plan WAF rulesets and Security Group configurations.</li>
+                    </ul>
+                </li>
+                <li><strong>Activity:</strong> Plan Infrastructure as Code (IaC).
+                    <ul>
+                        <li>Structure IaC repositories (e.g., Terraform modules, CloudFormation stacks).</li>
+                        <li>Define standards for IaC development, review, and testing.</li>
+                        <li>Plan parameterization for environment-specific configurations.</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <div class="governance-box">
+                <h4>Governance & Sign-offs:</h4>
+                <ul>
+                    <li><strong>Architecture Review:</strong> Presentation and review of the detailed AWS GovCloud architecture by the Technical Review Board (including DIIT/Security representatives). Formal sign-off required.</li>
+                    <li><strong>Security Design Review:</strong> Detailed review of security architecture, threat models, and control designs by the Security Review Board/NYC3 representatives. Formal sign-off required.</li>
+                    <li><strong>UI/UX Design Review:</strong> Review and approval of mockups and prototypes by NYCPS Product Owner and key user representatives.</li>
+                    <li><strong>API Contract Review:</strong> Review and approval of internal and external API specifications.</li>
+                    <li><strong>Component Design Reviews:</strong> Peer and technical lead reviews of detailed designs for key microservices/components.</li>
+                </ul>
+            </div>
+
+            <div class="best-practice-box">
+                <h4>Best Practices Emphasized:</h4>
+                <ul>
+                    <li>Cloud-Native Design (Leveraging Managed Services)</li>
+                    <li>Microservices Architecture & API-First Design</li>
+                    <li>Security by Design & Threat Modeling</li>
+                    <li>Infrastructure as Code Planning</li>
+                    <li>UX Design & Usability Testing</li>
+                    <li>HA/DR Planning</li>
+                </ul>
+            </div>
+
+            <p class="exit-criteria"><strong>Exit Criteria:</strong> Signed-off Architecture Document; Signed-off Security Design Document; Approved API Specifications; Approved UI/UX Mockups/Prototypes; Detailed Designs for initial microservices; Approved IaC plan.</p>
+        </div>
+    </section>
+
+     <section class="phase-section" id="phase3-development">
+        <h2>Phase 3: Development (Implementation)</h2>
+        <p><strong>Goal:</strong> Construct the software components, infrastructure, and tests iteratively within Sprints, adhering to designs and secure coding practices.</p>
+        <div class="phase-description">
+            <h3>3.1 Sprint Execution</h3>
+            <ul>
+                <li><strong>Activity:</strong> Sprint Planning.
+                    <ul>
+                        <li>Team selects User Stories from the prioritized backlog based on capacity and sprint goals.</li>
+                        <li>Tasks are broken down from stories.</li>
+                        <li>Team commits to the sprint backlog.</li>
+                    </ul>
+                </li>
+                 <li><strong>Activity:</strong> Daily Stand-ups.
+                    <ul>
+                        <li>Brief daily meetings to synchronize, discuss progress, and identify impediments.</li>
+                    </ul>
+                </li>
+                <li><strong>Activity:</strong> Feature Development.
+                    <ul>
+                        <li>Developers implement features based on user stories and technical designs.</li>
+                        <li>Code is written following secure coding standards (OWASP Top 10, NYCPS standards).</li>
+                        <li>Input validation, output encoding, proper error handling are implemented.</li>
+                        <li>Authentication/Authorization checks are integrated.</li>
+                        <li>Code is commented appropriately.</li>
+                    </ul>
+                </li>
+                 <li><strong>Activity:</strong> Unit Testing (TDD).
+                    <ul>
+                        <li>Developers write and execute unit tests for their code, aiming for high code coverage (e.g., >80-90% branch coverage).</li>
+                        <li>Tests are automated and run as part of the local build and CI process.</li>
+                    </ul>
+                 </li>
+                 <li><strong>Activity:</strong> Infrastructure as Code (IaC) Development.
+                    <ul>
+                        <li>DevOps/Cloud Engineers develop/update IaC scripts (Terraform/CloudFormation) to provision necessary AWS resources for the features being built.</li>
+                        <li>IaC code is version controlled alongside application code.</li>
+                    </ul>
+                </li>
+                <li><strong>Activity:</strong> Version Control & Code Integration.
+                    <ul>
+                        <li>Developers commit code frequently to feature branches in Git.</li>
+                        <li>Pull Requests (PRs) are created for merging feature branches into main development branch (e.g., `develop`).</li>
+                        <li>PRs include links to user stories/tasks, description of changes, and evidence of passing tests.</li>
+                    </ul>
+                </li>
+                 <li><strong>Activity:</strong> Code Reviews.
+                    <ul>
+                        <li>Mandatory peer review for all PRs before merging.</li>
+                        <li>Reviewers check for correctness, security vulnerabilities, performance issues, adherence to coding standards, and maintainability.</li>
+                        <li>Automated SAST scans are integrated into the PR workflow as a status check.</li>
+                    </ul>
+                 </li>
+                 <li><strong>Activity:</strong> Continuous Integration (CI).
+                    <ul>
+                        <li>CI server (CodeBuild/Jenkins) automatically triggers builds upon code commits/merges.</li>
+                        <li>Build process includes compiling code, running unit tests, performing SAST scans, checking dependencies (SCA), and packaging artifacts (e.g., Docker images).</li>
+                        <li>Build failures immediately notify the development team.</li>
+                    </ul>
+                 </li>
+                  <li><strong>Activity:</strong> Sprint Review.
+                    <ul>
+                        <li>Team demonstrates completed user stories (potentially shippable increment) to the Product Owner and stakeholders.</li>
+                        <li>Feedback is gathered on the delivered functionality.</li>
+                    </ul>
+                 </li>
+                 <li><strong>Activity:</strong> Sprint Retrospective.
+                    <ul>
+                        <li>Team reflects on the sprint process – what went well, what didn't, and identifies actionable improvements for the next sprint.</li>
+                    </ul>
+                 </li>
+            </ul>
+
+            <div class="governance-box">
+                <h4>Governance & Sign-offs:</h4>
+                <ul>
+                    <li><strong>Sprint Review Acceptance:</strong> Product Owner formally accepts or rejects completed user stories based on acceptance criteria.</li>
+                    <li><strong>Code Review Approvals:</strong> Documented approval within the Pull Request system by designated reviewers.</li>
+                    <li><strong>CI Pipeline Status:</strong> Builds must pass all defined quality gates (tests, scans) before artifacts are considered eligible for deployment to test environments.</li>
+                </ul>
+            </div>
+
+             <div class="best-practice-box">
+                <h4>Best Practices Emphasized:</h4>
+                <ul>
+                    <li>Scrum Framework (Sprints, Ceremonies)</li>
+                    <li>Secure Coding Standards</li>
+                    <li>Test-Driven Development (TDD)</li>
+                    <li>Version Control (Git) & Branching Strategies</li>
+                    <li>Code Reviews & SAST</li>
+                    <li>Dependency Scanning (SCA)</li>
+                    <li>Continuous Integration (CI)</li>
+                 </ul>
+            </div>
+
+            <p class="exit-criteria"><strong>Exit Criteria (per Sprint):</strong> Potentially shippable product increment demonstrated and accepted by Product Owner; All code reviewed and merged; All automated tests passing in CI pipeline.</p>
+        </div>
+    </section>
+
+    <section class="phase-section" id="phase4-testing">
+        <h2>Phase 4: Integrated Testing & Quality Assurance</h2>
+        <p><strong>Goal:</strong> Verify the integrated system components meet functional, non-functional, security, and compliance requirements through rigorous testing in dedicated environments.</p>
+         <div class="phase-description">
+            <h3>4.1 Test Environment Setup & Management</h3>
+            <ul>
+                <li><strong>Activity:</strong> Provision Test Environments (QA, Staging/UAT, Performance) using IaC. Ensure environments mirror production configuration as closely as possible.</li>
+                <li><strong>Activity:</strong> Implement Test Data Management Strategy. Populate test environments with anonymized or synthetic data. Establish processes for refreshing test data.</li>
+            </ul>
+            <h3>4.2 Test Execution Cycles (Iterative within & between Sprints)</h3>
+            <ul>
+                <li><strong>Activity:</strong> Integration Testing. Verify interactions and data flow between microservices and components in the QA environment. Automate where possible.</li>
+                <li><strong>Activity:</strong> API Testing. Test service APIs directly for functional correctness, error handling, and security (authentication/authorization checks). Automate using tools like Postman/RestAssured.</li>
+                <li><strong>Activity:</strong> End-to-End (E2E) Testing. Execute test scripts simulating user workflows across UI and backend services in the QA/Staging environment. Automate critical paths using Selenium/Cypress/Playwright.</li>
+                <li><strong>Activity:</strong> Security Testing.
+                    <ul>
+                        <li>Run DAST scans against applications deployed in test environments.</li>
+                        <li>Perform manual security testing/validation based on threat models.</li>
+                        <li>Coordinate third-party penetration testing against the Staging environment before major releases.</li>
+                    </ul>
+                </li>
+                 <li><strong>Activity:</strong> Performance & Load Testing. Execute load test scripts against the dedicated Performance environment to validate response times, throughput, and resource usage under expected and peak loads. Identify and report bottlenecks.</li>
+                 <li><strong>Activity:</strong> Accessibility Testing. Conduct automated scans (Axe/WAVE) and manual reviews (keyboard navigation, screen reader testing) against WCAG 2.0 AA criteria in the Staging environment.</li>
+                 <li><strong>Activity:</strong> User Acceptance Testing (UAT). Facilitate UAT sessions with designated NYCPS stakeholders and end-user representatives in the Staging/UAT environment. Users execute predefined test cases and provide feedback/sign-off.</li>
+                 <li><strong>Activity:</strong> Regression Testing. Execute automated regression test suites frequently (e.g., nightly, per deployment) in QA/Staging environments to catch unintended side effects of changes.</li>
+            </ul>
+             <h3>4.3 Defect Management</h3>
+             <ul>
+                 <li><strong>Activity:</strong> Log all identified defects in the tracking system (Jira) with clear steps to reproduce, severity, priority, environment found, and assigned owner.</li>
+                 <li><strong>Activity:</strong> Triage defects regularly (e.g., daily bug scrub meeting). Prioritize fixes based on severity and impact.</li>
+                 <li><strong>Activity:</strong> Verify defect fixes in the relevant test environment before closing issues.</li>
+             </ul>
+
+            <div class="governance-box">
+                <h4>Governance & Sign-offs:</h4>
+                <ul>
+                    <li><strong>Test Plan Review:</strong> Approval of the Master Test Plan and phase-specific test plans by QA Lead and relevant stakeholders.</li>
+                    <li><strong>UAT Sign-off:</strong> Formal sign-off from NYCPS Product Owner(s) and UAT participants indicating acceptance of functionality for a given release/phase.</li>
+                    <li><strong>Security Test Report Review:</strong> Review of penetration test reports and remediation plans by the Security Review Board/NYC3. Sign-off on residual risk required.</li>
+                    <li><strong>Performance Test Report Review:</strong> Review and approval of performance test results against NFRs by Technical Lead/Architect.</li>
+                    <li><strong>Release Readiness Review:</strong> Go/No-Go decision meeting before production deployment, reviewing test results, outstanding defects, and rollback plan. Participants include Project Management, Dev Lead, QA Lead, Ops Lead, Security Lead, Product Owner.</li>
+                </ul>
+            </div>
+
+            <div class="best-practice-box">
+                <h4>Best Practices Emphasized:</h4>
+                <ul>
+                    <li>Comprehensive Test Strategy (Multi-Layered)</li>
+                    <li>Test Automation at Scale</li>
+                    <li>Dedicated Test Environments (IaC Managed)</li>
+                    <li>Rigorous Security Testing (DAST, Pen Testing)</li>
+                    <li>Performance Engineering & Load Testing</li>
+                    <li>Formal User Acceptance Testing (UAT)</li>
+                    <li>Accessibility Validation</li>
+                    <li>Structured Defect Management</li>
+                </ul>
+            </div>
+            <p class="exit-criteria"><strong>Exit Criteria:</strong> Successful completion of all planned test cycles for the release candidate; UAT sign-off received; Critical/High severity defects resolved or have accepted risk mitigation plan; Performance and security NFRs met; Release Readiness Review approved.</p>
+        </div>
+    </section>
+
+     <section class="phase-section" id="phase5-deployment">
+        <h2>Phase 5: Deployment & Release</h2>
+        <p><strong>Goal:</strong> Deploy the validated system increment to the production AWS GovCloud environment safely, reliably, and with minimal disruption, according to the phased rollout plan.</p>
+         <div class="phase-description">
+            <h3>5.1 Pre-Deployment Preparation</h3>
+            <ul>
+                <li><strong>Activity:</strong> Finalize Production Infrastructure (IaC). Ensure production IaC templates are up-to-date, tested, and peer-reviewed.</li>
+                <li><strong>Activity:</strong> Pre-Deployment Checklist Review. Verify all prerequisites are met (e.g., backups complete, monitoring configured, rollback plan ready, stakeholder approvals obtained).</li>
+                <li><strong>Activity:</strong> Schedule Release Window. Coordinate deployment timing (often during off-peak hours) with OPT and relevant stakeholders. Communicate planned downtime/impact if applicable.</li>
+                <li><strong>Activity:</strong> Production Readiness Review. Final Go/No-Go decision based on testing results, risk assessment, and operational readiness.</li>
+            </ul>
+            <h3>5.2 Automated Deployment Execution</h3>
+            <ul>
+                <li><strong>Activity:</strong> Execute CI/CD Pipeline for Production. Trigger the automated pipeline to deploy application artifacts and apply IaC changes to the production environment.</li>
+                <li><strong>Activity:</strong> Utilize Deployment Strategy (Blue/Green or Canary).
+                    <ul>
+                        <li><strong>Blue/Green:</strong> Provision a parallel production environment ("Green"), deploy the new version, test it, then switch traffic from the old ("Blue") environment. Allows instant rollback by switching traffic back.</li>
+                        <li><strong>Canary:</strong> Gradually roll out the new version to a small subset of users/buses, monitor closely, then incrementally increase traffic if stable. Allows limiting the blast radius of potential issues.</li>
+                    </ul>
+                </li>
+                <li><strong>Activity:</strong> Database Migrations/Updates. Apply necessary database schema changes or data migrations using controlled, tested scripts, often performed just before traffic shifting in Blue/Green or during initial Canary phase.</li>
+            </ul>
+            <h3>5.3 Post-Deployment Validation & Monitoring</h3>
+             <ul>
+                 <li><strong>Activity:</strong> Automated Smoke Tests. Run predefined automated tests against the production environment immediately after deployment to verify critical paths.</li>
+                 <li><strong>Activity:</strong> Monitoring Dashboard Review. Closely monitor application performance (latency, error rates), infrastructure metrics (CPU, memory), and logs for anomalies immediately following deployment.</li>
+                 <li><strong>Activity:</strong> Manual Verification. Perform targeted manual checks of key functionality by QA or designated personnel.</li>
+                 <li><strong>Activity:</strong> Rollback Trigger (if needed). If critical issues are detected via smoke tests or monitoring, initiate the predefined rollback procedure immediately.</li>
+             </ul>
+             <h3>5.4 Release Communication</h3>
+              <ul>
+                  <li><strong>Activity:</strong> Notify stakeholders (NYCPS, users via appropriate channels) upon successful completion of the deployment.</li>
+                  <li><strong>Activity:</strong> Publish release notes detailing new features, changes, and bug fixes.</li>
+              </ul>
+
+            <div class="governance-box">
+                <h4>Governance & Sign-offs:</h4>
+                <ul>
+                    <li><strong>Production Readiness Review Sign-off:</strong> Formal approval from all designated stakeholders (Dev, QA, Ops, Sec, Product Owner) before deployment begins.</li>
+                    <li><strong>Change Control Board (CCB) Approval:</strong> Formal approval recorded for the production deployment according to NYCPS change management policies.</li>
+                    <li><strong>Post-Deployment Verification Sign-off:</strong> Confirmation from QA/Ops that smoke tests passed and system is stable post-deployment.</li>
+                </ul>
+            </div>
+
+            <div class="best-practice-box">
+                <h4>Best Practices Emphasized:</h4>
+                <ul>
+                    <li>Continuous Deployment (CD) Pipeline</li>
+                    <li>Infrastructure as Code (IaC) for Production</li>
+                    <li>Blue/Green or Canary Deployment Strategies</li>
+                    <li>Automated Rollbacks</li>
+                    <li>Configuration Management</li>
+                    <li>Post-Deployment Smoke Testing & Monitoring</li>
+                    <li>Formal Release Management & Communication</li>
+                </ul>
+            </div>
+            <p class="exit-criteria"><strong>Exit Criteria:</strong> Software increment successfully deployed to production; Post-deployment validation checks passed; System stable and performing as expected under load; Release communicated to stakeholders.</p>
+        </div>
+    </section>
+
+     <section class="phase-section" id="phase6-operations">
+        <h2>Phase 6: Operations, Maintenance & Optimization</h2>
+        <p><strong>Goal:</strong> Ensure the long-term health, performance, security, and cost-effectiveness of the production system while providing ongoing support and facilitating continuous improvement.</p>
+         <div class="phase-description">
+             <h3>6.1 System Monitoring & Alerting</h3>
+             <ul>
+                 <li><strong>Activity:</strong> Continuous 24/7 Monitoring. Utilize CloudWatch, APM tools, and custom health checks to monitor infrastructure, application performance, security events, and key business metrics.</li>
+                 <li><strong>Activity:</strong> Alert Management. Respond promptly to automated alerts based on predefined runbooks and escalation paths (aligned with SLAs).</li>
+                 <li><strong>Activity:</strong> Dashboard Maintenance. Regularly review and update monitoring dashboards (CloudWatch, QuickSight, Grafana) to ensure relevance and clarity.</li>
+             </ul>
+             <h3>6.2 Incident & Problem Management</h3>
+             <ul>
+                 <li><strong>Activity:</strong> Incident Response. Follow defined procedures to quickly diagnose, mitigate, and resolve production incidents. Coordinate response efforts across teams (Dev, Ops, Sec, Vendor Support).</li>
+                 <li><strong>Activity:</strong> Root Cause Analysis (RCA). Conduct thorough RCAs for significant incidents to identify underlying causes and prevent recurrence.</li>
+                 <li><strong>Activity:</strong> Problem Management. Track recurring incidents and implement long-term fixes or architectural improvements.</li>
+             </ul>
+             <h3>6.3 Maintenance & Security Management</h3>
+              <ul>
+                  <li><strong>Activity:</strong> Patch Management. Regularly schedule, test, and deploy OS, runtime, and dependency patches (prioritizing security patches) using automated tools (e.g., Systems Manager Patch Manager) and the CI/CD pipeline.</li>
+                  <li><strong>Activity:</strong> Security Log Review & Audit. Periodically review security logs (CloudTrail, WAF, GuardDuty), IAM configurations, and compliance reports (Config, Security Hub).</li>
+                  <li><strong>Activity:</strong> Vulnerability Management. Regularly run vulnerability scans (Inspector) and address findings promptly. Coordinate periodic penetration tests.</li>
+              </ul>
+              <h3>6.4 Backup, Recovery & DR</h3>
+               <ul>
+                   <li><strong>Activity:</strong> Backup Verification. Regularly verify the integrity and restorability of database and S3 backups.</li>
+                   <li><strong>Activity:</strong> DR Testing. Conduct scheduled DR drills (at least annually) involving failover to the secondary region and validation of RPO/RTO.</li>
+               </ul>
+               <h3>6.5 Performance & Cost Optimization</h3>
+               <ul>
+                   <li><strong>Activity:</strong> Performance Monitoring & Tuning. Analyze long-term performance trends. Optimize database queries, caching, resource allocation, and code based on findings.</li>
+                   <li><strong>Activity:</strong> Cost Analysis & Optimization. Use AWS Cost Explorer, Trusted Advisor, and other tools to identify cost-saving opportunities (e.g., right-sizing, Reserved Instances/Savings Plans, storage tiering). Implement approved optimizations.</li>
+               </ul>
+               <h3>6.6 Continuous Improvement & Feedback</h3>
+                <ul>
+                    <li><strong>Activity:</strong> Gather User Feedback. Collect feedback through support channels, surveys, and direct engagement.</li>
+                    <li><strong>Activity:</strong> Operational Data Analysis. Analyze logs, metrics, and incident data to identify areas for improvement in the system or processes.</li>
+                    <li><strong>Activity:</strong> Input to Backlog. Feed improvement ideas, bug fixes, and technical debt reduction tasks back into the product backlog for prioritization in future sprints.</li>
+                </ul>
+
+            <div class="governance-box">
+                <h4>Governance & Sign-offs:</h4>
+                <ul>
+                    <li><strong>Operational Reviews:</strong> Regular meetings (e.g., monthly) with OPT/DIIT stakeholders to review system performance, availability, security posture, incidents, and costs against SLAs.</li>
+                    <li><strong>Change Control Board (CCB) Approval:</strong> Required for significant maintenance activities or configuration changes in production.</li>
+                    <li><strong>Security Audit Reviews:</strong> Formal review of internal and external security audit findings and remediation plans.</li>
+                    <li><strong>DR Test Report Sign-off:</strong> Approval of DR test results and any required remediation actions.</li>
+                </ul>
+            </div>
+
+            <div class="best-practice-box">
+                <h4>Best Practices Emphasized:</h4>
+                <ul>
+                    <li>Proactive Monitoring & Alerting</li>
+                    <li>Mature Incident & Problem Management</li>
+                    <li>Automated Patch Management</li>
+                    <li>Regular Backup & DR Testing</li>
+                    <li>Continuous Performance & Cost Optimization</li>
+                    <li>Security Operations (SecOps)</li>
+                    <li>Feedback Loops for Continuous Improvement</li>
+                 </ul>
+            </div>
+            <p class="exit-criteria"><strong>Exit Criteria:</strong> This phase is ongoing throughout the system's operational life.</p>
+        </div>
+    </section>
+
+     <section class="phase-section" id="phase7-decommissioning">
+        <h2>Phase 7: System Retirement / Decommissioning (End of Life)</h2>
+        <p><strong>Goal:</strong> Securely and completely retire the system and its infrastructure at the end of the contract or when superseded by a replacement system, ensuring data retention/destruction requirements are met.</p>
+         <div class="phase-description">
+            <h3>7.1 Planning & Communication</h3>
+            <ul>
+                <li><strong>Activity:</strong> Develop Decommissioning Plan. Outline steps, responsibilities, timeline, data archival/destruction procedures, and communication strategy. Align with Disengagement Plan (RFP requirement).</li>
+                <li><strong>Activity:</strong> Notify Stakeholders. Inform users and dependent system owners of the planned retirement date and migration plan (if applicable).</li>
+            </ul>
+            <h3>7.2 Data Archival & Destruction</h3>
+            <ul>
+                <li><strong>Activity:</strong> Final Data Backup/Export. Perform final backups of all required data. Provide data exports to NYCPS in a usable format if required for migration or long-term archival outside the system.</li>
+                <li><strong>Activity:</strong> Data Destruction. Securely delete data from databases, S3 buckets (excluding long-term archives), and other storage according to NYCPS policy and compliance requirements (e.g., cryptographic erasure, physical destruction if applicable). Document destruction process.</li>
+            </ul>
+             <h3>7.3 Infrastructure Teardown</h3>
+             <ul>
+                 <li><strong>Activity:</strong> Decommission Applications. Stop application services, remove them from load balancers, and disable auto-scaling groups.</li>
+                 <li><strong>Activity:</strong> Terminate Compute Resources. Terminate EC2 instances, Fargate/ECS/EKS services, Lambda functions.</li>
+                 <li><strong>Activity:</strong> Delete Databases & Storage. Delete RDS instances, DynamoDB tables, ElastiCache clusters, EBS volumes (after ensuring data is backed up/destroyed appropriately). Empty and delete S3 buckets (except archives).</li>
+                 <li><strong>Activity:</strong> Tear Down Networking. Remove Load Balancers, NAT Gateways, VPC Endpoints, VPN/Direct Connect connections (coordinate with network team), Security Groups, NACLs, Route Tables, Subnets, and finally the VPC itself.</li>
+                 <li><strong>Activity:</strong> Clean Up IAM & Monitoring. Remove specific IAM roles/policies, CloudWatch alarms/dashboards, and other configurations related to the decommissioned system.</li>
+                 <li><strong>Activity:</strong> Update IaC Repository. Mark infrastructure code as decommissioned or remove it.</li>
+             </ul>
+             <h3>7.4 Final Verification & Reporting</h3>
+              <ul>
+                  <li><strong>Activity:</strong> Verify Decommissioning. Confirm all resources have been terminated and data appropriately handled.</li>
+                  <li><strong>Activity:</strong> Final Report. Document the decommissioning process, data destruction confirmation, and final status.</li>
+              </ul>
+
+            <div class="governance-box">
+                <h4>Governance & Sign-offs:</h4>
+                <ul>
+                    <li><strong>Decommissioning Plan Approval:</strong> Sign-off from NYCPS stakeholders (OPT, DIIT, Security, Legal/Compliance) on the plan before execution.</li>
+                    <li><strong>Data Destruction Certification:</strong> Formal certification provided to NYCPS confirming data destruction according to policy.</li>
+                    <li><strong>Final Decommissioning Report Approval:</strong> Sign-off confirming successful completion of the decommissioning process.</li>
+                </ul>
+            </div>
+
+             <div class="best-practice-box">
+                <h4>Best Practices Emphasized:</h4>
+                <ul>
+                    <li>Formal Decommissioning Planning</li>
+                    <li>Secure Data Handling (Archival/Destruction)</li>
+                    <li>Systematic Infrastructure Teardown (Using IaC where possible)</li>
+                    <li>Clear Communication</li>
+                    <li>Final Verification & Documentation</li>
+                 </ul>
+            </div>
+            <p class="exit-criteria"><strong>Exit Criteria:</strong> All system components removed from production; Data handled according to retention/destruction policy; Final decommissioning report approved.</p>
+        </div>
+    </section>
+
+    <!-- SDLC Setup Instructions -->
+    <section class="setup-section" id="sdlc-setup">
+        <h2>SDLC Setup: Detailed Implementation Steps</h2>
+        <div class="setup-description">
+            <p>Implementing the SDLC described above requires careful configuration of tools, establishment of process discipline, and fostering a collaborative culture. Below are detailed steps to set up the core components.</p>
+            <ol>
+                <li>
+                    <strong>Establish Foundational AWS GovCloud Environment:</strong>
+                    <ol>
+                        <li>Using the AWS GovCloud Management Console or IaC, create separate AWS accounts (or leverage Organizational Units within AWS Organizations) for DEV, TEST (QA/UAT/PERF), and PROD environments to ensure strict isolation.</li>
+                        <li>Configure AWS Organizations for centralized governance and billing across accounts. Apply Service Control Policies (SCPs) to enforce security guardrails (e.g., restricting regions, preventing disabling of security services).</li>
+                        <li>Set up AWS Budgets and Cost Anomaly Detection for cost control.</li>
+                        <li>Implement foundational IAM:
+                            <ol>
+                                <li>Create specific IAM groups for roles (Developers, Testers, Ops, Security, Admins).</li>
+                                <li>Define granular IAM policies adhering to least privilege, attaching them to groups.</li>
+                                <li>Create IAM roles for AWS services (EC2, Lambda, ECS/EKS Tasks) with minimal necessary permissions.</li>
+                                <li>Enforce MFA for all IAM users accessing the console/API.</li>
+                                <li>Configure SAML 2.0 federation with NYCPS IdP for human access, mapping IdP groups to IAM roles.</li>
+                            </ol>
+                        </li>
+                        <li>Deploy baseline network infrastructure using IaC (CloudFormation/Terraform):
+                            <ol>
+                                <li>Define VPCs (e.g., 10.x.0.0/16 range) spanning 3 AZs for each environment.</li>
+                                <li>Create public subnets (for LBs, NAT GWs) and private subnets (for application/data tiers).</li>
+                                <li>Configure Route Tables, Internet Gateways, and NAT Gateways.</li>
+                                <li>Implement baseline Security Groups (e.g., allow SSH/RDP from bastion only, allow HTTP/S from LB) and restrictive Network ACLs.</li>
+                                <li>Provision VPC Endpoints (Interface & Gateway) for private access to services like S3, DynamoDB, KMS, Secrets Manager, etc.</li>
+                                <li>Configure AWS Direct Connect or Site-to-Site VPN tunnels for secure connectivity to NYCPS on-premises networks, establishing BGP routing.</li>
+                            </ol>
+                        </li>
+                         <li>Configure core security and logging services:
+                            <ol>
+                                <li>Enable CloudTrail in all regions within each account, configured to deliver logs to a central, encrypted S3 bucket in a dedicated Logging/Audit account (using cross-account roles). Enable Log File Validation.</li>
+                                <li>Enable AWS Config and deploy conformance packs (e.g., for FedRAMP compliance) to continuously monitor resource configurations.</li>
+                                <li>Enable GuardDuty, Security Hub, and Inspector in all relevant regions. Configure Security Hub to aggregate findings and potentially send notifications (SNS -> Lambda/Email).</li>
+                                <li>Configure baseline CloudWatch Logs agents/collectors for instances/containers. Set up log groups with appropriate retention policies.</li>
+                                <li>Configure AWS WAF with baseline managed rulesets (e.g., OWASP Top 10) and associate with public-facing ALBs/CloudFront.</li>
+                                <li>Create Customer Managed Keys (CMKs) in KMS for encrypting sensitive data (EBS, S3, RDS, etc.). Define key rotation policies.</li>
+                            </ol>
+                        </li>
+                    </ol>
+                </li>
+                 <li>
+                    <strong>Configure Development & Collaboration Toolchain:</strong>
+                    <ol>
+                        <li>Set up Git repositories (e.g., in AWS CodeCommit or GitHub/GitLab):
+                            <ol>
+                                <li>Create repositories per microservice or component group.</li>
+                                <li>Configure branch protection rules for `main`/`master` and `develop` branches (require PRs, require status checks, require approvals).</li>
+                                <li>Define and document branching strategy (e.g., feature branches created from `develop`, merged back via PR; releases tagged from `main`).</li>
+                                <li>Define PR template standards (link to Jira issue, summary, testing performed).</li>
+                            </ol>
+                        </li>
+                        <li>Configure Project Management Tool (e.g., Jira):
+                            <ol>
+                                <li>Set up project boards (Scrum board per team).</li>
+                                <li>Define workflow states (e.g., To Do, In Progress, Code Review, Ready for QA, In QA, Ready for UAT, In UAT, Done).</li>
+                                <li>Configure issue types (Epic, Feature, User Story, Task, Bug).</li>
+                                <li>Integrate Jira with Git repository to link commits/PRs to issues.</li>
+                                <li>Set up dashboards for sprint burndown, velocity, defect tracking.</li>
+                            </ol>
+                        </li>
+                        <li>Configure CI/CD Platform (e.g., AWS CodePipeline):
+                            <ol>
+                                <li>Create pipelines per microservice/application.</li>
+                                <li>Configure Source stage (linking to CodeCommit/GitHub).</li>
+                                <li>Configure Build stage (using CodeBuild): Define buildspec.yml for steps like dependency install, compile, unit tests, SAST scan (e.g., SonarQube integration), SCA scan (e.g., Snyk/OWASP DC), Docker build & push to ECR, packaging deployment artifacts. Define quality gates (e.g., fail build if tests fail or high/critical vulnerabilities found).</li>
+                                <li>Configure Deploy stages for Dev, Test, Staging environments (using CodeDeploy, ECS/EKS blue/green deployment actions, Lambda updates, CloudFormation/Terraform apply actions).</li>
+                                <li>Implement manual approval gates between environments (e.g., before deploying to Staging or Prod).</li>
+                            </ol>
+                        </li>
+                        <li>Configure Collaboration Tools: Set up dedicated Slack/Teams channels for project communication, automated notifications from CI/CD and monitoring. Set up Confluence/SharePoint space for documentation.</li>
+                        <li>Configure Artifact Repositories: Set up ECR for Docker images. Configure CodeArtifact or Nexus/Artifactory if needed for language-specific packages (npm, Maven, PyPI).</li>
+                    </ol>
+                </li>
+                 <li>
+                    <strong>Define & Document Standard Operating Procedures (SOPs):</strong>
+                    <ol>
+                        <li><strong>Coding Standards:</strong> Document language-specific style guides and secure coding guidelines (referencing OWASP, NYCPS standards).</li>
+                        <li><strong>Code Review Checklist:</strong> Create a checklist for reviewers covering key areas (logic, security, performance, readability, test coverage, etc.).</li>
+                        <li><strong>Testing Procedures:</strong> Document how to write different types of tests (unit, integration, E2E), how to run them, where results are stored, and criteria for passing.</li>
+                        <li><strong>Deployment Runbook:</strong> Create detailed runbooks for deploying each major component, including pre-deployment checks, execution steps, monitoring points, validation steps, and rollback procedures.</li>
+                        <li><strong>Incident Management Process:</strong> Define severity levels, escalation paths, communication procedures, on-call rotation, RCA template, and post-mortem process.</li>
+                        <li><strong>Change Management Process:</strong> Document how changes (code, infrastructure, configuration) are requested, reviewed, approved, scheduled, and tracked, aligning with NYCPS CCB requirements.</li>
+                        <li><strong>Onboarding Guide:</strong> Create documentation for new team members covering project overview, architecture, tool setup, and key processes.</li>
+                        <li>Store all SOPs in a central, version-controlled location (e.g., Confluence, SharePoint, Git repo).</li>
+                    </ol>
+                </li>
+                 <li>
+                    <strong>Integrate Security Scanning Tools:</strong>
+                    <ol>
+                        <li><strong>SAST:</strong> Integrate SonarQube/Checkmarx/similar into the CodeBuild stage of the CI pipeline. Configure quality gates to fail the build based on severity thresholds (e.g., fail on Critical/High vulnerabilities). Configure connection to scan results dashboard.</li>
+                        <li><strong>SCA:</strong> Integrate Snyk/OWASP Dependency-Check/similar into the CodeBuild stage. Configure to scan package manifests (package.json, pom.xml, requirements.txt). Configure quality gates based on vulnerability severity and license compliance.</li>
+                        <li><strong>DAST:</strong> Configure OWASP ZAP/Burp Suite/similar to run scans against deployed applications in Test/Staging environments, potentially triggered by the CD pipeline after a deployment. Configure reporting of findings.</li>
+                        <li><strong>Container Scanning:</strong> Configure ECR image scanning or integrate tools like Trivy/Clair into the CI pipeline after Docker image build to scan for OS and library vulnerabilities within containers.</li>
+                        <li>Ensure scan results are reviewed regularly by the security team and findings are tracked as defects/tasks.</li>
+                    </ol>
+                 </li>
+                 <li>
+                    <strong>Configure Monitoring, Logging, and Alerting:</strong>
+                    <ol>
+                        <li>Deploy CloudWatch Agent to EC2 instances and configure containerized applications (e.g., via Fluentd/Fluent Bit sidecar/daemonset) to forward application logs and system metrics to CloudWatch Logs.</li>
+                        <li>Define structured logging format for applications.</li>
+                        <li>Create CloudWatch Log Groups with appropriate retention policies (e.g., shorter retention for debug logs, longer for audit logs).</li>
+                        <li>Set up CloudWatch Metric Filters to extract key metrics from logs (e.g., error counts, specific event occurrences).</li>
+                        <li>Create CloudWatch Alarms based on key metrics (CPU, memory, disk, latency, error rates, queue depth, custom application metrics) with defined thresholds and actions (e.g., trigger auto-scaling, send SNS notification).</li>
+                        <li>Configure SNS topics for different alert severities/teams. Subscribe Ops/Dev team members (via email/SMS) or integrate with incident management tools (PagerDuty/Opsgenie).</li>
+                        <li>Build initial CloudWatch Dashboards visualizing key health and performance metrics for each environment/service.</li>
+                        <li>If using APM tools (Datadog, etc.), deploy agents and configure dashboards/alerts within that platform.</li>
+                    </ol>
+                </li>
+                 <li>
+                    <strong>Provision Initial Environments & Seed Data:</strong>
+                    <ol>
+                        <li>Run IaC scripts (CloudFormation/Terraform) to provision the baseline infrastructure for the DEV and TEST (QA) environments based on the architecture design.</li>
+                        <li>Deploy initial versions of core services (e.g., databases, basic APIs) via the CI/CD pipeline to DEV/TEST.</li>
+                        <li>Develop and run scripts to populate TEST environment databases with anonymized or synthetic seed data necessary for initial development and testing.</li>
+                    </ol>
+                </li>
+                 <li>
+                    <strong>Conduct Team Onboarding & Kick-off Sprints:</strong>
+                    <ol>
+                        <li>Run dedicated onboarding sessions covering project goals, architecture, toolchain setup (local dev environments, Git access, Jira access, AWS access), coding standards, and SDLC processes (code reviews, testing, deployment).</li>
+                        <li>Ensure all team members have necessary access and permissions.</li>
+                        <li>Conduct the first Sprint Planning meeting, pulling initial setup tasks and potentially simple user stories into Sprint 1.</li>
+                        <li>Begin executing the defined Agile ceremonies (Daily Stand-ups, etc.).</li>
+                    </ol>
+                </li>
+                 <li>
+                    <strong>Establish Governance Rhythms:</strong>
+                    <ol>
+                        <li>Schedule and conduct initial meetings for the Steering Committee, Technical Review Board, and Security Review Board.</li>
+                        <li>Establish regular cadence for backlog grooming, sprint reviews involving stakeholders, and process retrospectives.</li>
+                        <li>Set up project status reporting mechanisms (e.g., automated dashboards from Jira, weekly status reports).</li>
+                    </ol>
+                 </li>
+            </ol>
+        </div>
+    </section>
+
+</body>
+</html>

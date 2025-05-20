@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workspace HTML File Summary</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        h1 {
+            color: #0056b3; /* Dark blue heading */
+            border-bottom: 2px solid #0056b3;
+            padding-bottom: 5px;
+            margin-bottom: 30px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            background-color: #fff;
+            border: 1px solid #dee2e6; /* Add border around table for copy/paste */
+        }
+        th, td {
+            border: 1px solid #dee2e6; /* Light grey border for all cells */
+            padding: 10px 12px;
+            text-align: left;
+            vertical-align: top; /* Align content to top */
+            font-size: 0.9em; /* Slightly smaller font for table content */
+            word-wrap: break-word; /* Ensure long text wraps */
+        }
+        th {
+            background-color: #e9ecef; /* Lighter grey header */
+            font-weight: bold;
+            color: #495057;
+        }
+        tr:nth-child(even) {
+            background-color: #f8f9fa; /* Light alternating row color */
+        }
+        tr:hover {
+            background-color: #e2e6ea; /* Hover effect */
+        }
+        .rag-red {
+            background-color: #f8d7da; /* Light Red */
+            color: #721c24;
+            font-weight: bold;
+            text-align: center;
+        }
+        .rag-amber {
+            background-color: #fff3cd; /* Amber */
+            color: #856404;
+            font-weight: bold;
+            text-align: center;
+        }
+        .rag-green {
+            background-color: #d4edda; /* Light Green */
+            color: #155724;
+            font-weight: bold;
+            text-align: center;
+        }
+         /* Basic Column Widths (adjust percentages as needed) */
+        .col-sn { width: 3%; }
+        .col-name { width: 15%; }
+        .col-about { width: 20%; }
+        .col-priority { width: 6%; }
+        .col-status { width: 8%; }
+        .col-rag { width: 4%; }
+        .col-next { width: 12%; }
+        .col-assigned { width: 8%; }
+        .col-eta { width: 6%; }
+        .col-comments { width: 9%; }
+        .col-risks { width: 9%; }
+
+    </style>
+</head>
+<body>
+
+    <h1>Workspace HTML File Summary</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th class="col-sn">Serial Number</th>
+                <th class="col-name">Name of file</th>
+                <th class="col-about">What the File is about</th>
+                <th class="col-priority">PRIORITY</th>
+                <th class="col-status">Current Status</th>
+                <th class="col-rag">RAG</th>
+                <th class="col-next">Next Steps</th>
+                <th class="col-assigned">Assigned To</th>
+                <th class="col-eta">ETA</th>
+                <th class="col-comments">Comments</th>
+                <th class="col-risks">Risks and Issues</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="col-sn">1</td>
+                <td class="col-name">DevOps_Strategy.html</td>
+                <td class="col-about">Outlines the strategy for DevOps practices, tools, and culture for the project.</td>
+                <td class="col-priority">High</td>
+                <td class="col-status">Draft</td>
+                <td class="col-rag rag-amber">Amber</td>
+                <td class="col-next">Review, Refine, Integrate</td>
+                <td class="col-assigned">DevOps Lead</td>
+                <td class="col-eta">TBD</td>
+                <td class="col-comments">Initial draft generated.</td>
+                <td class="col-risks">Needs alignment with other plans (SDLC, Security).</td>
+            </tr>
+            <tr>
+                <td class="col-sn">2</td>
+                <td class="col-name">Data_governance_compliance_controls_plan.html</td>
+                <td class="col-about">Plan detailing data governance policies, compliance requirements (e.g., FERPA), and control mechanisms.</td>
+                <td class="col-priority">High</td>
+                <td class="col-status">Needs Review</td>
+                <td class="col-rag rag-amber">Amber</td>
+                <td class="col-next">Review, Add Specific Controls</td>
+                <td class="col-assigned">Compliance Lead</td>
+                <td class="col-eta">TBD</td>
+                <td class="col-comments">Covers key areas from RFP NFRs.</td>
+                <td class="col-risks">Requires legal/compliance expert review.</td>
+            </tr>
+            <tr>
+                <td class="col-sn">3</td>
+                <td class="col-name">User_Transition_and_Cutover_Strategy.html</td>
+                <td class="col-about">Strategy for migrating users to the new system, including cutover planning.</td>
+                <td class="col-priority">High</td>
+                <td class="col-status">Draft</td>
+                <td class="col-rag rag-amber">Amber</td>
+                <td class="col-next">Detail Cutover Steps, Align with Training</td>
+                <td class="col-assigned">Project Manager</td>
+                <td class="col-eta">TBD</td>
+                <td class="col-comments">High-level strategy outlined.</td>
+                <td class="col-risks">Needs detailed timings and rollback plan.</td>
+            </tr>
+            <tr>
+                <td class="col-sn">4</td>
+                <td class="col-name">Project_Implementation_Game_Plan.html</td>
+                <td class="col-about">Overall plan for implementing the project, potentially covering phases, milestones, and approach.</td>
+                <td class="col-priority">High</td>
+                <td class="col-status">Needs Review</td>
+                <td class="col-rag rag-amber">Amber</td>
+                <td class="col-next">Align with Specific Plans, Add Dates</td>
+                <td class="col-assigned">Project Manager</td>
+                <td class="col-eta">TBD</td>
+                <td class="col-comments">Central implementation document.</td>
+                <td class="col-risks">May overlap/conflict with other detailed plans.</td>
+            </tr>
+            <tr>
+                <td class="col-sn">5</td>
+                <td class="col-name">DataEngineering_Analytics_Reporting_ML_AI_Strategy.html</td>
+                <td class="col-about">Strategy covering data engineering pipelines, analytics, reporting tools, and potential ML/AI applications.</td>
+                <td class="col-priority">Medium</td>
+                <td class="col-status">Draft</td>
+                <td class="col-rag rag-amber">Amber</td>
+                <td class="col-next">Detail Tools/Tech, Define Use Cases</td>
+                <td class="col-assigned">Data Lead</td>
+                <td class="col-eta">TBD</td>
+                <td class="col-comments">Covers reporting requirements.</td>
+                <td class="col-risks">ML/AI scope may be ambitious initially.</td>
+            </tr>
+            <tr>
+                <td class="col-sn">6</td>
+                <td class="col-name">Communications_Governance_Reporting_Strategy.html</td>
+                <td class="col-about">Plan for project communications, governance structure, and status reporting cadences/formats.</td>
+                <td class="col-priority">Medium</td>
+                <td class="col-status">Needs Review</td>
+                <td class="col-rag rag-amber">Amber</td>
+                <td class="col-next">Define Stakeholders, Finalize Cadence</td>
+                <td class="col-assigned">Project Manager</td>
+                <td class="col-eta">TBD</td>
+                <td class="col-comments">Crucial for stakeholder management.</td>
+                <td class="col-risks">Needs clear buy-in on governance model.</td>
+            </tr>
+            <tr>
+                <td class="col-sn">7</td>
+                <td class="col-name">Project_And_Change_And_Risk_Management_Plan.html</td>
+                <td class="col-about">Integrated plan covering project management approach, change control process, and risk management framework.</td>
+                <td class="col-priority">High</td>
+                <td class="col-status">Needs Review</td>
+                <td class="col-rag rag-amber">Amber</td>
+                <td class="col-next">Detail Change Process, Populate Risk Register</td>
+                <td class="col-assigned">Project Manager</td>
+                <td class="col-eta">TBD</td>
+                <td class="col-comments">Consolidated key PM processes.</td>
+                <td class="col-risks">Requires active maintenance (esp. risks).</td>
+            </tr>
+            <tr>
+                <td class="col-sn">8</td>
+                <td class="col-name">Advanced_Enhanced_User_Adoption_Strategy.html</td>
+                <td class="col-about">Plan focusing on strategies beyond basic training to drive deep user adoption and value realization.</td>
+                <td class="col-priority">Medium</td>
+                <td class="col-status">Draft</td>
+                <td class="col-rag rag-amber">Amber</td>
+                <td class="col-next">Define Specific Tactics, Metrics</td>
+                <td class="col-assigned">Change Manager</td>
+                <td class="col-eta">TBD</td>
+                <td class="col-comments">Goes beyond standard training plan.</td>
+                <td class="col-risks">May require dedicated resources/budget.</td>
+            </tr>
+            <tr>
+                <td class="col-sn">9</td>
+                <td class="col-name">Detailed_SDLC.html</td>
+                <td class="col-about">Describes the specific Software Development Lifecycle (SDLC) methodology, phases, and deliverables.</td>
+                <td class="col-priority">High</td>
+                <td class="col-status">Needs Review</td>
+                <td class="col-rag rag-amber">Amber</td>
+                <td class="col-next">Align with DevOps/Test Plans</td>
+                <td class="col-assigned">Tech Lead</td>
+                <td class="col-eta">TBD</td>
+                <td class="col-comments">Defines how software will be built.</td>
+                <td class="col-risks">Needs team buy-in and adherence.</td>
+            </tr>
+            <tr>
+                <td class="col-sn">10</td>
+                <td class="col-name">Cloud_Cost_Mgmt_FinOps_Strategy.html</td>
+                <td class="col-about">Strategy for managing cloud costs, implementing FinOps practices, budgeting, and reporting on cloud spend.</td>
+                <td class="col-priority">Medium</td>
+                <td class="col-status">Draft</td>
+                <td class="col-rag rag-amber">Amber</td>
+                <td class="col-next">Define Tagging Strategy, Setup Budget Alerts</td>
+                <td class="col-assigned">Cloud Architect/PM</td>
+                <td class="col-eta">TBD</td>
+                <td class="col-comments">Important if using cloud infrastructure.</td>
+                <td class="col-risks">Cloud costs can escalate if not managed.</td>
+            </tr>
+            <tr>
+                <td class="col-sn">11</td>
+                <td class="col-name">Project_Plan-12 month.html</td>
+                <td class="col-about">A potential high-level project plan or timeline covering a 12-month period.</td>
+                <td class="col-priority">High</td>
+                <td class="col-status">Draft</td>
+                <td class="col-rag rag-amber">Amber</td>
+                <td class="col-next">Validate Timeline, Add Resource Allocation</td>
+                <td class="col-assigned">Project Manager</td>
+                <td class="col-eta">TBD</td>
+                <td class="col-comments">Provides a roadmap view.</td>
+                <td class="col-risks">Timeline may be aggressive/unrealistic. Dependencies not mapped.</td>
+            </tr>
+            <tr>
+                <td class="col-sn">12</td>
+                <td class="col-name">Budget_Financial_Mgmt_Plan.html</td>
+                <td class="col-about">Plan detailing project budget, cost tracking, financial reporting, and funding management.</td>
+                <td class="col-priority">High</td>
+                <td class="col-status">Needs Review</td>
+                <td class="col-rag rag-amber">Amber</td>
+                <td class="col-next">Finalize Budget Numbers, Setup Tracking</td>
+                <td class="col-assigned">Project Manager/Finance</td>
+                <td class="col-eta">TBD</td>
+                <td class="col-comments">Essential for project financial health.</td>
+                <td class="col-risks">Budget constraints. Inaccurate cost tracking.</td>
+            </tr>
+            <tr>
+                <td class="col-sn">13</td>
+                <td class="col-name">Security_Strategy.html</td>
+                <td class="col-about">Overall strategy addressing information security requirements, controls, compliance, and threat management.</td>
+                <td class="col-priority">Highest</td>
+                <td class="col-status">Needs Review</td>
+                <td class="col-rag rag-amber">Amber</td>
+                <td class="col-next">Align with RFP NFRs, Detail Controls</td>
+                <td class="col-assigned">Security Lead</td>
+                <td class="col-eta">TBD</td>
+                <td class="col-comments">Addresses critical RFP security NFRs.</td>
+                <td class="col-risks">Needs thorough review and validation against policies (NYC3, OTI, etc.).</td>
+            </tr>
+            <tr>
+                <td class="col-sn">14</td>
+                <td class="col-name">Hardware_Lifecycle_Logistics_Mgmt_Plan.html</td>
+                <td class="col-about">Plan for managing GPS device hardware lifecycle, including procurement, deployment, maintenance, and disposal logistics.</td>
+                <td class="col-priority">High</td>
+                <td class="col-status">Draft</td>
+                <td class="col-rag rag-amber">Amber</td>
+                <td class="col-next">Detail Maintenance/Replacement Process</td>
+                <td class="col-assigned">Operations Lead</td>
+                <td class="col-eta">TBD</td>
+                <td class="col-comments">Covers requirements from RFP Sec 3.19.</td>
+                <td class="col-risks">Logistical complexity of managing 11k+ devices.</td>
+            </tr>
+            <tr>
+                <td class="col-sn">15</td>
+                <td class="col-name">User_Onboarding_Training_Comms_Strategy.html</td>
+                <td class="col-about">Strategy covering user onboarding processes, training delivery plan, and related communications.</td>
+                <td class="col-priority">High</td>
+                <td class="col-status">Needs Review</td>
+                <td class="col-rag rag-amber">Amber</td>
+                <td class="col-next">Detail Training Content/Schedule</td>
+                <td class="col-assigned">Training Lead/Change Manager</td>
+                <td class="col-eta">TBD</td>
+                <td class="col-comments">Addresses RFP Sec 3.23.</td>
+                <td class="col-risks">Scale of training required is immense (RFP Sec 3.23.1).</td>
+            </tr>
+            <tr>
+                <td class="col-sn">16</td>
+                <td class="col-name">Competitive Advantage Through Engineering Excellence.html</td>
+                <td class="col-about">Document likely outlining principles or strategies for achieving high-quality engineering outcomes.</td>
+                <td class="col-priority">Medium</td>
+                <td class="col-status">Draft</td>
+                <td class="col-rag rag-amber">Amber</td>
+                <td class="col-next">Review, Align with SDLC/DevOps</td>
+                <td class="col-assigned">Tech Lead</td>
+                <td class="col-eta">TBD</td>
+                <td class="col-comments">Focuses on engineering quality.</td>
+                <td class="col-risks">May be high-level principles needing actionable steps.</td>
+            </tr>
+            <tr>
+                <td class="col-sn">17</td>
+                <td class="col-name">Architecture.html</td>
+                <td class="col-about">Describes the proposed high-level technical architecture for the solution.</td>
+                <td class="col-priority">Highest</td>
+                <td class="col-status">Needs Review</td>
+                <td class="col-rag rag-amber">Amber</td>
+                <td class="col-next">Validate against NFRs, Detail Components</td>
+                <td class="col-assigned">Chief Architect</td>
+                <td class="col-eta">TBD</td>
+                <td class="col-comments">Core technical design document.</td>
+                <td class="col-risks">Architecture may not meet scalability, reliability, or security NFRs.</td>
+            </tr>
+            <tr>
+                <td class="col-sn">18</td>
+                <td class="col-name">Terraform_another_view.html</td>
+                <td class="col-about">Potentially an alternative perspective or specific detail related to Terraform infrastructure setup.</td>
+                <td class="col-priority">Medium</td>
+                <td class="col-status">Draft</td>
+                <td class="col-rag rag-amber">Amber</td>
+                <td class="col-next">Review, Consolidate with Main Infra Plan</td>
+                <td class="col-assigned">DevOps/Cloud Team</td>
+                <td class="col-eta">TBD</td>
+                <td class="col-comments">Relates to IaC.</td>
+                <td class="col-risks">Potential redundancy or conflict with other Terraform docs.</td>
+            </tr>
+            <tr>
+                <td class="col-sn">19</td>
+                <td class="col-name">Solution_Functional_Non Functional.html</td>
+                <td class="col-about">Document likely summarizing the key functional and non-functional requirements or how the solution addresses them.</td>
+                <td class="col-priority">High</td>
+                <td class="col-status">Needs Review</td>
+                <td class="col-rag rag-amber">Amber</td>
+                <td class="col-next">Compare against RTM, Ensure Coverage</td>
+                <td class="col-assigned">Business Analyst/Architect</td>
+                <td class="col-eta">TBD</td>
+                <td class="col-comments">Should align with RTM.</td>
+                <td class="col-risks">May miss requirements or conflict with detailed RTM.</td>
+            </tr>
+            <tr>
+                <td class="col-sn">20</td>
+                <td class="col-name">Team_Structure_And_Processes_Plan.html</td>
+                <td class="col-about">Describes the proposed project team structure, roles, responsibilities, and internal team processes.</td>
+                <td class="col-priority">Medium</td>
+                <td class="col-status">Needs Review</td>
+                <td class="col-rag rag-amber">Amber</td>
+                <td class="col-next">Finalize Roles, Align with Org Chart</td>
+                <td class="col-assigned">Project Manager/Lead</td>
+                <td class="col-eta">TBD</td>
+                <td class="col-comments">Defines how the project team operates.</td>
+                <td class="col-risks">Unclear roles or inefficient processes proposed.</td>
+            </tr>
+            <tr>
+                <td class="col-sn">21</td>
+                <td class="col-name">Compliance_Audit_Strategy.html</td>
+                <td class="col-about">Strategy outlining how compliance will be maintained and how audits (internal/external) will be handled.</td>
+                <td class="col-priority">Medium</td>
+                <td class="col-status">Draft</td>
+                <td class="col-rag rag-amber">Amber</td>
+                <td class="col-next">Define Audit Procedures, Align with Governance</td>
+                <td class="col-assigned">Compliance Lead</td>
+                <td class="col-eta">TBD</td>
+                <td class="col-comments">Supports ongoing compliance.</td>
+                <td class="col-risks">Audit process may be insufficient or disruptive.</td>
+            </tr>
+            <tr>
+                <td class="col-sn">22</td>
+                <td class="col-name">DevOps_Detailed.html</td>
+                <td class="col-about">Provides more specific details on the DevOps strategy, possibly including CI/CD pipeline specifics.</td>
+                <td class="col-priority">High</td>
+                <td class="col-status">Draft</td>
+                <td class="col-rag rag-amber">Amber</td>
+                <td class="col-next">Define Toolchain, Detail Pipeline Stages</td>
+                <td class="col-assigned">DevOps Lead</td>
+                <td class="col-eta">TBD</td>
+                <td class="col-comments">Complements DevOps_Strategy.html.</td>
+                <td class="col-risks">Proposed pipeline may be complex or inefficient. Tool choices need validation.</td>
+            </tr>
+            <tr>
+                <td class="col-sn">23</td>
+                <td class="col-name">SDLC_Detail_Implementation.html</td>
+                <td class="col-about">Focuses on the implementation details of the chosen SDLC, phase gates, specific activities.</td>
+                <td class="col-priority">High</td>
+                <td class="col-status">Needs Review</td>
+                <td class="col-rag rag-amber">Amber</td>
+                <td class="col-next">Validate against Detailed_SDLC.html, Add Metrics</td>
+                <td class="col-assigned">Tech Lead/PM</td>
+                <td class="col-eta">TBD</td>
+                <td class="col-comments">Implementation view of SDLC.</td>
+                <td class="col-risks">Implementation details may not align with overall SDLC or team capacity.</td>
+            </tr>
+            <tr>
+                <td class="col-sn">24</td>
+                <td class="col-name">Observability_Monitoring_IncidentManagement.html</td>
+                <td class="col-about">Strategy covering system observability, monitoring tools/metrics, and the incident management process for technical issues.</td>
+                <td class="col-priority">High</td>
+                <td class="col-status">Draft</td>
+                <td class="col-rag rag-amber">Amber</td>
+                <td class="col-next">Select Tools, Define Key Metrics, Detail IM Process</td>
+                <td class="col-assigned">Ops Lead/SRE</td>
+                <td class="col-eta">TBD</td>
+                <td class="col-comments">Critical for operational stability & NFRs.</td>
+                <td class="col-risks">Monitoring may be insufficient. Incident process unclear or slow.</td>
+            </tr>
+             <tr>
+                <td class="col-sn">25</td>
+                <td class="col-name">Formal_Project, Change, and Risk_Management_Plan.html</td>
+                <td class="col-about">Appears to be a more formal version or iteration of the integrated PM plan (similar to #7).</td>
+                <td class="col-priority">High</td>
+                <td class="col-status">Needs Review</td>
+                <td class="col-rag rag-amber">Amber</td>
+                <td class="col-next">Consolidate/Reconcile with #7, Finalize Processes</td>
+                <td class="col-assigned">Project Manager</td>
+                <td class="col-eta">TBD</td>
+                <td class="col-comments">Potential duplicate/update of #7.</td>
+                <td class="col-risks">Confusion/conflict if not reconciled with other PM plan.</td>
+            </tr>
+             <tr>
+                <td class="col-sn">26</td>
+                <td class="col-name">Vendor_3rdParty_mgmt_logistics_plan.html</td>
+                <td class="col-about">Plan for managing relationships, performance, and logistics related to third-party vendors or subcontractors.</td>
+                <td class="col-priority">Medium</td>
+                <td class="col-status">Draft</td>
+                <td class="col-rag rag-amber">Amber</td>
+                <td class="col-next">Identify Key Vendors, Define SLAs/KPIs</td>
+                <td class="col-assigned">Project Manager/Procurement</td>
+                <td class="col-eta">TBD</td>
+                <td class="col-comments">Important if relying on subcontractors.</td>
+                <td class="col-risks">Poor vendor performance impacting project. Lack of clear oversight.</td>
+            </tr>
+             <tr>
+                <td class="col-sn">27</td>
+                <td class="col-name">GIS_Data_Mgmt_Integration_Strategy.html</td>
+                <td class="col-about">Specific strategy detailing how Geographic Information System (GIS) data will be managed, integrated, and utilized.</td>
+                <td class="col-priority">High</td>
+                <td class="col-status">Needs Review</td>
+                <td class="col-rag rag-amber">Amber</td>
+                <td class="col-next">Detail LION Integration, Define Update Process</td>
+                <td class="col-assigned">GIS Specialist/Data Lead</td>
+                <td class="col-eta">TBD</td>
+                <td class="col-comments">Covers requirements like RFP Sec 3.2.5.</td>
+                <td class="col-risks">Complexity of integrating/maintaining various GIS data sources. Accuracy issues.</td>
+            </tr>
+             <tr>
+                <td class="col-sn">28</td>
+                <td class="col-name">Innovation_Showcase.html</td>
+                <td class="col-about">Document potentially highlighting innovative aspects of the proposed solution or approach.</td>
+                <td class="col-priority">Low</td>
+                <td class="col-status">Draft</td>
+                <td class="col-rag rag-amber">Amber</td>
+                <td class="col-next">Review, Extract Key selling points</td>
+                <td class="col-assigned">Sales/Proposal Lead</td>
+                <td class="col-eta">TBD</td>
+                <td class="col-comments">Likely for proposal marketing/differentiation.</td>
+                <td class="col-risks">Claims of innovation may not be substantial or relevant.</td>
+            </tr>
+             <tr>
+                <td class="col-sn">29</td>
+                <td class="col-name">Operational_Excellence_BCP_DR_Plan.html</td>
+                <td class="col-about">Plan focusing on achieving operational excellence, likely incorporating Business Continuity and Disaster Recovery details.</td>
+                <td class="col-priority">High</td>
+                <td class="col-status">Needs Review</td>
+                <td class="col-rag rag-amber">Amber</td>
+                <td class="col-next">Align with BCP NFRs (3.27), Detail DR Procedures</td>
+                <td class="col-assigned">Ops Lead</td>
+                <td class="col-eta">TBD</td>
+                <td class="col-comments">Includes BCP/DR elements (RFP 3.27).</td>
+                <td class="col-risks">DR plan untested or insufficient RTO/RPO.</td>
+            </tr>
+             <tr>
+                <td class="col-sn">30</td>
+                <td class="col-name">Development_Strategy.html</td>
+                <td class="col-about">Outlines the overall strategy for software development, potentially covering methodologies, standards, tools.</td>
+                <td class="col-priority">High</td>
+                <td class="col-status">Needs Review</td>
+                <td class="col-rag rag-amber">Amber</td>
+                <td class="col-next">Align with SDLC, DevOps, Security Plans</td>
+                <td class="col-assigned">Tech Lead</td>
+                <td class="col-eta">TBD</td>
+                <td class="col-comments">High-level development approach.</td>
+                <td class="col-risks">May conflict with more detailed plans (SDLC, DevOps).</td>
+            </tr>
+             <tr>
+                <td class="col-sn">31</td>
+                <td class="col-name">Terraform_Infra_Setup_Guide.html</td>
+                <td class="col-about">A guide detailing the steps or configuration for setting up infrastructure using Terraform (Infrastructure as Code).</td>
+                <td class="col-priority">Medium</td>
+                <td class="col-status">Draft</td>
+                <td class="col-rag rag-amber">Amber</td>
+                <td class="col-next">Review/Test Scripts, Document Variables</td>
+                <td class="col-assigned">DevOps/Cloud Team</td>
+                <td class="col-eta">TBD</td>
+                <td class="col-comments">Specific IaC implementation guide.</td>
+                <td class="col-risks">Scripts may contain errors or security issues. Needs version control.</td>
+            </tr>
+             <tr>
+                <td class="col-sn">32</td>
+                <td class="col-name">Requirements_Fulfillment_Mapping.html</td>
+                <td class="col-about">Likely a document mapping RFP requirements to proposed solution features or components (similar to RTM).</td>
+                <td class="col-priority">Highest</td>
+                <td class="col-status">Needs Review</td>
+                <td class="col-rag rag-amber">Amber</td>
+                <td class="col-next">Validate against Generated RTM, Ensure Completeness</td>
+                <td class="col-assigned">Business Analyst/PM</td>
+                <td class="col-eta">TBD</td>
+                <td class="col-comments">Crucial for demonstrating compliance. Should align with my generated RTM.</td>
+                <td class="col-risks">May contain gaps or inaccuracies in mapping. Could conflict with RTM generated in previous step.</td>
+            </tr>
+            <tr>
+                <td class="col-sn">33</td>
+                <td class="col-name">Test_Strategy.html</td>
+                <td class="col-about">Outlines the overall approach to testing, including levels (unit, integration, UAT), types, environments, and tools.</td>
+                <td class="col-priority">High</td>
+                <td class="col-status">Needs Review</td>
+                <td class="col-rag rag-amber">Amber</td>
+                <td class="col-next">Detail Test Cases, Define Environments</td>
+                <td class="col-assigned">QA Lead</td>
+                <td class="col-eta">TBD</td>
+                <td class="col-comments">Covers testing NFRs (RFP 3.25.32).</td>
+                <td class="col-risks">Test coverage may be insufficient. Lack of appropriate test environments/data.</td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>

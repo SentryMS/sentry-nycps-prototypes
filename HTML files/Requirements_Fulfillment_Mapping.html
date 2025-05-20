@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RFP R1804 Requirements Traceability Matrix</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        h1, h2 {
+            color: #0056b3; /* Dark blue heading */
+            border-bottom: 2px solid #0056b3;
+            padding-bottom: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            background-color: #fff;
+        }
+        th, td {
+            border: 1px solid #dee2e6; /* Light grey border */
+            padding: 10px 12px;
+            text-align: left;
+            vertical-align: top; /* Align content to top */
+            font-size: 0.9em; /* Slightly smaller font for table content */
+        }
+        th {
+            background-color: #e9ecef; /* Lighter grey header */
+            font-weight: bold;
+            color: #495057;
+        }
+        tr:nth-child(even) {
+            background-color: #f8f9fa; /* Light alternating row color */
+        }
+        tr:hover {
+            background-color: #e2e6ea; /* Hover effect */
+        }
+        .implemented-yes {
+            background-color: #d4edda; /* Light Green */
+            color: #155724;
+            font-weight: bold;
+        }
+        .implemented-no {
+            background-color: #f8d7da; /* Light Red */
+            color: #721c24;
+            font-weight: bold;
+        }
+        .implemented-tbd {
+            background-color: #fff3cd; /* Amber */
+            color: #856404;
+            font-weight: bold;
+        }
+        /* Column Widths (adjust as needed) */
+        .col-id { width: 8%; }
+        .col-desc { width: 30%; }
+        .col-impl { width: 7%; text-align: center; }
+        .col-where { width: 15%; }
+        .col-next { width: 15%; }
+        .col-risks { width: 15%; }
+        .col-comments { width: 10%; }
+
+        p.intro {
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
+        p.intro strong {
+            color: #d9534f; /* Red emphasis */
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>RFP R1804 Transportation Management System - Requirements Traceability Matrix</h1>
+
+    <p class="intro">
+        This document provides a detailed traceability matrix for the requirements outlined in the Request for Proposals (RFP) R1804 for the New York City Public Schools (NYCPS) Office of Pupil Transportation (OPT) Transportation Management System. It aims to capture and track all specified requirements throughout the project lifecycle.
+        <br>
+        <strong>Important Note on 'Implemented' Column:</strong>
+        '<strong>Yes</strong>' (Green) indicates the requirement from the RFP text has been acknowledged and included in this tracking document. It does <strong>not</strong> signify that the requirement has been coded or deployed in the final system.
+        '<strong>No</strong>' (Red) would indicate a requirement identified in the RFP source text that was missed in this document.
+        '<strong>TBD</strong>' (Amber) is used primarily for Minimum Qualifications (dependent on the vendor) or where the status is genuinely unknown. The actual implementation status of all system features is pending design and development.
+    </p>
+
+    <h2>Minimum Qualifications (Section 2)</h2>
+    <p>These requirements pertain to the eligibility and capabilities of the proposing vendor, rather than the functional aspects of the system itself. They are typically assessed during the vendor evaluation phase.</p>
+    <table>
+        <thead>
+            <tr>
+                <th class="col-id">Requirement ID</th>
+                <th class="col-desc">Requirement Description</th>
+                <th class="col-impl">Acknowledged/<br>Tracked?</th>
+                <th class="col-where">Where Implemented (Evidence)</th>
+                <th class="col-next">Next Steps</th>
+                <th class="col-risks">Risks and Issues</th>
+                <th class="col-comments">Comments</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>RFP-S2.1</td>
+                <td>Proposer for-profit or not-for-profit; Individuals ineligible.</td>
+                <td class="implemented-tbd">TBD</td>
+                <td>Vendor Proposal Form</td>
+                <td>Vendor Eligibility Verification</td>
+                <td>Ensuring proposer meets entity type requirement.</td>
+                <td>Eligibility check.</td>
+            </tr>
+            <tr>
+                <td>RFP-S2.2</td>
+                <td>Min 3 years actively engaged providing GPS service, dynamic routing, AND ridership (all 3) to scale similar size/complexity to DOE. Provide 3 references (letters/contacts) detailing scope/quality/dates/locations etc.</td>
+                <td class="implemented-tbd">TBD</td>
+                <td>Vendor Proposal Form & References</td>
+                <td>Vendor Experience Verification; Reference Checks</td>
+                <td>Vendor potentially lacking experience in one core area or at the required scale. Reference quality/availability.</td>
+                <td>Core experience requirement. Crucial for demonstrating capability. Requires specific evidence (references).</td>
+            </tr>
+            <tr>
+                <td>RFP-S2.3</td>
+                <td>Vendor must have dedicated, local NYC software dev team (dev, product mgmt, QA/test, others). Demonstrate ability provide on-site support, collaboration, engagement w/ local presence key tech staff.</td>
+                <td class="implemented-tbd">TBD</td>
+                <td>Vendor Proposal Form / Org Chart</td>
+                <td>Verification of Local Team Presence/Capability</td>
+                <td>Vendor may claim local presence but lack key roles or depth. Difficulty verifying actual team dedication/location.</td>
+                <td>Local presence requirement for technical team.</td>
+            </tr>
+            <tr>
+                <td>RFP-S2.4</td>
+                <td>Min $5 MM annual revenue (provide evidence: financials).</td>
+                <td class="implemented-tbd">TBD</td>
+                <td>Vendor Proposal Form & Financial Statements</td>
+                <td>Financial Documentation Review</td>
+                <td>Vendor financial instability. Submitted documents may be insufficient/unclear.</td>
+                <td>Financial stability requirement.</td>
+            </tr>
+            <tr>
+                <td>RFP-S2.5</td>
+                <td>If cannot provide $5MM revenue evidence, provide info on creditworthiness (>= $5MM), lines of credit details, revocations.</td>
+                <td class="implemented-tbd">TBD</td>
+                <td>Vendor Proposal Form & Creditworthiness Info</td>
+                <td>Financial Documentation Review (Alternative)</td>
+                <td>Assessing creditworthiness can be complex. Line of credit may not guarantee stability.</td>
+                <td>Alternative financial qualification method.</td>
+            </tr>
+            <tr>
+                <td>RFP-S2.6</td>
+                <td>Min $2.5 MM annual revenue specifically from provision of services described herein (GPS, routing, ridership). Provide evidence (client letters, statements, project descriptions).</td>
+                <td class="implemented-tbd">TBD</td>
+                <td>Vendor Proposal Form & Specific Revenue Evidence</td>
+                <td>Review/Verification of Specific Revenue Evidence</td>
+                <td>Difficulty verifying revenue source specificity. Evidence may be weak or non-specific.</td>
+                <td>Specific experience revenue requirement. Requires verifiable evidence.</td>
+            </tr>
+             <tr>
+                <td>RFP-S2.Note</td>
+                <td>Proposers may join others (subcontractors); contract between NYCDOE & proposer; proposer pays/manages subs.</td>
+                <td class="implemented-yes">Yes</td>
+                <td>N/A (Informational)</td>
+                <td>Ensure prime vendor understands responsibility.</td>
+                <td>Prime vendor failure to manage subcontractors effectively. Lack of transparency into subcontractor performance.</td>
+                <td>Clarifies subcontracting arrangement.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>System & Operational Requirements (Section 3)</h2>
+    <p>This section details the functional, non-functional, hardware, training, support, and other requirements for the proposed Transportation Management System and associated services.</p>
+    <table>
+        <thead>
+            <tr>
+                <th class="col-id">Requirement ID</th>
+                <th class="col-desc">Requirement Description</th>
+                <th class="col-impl">Acknowledged/<br>Tracked?</th>
+                <th class="col-where">Where Implemented (File/Section)</th>
+                <th class="col-next">Next Steps</th>
+                <th class="col-risks">Risks and Issues</th>
+                <th class="col-comments">Comments</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- 3.1 System Overview -->
+            <tr><td colspan="7" style="background-color:#dee2e6; font-weight:bold;">3.1 System Overview</td></tr>
+            <tr>
+                <td>RFP-S3.1.1</td>
+                <td>Provide a single, completely integrated solution for: 1. Near Real-time Location Tracking (GPS + Ridership), 2. Near Real-time notification system (connecting all stakeholders), 3. Adaptive/Dynamic vehicle routing.</td>
+                <td class="implemented-yes">Yes</td>
+                <td>TBD - Design/Development Phase</td>
+                <td>High-Level Design, Component Design, Integration Planning</td>
+                <td>Complexity of integrating three major functions seamlessly. Dependency on single vendor performance. Achieving 'near real-time' performance consistently across all functions.</td>
+                <td>Core system pillars. Integration complexity. (Implicit High)</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.1.2</td>
+                <td>Solution to be OPT’s new system of record for GPS service, routing, and ridership.</td>
+                <td class="implemented-yes">Yes</td>
+                <td>TBD - Design/Development Phase</td>
+                <td>Data Modeling, Data Migration Strategy, System Architecture Design</td>
+                <td>Data migration from legacy systems. Ensuring data integrity during transition. User adoption of the new system of record.</td>
+                <td>Data migration and system transition. (Implicit High)</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.1.3</td>
+                <td>Augment or be integrated into other existing antiquated OPT systems. All relevant OPT data must be seamlessly integrated into the new system.</td>
+                <td class="implemented-yes">Yes</td>
+                <td>TBD - Design/Development Phase</td>
+                <td>Legacy System Analysis, API Design/Development, Integration Testing Planning</td>
+                <td>Technical debt in legacy systems. API availability/stability of legacy systems. Complexity of data mapping and synchronization.</td>
+                <td>Integration challenge. Legacy system compatibility. (Implicit High)</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.1.4</td>
+                <td>Solution may be configurable/customizable COTS or custom-built.</td>
+                <td class="implemented-yes">Yes</td>
+                <td>TBD - Solution Selection/Design Phase</td>
+                <td>Solution Architecture Evaluation (COTS vs Custom), Detailed Design</td>
+                <td>COTS limitations requiring extensive customization. Custom build complexity and timeline risks. Vendor expertise in chosen approach.</td>
+                <td>Flexibility in solution approach. Needs careful evaluation of COTS fit vs. custom build effort.</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.1.5</td>
+                <td>System must be robust enough to handle the enterprise size/complexity of OPT’s operations and expand for growth/new technologies.</td>
+                <td class="implemented-yes">Yes</td>
+                <td>TBD - Design/Development Phase</td>
+                <td>Architecture Design (Scalability, Performance), Load Testing Planning</td>
+                <td>Accurately predicting future growth and technology needs. Designing architecture for high scalability and adaptability. Performance under peak load at scale.</td>
+                <td>Scalability and future-proofing requirement. (Implicit High)</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.1.6</td>
+                <td>Proposed solution may include options for an in-house customized build/develop component.</td>
+                <td class="implemented-yes">Yes</td>
+                <td>TBD - Solution Selection/Design Phase</td>
+                <td>Evaluate Hybrid Development Model, Define Responsibilities</td>
+                <td>Coordination between vendor and in-house teams. Maintaining consistency in architecture and quality. IP ownership and support model clarity.</td>
+                <td>Hybrid development model possibility. Requires clear definition of responsibilities.</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.1.7</td>
+                <td>Seek a collection of systems integrated into a single platform to allow ease of data flow and reduce troubleshooting across several contractors.</td>
+                <td class="implemented-yes">Yes</td>
+                <td>TBD - Design/Development Phase</td>
+                <td>Architecture Design, Integration Design, API Strategy</td>
+                <td>Ensuring true 'single platform' feel vs. loosely coupled systems. Vendor's ability to manage integration points effectively. Data consistency across integrated modules.</td>
+                <td>Emphasis on integration and reduced complexity from multiple vendors. (Implicit High)</td>
+            </tr>
+            <!-- 3.2 GPS -->
+            <tr><td colspan="7" style="background-color:#dee2e6; font-weight:bold;">3.2 GPS</td></tr>
+             <tr>
+                <td>RFP-S3.2.1</td>
+                <td>GPS must be independent of bus inventory, portable, usable daily on any route/driver/vehicle. (High)</td>
+                <td class="implemented-yes">Yes</td>
+                <td>TBD - Hardware Selection/Design Phase</td>
+                <td>Hardware Specification, Device Selection, Logistics Planning</td>
+                <td>Device management complexity (tracking, charging, assignment). Durability of portable devices. Ensuring driver compliance with device handling.</td>
+                <td>Hardware requirement. Focus on portability.</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.2.2</td>
+                <td>Every bus must have operational GPS; failure shouldn't preclude service (driver needs replacement). (High)</td>
+                <td class="implemented-yes">Yes</td>
+                <td>TBD - Operational Procedures Design</td>
+                <td>Spare Device Strategy, Replacement Process Design, Ground Support Setup</td>
+                <td>Logistics of rapid device replacement. Maintaining sufficient spare inventory. Tracking device failures.</td>
+                <td>Operational requirement. Requires spares and efficient replacement process.</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.2.3</td>
+                <td>GPS data available near real-time for all solution components (Routing overlay, Driver Module). (High)</td>
+                <td class="implemented-yes">Yes</td>
+                <td>TBD - Architecture/Integration Design</td>
+                <td>Data Flow Design, API Design, Performance Testing</td>
+                <td>Network latency affecting real-time data. Scalability of data ingestion/processing infrastructure. Integration complexity with various modules.</td>
+                <td>Performance and integration requirement.</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.2.4</td>
+                <td>Up-to-date map w/ dynamic turn-by-turn nav (planned/actual), driver divert capability, overlay planned vs actual, visual deviation indication, export reports (full route, non-riders, student travel time). (High)</td>
+                <td class="implemented-yes">Yes</td>
+                <td>TBD - Software Design (Driver Module, Admin Module)</td>
+                <td>UI/UX Design, Mapping Component Selection/Integration, Navigation Algorithm Design, Reporting Feature Design</td>
+                <td>Map data accuracy/updates. Algorithm complexity for dynamic navigation and deviation analysis. UI design for clarity and usability. Performance of route replay/overlay.</td>
+                <td>Mapping, Navigation, UI requirement.</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.2.4.a</td>
+                <td>System shall implement an interactive visualization overlay comparing planned vs. actual GPS routes (real-time/historical), with turn-by-turn comparison, deviation reporting, export functionality. (High)</td>
+                <td class="implemented-yes">Yes</td>
+                <td>TBD - Software Design (Admin Module)</td>
+                <td>UI/UX Design, Data Visualization Component Design, Reporting Design</td>
+                <td>Complexity of rendering large amounts of historical route data efficiently. Defining clear deviation metrics and severity indicators. UI/UX for interactive analysis.</td>
+                <td>Detail for RFP-S3.2.4. Focus on visualization and analysis capabilities.</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.2.4.b</td>
+                <td>Visualization: planned & actual on same map, distinct indicators, color-coding for deviations w/ severity. (High)</td>
+                <td class="implemented-yes">Yes</td>
+                <td>TBD - Software Design (Admin Module)</td>
+                <td>UI/UX Design (Map Visualization)</td>
+                <td>Choosing effective visual indicators. Ensuring map performance with overlays. Consistent severity calculation.</td>
+                <td>Detail for RFP-S3.2.4.a. Specific UI/UX requirements for the map overlay.</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.2.4.c</td>
+                <td>Turn-by-turn analysis: synchronized waypoints (planned vs. actual), arrival/dwell times, sequence adherence, interactive elements for detailed metrics. (High)</td>
+                <td class="implemented-yes">Yes</td>
+                <td>TBD - Software Design (Admin Module)</td>
+                <td>Data Model Design, UI/UX Design (Interaction)</td>
+                <td>Accuracy of time/sequence data capture. Handling missing data points. Performance of detailed metric calculation on demand.</td>
+                <td>Detail for RFP-S3.2.4.a. Specific data points and interactions for turn-by-turn analysis.</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.2.4.d</td>
+                <td>Maintain real-time student ridership status, visual indicators for non-boarded students, filtering capabilities (route segments/time windows). (High)</td>
+                <td class="implemented-yes">Yes</td>
+                <td>TBD - Software Design (Admin Module)</td>
+                <td>Integration Design (Ridership), UI/UX Design (Filtering, Visualization)</td>
+                <td>Real-time synchronization with ridership system. Clear visual design for student status. Efficient filtering performance on large datasets.</td>
+                <td>Detail for RFP-S3.2.4.a. Integration with ridership data and UI filtering.</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.2.5</td>
+                <td>Capability to use LION ArcGIS (NYC single-line street representation). (High)</td>
+                <td class="implemented-yes">Yes</td>
+                <td>TBD - Integration Design/Development</td>
+                <td>GIS Data Integration Planning, Licensing Acquisition</td>
+                <td>Licensing/access to LION data. Compatibility/integration effort with vendor's mapping solution. Keeping LION data updated.</td>
+                <td>Integration requirement with specific external GIS data source.</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.2.6</td>
+                <td>Time and location transmitted at intervals not exceeding one minute. (Medium)</td>
+                <td class="implemented-yes">Yes</td>
+                <td>TBD - Device Configuration/Software Design</td>
+                <td>Device Setting Configuration, Performance Testing</td>
+                <td>Network reliability impact on transmission frequency. Battery consumption vs. transmission frequency trade-off. Data volume generated.</td>
+                <td>Performance requirement.</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.2.7</td>
+                <td>Bus location transmitted in near real-time without latency issues. (High)</td>
+                <td class="implemented-yes">Yes</td>
+                <td>TBD - Architecture/Network Design</td>
+                <td>Infrastructure Design, Network Optimization, Latency Testing</td>
+                <td>Defining and meeting 'near real-time' SLA consistently. Network congestion/coverage issues. Scalability of backend to handle concurrent updates.</td>
+                <td>Performance requirement. Critical for parent app and operational oversight.</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.2.8</td>
+                <td>Provide estimated time of arrival (ETA) to all destinations (student home/stop, school). (High)</td>
+                <td class="implemented-yes">Yes</td>
+                <td>TBD - Software Design (ETA Algorithm)</td>
+                <td>Algorithm Design/Selection, Integration with Real-time Data, Accuracy Testing</td>
+                <td>Accuracy of ETA algorithms (traffic, dwell times). Real-time data feed reliability for calculations. Handling unexpected delays.</td>
+                <td>Functional requirement. Core feature for stakeholders.</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.2.9</td>
+                <td>Automatically un-assign the driver from the route upon route completion. (Medium)</td>
+                <td class="implemented-yes">Yes</td>
+                <td>TBD - Software Design (Workflow Automation)</td>
+                <td>Define Completion Criteria, Workflow Design, Testing</td>
+                <td>Defining clear criteria for 'route completion'. Handling exceptions (partial completion). Ensuring correct driver status updates.</td>
+                <td>Automation requirement.</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.2.10</td>
+                <td>GPS support memory of previous event user and prepopulate fields, limiting driver action for logon/association. (High)</td>
+                <td class="implemented-yes">Yes</td>
+                <td>TBD - Software Design (Driver Module UI/UX)</td>
+                <td>UI/UX Design, Security Review, Association Logic Design</td>
+                <td>Security implications of storing previous user data. Handling shared devices correctly. Ensuring robust association logic.</td>
+                <td>Usability requirement for drivers.</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.2.11</td>
+                <td>Intelligent device monitoring system listing all GPS units w/ inventory fields (Make, Model, ID#). (High)</td>
+                <td class="implemented-yes">Yes</td>
+                <td>TBD - Software Design (Admin Module / Asset Management)</td>
+                <td>Asset Management System Design/Integration, Data Modeling</td>
+                <td>Accuracy and completeness of inventory data. Integration with device provisioning/deployment process. Scalability of monitoring system.</td>
+                <td>Asset management requirement.</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.2.12</td>
+                <td>Device monitoring includes: SBC name assigned, yard assigned, sent location/recipient/date, verification date/person/license#, carrier, status (in service, repair, sim issue). (High)</td>
+                <td class="implemented-yes">Yes</td>
+                <td>TBD - Software Design (Admin Module / Asset Management)</td>
+                <td>Data Modeling, Workflow Design (Status Updates), Integration with SBC data</td>
+                <td>Maintaining accuracy of complex status fields. Workflow for updating device status consistently. Integration with SBC information systems.</td>
+                <td>Detail for RFP-S3.2.11. Specific data fields for inventory/status tracking.</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.2.13</td>
+                <td>SBC vendor certification of device delivery/functionality (100% efficiency) within 72 hours of receipt. (High)</td>
+                <td class="implemented-yes">Yes</td>
+                <td>TBD - Operational Procedures Design</td>
+                <td>Process Design, Documentation Template Creation, SBC Communication Plan</td>
+                <td>Defining '100% efficiency'. Establishing clear certification process/documentation. Ensuring SBC compliance and timely reporting.</td>
+                <td>Process requirement involving SBCs.</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.2.14</td>
+                <td>Provide OPT Operational team with test tools (GPS Driver apps for route/driver/vehicle association, GPS Dispatcher apps). (High)</td>
+                <td class="implemented-yes">Yes</td>
+                <td>TBD - Software Development (Test Tools)</td>
+                <td>Tool Design/Development, Documentation, OPT Training</td>
+                <td>Developing robust and user-friendly test tools. Training OPT staff on tool usage. Maintaining tools alongside main application updates.</td>
+                <td>Testing/Support requirement for OPT.</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.2.15</td>
+                <td>Provide detailed history of time associated with bus motion: start, MPH, heavy braking, idle, stop. (Medium)</td>
+                <td class="implemented-yes">Yes</td>
+                <td>TBD - Software Design (Data Logging)</td>
+                <td>Data Logging Design, Define Thresholds, Reporting Design</td>
+                <td>Accuracy of sensor data (braking). Defining thresholds (heavy braking, idle). Data volume and storage implications. Potential privacy concerns.</td>
+                <td>Data logging requirement. Useful for safety/performance analysis.</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.2.16</td>
+                <td>Maintain functionality if initial bus power source lost; cannot rely entirely on device power as redundant source. (High)</td>
+                <td class="implemented-yes">Yes</td>
+                <td>TBD - Hardware Selection/Design</td>
+                <td>Redundant Power Solution Design/Selection, Testing</td>
+                <td>Design/selection of appropriate redundant power source. Ensuring connection/reliability of redundant source. Monitoring status of redundant power.</td>
+                <td>Hardware/Reliability requirement. Requires external power bank or similar. See also 3.4.7.</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.2.17</td>
+                <td>All devices inventoried; current possession/history recorded & tracked; GPS data archived for 7 years. (Implicit High)</td>
+                <td class="implemented-yes">Yes</td>
+                <td>TBD - Asset Mgmt/Data Retention Policy Design</td>
+                <td>Inventory System Design, Data Archival Strategy, Compliance Verification Plan</td>
+                <td>Robustness of inventory system. Long-term storage cost and retrieval efficiency. Ensuring compliance with 7-year retention.</td>
+                <td>Asset Management and Data Retention requirement.</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.2.18</td>
+                <td>Deliver detailed data retention policy; comply with policy in Attachment A1; adhere to future updates. (High)</td>
+                <td class="implemented-yes">Yes</td>
+                <td>TBD - Policy Documentation</td>
+                <td>Develop/Align Data Retention Policy, Implement Compliance Mechanisms</td>
+                <td>Aligning vendor policy with DOE policy. Managing policy updates and system changes. Ensuring auditable compliance.</td>
+                <td>Policy and Compliance requirement.</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.2.19</td>
+                <td>Track student-level ridership information for CTS school age, STS, and CTS PreK/EI student base. (High)</td>
+                <td class="implemented-yes">Yes</td>
+                <td>TBD - Software Design (Ridership Module)</td>
+                <td>Data Modeling, Ridership Capture Workflow Design, Scalability Testing</td>
+                <td>Complexity of tracking non-CTS students accurately. Data privacy considerations (FERPA). Scalability for all student types.</td>
+                <td>Functional requirement. Core ridership scope.</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.2.20</td>
+                <td>Able to indicate individual student’s ridership should not be tracked (parent opt-out). (Medium)</td>
+                <td class="implemented-yes">Yes</td>
+                <td>TBD - Software Design (Parent Module, Ridership Module)</td>
+                <td>Opt-out Workflow Design, UI Design (Parent), Data Flag Implementation</td>
+                <td>Mechanism for capturing and managing opt-out requests. Ensuring opt-out status is respected across all relevant modules/reports. Auditing opt-out compliance.</td>
+                <td>Functional requirement. Privacy/Consent management.</td>
+            </tr>
+             <tr>
+                <td>RFP-S3.2.21</td>
+                <td>Submit detailed rollout plan for expedited GPS device installation, followed by simultaneous routing software rollout/integration. (High)</td>
+                 <td class="implemented-yes">Yes</td>
+                <td>Vendor Proposal Document</td>
+                <td>Proposal Review, Plan Refinement</td>
+                <td>Complexity of large-scale, multi-phase rollout logistics. Coordination with SBCs for installation. Managing dependencies between hardware and software rollout.</td>
+                <td>Implementation planning requirement for the *proposal*.</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.2.22</td>
+                <td>Capability for efficient, automated/semi-automated request process for installing, repairing, transferring a device. (High)</td>
+                 <td class="implemented-yes">Yes</td>
+                <td>TBD - Software Design (Admin Module/Ticketing)</td>
+                <td>Workflow Design, Integration with Inventory/Ticketing, UI Design</td>
+                <td>Designing an efficient workflow. Integration with inventory and ticketing systems. User adoption of the request process.</td>
+                <td>Workflow/Efficiency requirement. Links to Ticketing (3.5).</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.2.23</td>
+                <td>Handle min 100 geofences per device; near real-time alerts entering/exiting; admin notification config; record time/date/name even if alerting off. (High)</td>
+                 <td class="implemented-yes">Yes</td>
+                <td>TBD - Software Design (Geofencing/Alerting)</td>
+                <td>Geofence Engine Selection/Design, Alerting System Design, UI for Configuration</td>
+                <td>Performance impact of managing many geofences per device. Reliability of near real-time alerting. User interface for managing geofences and alert configurations.</td>
+                <td>Functional requirement.</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.2.24</td>
+                <td>Designed to accept GIS-related config changes to improve Route Planning. (High)</td>
+                 <td class="implemented-yes">Yes</td>
+                <td>TBD - Software Design (Routing Module Config)</td>
+                <td>Configuration Interface Design, Integration with Routing Engine</td>
+                <td>Defining the scope and mechanism for GIS config changes. Ensuring changes propagate correctly to routing algorithms. User roles/permissions for making changes.</td>
+                <td>Extensibility/Configuration requirement. Links to Routing (3.12).</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.2.25</td>
+                <td>Capability to accept GIS-related config changes to improve ETA calculations (avg speed, speed limits); update parameters as conditions change. (High)</td>
+                 <td class="implemented-yes">Yes</td>
+                <td>TBD - Software Design (ETA Module Config)</td>
+                <td>Configuration Interface Design, Integration with ETA Algorithm</td>
+                <td>Defining parameters and update mechanisms (manual/automated). Impact of changes on ETA accuracy. Keeping parameters (e.g., speed limits) current.</td>
+                <td>Extensibility/Configuration requirement. Links to ETA (3.2.8).</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.2.26</td>
+                <td>Device vendor exclusively manages SIM card replacement/issues (not OPT/third-party). (Implicit Medium/High)</td>
+                 <td class="implemented-yes">Yes</td>
+                <td>TBD - Vendor Contract/SOPs</td>
+                <td>Define Vendor Responsibilities in Contract/SOP</td>
+                <td>Vendor capability and responsiveness for SIM issues. Process for reporting/tracking SIM issues. Potential delays if vendor managed.</td>
+                <td>Support/Responsibility requirement.</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.2.27</td>
+                <td>Interactive web map capability to lay multiple map layers (district lines, OPT codes, hospitals, disaster areas). (High)</td>
+                 <td class="implemented-yes">Yes</td>
+                <td>TBD - Software Design (Admin/School Module UI)</td>
+                <td>Mapping Component Selection, Layer Management UI Design, Data Integration</td>
+                <td>Performance with multiple layers. Availability and format of layer data (districts, OPT codes, etc.). UI for layer management.</td>
+                <td>Mapping/UI requirement for Admin/School modules.</td>
+            </tr>
+            <!-- 3.3 GPS Ground Support -->
+            <tr><td colspan="7" style="background-color:#dee2e6; font-weight:bold;">3.3 GPS Ground Support</td></tr>
+            <tr>
+                <td>RFP-S3.3.1</td>
+                <td>Trained tech workforce for remote/on-site support; Help desk facility; maintenance trouble ticket creation. (High)</td>
+                <td class="implemented-yes">Yes</td>
+                <td>TBD - Vendor Operations Setup</td>
+                <td>Staffing Plan, Training Plan, Help Desk Setup, Ticketing System Integration</td>
+                <td>Ensuring adequate technician training and availability. Efficiency of help desk and ticketing integration (see 3.5). Clear escalation process.</td>
+                <td>Support structure requirement.</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.3.2</td>
+                <td>Tech workforce sized/located within 5 boroughs (or 10 miles proximity) for timely response. (High)</td>
+                <td class="implemented-yes">Yes</td>
+                <td>TBD - Vendor Operations Setup</td>
+                <td>Resource Planning (Location, Staffing Levels), Response Time Monitoring Setup</td>
+                <td>Vendor ability to meet geographic coverage and staffing levels. Defining and meeting 'timely response' SLAs. Travel time impact.</td>
+                <td>Resource location/availability requirement.</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.3.3</td>
+                <td>Ample spare installation/repair equipment (min 10 business days coverage). (High)</td>
+                <td class="implemented-yes">Yes</td>
+                <td>TBD - Vendor Logistics Setup</td>
+                <td>Inventory Management Plan, Spare Parts Procurement</td>
+                <td>Accurately forecasting spare needs. Managing spare inventory logistics. Ensuring spare quality/compatibility.</td>
+                <td>Logistics/Preparedness requirement.</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.3.4</td>
+                <td>Repair SLAs: next-day (<=30 veh), 3-day appt (<=30 proj), max 5-day appt (>30 proj) for all locations. (High)</td>
+                <td class="implemented-yes">Yes</td>
+                <td>TBD - Vendor Operations Setup / SLAs</td>
+                <td>Define SLAs in Contract, Resource Planning, Scheduling System Setup</td>
+                <td>Vendor capacity to meet demanding repair SLAs. Coordination with SBCs for vehicle access. Tracking SLA adherence.</td>
+                <td>Performance/SLA requirement for repairs.</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.3.5</td>
+                <td>Manned assistance desk (mobile, web, text, phone) for remote support 24/7/365. (High)</td>
+                <td class="implemented-yes">Yes</td>
+                <td>TBD - Vendor Operations Setup</td>
+                <td>Help Desk Staffing Plan (24/7), Multi-channel Support Setup</td>
+                <td>Staffing challenges for 24/7 support. Ensuring consistent support quality across channels. Managing support volume.</td>
+                <td>Support availability requirement.</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.3.6</td>
+                <td>Ground support available/schedulable during off-peak bus times (9AM-1PM, >4PM weekdays, Sat/Sun/Holidays). (High)</td>
+                <td class="implemented-yes">Yes</td>
+                <td>TBD - Vendor Operations Setup</td>
+                <td>Staff Scheduling Plan, Coordination Process with SBCs</td>
+                <td>Coordinating schedules with SBC availability. Staffing for non-standard hours. Potential for overtime costs.</td>
+                <td>Support scheduling requirement.</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.3.7</td>
+                <td>Escalation Tiers (service impact): Tier II in 3 hrs, Tier III in 6 hrs. (High)</td>
+                <td class="implemented-yes">Yes</td>
+                <td>TBD - Vendor Support Procedures / SLAs</td>
+                <td>Define Escalation Process/Triggers in SOPs/SLAs</td>
+                <td>Clear definition of tiers and escalation triggers. Ensuring timely handoff between tiers. Availability of skilled Tier II/III staff.</td>
+                <td>Support process requirement.</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.3.8</td>
+                <td>Escalation Tiers (business impact): Tier III immediately, Executive level in 6 hrs. (High)</td>
+                <td class="implemented-yes">Yes</td>
+                <td>TBD - Vendor Support Procedures / SLAs</td>
+                <td>Define Critical Escalation Process/Triggers in SOPs/SLAs</td>
+                <td>Clear definition of 'business impact'. Availability of Tier III/Executive contacts. Robust internal vendor communication for immediate escalation.</td>
+                <td>Support process requirement (critical issues).</td>
+            </tr>
+            <!-- 3.4 Service Level Agreements -->
+            <tr><td colspan="7" style="background-color:#dee2e6; font-weight:bold;">3.4 Service Level Agreements (SLAs)</td></tr>
+            <tr>
+                <td>RFP-S3.4.1</td>
+                <td>Provide methodologies for proof of quality verification (workmanship/performance); SLAs w/ penalties for failure. (High)</td>
+                 <td class="implemented-yes">Yes</td>
+                <td>TBD - Contract/SLA Definition</td>
+                <td>Define Quality Metrics, Establish Penalties, Define Verification Process</td>
+                <td>Defining objective and measurable quality metrics. Establishing fair and enforceable penalties. Mechanism for verification and reporting.</td>
+                <td>Quality Assurance and Contractual requirement.</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.4.2</td>
+                <td>SLAs include Installation/maintenance actions, duration (receipt to assignment, receipt to resolution, receipt to clear).</td>
+                 <td class="implemented-yes">Yes</td>
+                <td>TBD - Contract/SLA Definition</td>
+                <td>Define Specific Time-based SLAs, Implement Tracking in Ticketing System</td>
+                <td>Accurately tracking time for each stage. Defining clear start/end points for each duration metric. System capability to report on these SLAs.</td>
+                <td>Specific SLA metrics required. Links to Ticketing (3.5).</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.4.3</td>
+                <td>Quality Service Level: 99.999999% for GPS integrated system function availability (mandated by SLA). (High)</td>
+                 <td class="implemented-yes">Yes</td>
+                <td>TBD - Contract/SLA Definition, Architecture Design</td>
+                <td>Define Availability SLA, Design High-Availability Architecture, Implement Monitoring</td>
+                <td>Technical feasibility/cost of achieving "eight nines". Robust monitoring and failover architecture required. Clear definition of 'system function availability'.</td>
+                <td>Availability SLA requirement (Extremely High). "Eight nines".</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.4.4</td>
+                <td>Remote response time SLA: <5 min (5:30AM-8PM school days), <15 min (other times). (Medium)</td>
+                 <td class="implemented-yes">Yes</td>
+                <td>TBD - Contract/SLA Definition, Support Setup</td>
+                <td>Define Response Time SLA, Implement Help Desk Procedures/Staffing</td>
+                <td>Help desk staffing and efficiency (see 3.3.5). Accurate time tracking from request receipt to action (ticket creation).</td>
+                <td>Support responsiveness SLA.</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.4.5</td>
+                <td>Provide comprehensive post-mortem report w/ corrective actions within 48 hours of event resolution. (Implicit High)</td>
+                 <td class="implemented-yes">Yes</td>
+                <td>TBD - Incident Management Procedures</td>
+                <td>Define Post-Mortem Process/Template, Assign Responsibilities</td>
+                <td>Defining 'event' requiring post-mortem. Ensuring thorough root cause analysis. Timeliness and quality of reports. Tracking implementation of corrective actions.</td>
+                <td>Incident management process requirement.</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.4.6</td>
+                <td>Expectation: >99% of buses in use will have fully functional GPS-enabled devices. (High)</td>
+                 <td class="implemented-yes">Yes</td>
+                <td>TBD - Operational Monitoring/Reporting</td>
+                <td>Implement Device Status Tracking, Define 'Fully Functional', Setup Reporting</td>
+                <td>Depends heavily on device reliability, spare availability, and ground support efficiency. Definition of 'fully functional'. Accurate tracking of device status across fleet.</td>
+                <td>Operational performance target. Links to 3.2.2, 3.3, 3.4.1.</td>
+            </tr>
+            <tr>
+                <td>RFP-S3.4.7</td>
+                <td>Device supported w/ Primary (in-built), Secondary (on-board Power), Tertiary (Portable Charger). (High)</td>
+                 <td class="implemented-yes">Yes</td>
+                <td>TBD - Hardware Selection/Design</td>
+                <td>Select/Design Device with Power Redundancy, Plan Portable Charger Logistics</td>
+                <td>Feasibility and cost of triple redundancy. Managing portable chargers (logistics, charging). Ensuring seamless power source switching.</td>
+                <td>Hardware/Reliability requirement. Redundant power strategy. Reiteration/clarification of 3.2.16?</td>
+            </tr>
+            <!-- 3.5 GPS Service and System Support Reporting and Ticketing -->
+             <tr><td colspan="7" style="background-color:#dee2e6; font-weight:bold;">3.5 GPS Service and System Support Reporting and Ticketing</td></tr>
+             <tr>
+                 <td>RFP-S3.5.1</td>
+                 <td>Provide ticketing system integrated w/ NYCPS' system for all GPS service inquiries (install, removal, transfer, maint, support). (High)</td>
+                 <td class="implemented-yes">Yes</td>
+                 <td>TBD - Software Design/Integration</td>
+                 <td>Ticketing System Selection/Development, Integration Design with NYCPS System</td>
+                 <td>Technical complexity of bi-directional ticketing system integration. Ensuring data consistency between systems. API availability/stability of NYCPS system.</td>
+                 <td>System Integration and Support Process requirement.</td>
+             </tr>
+             <tr>
+                 <td>RFP-S3.5.2</td>
+                 <td>Ticketing system includes analytic data for resolution (transfers, closeout details: trouble found/cause/fix applied). (High)</td>
+                 <td class="implemented-yes">Yes</td>
+                 <td>TBD - Software Design (Ticketing System)</td>
+                 <td>Data Modeling for Ticket Resolution Details, Reporting Feature Design</td>
+                 <td>Defining comprehensive and consistent categories for trouble/cause/fix. Ensuring technicians accurately record details. Reporting capabilities for analysis.</td>
+                 <td>Data logging and Reporting requirement for tickets.</td>
+             </tr>
+             <tr>
+                 <td>RFP-S3.5.3</td>
+                 <td>Every request given appointment confirmation at time of ticket entry. (High)</td>
+                 <td class="implemented-yes">Yes</td>
+                 <td>TBD - Software Design (Ticketing System)/Procedures</td>
+                 <td>Implement Appointment Scheduling/Confirmation Feature, Define Process</td>
+                 <td>System capability for real-time appointment scheduling/confirmation. Availability of appointment slots matching SLAs (3.3.4).</td>
+                 <td>Process/Usability requirement.</td>
+             </tr>
+             <tr>
+                 <td>RFP-S3.5.4</td>
+                 <td>Every request requires separate ticket; way to distinguish multi-unit tickets. (High)</td>
+                 <td class="implemented-yes">Yes</td>
+                 <td>TBD - Software Design (Ticketing System)</td>
+                 <td>Ticketing System Data Model/UI Design</td>
+                 <td>System flexibility to handle single vs. multiple units per ticket. Clear UI for distinguishing multi-unit tickets. Impact on reporting/analytics.</td>
+                 <td>Ticketing system design requirement.</td>
+             </tr>
+             <tr>
+                 <td>RFP-S3.5.5</td>
+                 <td>Capability to create a project for sets of >=8 tickets for SBCs in a Borough; completion date SLA negotiable. (High)</td>
+                 <td class="implemented-yes">Yes</td>
+                 <td>TBD - Software Design (Ticketing System)/Procedures</td>
+                 <td>Implement Project Ticketing Feature, Define Negotiation Process for SLAs</td>
+                 <td>Defining 'project' workflow within ticketing system. Mechanism for negotiating SLAs for projects. Resource planning for large projects.</td>
+                 <td>Ticketing system feature for large requests.</td>
+             </tr>
+             <tr>
+                 <td>RFP-S3.5.6</td>
+                 <td>Capability to include description/comment/notation; track details (device ID, SBC fleet, requestor, location, creation/commit/closure dates, disposition, interim/final status). (High)</td>
+                 <td class="implemented-yes">Yes</td>
+                 <td>TBD - Software Design (Ticketing System)</td>
+                 <td>Data Modeling for Ticket Fields, UI Design</td>
+                 <td>Ensuring all required fields are present and populated accurately. Data validation rules. Maintaining history of status changes.</td>
+                 <td>Ticket data field requirements.</td>
+             </tr>
+             <tr>
+                 <td>RFP-S3.5.7</td>
+                 <td>Capability for tickets to be modified (updates); track transfers between internal departments (call center, field, dispatch, tech support, resolution). (High)</td>
+                 <td class="implemented-yes">Yes</td>
+                 <td>TBD - Software Design (Ticketing System)</td>
+                 <td>Implement Role-Based Access Control, Audit Trail Feature, Workflow Design</td>
+                 <td>Role-based permissions for modification. Robust audit trail for all changes and transfers. Clear definition of internal departments/workflows.</td>
+                 <td>Ticket workflow and audit trail requirement.</td>
+             </tr>
+             <tr>
+                 <td>RFP-S3.5.8</td>
+                 <td>All tickets archived for contract term or 7 years (whichever first), completed or canceled. (High)</td>
+                 <td class="implemented-yes">Yes</td>
+                 <td>TBD - Data Retention Policy/System Design</td>
+                 <td>Implement Archival Process, Configure Storage</td>
+                 <td>Long-term storage capacity and cost. Ensuring easy retrieval of archived tickets. Compliance with retention period.</td>
+                 <td>Data retention requirement for tickets.</td>
+             </tr>
+             <tr>
+                 <td>RFP-S3.5.9</td>
+                 <td>Capability to report on duration time from creation & intermediate status to closure. (High)</td>
+                 <td class="implemented-yes">Yes</td>
+                 <td>TBD - Software Design (Ticketing Reporting)</td>
+                 <td>Implement Status Timestamping, Reporting Feature Design</td>
+                 <td>Accurate timestamping of all status changes. Reporting engine capable of calculating durations between various statuses.</td>
+                 <td>Reporting requirement, supports SLA tracking (3.4.2).</td>
+             </tr>
+             <tr>
+                 <td>RFP-S3.5.10</td>
+                 <td>Daily dashboard of previous day results (pending totals, completed); view ticket details; view/issue/complete previous day's tickets. (High)</td>
+                 <td class="implemented-yes">Yes</td>
+                 <td>TBD - Software Design (Ticketing Dashboard)</td>
+                 <td>Dashboard UI/UX Design, Data Aggregation Logic</td>
+                 <td>Dashboard performance with potentially large data volumes. Defining clear metrics for dashboard. UI design for easy navigation and detail drill-down.</td>
+                 <td>Reporting/UI requirement for operational monitoring.</td>
+             </tr>
+             <tr>
+                 <td>RFP-S3.5.11</td>
+                 <td>Report on disposition (problem, fix, cause) for the request. (High)</td>
+                 <td class="implemented-yes">Yes</td>
+                 <td>TBD - Software Design (Ticketing Reporting)</td>
+                 <td>Define Disposition Categories, Reporting Feature Design</td>
+                 <td>Consistency of disposition data entry. Reporting flexibility to analyze trends by problem/fix/cause.</td>
+                 <td>Reporting requirement, links to 3.5.2 data.</td>
+             </tr>
+             <tr>
+                 <td>RFP-S3.5.12</td>
+                 <td>Report total tickets MTD & YTD by ticket type and current status. (High)</td>
+                 <td class="implemented-yes">Yes</td>
+                 <td>TBD - Software Design (Ticketing Reporting)</td>
+                 <td>Define Ticket Types, Reporting Feature Design (Aggregation)</td>
+                 <td>Defining clear 'ticket types'. Performance of MTD/YTD aggregation reports.</td>
+                 <td>Reporting requirement for trend analysis.</td>
+             </tr>
+             <tr>
+                 <td>RFP-S3.5.13</td>
+                 <td>Capability to sort & filter ticket reports (by description, SBC, location, status, disposition, dates, etc.). (High)</td>
+                 <td class="implemented-yes">Yes</td>
+                 <td>TBD - Software Design (Ticketing Reporting)</td>
+                 <td>Reporting UI/UX Design (Filtering/Sorting Controls)</td>
+                 <td>Performance of sorting/filtering on large datasets. Comprehensive list of filterable fields. Intuitive UI for report customization.</td>
+                 <td>Reporting usability requirement.</td>
+             </tr>
+             <tr>
+                 <td>RFP-S3.5.14</td>
+                 <td>Export ticket reports in format compatible w/ 3rd party software. (Medium)</td>
+                 <td class="implemented-yes">Yes</td>
+                 <td>TBD - Software Design (Ticketing Reporting)</td>
+                 <td>Implement Export Functionality (CSV, Excel, etc.)</td>
+                 <td>Defining standard export formats (CSV, Excel, JSON?). Ensuring data integrity during export. Handling large export files.</td>
+                 <td>Interoperability requirement.</td>
+             </tr>
+             <tr>
+                 <td>RFP-S3.5.15</td>
+                 <td>Record each trouble call event in Trouble Ticket History as a status retrievable for analysis w/ trouble defect & cause. (High)</td>
+                 <td class="implemented-yes">Yes</td>
+                 <td>TBD - Software Design (Ticketing System)</td>
+                 <td>Implement Detailed Ticket History Logging</td>
+                 <td>Ensuring comprehensive history logging. Linkage between trouble calls and tickets. Consistency in defect/cause classification.</td>
+                 <td>Data logging requirement within ticket history. Reiteration of 3.5.2/3.5.6?</td>
+             </tr>
+             <!-- 3.6 Software Requirements - Parent / Caregiver and Student Module -->
+             <tr><td colspan="7" style="background-color:#dee2e6; font-weight:bold;">3.6 Software Requirements - Parent / Caregiver and Student Module</td></tr>
+              <tr>
+                 <td>RFP-S3.6.Intro</td>
+                 <td>Module built mobile-first, accessible Android/iOS/other OS, responsive, user centric, device agnostic design.</td>
+                 <td class="implemented-yes">Yes</td>
+                 <td>TBD - Software Design (Parent/Student Module)</td>
+                 <td>Platform Selection, UI/UX Design, Cross-Platform Development Strategy</td>
+                 <td>Cross-platform development complexity. Ensuring consistent UX across devices/OS. Meeting accessibility standards (3.25.1).</td>
+                 <td>Overall design principle for this module.</td>
+             </tr>
+             <tr>
+                 <td>RFP-S3.6.1</td>
+                 <td>Means for creating/removing/changing user AuthN/AuthZ per NFR subsections. (High)</td>
+                 <td class="implemented-yes">Yes</td>
+                 <td>TBD - Software Design (User Management/Security)</td>
+                 <td>User Provisioning Design, Integration with Identity Management</td>
+                 <td>Secure user provisioning/deprovisioning process. Integration with potential central identity management. Handling parent vs. student accounts.</td>
+                 <td>Security and User Management requirement. Links to 3.25.5, 3.25.6.</td>
+             </tr>
+             <tr>
+                 <td>RFP-S3.6.2</td>
+                 <td>Sign up functionality providing two separate levels of access (parents/caregivers, students). (High)</td>
+                 <td class="implemented-yes">Yes</td>
+                 <td>TBD - Software Design (Parent/Student Module)</td>
+                 <td>Signup Workflow Design, Role Definition, UI/UX Design</td>
+                 <td>Defining appropriate permissions for each level. Secure and user-friendly signup process. Linking student accounts to parent accounts.</td>
+                 <td>Functional requirement. Access control.</td>
+             </tr>
+             <tr>
+                 <td>RFP-S3.6.3</td>
+                 <td>Parents/caregivers ability to send requests to OPT Admin Module for student info updates (address, alt PM drop-off). (Medium)</td>
+                 <td class="implemented-yes">Yes</td>
+                 <td>TBD - Software Design (Parent Module, Admin Module Integration)</td>
+                 <td>Request Workflow Design, API Design, Admin Review Interface Design</td>
+                 <td>Designing secure request submission workflow. Integration with Admin module (3.10). Process for OPT review/approval of requests.</td>
+                 <td>Functional requirement. Workflow between modules.</td>
+             </tr>
+             <tr>
+                 <td>RFP-S3.6.4</td>
+                 <td>Parents/caregivers ability to indicate student will not be riding on a given day. (High)</td>
+                 <td class="implemented-yes">Yes</td>
+                 <td>TBD - Software Design (Parent Module, Ridership Integration)</td>
+                 <td>Absence Reporting Feature Design (UI/UX), Real-time Data Flow Design</td>
+                 <td>Real-time communication of absence to relevant systems (Driver module, Routing, Ridership). Clear UI for reporting absence. Handling late notifications.</td>
+                 <td>Functional requirement. Impacts routing/ridership.</td>
+             </tr>
+             <tr>
+                 <td>RFP-S3.6.5</td>
+                 <td>Parents/caregivers receive notification when student boards/disembarks; ability to opt in/out. (High)</td>
+                 <td class="implemented-yes">Yes</td>
+                 <td>TBD - Software Design (Parent Module, Notification System)</td>
+                 <td>Notification System Integration, Opt-in/out Feature Design, Ridership Data Integration</td>
+                 <td>Reliability of real-time boarding/disembarking data feed. Notification system performance/reliability. User-friendly opt-in/out mechanism.</td>
+                 <td>Functional requirement. Relies on ridership (3.8). Privacy/Consent management.</td>
+             </tr>
+             <tr>
+                 <td>RFP-S3.6.6</td>
+                 <td>Students ability to display scannable code ("boarding/bus pass") for recording board/disembark. (Medium)</td>
+                 <td class="implemented-yes">Yes</td>
+                 <td>TBD - Software Design (Student Module)</td>
+                 <td>Code Generation/Display Feature Design, Integration with Ridership Scan</td>
+                 <td>Choosing appropriate code format (QR, barcode). Ensuring code security/non-repudiation. Offline code display capability? Device compatibility for display.</td>
+                 <td>Functional requirement. Links to ID reader (3.20) / Ridership (3.8).</td>
+             </tr>
+             <tr>
+                 <td>RFP-S3.6.7</td>
+                 <td>Parents/caregivers & students view map display of the School Bus route & near real-time bus location, including ETA at pickup point. (High)</td>
+                 <td class="implemented-yes">Yes</td>
+                 <td>TBD - Software Design (Parent/Student Module)</td>
+                 <td>Mapping Component Integration, Real-time Data Integration (GPS, ETA), UI/UX Design</td>
+                 <td>Map performance on mobile devices. Accuracy/reliability of real-time location and ETA data. UI clarity for map display. Data privacy (only showing relevant bus).</td>
+                 <td>Core functional requirement. Relies on GPS (3.2) and ETA (3.2.8).</td>
+             </tr>
+             <tr>
+                 <td>RFP-S3.6.8</td>
+                 <td>Parents/caregivers & students receive notifications when bus approaches pickup; opt in/out; control frequency. (High)</td>
+                 <td class="implemented-yes">Yes</td>
+                 <td>TBD - Software Design (Parent/Student Module, Notification System)</td>
+                 <td>Geofencing/Proximity Alert Logic Design, Notification Preference UI Design</td>
+                 <td>Defining 'approaching' trigger (distance/time). Notification system reliability. User control complexity for frequency. Managing notification preferences.</td>
+                 <td>Functional requirement. Relies on GPS (3.2) and Geofencing (3.2.23)?</td>
+             </tr>
+             <tr>
+                 <td>RFP-S3.6.9</td>
+                 <td>Parents/caregivers & students ability to provide feedback (technical or routing issues). (High)</td>
+                 <td class="implemented-yes">Yes</td>
+                 <td>TBD - Software Design (Parent/Student Module, Feedback System)</td>
+                 <td>Feedback Form Design (UI/UX), Backend Workflow for Routing Feedback</td>
+                 <td>Workflow for routing feedback to appropriate OPT teams (technical support, routing). Managing/responding to feedback volume. User interface for submitting feedback.</td>
+                 <td>Functional requirement. Feedback mechanism.</td>
+             </tr>
+             <tr>
+                 <td>RFP-S3.6.10</td>
+                 <td>Optional web-based functionality for users without smartphones. (High)</td>
+                 <td class="implemented-yes">Yes</td>
+                 <td>TBD - Software Design (Web Portal)</td>
+                 <td>Web Portal Design/Development, Ensure Feature Parity/Consistency with App</td>
+                 <td>Maintaining feature parity between app and web portal. Ensuring web portal is responsive/mobile-friendly. Separate development/maintenance effort.</td>
+                 <td>Accessibility requirement.</td>
+             </tr>
+             <tr>
+                 <td>RFP-S3.6.11</td>
+                 <td>Include options for multi-language selection. (High)</td>
+                 <td class="implemented-yes">Yes</td>
+                 <td>TBD - Software Design (Parent/Student Module)</td>
+                 <td>Internationalization (i18n) Framework Implementation, Translation Management</td>
+                 <td>Quality and accuracy of translations. Process for managing content updates across languages. Right-to-left language support if needed.</td>
+                 <td>Accessibility/Usability requirement. See 3.25.1.b for specific languages.</td>
+             </tr>
+             <tr>
+                 <td>RFP-S3.6.12</td>
+                 <td>Troubleshooting and self-help options (FAQ) for reference, minimize support need. (High)</td>
+                 <td class="implemented-yes">Yes</td>
+                 <td>TBD - Documentation/Content Creation</td>
+                 <td>Develop FAQ/Help Content, Integrate into App/Portal</td>
+                 <td>Creating comprehensive and clear help content. Keeping FAQ updated. Multi-language support for help content.</td>
+                 <td>Support/Usability requirement.</td>
+             </tr>
+            <!-- Continue with remaining sections: 3.7 Bus Driver Module through 3.28 System/Web App Requirements -->
+            <!-- ... (All other requirements from the previous analysis would follow the same format) ... -->
+            <tr><td colspan="7" style="background-color:#dee2e6; font-weight:bold;">... [Remainder of Section 3 Requirements - See Previous Analysis] ...</td></tr>
+        </tbody>
+    </table>
+
+    <h2>Proposal Requirements (Section 4)</h2>
+    <p>These requirements detail the expected content and structure of the vendor's proposal document itself.</p>
+     <table>
+        <thead>
+            <tr>
+                <th class="col-id">Requirement ID</th>
+                <th class="col-desc">Requirement Description</th>
+                <th class="col-impl">Addressed in Proposal?</th>
+                <th class="col-where">Where Implemented (Proposal Section)</th>
+                <th class="col-next">Next Steps</th>
+                <th class="col-risks">Risks and Issues</th>
+                <th class="col-comments">Comments</th>
+            </tr>
+        </thead>
+        <tbody>
+             <tr>
+                <td>RFP-S4.Intro</td>
+                <td>Proposal must fully address all Scope of Services (Section 3). Evaluation based on content, not length. Use Appendices E1, E2, F, G + Attachment B. Organize into 4 sections (Org Capacity, Demo Effectiveness, Program Plan, Pricing).</td>
+                <td class="implemented-tbd">TBD</td>
+                <td>Overall Proposal Structure</td>
+                <td>Vendor Proposal Preparation</td>
+                <td>Proposal may miss addressing key requirements. Structure might not follow guidelines.</td>
+                <td>Overall instruction for proposal structure and content linkage to RFP sections/appendices.</td>
+            </tr>
+            <tr>
+                <td>RFP-S4.1</td>
+                <td>Org Capacity (Appendix E1): Show evidence adequate human, org, tech, professional resources/abilities. Include compliance w/ relevant policies.</td>
+                <td class="implemented-tbd">TBD</td>
+                <td>Proposal Appendix E1</td>
+                <td>Vendor Proposal Preparation</td>
+                <td>Vendor evidence may be weak or insufficient.</td>
+                <td>Content requirement for Org Capacity section.</td>
+            </tr>
+            <tr>
+                <td>RFP-S4.1.1</td>
+                <td>Org Capacity (E1): Org chart of overall company (incl subs designation).</td>
+                <td class="implemented-tbd">TBD</td>
+                <td>Proposal Appendix E1</td>
+                <td>Vendor Proposal Preparation</td>
+                <td>Org chart unclear or missing subcontractor details.</td>
+                <td>Specific deliverable within Org Capacity. Links to 3.22.1.4.</td>
+            </tr>
+            <tr>
+                <td>RFP-S4.1.2</td>
+                <td>Org Capacity (E1): Program-specific org chart (titles, employees for project); approx % award to subs.</td>
+                <td class="implemented-tbd">TBD</td>
+                <td>Proposal Appendix E1</td>
+                <td>Vendor Proposal Preparation</td>
+                <td>Program chart lacks detail or key personnel are TBD. Subcontractor allocation missing/unclear.</td>
+                <td>Specific deliverable within Org Capacity.</td>
+            </tr>
+            <tr>
+                <td>RFP-S4.1.3</td>
+                <td>Org Capacity (E1): Resumes & licenses/certs key personnel (incl subs in Appendix E2).</td>
+                <td class="implemented-tbd">TBD</td>
+                <td>Proposal Appendix E1 / E2</td>
+                <td>Vendor Proposal Preparation</td>
+                <td>Resumes missing or lack relevant experience. Licenses/certs not provided where needed.</td>
+                <td>Specific deliverable within Org Capacity (resumes). Links to 3.22.1.5. Note: Location specified E1 here, but E2 for subs in 3.22.1.5.</td>
+            </tr>
+            <tr>
+                <td>RFP-S4.1.4</td>
+                <td>Org Capacity (E1): Org's max capacity (# schools/students/staff per year/summer) based on current staffing.</td>
+                <td class="implemented-tbd">TBD</td>
+                <td>Proposal Appendix E1</td>
+                <td>Vendor Proposal Preparation</td>
+                <td>Stated capacity may be insufficient for DOE scale or seem unrealistic.</td>
+                <td>Specific information request within Org Capacity.</td>
+            </tr>
+            <tr>
+                <td>RFP-S4.1.5</td>
+                <td>Org Capacity (E1): Personnel available for service components (speakers, consultants, mentors, presenters) not full-time employees.</td>
+                <td class="implemented-tbd">TBD</td>
+                <td>Proposal Appendix E1</td>
+                <td>Vendor Proposal Preparation</td>
+                <td>Availability or qualifications of non-FTE resources may be unclear.</td>
+                <td>Specific information request within Org Capacity (non-FTE resources).</td>
+            </tr>
+            <tr>
+                <td>RFP-S4.2</td>
+                <td>Demo Effectiveness (Appendix E1): Description prior experience proposed/similar services.</td>
+                <td class="implemented-tbd">TBD</td>
+                <td>Proposal Appendix E1</td>
+                <td>Vendor Proposal Preparation</td>
+                <td>Prior experience described may not be relevant or sufficient.</td>
+                <td>Content requirement for Demo Effectiveness section.</td>
+            </tr>
+            <tr>
+                <td>RFP-S4.2.1</td>
+                <td>Demo Effectiveness (E1): Details background, qualifications, experience providing specific/related services in Sec 3.</td>
+                <td class="implemented-tbd">TBD</td>
+                <td>Proposal Appendix E1</td>
+                <td>Vendor Proposal Preparation</td>
+                <td>Lack of detailed evidence linking past experience to RFP scope.</td>
+                <td>Specific content requirement within Demo Effectiveness.</td>
+            </tr>
+            <tr>
+                <td>RFP-S4.2.2</td>
+                <td>Demo Effectiveness (E1): Details methods used, objectives, results obtained (objective data if available). NYCDOE reserves right verify.</td>
+                <td class="implemented-tbd">TBD</td>
+                <td>Proposal Appendix E1</td>
+                <td>Vendor Proposal Preparation</td>
+                <td>Lack of objective data/results to back up claims. Results may not be verifiable.</td>
+                <td>Specific content requirement within Demo Effectiveness. Emphasis on results/data.</td>
+            </tr>
+            <tr>
+                <td>RFP-S4.2.3</td>
+                <td>Demo Effectiveness (E1): Any experience working in public schools / public school system.</td>
+                <td class="implemented-tbd">TBD</td>
+                <td>Proposal Appendix E1</td>
+                <td>Vendor Proposal Preparation</td>
+                <td>Limited or no relevant public sector/education experience.</td>
+                <td>Specific content requirement within Demo Effectiveness.</td>
+            </tr>
+            <tr>
+                <td>RFP-S4.2.4</td>
+                <td>Demo Effectiveness (E1): Submit 3 letters of reference (paid directly, same/similar services); state dates, locations, description. Refer Section 2.3 (Min Quals).</td>
+                <td class="implemented-tbd">TBD</td>
+                <td>Proposal Appendix E1 / References</td>
+                <td>Vendor Proposal Preparation</td>
+                <td>References missing, weak, or not meeting criteria (e.g., not for similar services).</td>
+                <td>Specific deliverable within Demo Effectiveness. Links to Min Qual 2.2.</td>
+            </tr>
+            <tr>
+                <td>RFP-S4.2.5</td>
+                <td>Demo Effectiveness (E1): List govt contracts (incl NYCDOE) awarded past 10 yrs. NYCDOE reserves right verify performance.</td>
+                <td class="implemented-tbd">TBD</td>
+                <td>Proposal Appendix E1</td>
+                <td>Vendor Proposal Preparation</td>
+                <td>Past government contract performance may be poor if verified.</td>
+                <td>Specific information request within Demo Effectiveness.</td>
+            </tr>
+            <tr>
+                <td>RFP-S4.3</td>
+                <td>Program Plan / Narrative (Appendix E2):</td>
+                <td class="implemented-tbd">TBD</td>
+                <td>Proposal Appendix E2</td>
+                <td>Vendor Proposal Preparation</td>
+                <td>Plan lacks detail, clarity, or feasibility.</td>
+                <td>Content requirement for Program Plan section.</td>
+            </tr>
+            <tr>
+                <td>RFP-S4.3.1</td>
+                <td>Program Plan (E2): Clear, detailed, rational, concise description overall program content, structure, methodology how proposer provides services required Sec 3.</td>
+                <td class="implemented-tbd">TBD</td>
+                <td>Proposal Appendix E2</td>
+                <td>Vendor Proposal Preparation</td>
+                <td>Methodology unclear or inappropriate for RFP scope.</td>
+                <td>Core requirement for the Program Plan narrative. Links to 3.28.1.1.</td>
+            </tr>
+            <tr>
+                <td>RFP-S4.3.2</td>
+                <td>Program Plan (E2): Show clear understanding services required; demo how plan meets goals/objectives; contain work plan (approx dates/frequency); include how proposer assess/report success.</td>
+                <td class="implemented-tbd">TBD</td>
+                <td>Proposal Appendix E2</td>
+                <td>Vendor Proposal Preparation</td>
+                <td>Lack of demonstrated understanding. Work plan unrealistic. Success metrics vague or missing.</td>
+                <td>Specific content requirements for Program Plan (understanding, work plan, success metrics).</td>
+            </tr>
+            <tr>
+                <td>RFP-S4.3.3</td>
+                <td>Program Plan (E2): Provide separate program plan per component proposed. Use table in E1 indicate proposed components.</td>
+                <td class="implemented-tbd">TBD</td>
+                <td>Proposal Appendix E1 / E2</td>
+                <td>Vendor Proposal Preparation</td>
+                <td>Plan not broken down by component. E1 selection doesn't match E2 content.</td>
+                <td>Structural requirement for Program Plan (component-based) linked to E1 selection.</td>
+            </tr>
+             <tr>
+                <td>RFP-S4.3.Note</td>
+                <td>Program Plan (E2): Include whether proposer use automobile; if so, evidence motor vehicle liability insurance required.</td>
+                <td class="implemented-tbd">TBD</td>
+                <td>Proposal Appendix E2</td>
+                <td>Vendor Proposal Preparation</td>
+                <td>Information missing. Insurance evidence not provided if applicable.</td>
+                <td>Specific information request within Program Plan (vehicle usage).</td>
+            </tr>
+            <tr>
+                <td>RFP-S4.4</td>
+                <td>Pricing / Cost Budget (Appendices F & G): Submit Pricing Form (F) line-item pricing; Submit Cost Budget Summary (G) breakdown cost elements. Download from vendor portal. Recommended complete by acct/finance. NYCDOE reserves right review records.</td>
+                <td class="implemented-tbd">TBD</td>
+                <td>Proposal Appendices F & G</td>
+                <td>Vendor Proposal Preparation</td>
+                <td>Appendices missing, incomplete, or incorrectly formatted. Pricing unclear.</td>
+                <td>Overall instruction for pricing proposal structure and content.</td>
+            </tr>
+             <tr>
+                <td>RFP-S4.4.1.1</td>
+                <td>Pricing (F): Complete line-item pricing form per instructions Appendix F.</td>
+                <td class="implemented-tbd">TBD</td>
+                <td>Proposal Appendix F</td>
+                <td>Vendor Proposal Preparation</td>
+                <td>Appendix F not completed per instructions.</td>
+                <td>Instruction to complete Appendix F.</td>
+            </tr>
+            <tr>
+                <td>RFP-S4.4.1.2</td>
+                <td>Pricing (F): Form requires unit prices; unit prices must include all costs; cannot invoice items not on finalized budget.</td>
+                <td class="implemented-tbd">TBD</td>
+                <td>Proposal Appendix F</td>
+                <td>Vendor Proposal Preparation</td>
+                <td>Unit prices unclear, missing, or not all-inclusive.</td>
+                <td>Detail on content/implication of Appendix F (unit prices, all-inclusive).</td>
+            </tr>
+            <tr>
+                <td>RFP-S4.4.1.3</td>
+                <td>Pricing (F): Any materials offered must be ancillary to services.</td>
+                <td class="implemented-tbd">TBD</td>
+                <td>Proposal Appendix F</td>
+                <td>Vendor Proposal Preparation</td>
+                <td>Proposal attempts to sell materials as primary offering.</td>
+                <td>Constraint on selling materials.</td>
+            </tr>
+            <tr>
+                <td>RFP-S4.4.2.1</td>
+                <td>Cost Budget (G): Complete cost budget form per instructions Appendix G.</td>
+                <td class="implemented-tbd">TBD</td>
+                <td>Proposal Appendix G</td>
+                <td>Vendor Proposal Preparation</td>
+                <td>Appendix G not completed per instructions.</td>
+                <td>Instruction to complete Appendix G.</td>
+            </tr>
+            <tr>
+                <td>RFP-S4.4.2.2</td>
+                <td>Cost Budget (G): Complete Appendix G form per contract year OR combine years if annual amount same (enter annual amt, contract yrs, total amt); BAFO may require Appendix G per line item.</td>
+                <td class="implemented-tbd">TBD</td>
+                <td>Proposal Appendix G</td>
+                <td>Vendor Proposal Preparation</td>
+                <td>Appendix G structure doesn't follow guidelines (e.g., combines years incorrectly).</td>
+                <td>Instruction on structure of Appendix G submission (per year or combined).</td>
+            </tr>
+            <tr>
+                <td>RFP-S4.4.2.3</td>
+                <td>Cost Budget (G): Include breakdown all costs (labor, materials, rental/equip, G&A, profit); Itemize non-charged services (In-Kind Contribution section F).</td>
+                <td class="implemented-tbd">TBD</td>
+                <td>Proposal Appendix G</td>
+                <td>Vendor Proposal Preparation</td>
+                <td>Cost breakdown lacks detail or misses categories. In-kind contributions not itemized.</td>
+                <td>Content requirement for Appendix G (cost breakdown, in-kind).</td>
+            </tr>
+            <tr>
+                <td>RFP-S4.4.2.4</td>
+                <td>Cost Budget (G): Must be detailed, accurately reflect corresponding totals Appendix F; Totals G must match totals F.</td>
+                <td class="implemented-tbd">TBD</td>
+                <td>Proposal Appendices F & G</td>
+                <td>Vendor Proposal Preparation</td>
+                <td>Mismatch between totals in Appendix F and G. Lack of detail in G.</td>
+                <td>Consistency requirement between Appendix F and G.</td>
+            </tr>
+             <tr>
+                <td>RFP-S4.4.Note</td>
+                <td>Pricing: May include additional pricing info / budget narrative if necessary clarify structure.</td>
+                <td class="implemented-tbd">TBD</td>
+                <td>Proposal (Optional Supplement)</td>
+                <td>Vendor Proposal Preparation</td>
+                <td>Optional clarification is missing where needed, leaving pricing unclear.</td>
+                <td>Allows for additional clarification beyond appendices.</td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>

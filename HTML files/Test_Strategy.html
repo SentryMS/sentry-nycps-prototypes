@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NYCPS TMS - Prescriptive Test Engineering Strategy</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.8; color: #212529; max-width: 1300px; margin: 25px auto; padding: 30px; background-color: #ffffff; border: 1px solid #dee2e6; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
+        h1, h2, h3, h4, h5, h6 { color: #002b5c; margin-top: 1.8em; margin-bottom: 0.8em; padding-bottom: 8px; font-weight: 600; border-bottom: 2px solid #003366; }
+        h1 { text-align: center; font-size: 2.6em; border-bottom: 4px solid #003366; margin-bottom: 1.5em; }
+        h2 { /* Major Sections */ font-size: 2.1em; border-bottom: 3px solid #003366; background-color: #eaf2f8; padding: 12px 18px; border-radius: 6px 6px 0 0; margin-left: -31px; margin-right: -31px; margin-top: 2.5em; }
+        h3 { /* Test Levels / Key Concepts */ font-size: 1.7em; border-bottom: 2px solid #b7d1ed; padding-left: 10px; margin-top: 2.2em;}
+        h4 { /* Specific Test Types / Tools */ font-size: 1.4em; border-bottom: 1px dashed #ced4da; color: #004080; padding-left: 25px; font-weight: 600; margin-top: 2em; }
+        h5 { /* Implementation Details/Process Steps */ font-size: 1.2em; border-bottom: none; color: #343a40; padding-left: 40px; font-weight: bold; margin-top: 1.5em; margin-bottom: 0.5em; }
+        h6 { /* Sub-details / Notes */ font-size: 1.1em; border-bottom: none; color: #495057; padding-left: 55px; font-style: italic; margin-top: 1em; margin-bottom: 0.4em; }
+        p, li { margin-bottom: 1em; font-size: 1.1em; }
+        ul { list-style-type: circle; margin-left: 70px; margin-bottom: 1.2em; }
+        ol { list-style-type: decimal; margin-left: 70px; margin-bottom: 1.2em; }
+        ol ol { list-style-type: lower-alpha; margin-left: 90px; }
+        ol ol ol { list-style-type: lower-roman; margin-left: 110px; }
+        strong { font-weight: 700; color: #002b5c; }
+        code { font-family: 'Fira Code', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; display: block; background-color: #2b303b; color: #c0c5ce; padding: 18px; border: 1px solid #3e4451; border-radius: 6px; font-size: 1em; white-space: pre; overflow-x: auto; margin: 12px 0; line-height: 1.5; }
+        .section-description { padding: 20px; margin-bottom: 25px; border: 1px solid #e9ecef; background-color: #f8f9fa; border-radius: 5px; box-shadow: inset 0 1px 2px rgba(0,0,0,0.05); }
+        .goal-box { background-color: #d1ecf1; border: 1px solid #bee5eb; border-left: 6px solid #17a2b8; padding: 18px; margin: 20px 0; border-radius: 5px; color: #0c5460; }
+        .goal-box h4 { margin-top:0; color: #0c5460; border: none;}
+        .quality-gate { background-color: #f8d7da; border: 1px solid #f5c6cb; border-left: 6px solid #dc3545; padding: 12px 18px; margin: 18px 0; border-radius: 5px; color: #721c24; font-weight: bold;}
+        .quality-gate ul { margin-top: 10px;}
+        .tool-note { font-style: italic; color: #6c757d; font-size: 0.98em; margin-top: -0.6em; padding-left: 55px; }
+        .responsibility { font-weight: bold; color: #6f42c1; /* Bootstrap Purple */ display: block; margin-top: 8px; margin-left: 40px; font-size: 0.95em; }
+        .implementation-steps { background-color: #fff; border: 1px solid #e0e0e0; border-left: 5px solid #0056b3; padding: 15px; margin-top: 15px; border-radius: 4px; }
+        .implementation-steps h5 { color: #003366; margin-top: 0;}
+        .flow-diagram { border: 2px solid #003366; background-color: #f0f4f8; padding: 20px; margin: 20px 0; border-radius: 8px; font-family: monospace; line-height: 1.4; }
+        .flow-step { margin-bottom: 12px; position: relative; padding-left: 25px; }
+        .flow-step::before { content: "»"; position: absolute; left: 0; top: 0; color: #0056b3; font-weight: bold; }
+        .flow-arrow { color: #0056b3; font-weight: bold; margin: 0 5px;}
+        .flow-gate { color: #dc3545; font-weight: bold; border: 1px solid #dc3545; padding: 2px 6px; border-radius: 4px; display: inline-block; margin-left: 10px; background-color: #f8d7da;}
+        .flow-env { color: #28a745; font-weight: bold; border: 1px solid #28a745; padding: 2px 6px; border-radius: 4px; display: inline-block; margin-left: 10px; background-color: #d4edda;}
+        .test-type-section { margin-bottom: 30px; padding-bottom: 15px; border-bottom: 1px solid #eee;}
+    </style>
+</head>
+<body>
+
+    <h1>NYCPS TMS: Hyper-Detailed Prescriptive Test Engineering Strategy</h1>
+
+    <!-- Introduction -->
+    <section id="intro">
+        <h2>I. Introduction: Principles & Goals</h2>
+        <div class="section-description">
+            <p>This document mandates the comprehensive, end-to-end Test Engineering Strategy for the NYCPS Transportation Management System (TMS). It establishes the processes, tools, roles, responsibilities, and rigorous quality gates necessary to ensure the delivery of a high-quality, secure, reliable, performant, and compliant system. This strategy is inextricably linked with the defined Development and DevSecOps processes, operating within an Agile (Scrum) framework, utilizing GitLab, and targeting AWS GovCloud.</p>
+            <p>Our core testing philosophy is **Continuous Testing**, integrated throughout the entire lifecycle, with a strong emphasis on **Automation First** and **Developer Ownership of Quality**. The dedicated QA team acts as quality advocates, automation experts, and facilitators of specialized testing, but the primary responsibility for verifying functional correctness rests with the development team through automated tests.</p>
+            <div class="goal-box">
+                <h4>Mandatory Testing Goals:</h4>
+                <ol>
+                    <li><strong>Comprehensive Requirement Coverage:</strong> Achieve verifiable coverage (aiming for 100%) of all documented functional requirements (User Story Acceptance Criteria) and non-functional requirements (Performance, Security, Availability, Accessibility SLAs/targets) through a combination of automated and manual testing techniques.</li>
+                    <li><strong>Early Defect Detection & Prevention ("Shift Left"):</strong> Identify and fix defects as early as possible in the lifecycle (ideally during development or CI) through pre-commit checks, unit testing, integration testing, SAST, and SCA.</li>
+                    <li><strong>High Test Automation Rate:</strong> Automate all unit, integration, and API tests. Automate critical E2E paths, regression suites, performance baseline tests, and security/accessibility scans. Minimize reliance on manual regression testing.</li>
+                    <li><strong>Rapid Feedback Loops:</strong> Ensure automated tests integrated into the CI/CD pipeline provide feedback to developers within minutes (<10-15 mins target for core CI).</li>
+                    <li><strong>Rigorous Quality Gates:</strong> Implement strict, automated quality gates within the CI/CD pipeline that prevent defective, insecure, or non-performant code from progressing to subsequent environments or production.</li>
+                    <li><strong>Confidence in Releases:</strong> Ensure that every release deployed to production has passed all defined quality gates and meets the highest standards of quality, reliability, and security.</li>
+                </ol>
+            </div>
+        </div>
+    </section>
+
+     <!-- Roles & Responsibilities -->
+    <section id="roles">
+        <h2>II. Roles and Responsibilities in Testing</h2>
+        <div class="section-description">
+            <p>Quality is a shared responsibility, but specific roles have distinct areas of focus and accountability within this testing strategy.</p>
+            <ul>
+                <li><strong>Developers (Frontend/Backend/Mobile):</strong>
+                    <ul>
+                        <li><strong>Primary Owner</strong> of unit testing, component testing (UI), and integration testing for the code they write.</li>
+                        <li>Write tests concurrently with feature code (TDD/BDD encouraged).</li>
+                        <li>Ensure tests meet coverage targets and pass locally before committing/creating MRs.</li>
+                        <li>Fix bugs identified in their code (from any testing phase).</li>
+                        <li>Contribute to API contract tests and potentially E2E test automation for their features.</li>
+                        <li>Address findings from SAST/SCA/DAST scans related to their code.</li>
+                    </ul>
+                </li>
+                <li><strong>QA Engineers / Software Development Engineers in Test (SDETs):</strong>
+                    <ul>
+                        <li>Define and maintain the overall Test Strategy and Test Plans.</li>
+                        <li>Design, develop, and maintain automated test frameworks and scripts (especially for API, E2E, Regression).</li>
+                        <li>Perform exploratory testing to uncover usability issues and edge cases.</li>
+                        <li>Facilitate and support User Acceptance Testing (UAT).</li>
+                        <li>Manage test environments and test data strategy.</li>
+                        <li>Analyze test results, report defects clearly, and verify fixes.</li>
+                        <li>Champion quality practices within the Scrum teams.</li>
+                        <li>Certify release readiness from a QA perspective.</li>
+                    </ul>
+                </li>
+                 <li><strong>Performance Engineers (potentially specialized QA/SRE):</strong>
+                    <ul>
+                        <li>Define performance testing strategy and NFRs.</li>
+                        <li>Develop and maintain load/stress test scripts.</li>
+                        <li>Execute performance tests against dedicated environments.</li>
+                        <li>Analyze performance results, identify bottlenecks, and work with Dev/Ops on tuning.</li>
+                        <li>Certify release readiness against performance NFRs.</li>
+                    </ul>
+                </li>
+                 <li><strong>Security Engineers / Application Security (AppSec) Team:</strong>
+                    <ul>
+                        <li>Define security testing requirements and standards.</li>
+                        <li>Configure and manage SAST, DAST, SCA, and container scanning tools within the pipeline.</li>
+                        <li>Triage and validate findings from security scans.</li>
+                        <li>Coordinate and review third-party penetration tests.</li>
+                        <li>Provide secure coding guidance and training to developers.</li>
+                        <li>Approve releases from a security perspective based on scan results and risk assessment.</li>
+                    </ul>
+                </li>
+                <li><strong>Accessibility Specialist (potentially specialized QA/UX):</strong>
+                    <ul>
+                        <li>Define accessibility testing strategy based on WCAG 2.0 AA.</li>
+                        <li>Configure automated accessibility scanning tools.</li>
+                        <li>Perform manual accessibility audits (screen reader, keyboard navigation).</li>
+                        <li>Provide guidance to Dev/UX teams on accessible design and implementation.</li>
+                        <li>Certify release readiness against accessibility standards.</li>
+                    </ul>
+                </li>
+                <li><strong>Site Reliability Engineers (SRE) / Operations Team:</strong>
+                    <ul>
+                        <li>Implement and manage monitoring, logging, and alerting infrastructure.</li>
+                        <li>Participate in defining operational readiness criteria for releases.</li>
+                        <li>Execute DR tests.</li>
+                        <li>Respond to production incidents and participate in RCAs.</li>
+                        <li>Manage production infrastructure deployment (via automated CD pipelines).</li>
+                    </ul>
+                </li>
+                 <li><strong>Product Owner (NYCPS Representative):</strong>
+                    <ul>
+                        <li>Owns and prioritizes the Product Backlog.</li>
+                        <li>Defines Acceptance Criteria for User Stories.</li>
+                        <li>Participates in Sprint Reviews and formally accepts/rejects completed stories.</li>
+                        <li>Provides clarification on requirements during development and testing.</li>
+                        <li>Champions UAT and provides final business acceptance.</li>
+                    </ul>
+                </li>
+                 <li><strong>UAT Participants (NYCPS Stakeholders/End-Users):</strong>
+                    <ul>
+                        <li>Execute predefined UAT scenarios in the Staging/UAT environment.</li>
+                        <li>Provide feedback on usability and functional correctness from an end-user perspective.</li>
+                        <li>Formally sign off on UAT completion.</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Test Environments & Data -->
+    <section id="test-env-data">
+        <h2>III. Test Environments & Test Data Management</h2>
+        <div class="section-description">
+            <p>Stable, consistent, and well-managed test environments and data are crucial for effective testing.</p>
+            <h3>A. Test Environments (Provisioned via Terraform)</h3>
+            <ul>
+                <li><strong>Local Development:</strong> Developer machines with Docker Compose/Dev Containers for running services and dependencies locally.</li>
+                <li><strong>DEV (Development Integration):</strong> AWS GovCloud environment deployed automatically from the `develop` branch. Used for CI builds, basic integration tests, and developer smoke testing. Data is ephemeral or uses anonymized/synthetic seed data.</li>
+                <li><strong>QA (Quality Assurance):</strong> AWS GovCloud environment deployed manually/scheduled from `develop`. Target for comprehensive automated testing (Integration, API, E2E, DAST, Accessibility) and manual exploratory testing by QA. Uses a stable, larger set of anonymized/synthetic data, refreshed periodically.</li>
+                <li><strong>Staging / UAT:</strong> AWS GovCloud environment, configured as closely to Production as possible (may use slightly smaller scale). Deployed manually from `release/` branches. Target for UAT by NYCPS stakeholders, final regression testing, and potentially penetration testing. Uses stable, production-like anonymized/synthetic data.</li>
+                <li><strong>PERF (Performance Testing):</strong> AWS GovCloud environment, scaled to mirror Production infrastructure load capacity. Deployed manually from `release/` branches specifically for load and stress testing. May use dedicated (synthetic) data sets designed for performance testing.</li>
+                <li><strong>PROD (Production):</strong> Live AWS GovCloud environment. Deployments are highly controlled. Monitoring is critical.</li>
+            </ul>
+             <h6>Implementation Steps:</h6>
+             <ol>
+                 <li>Define distinct Terraform configurations (`.tfvars`) for each environment (DEV, QA, UAT, PERF, PROD) within the `environments/` directory structure.</li>
+                 <li>Use Terraform modules to ensure consistency in resource provisioning across environments.</li>
+                 <li>Automate environment provisioning and updates using Terraform via GitLab CI/CD pipelines, with manual approvals required for Staging/UAT, Perf, and Prod.</li>
+                 <li>Implement strict network segmentation (Security Groups, NACLs) between environments and between tiers within environments.</li>
+             </ol>
+             <p class="responsibility">Responsibility: DevOps Team, Cloud Architect.</p>
+
+            <h3>B. Test Data Management (TDM)</h3>
+             <div class="warning">Strict adherence to FERPA, NY Ed Law 2-d, and other privacy regulations is mandatory. Production PII MUST NOT be used in non-production environments (DEV, QA, PERF). Staging/UAT requires rigorously anonymized/synthesized data if production-like data is needed.</div>
+             <ul>
+                 <li><strong>Strategy Definition:</strong> Define a clear TDM strategy outlining data sources, anonymization/synthesization techniques, storage locations, refresh cadence, and access controls for test data in each environment.</li>
+                 <li><strong>Data Generation Tools:</strong> Utilize data masking tools, synthetic data generation libraries (e.g., Faker), or custom scripts to create realistic, referentially intact, but non-PII datasets.</li>
+                 <li><strong>Data Refresh Process:</strong> Establish automated or semi-automated processes (e.g., scheduled Glue jobs, database scripts) to refresh test data in QA and Staging/UAT environments periodically, ensuring data relevance without using fresh production data.</li>
+                 <li><strong>Environment Isolation:</strong> Ensure test environments cannot access production databases or data stores.</li>
+                 <li><strong>Data for Specific Tests:</strong> Create specific, smaller datasets tailored for unit, integration, and performance tests where needed.</li>
+             </ul>
+            <p class="responsibility">Responsibility: QA Lead, Data Architect/Engineer, Development Teams, Security/Compliance Officer.</p>
+        </div>
+    </section>
+
+    <!-- Detailed Test Types & Implementation -->
+    <section id="test-types">
+        <h2>IV. Detailed Test Levels & Types: Execution and Implementation</h2>
+        <div class="section-description">
+            <p>This section details *what* specific testing activities will occur at each level, *how* they will be implemented and automated using GitLab CI/CD, and the associated quality gates.</p>
+
+            <!-- Unit Testing -->
+            <div class="test-type-section">
+                <h4>A. Unit Testing</h4>
+                <h5>1. What & Why:</h5>
+                <ul>
+                    <li>Verify individual units of code (functions, methods, classes, UI components) work correctly in isolation.</li>
+                    <li>Fastest feedback loop for developers during coding. Catches logic errors early.</li>
+                    <li>Forms the base of the test automation pyramid.</li>
+                </ul>
+                 <h5>2. How (Implementation):</h5>
+                 <ol>
+                     <li>Developers write unit tests using standard frameworks (Jest/RTL for Frontend, Pytest for Python, JUnit/Mockito for Java) concurrently with feature code (TDD/BDD).</li>
+                     <li>Focus on testing business logic, boundary conditions, error handling, and state changes within the unit.</li>
+                     <li>External dependencies (other classes, API calls, database access) are mocked or stubbed using libraries (e.g., Jest `fn()`, Python `unittest.mock`, Mockito).</li>
+                     <li>Tests are stored alongside the source code (e.g., `*.test.js`, `tests/test_*.py`).</li>
+                     <li>Executed locally by developers before commits via IDE plugins or CLI commands (`npm test`, `pytest`).</li>
+                     <li>Executed automatically in GitLab CI pipeline on every commit/MR using defined jobs in `.gitlab-ci.yml` (e.g., `script: npm test -- --coverage`).</li>
+                     <li>Code coverage reports generated (e.g., using Jest `--coverage`, `coverage.py`, JaCoCo) and potentially checked against thresholds in CI (e.g., using GitLab CI test coverage parsing).</li>
+                 </ol>
+                 <p class="tool-note">Tools: Jest, React Testing Library, Pytest, `unittest.mock`, JUnit, Mockito, JaCoCo, `coverage.py`, GitLab CI.</p>
+                 <p class="responsibility">Responsibility: Developers.</p>
+                 <div class="quality-gate">
+                    <strong>Quality Gate (Local):</strong> Pre-commit hook may run fast unit tests.
+                    <strong>Quality Gate (CI - MR & `develop`):</strong> 100% pass rate required. Code coverage must meet defined threshold (e.g., >80% statement/branch). Build Fails otherwise.
+                 </div>
+            </div>
+
+            <!-- Integration Testing -->
+            <div class="test-type-section">
+                <h4>B. Integration Testing</h4>
+                <h5>1. What & Why:</h5>
+                <ul>
+                    <li>Verify the interaction and communication between integrated components or a service and its direct external dependencies (database, message queue, cache, closely coupled internal API).</li>
+                    <li>Ensures components work together as expected, validating data flow, contracts, and basic interaction logic.</li>
+                    <li>Catches issues related to data persistence, messaging, configuration, and network connectivity within a controlled scope.</li>
+                </ul>
+                 <h5>2. How (Implementation):</h5>
+                 <ol>
+                     <li>Developers write integration tests focusing on interaction points.</li>
+                     <li>For local execution: Use Testcontainers to spin up ephemeral Docker instances of dependencies (Postgres, Redis, LocalStack for SQS/SNS).</li>
+                     <li>For CI/CD execution: Run against deployed services in the DEV or QA environment. Tests target the service's API or trigger message consumers.</li>
+                     <li>Tests assert correct state changes in dependencies (e.g., data written to DB, message published to queue), correct responses from dependencies, or correct processing of messages.</li>
+                     <li>External 3rd party services or less closely coupled internal services are typically mocked/stubbed at this level to maintain focus and stability (using tools like `WireMock`, `moto`, custom mocks).</li>
+                     <li>Executed locally by developers. Executed automatically by GitLab CI *after* successful deployment to DEV and QA environments.</li>
+                 </ol>
+                 <p class="tool-note">Tools: Pytest, JUnit, Testcontainers, WireMock, `moto`, Newman (for API interactions), GitLab CI/CD.</p>
+                 <p class="responsibility">Responsibility: Developers.</p>
+                  <div class="quality-gate">
+                    <strong>Quality Gate (Post-Deploy DEV/QA):</strong> Critical integration test suite must pass. Failures block promotion to the next environment (e.g., QA -> Staging) and require investigation/fixes.
+                 </div>
+            </div>
+
+            <!-- Component Testing (UI) -->
+            <div class="test-type-section">
+                <h4>C. Component Testing (UI)</h4>
+                 <h5>1. What & Why:</h5>
+                 <ul>
+                     <li>Test individual UI components or small groups of interacting components in isolation from the full application.</li>
+                     <li>Verifies rendering, state changes, event handling, and props interaction without needing a full backend or browser environment. Faster and more reliable than E2E tests for component-level logic.</li>
+                 </ul>
+                 <h5>2. How (Implementation):</h5>
+                 <ol>
+                     <li>Frontend developers write component tests using frameworks like React Testing Library (preferred for testing user perspective) or potentially Cypress Component Testing.</li>
+                     <li>Tests mount the component(s), simulate user interactions (clicks, input), and assert the rendered output or state changes.</li>
+                     <li>Backend API calls are mocked at the network level or via service layer mocks. State management stores might be initialized with specific test states.</li>
+                     <li>Executed locally by developers and automatically in the CI pipeline (MR & `develop`) alongside unit tests.</li>
+                  </ol>
+                  <p class="tool-note">Tools: Jest, React Testing Library, Cypress Component Testing, MSW (Mock Service Worker).</p>
+                  <p class="responsibility">Responsibility: Frontend Developers.</p>
+                  <div class="quality-gate">
+                    <strong>Quality Gate (CI - MR & `develop`):</strong> 100% pass rate required. Build fails otherwise.
+                 </div>
+            </div>
+
+            <!-- API Contract Testing -->
+             <div class="test-type-section">
+                <h4>D. API Contract Testing</h4>
+                 <h5>1. What & Why:</h5>
+                 <ul>
+                     <li>Verify that API clients and providers adhere to the agreed-upon contract (OpenAPI specification). Checks request/response schemas, data types, status codes, and basic headers.</li>
+                     <li>Catches breaking changes in APIs early, preventing integration issues between microservices or between frontend and backend.</li>
+                 </ul>
+                 <h5>2. How (Implementation):</h5>
+                 <ol>
+                     <li>**Schema Validation:** Integrate OpenAPI schema validation into automated API tests (using libraries like `jest-openapi`, `chai-openapi-response-validator`, or custom validation against the spec).</li>
+                     <li>**Consumer-Driven Contracts (Optional but Recommended):** Use Pact or similar tools. Consumers define expected interactions (requests/responses) in a contract file. Provider tests verify they fulfill these contracts. CI pipelines check for contract compatibility. This ensures providers don't break existing consumers.</li>
+                     <li>**Automated API Tests:** Basic API tests (using Postman/Newman, RestAssured, Pytest) executed post-deployment to DEV/QA environments check status codes and basic response structures against the spec.</li>
+                  </ol>
+                  <p class="tool-note">Tools: OpenAPI Specification, Schema validation libraries, Pact/PactFlow, Postman/Newman, RestAssured, Pytest.</p>
+                  <p class="responsibility">Responsibility: Backend Developers (primarily), Frontend Developers (for consumer contracts).</p>
+                   <div class="quality-gate">
+                    <strong>Quality Gate (Post-Deploy DEV/QA):</strong> API schema validation and critical contract tests must pass. Failures block promotion.
+                 </div>
+            </div>
+
+             <!-- E2E Testing -->
+             <div class="test-type-section">
+                <h4>E. End-to-End (E2E) Testing</h4>
+                 <h5>1. What & Why:</h5>
+                 <ul>
+                     <li>Simulate real user scenarios by interacting with the application through the UI (Web or Mobile) and verifying workflows across multiple components and services.</li>
+                     <li>Provides highest confidence that integrated system meets user requirements. Catches issues missed by lower-level tests.</li>
+                 </ul>
+                 <h5>2. How (Implementation):</h5>
+                 <ol>
+                    <li>QA Automation Engineers (SDETs) design and implement E2E test scripts using frameworks like Cypress (for Web) or Appium/Detox (for Mobile). Developers contribute scripts for their features.</li>
+                    <li>Tests focus on critical user journeys identified during requirements/design (e.g., Parent views bus location, Driver completes route with ridership scans, Admin assigns route).</li>
+                    <li>Tests interact with the application deployed in QA or Staging environments, using dedicated test user accounts and interacting with the full (or near-full) integrated system stack. External 3rd party dependencies might be mocked if unstable or costly.</li>
+                    <li>Test data needs careful management (creation before test, cleanup after).</li>
+                    <li>Executed automatically via GitLab CI/CD after deployments to QA and Staging (e.g., nightly or triggered).</li>
+                    <li>Utilize parallel execution features of frameworks/runners to reduce execution time.</li>
+                    <li>Integrate visual regression testing tools (e.g., Percy, Applitools) if UI consistency is critical.</li>
+                  </ol>
+                  <p class="tool-note">Tools: Cypress, Playwright, Selenium (Web); Appium, Detox, Espresso/XCUITest wrappers (Mobile); GitLab CI/CD; Percy/Applitools (Visual Regression).</p>
+                  <p class="responsibility">Responsibility: QA Automation Engineers (primary), Developers (contributors).</p>
+                   <div class="quality-gate">
+                    <strong>Quality Gate (Post-Deploy QA/Staging):</strong> Critical E2E test suite must pass. Failures block promotion to the next stage (Staging/Prod) and require investigation. Flakiness must be actively managed.
+                 </div>
+            </div>
+
+            <!-- Manual/Exploratory Testing -->
+             <div class="test-type-section">
+                <h4>F. Manual & Exploratory Testing</h4>
+                 <h5>1. What & Why:</h5>
+                 <ul>
+                     <li>Leverage human intuition and domain knowledge to uncover bugs, usability issues, and edge cases not easily caught by automated scripts.</li>
+                     <li>Provide qualitative feedback on the user experience.</li>
+                     <li>Verify complex scenarios or visual aspects difficult to automate.</li>
+                 </ul>
+                 <h5>2. How (Implementation):</h5>
+                 <ol>
+                    <li>QA Engineers perform session-based exploratory testing in QA and Staging environments, guided by test charters or areas of focus based on new features or risk analysis.</li>
+                    <li>Focus on usability, workflow coherence, error handling resilience, visual consistency across browsers/devices, and areas not covered well by automation.</li>
+                    <li>Utilize browser developer tools, proxies (like Charles/Fiddler), and mobile device simulators/emulators.</li>
+                    <li>Document findings clearly as bugs or feedback in Jira/ADO.</li>
+                    <li>Performed iteratively throughout sprints (on QA) and more formally before releases (on Staging).</li>
+                  </ol>
+                  <p class="tool-note">Tools: Browser DevTools, Charles Proxy/Fiddler, Mobile Simulators/Emulators, Jira/ADO.</p>
+                  <p class="responsibility">Responsibility: QA Engineers.</p>
+                  <div class="quality-gate">
+                    <strong>Quality Gate (Pre-Release):</strong> No blocking bugs found during final exploratory testing cycle before production release decision.
+                 </div>
+            </div>
+
+             <!-- UAT -->
+             <div class="test-type-section">
+                <h4>G. User Acceptance Testing (UAT)</h4>
+                 <h5>1. What & Why:</h5>
+                 <ul>
+                     <li>Formal validation by end-users/stakeholders (NYCPS representatives) confirming the system meets business requirements and is acceptable for production use.</li>
+                     <li>Final check from the perspective of those who will actually use the system day-to-day.</li>
+                 </ul>
+                 <h5>2. How (Implementation):</h5>
+                 <ol>
+                    <li>QA Lead/Product Owner develops UAT Plan outlining scope, schedule, participants, environment (Staging/UAT), and scenarios based on user stories/business processes.</li>
+                    <li>QA team prepares the UAT environment and test data.</li>
+                    <li>Facilitated UAT sessions are conducted where NYCPS users execute test scenarios.</li>
+                    <li>Participants provide feedback and formally sign off (or raise blocking issues) via defined process (e.g., UAT sign-off forms, Jira workflow).</li>
+                    <li>Defects raised during UAT are triaged and prioritized for fixing before production release.</li>
+                  </ol>
+                  <p class="responsibility">Responsibility: NYCPS UAT Participants (Execution/Sign-off), QA Lead/Product Owner (Facilitation/Planning), Developers (Fixing UAT defects).</p>
+                   <div class="quality-gate">
+                    <strong>Quality Gate (Pre-Release):</strong> Formal UAT sign-off obtained from designated NYCPS representatives. No blocking UAT defects remain unresolved.
+                 </div>
+            </div>
+
+             <!-- Performance Testing -->
+            <div class="test-type-section">
+                <h4>H. Performance & Load Testing</h4>
+                <h5>1. What & Why:</h5>
+                <ul>
+                    <li>Verify system performance (response time, throughput), scalability, and stability under realistic and peak load conditions.</li>
+                    <li>Ensure the system meets defined NFRs and SLAs. Identify and eliminate performance bottlenecks before production.</li>
+                </ul>
+                <h5>2. How (Implementation):</h5>
+                <ol>
+                    <li>Performance Engineer/QA defines load scenarios based on expected usage patterns (user concurrency, API call rates, data volumes) for peak times (e.g., morning/afternoon school rush).</li>
+                    <li>Develop automated scripts using tools like k6, JMeter, or Gatling to simulate load. Parameterize scripts to use realistic test data.</li>
+                    <li>Execute tests against the dedicated, production-scaled PERF environment deployed via CI/CD.</li>
+                    <li>Run different test types:
+                        <ul>
+                            <li><strong>Load Tests:</strong> Simulate expected peak load to verify performance against NFRs.</li>
+                            <li><strong>Stress Tests:</strong> Gradually increase load beyond peak to identify breaking points and resource bottlenecks.</li>
+                            <li><strong>Soak Tests:</strong> Run moderate load for extended periods to detect memory leaks or resource exhaustion issues.</li>
+                        </ul>
+                    </li>
+                    <li>Monitor key metrics during tests (response times P95/P99, error rates, resource utilization - CPU/Mem/Network/DB connections) using CloudWatch and APM tools.</li>
+                    <li>Analyze results, identify bottlenecks (e.g., slow database queries, inefficient code, under-provisioned resources), and work with Dev/Ops teams to tune/fix issues.</li>
+                    <li>Re-run tests after fixes to verify improvements.</li>
+                </ol>
+                <p class="tool-note">Tools: k6, JMeter, Gatling, CloudWatch Metrics, APM tools (Datadog, Dynatrace).</p>
+                <p class="responsibility">Responsibility: Performance Engineer/QA, Developers (fixing bottlenecks), SRE/Ops (infrastructure tuning).</p>
+                <div class="quality-gate">
+                    <strong>Quality Gate (Pre-Release):</strong> Performance test results demonstrate acceptable performance under load, meeting defined NFRs/SLOs. No critical performance regressions introduced.
+                </div>
+            </div>
+
+            <!-- Security Testing (Detailed) -->
+            <div class="test-type-section">
+                <h4>I. Security Testing (In-depth)</h4>
+                <h5>1. What & Why:</h5>
+                <ul>
+                    <li>Proactively identify and mitigate security vulnerabilities throughout the lifecycle.</li>
+                    <li>Ensure compliance with NYCPS, NYC3, and regulatory requirements (FERPA, etc.).</li>
+                    <li>Validate effectiveness of implemented security controls.</li>
+                </ul>
+                <h5>2. How (Implementation):</h5>
+                <ol>
+                    <li><strong>Static Application Security Testing (SAST):</strong>
+                        <ul>
+                            <li>Integrate SAST tools (SonarQube, GitLab SAST, Checkmarx) into GitLab CI pipeline (run on MRs and merges to `develop`).</li>
+                            <li>Configure rulesets based on OWASP Top 10, SANS Top 25, and secure coding standards.</li>
+                            <li>Triage findings automatically based on severity. Fail builds for Critical/High severity findings requiring immediate developer attention.</li>
+                            <li>Track findings and remediation in Jira/ADO and security dashboards (e.g., SonarQube dashboard).</li>
+                             <p class="responsibility">Responsibility: CI/CD System, Developers (fixing), Security Team (tuning/review).</p>
+                             <div class="quality-gate"><strong>Quality Gate (CI):</strong> Build fails on new Critical/High severity SAST findings.</div>
+                        </ul>
+                    </li>
+                    <li><strong>Software Composition Analysis (SCA):</strong>
+                        <ul>
+                            <li>Integrate SCA tools (GitLab Dependency Scanning, Snyk, OWASP Dependency-Check) into GitLab CI pipeline (run on MRs and merges to `develop`).</li>
+                            <li>Scan `package.json`, `pom.xml`, `requirements.txt`, etc., for known vulnerabilities (CVEs) in third-party libraries.</li>
+                            <li>Check for license compliance issues.</li>
+                            <li>Fail builds for Critical/High severity vulnerabilities with available patches. Alert on others.</li>
+                             <p class="responsibility">Responsibility: CI/CD System, Developers (fixing), Security Team (review).</p>
+                             <div class="quality-gate"><strong>Quality Gate (CI):</strong> Build fails on new Critical/High severity SCA findings with known fixes/patches.</div>
+                        </ul>
+                    </li>
+                    <li><strong>Dynamic Application Security Testing (DAST):</strong>
+                        <ul>
+                            <li>Integrate DAST tools (OWASP ZAP, Burp Suite integration) into GitLab CI/CD pipeline to run scans *after* deployment to QA and Staging environments (e.g., nightly or triggered).</li>
+                            <li>Configure scans to crawl the application and test for common web vulnerabilities (XSS, SQLi, CSRF, etc.). Authenticated scans should be configured using test user credentials.</li>
+                            <li>Report findings automatically to Jira/ADO and security dashboards.</li>
+                            <p class="responsibility">Responsibility: Security/QA Team (config/triggering), CI/CD System (execution), Developers (fixing).</p>
+                            <div class="quality-gate"><strong>Quality Gate (Post-Deploy QA/Staging):</strong> New Critical/High DAST findings block promotion and must be addressed.</div>
+                        </ul>
+                    </li>
+                    <li><strong>Container Image Scanning:</strong>
+                        <ul>
+                            <li>Enable ECR Enhanced Scanning or integrate tools like Trivy/Clair into the CI pipeline *after* the `docker build` step.</li>
+                            <li>Scan container images for OS package vulnerabilities and potentially misconfigurations.</li>
+                            <li>Fail builds if Critical/High severity OS vulnerabilities are found in the final image.</li>
+                            <p class="responsibility">Responsibility: CI/CD System, DevOps Team, Developers (updating base images/dependencies).</p>
+                             <div class="quality-gate"><strong>Quality Gate (CI):</strong> Build fails on Critical/High severity container image vulnerabilities.</div>
+                        </ul>
+                    </li>
+                     <li><strong>Manual Penetration Testing:</strong>
+                        <ul>
+                            <li>Schedule formal penetration tests by an approved third-party vendor and/or internal Red Team against the Staging environment before major production releases or significant architectural changes.</li>
+                            <li>Scope should cover web applications, mobile applications, APIs, and cloud infrastructure configuration.</li>
+                            <li>Findings are tracked in Jira/ADO. Critical/High severity findings *must* be remediated before production release. Lower severity findings are added to the backlog based on risk assessment.</li>
+                            <p class="responsibility">Responsibility: Security Team (coordination/review), Third-Party Vendor/Red Team (execution), Developers (fixing).</p>
+                            <div class="quality-gate"><strong>Quality Gate (Pre-Release):</strong> No unresolved Critical/High severity penetration test findings. Formal sign-off from Security Team.</div>
+                        </ul>
+                    </li>
+                    <li><strong>Threat Modeling Review:</strong> Periodically review and update threat models as the application architecture evolves.</li>
+                 </ol>
+            </div>
+
+            <!-- Accessibility Testing -->
+            <div class="test-type-section">
+                <h4>J. Accessibility Testing (WCAG 2.0 AA)</h4>
+                 <h5>1. What & Why:</h5>
+                 <ul>
+                     <li>Ensure the application is usable by people with disabilities, including those using assistive technologies (screen readers, keyboard navigation).</li>
+                     <li>Mandated compliance requirement (WCAG 2.0 Level AA).</li>
+                 </ul>
+                 <h5>2. How (Implementation):</h5>
+                 <ol>
+                    <li><strong>Automated Scans:</strong> Integrate Axe-core with E2E test frameworks (e.g., `cypress-axe`, `axe-playwright`). Run automated checks for common WCAG violations as part of the E2E test suite against QA/Staging environments.</li>
+                    <li><strong>Manual Keyboard Testing:</strong> QA/Accessibility Specialist performs manual checks ensuring all interactive elements are focusable and operable via keyboard alone in a logical order.</li>
+                    <li><strong>Manual Screen Reader Testing:</strong> QA/Accessibility Specialist tests key user flows using common screen readers (e.g., NVDA, JAWS, VoiceOver) to ensure content is perceivable, operable, and understandable.</li>
+                    <li><strong>Design Review:</strong> Accessibility Specialist reviews UI designs/prototypes for potential issues (color contrast, layout structure, input labeling) *before* development.</li>
+                    <li><strong>Developer Training:</strong> Provide training on accessible coding practices (semantic HTML, ARIA roles/attributes, focus management).</li>
+                  </ol>
+                  <p class="tool-note">Tools: Axe-core, WAVE, NVDA, JAWS, VoiceOver, Browser DevTools (Accessibility Tree).</p>
+                  <p class="responsibility">Responsibility: Frontend Developers (implementation/fixing), Accessibility Specialist (guidance/manual testing), QA (automated test integration/manual checks).</p>
+                   <div class="quality-gate">
+                    <strong>Quality Gate (Pre-Release):</strong> Automated scans passing. No blocking (Level A/AA critical) accessibility issues identified during manual review. Formal sign-off from Accessibility Specialist/QA Lead.
+                 </div>
+            </div>
+
+             <!-- Regression Testing -->
+            <div class="test-type-section">
+                <h4>K. Regression Testing</h4>
+                 <h5>1. What & Why:</h5>
+                 <ul>
+                     <li>Ensure that new code changes, bug fixes, or infrastructure updates do not negatively impact existing functionality.</li>
+                     <li>Prevent re-introduction of previously fixed bugs.</li>
+                 </ul>
+                 <h5>2. How (Implementation):</h5>
+                 <ol>
+                    <li>Maintain comprehensive automated test suites (Unit, Integration, API, E2E).</li>
+                    <li>Tag tests appropriately (e.g., `critical_path`, `regression`, `smoke`).</li>
+                    <li>Run relevant regression suites automatically in GitLab CI/CD pipelines:
+                        <ul>
+                            <li>Fast unit/integration regression subset on MRs.</li>
+                            <li>Full unit/integration/API suites on merge to `develop` and post-deploy to DEV/QA.</li>
+                            <li>Critical E2E regression suite post-deploy to QA/Staging (e.g., nightly or per deployment).</li>
+                        </ul>
+                    </li>
+                    <li>Prioritize automation of regression tests for previously fixed critical bugs.</li>
+                    <li>QA performs targeted manual regression testing around areas impacted by recent changes, especially before major releases.</li>
+                  </ol>
+                  <p class="responsibility">Responsibility: Developers (maintaining unit/integration tests), QA Automation Engineers (maintaining E2E/API suites), QA Engineers (manual regression).</p>
+                   <div class="quality-gate">
+                    <strong>Quality Gate (CI/CD & Pre-Release):</strong> Automated regression suites must pass. No critical regressions identified during manual checks.
+                 </div>
+            </div>
+
+             <!-- DR Testing -->
+            <div class="test-type-section">
+                <h4>L. Disaster Recovery (DR) Testing</h4>
+                 <h5>1. What & Why:</h5>
+                 <ul>
+                     <li>Validate the effectiveness of the DR plan and procedures.</li>
+                     <li>Ensure the team can meet the defined RPO and RTO targets in a simulated disaster scenario.</li>
+                     <li>Build confidence in the ability to recover critical services.</li>
+                 </ul>
+                 <h5>2. How (Implementation):</h5>
+                 <ol>
+                    <li>Schedule DR tests regularly (at least annually, potentially more frequently for critical components).</li>
+                    <li>Define test scenarios (e.g., simulate primary region failure, database failure, AZ failure).</li>
+                    <li>Execute the documented DR plan:
+                        <ul>
+                            <li>Failover database instances (e.g., promote RDS read replica or restore snapshot in DR region).</li>
+                            <li>Deploy application infrastructure in the DR region using IaC (Terraform `apply` against DR environment config).</li>
+                            <li>Update DNS (Route 53 failover records) to point to the DR environment.</li>
+                            <li>Restore necessary data from backups/snapshots replicated to the DR region.</li>
+                        </ul>
+                    </li>
+                    <li>Validate system functionality and data integrity in the DR environment. Measure actual recovery time (RTO) and data loss (RPO).</li>
+                    <li>Document test results, identify issues/gaps in the DR plan, and create action items for improvement.</li>
+                    <li>Execute failback procedures to return operations to the primary region once testing is complete.</li>
+                  </ol>
+                  <p class="responsibility">Responsibility: SRE/Ops Team, DevOps Team, Database Administrators, Application Teams.</p>
+                   <div class="quality-gate">
+                    <strong>Quality Gate (Post-Test):</strong> DR test report documenting success/failure against RPO/RTO targets, lessons learned, and remediation plan for any issues identified.
+                 </div>
+            </div>
+        </div>
+    </section>
+
+     <!-- Artifacts & Reporting -->
+    <section id="artifacts-reporting">
+        <h2>V. Test Artifacts & Reporting</h2>
+        <div class="section-description">
+            <p>Consistent documentation and reporting are essential for tracking progress, communicating status, and demonstrating compliance.</p>
+            <ul>
+                <li><strong>Test Plan (Master & Phase-Specific):</strong> Documented in Confluence. Outlines strategy, scope, environments, tools, roles, schedule, entry/exit criteria.</li>
+                <li><strong>Test Cases/Scenarios:</strong> Managed in Jira (e.g., using Zephyr/Xray plugins) or Confluence. Linked to User Stories/Requirements. Includes preconditions, steps, expected results.</li>
+                <li><strong>Automated Test Scripts:</strong> Stored in Git repositories alongside application/infrastructure code.</li>
+                <li><strong>Test Data:</strong> Scripts for generation/anonymization stored in Git. Actual data stored securely according to TDM strategy.</li>
+                <li><strong>Defect Reports:</strong> Logged in Jira/ADO with standardized fields (severity, priority, steps to reproduce, environment, assigned owner, linked tests/stories).</li>
+                <li><strong>Test Execution Reports:</strong> Generated automatically by CI/CD tools (GitLab CI/CD dashboards) and test frameworks. Shows pass/fail rates, duration, coverage.</li>
+                <li><strong>Test Summary Reports:</strong> Created by QA Lead at the end of major phases or before releases. Summarizes testing activities, results, coverage achieved, outstanding defects, risks, and go/no-go recommendation. Stored in Confluence.</li>
+                <li><strong>Performance Test Reports:</strong> Detailed analysis of load test results, comparison against NFRs, bottleneck identification. Stored in Confluence.</li>
+                <li><strong>Security Scan Reports:</strong> Output from SAST, DAST, SCA, Pen Test tools. Stored securely, findings tracked in Jira/ADO or dedicated security tool dashboards (e.g., GitLab Security Dashboard).</li>
+                <li><strong>Accessibility Audit Reports:</strong> Output from automated tools and manual review findings. Stored in Confluence/Jira.</li>
+            </ul>
+            <p class="responsibility">Responsibility: QA Lead (overall ownership), QA Engineers, Developers, Performance Engineers, Security Engineers, Accessibility Specialists.</p>
+        </div>
+    </section>
+
+    <!-- Defect Management -->
+     <section id="defect-management">
+        <h2>VI. Defect Management Process</h2>
+        <div class="section-description">
+            <p>A structured process for identifying, tracking, prioritizing, and resolving defects is critical for maintaining quality.</p>
+            <ol>
+                <li><strong>Logging:</strong> Defects found via automated tests, manual testing, UAT, or production incidents are logged promptly in Jira/ADO using a standardized defect template. Minimum info: Title, Steps to Reproduce, Actual Result, Expected Result, Severity, Priority, Environment, Component/Feature, Screenshots/Logs.</li>
+                <li><strong>Triage:</strong> Daily "Bug Scrub" meeting (QA Lead, Dev Lead, PO/BA) reviews newly logged defects.
+                    <ul>
+                        <li>Confirm validity and reproducibility.</li>
+                        <li>Assign Severity (e.g., Blocker, Critical, Major, Minor, Trivial) based on impact.</li>
+                        <li>Assign Priority (e.g., Highest, High, Medium, Low) based on urgency and business value.</li>
+                        <li>Assign defect to the appropriate developer or team lead for investigation/fixing.</li>
+                    </ul>
+                </li>
+                <li><strong>Resolution:</strong> Developer fixes the defect on a dedicated branch (e.g., `bugfix/TMS-XXX`), including writing/updating automated tests to cover the scenario. Code follows standard review/merge process into `develop`.</li>
+                <li><strong>Verification:</strong> QA Engineer verifies the fix in the appropriate environment (QA/Staging) where the bug was initially found. If verified, the defect is closed. If not, it's reopened and reassigned to the developer with details.</li>
+                <li><strong>Tracking & Reporting:</strong> Defect status, aging, density, and resolution rates are tracked via Jira/ADO dashboards and reported regularly (e.g., in Sprint Reviews, weekly status reports).</li>
+            </ol>
+            <p class="responsibility">Responsibility: All Team Members (logging), QA Lead/Dev Lead/PO (triage), Developers (fixing), QA Engineers (verifying).</p>
+        </div>
+    </section>
+
+     <!-- Alignment -->
+    <section id="alignment">
+        <h2>VII. Alignment with Development & DevOps Strategy</h2>
+        <div class="section-description">
+            <p>This Test Engineering Strategy is designed to be intrinsically woven into the Agile Development and DevSecOps processes:</p>
+            <ul>
+                <li><strong>Agile/Scrum Integration:</strong>
+                    <ul>
+                        <li>Test planning occurs during Sprint Planning (understanding acceptance criteria, identifying test scenarios).</li>
+                        <li>Developers write unit/integration tests during the sprint as part of feature development.</li>
+                        <li>QA performs exploratory testing and automation development throughout the sprint.</li>
+                        <li>Meeting the testing criteria within the Definition of Done is required for story acceptance in Sprint Review.</li>
+                        <li>Testing process improvements are discussed during Sprint Retrospectives.</li>
+                    </ul>
+                </li>
+                <li><strong>Git Workflow Integration:</strong>
+                    <ul>
+                        <li>Pre-commit hooks enforce basic quality checks before code leaves the developer machine.</li>
+                        <li>Automated tests (Unit, Component, SAST, SCA) run automatically on Merge Requests, acting as mandatory quality gates before merging to `develop`.</li>
+                    </ul>
+                </li>
+                <li><strong>CI/CD Pipeline Integration:</strong>
+                    <ul>
+                        <li>The CI pipeline includes automated build, unit test, component test, SAST, SCA, and packaging steps with quality gates.</li>
+                        <li>The CD pipeline includes automated deployment to test environments followed by automated Integration, API, E2E, DAST, and Accessibility tests, acting as further quality gates blocking promotion if failures occur.</li>
+                        <li>Performance and DR tests are executed against dedicated environments provisioned via the CD pipeline.</li>
+                    </ul>
+                </li>
+                <li><strong>DevSecOps Culture:</strong>
+                    <ul>
+                        <li>Security testing (SAST, SCA, DAST, Container Scanning) is automated and integrated early ("Shift Left").</li>
+                        <li>Developers are responsible for addressing security findings in their code.</li>
+                        <li>Operations (SRE) collaborates on monitoring, incident response, DR testing, and performance optimization, providing feedback into development.</li>
+                        <li>Shared responsibility for quality and security across Dev, QA, Sec, and Ops.</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+     <!-- Continuous Improvement -->
+    <section id="continuous-improvement">
+        <h2>VIII. Continuous Improvement of Test Strategy</h2>
+        <div class="section-description">
+            <p>This strategy is a living document and will be continuously improved:</p>
+            <ul>
+                <li><strong>Metrics Review:</strong> Regularly analyze test metrics (coverage, pass rates, defect escape rates, automation execution time, flaky test counts) to identify areas for improvement.</li>
+                <li><strong>Retrospective Feedback:</strong> Use Sprint Retrospectives and incident post-mortems to gather feedback on testing processes, tools, and effectiveness.</li>
+                <li><strong>Tool Evaluation:</strong> Periodically evaluate new testing tools and frameworks to enhance automation, coverage, or efficiency.</li>
+                <li><strong>Strategy Updates:</strong> Update this Test Strategy document based on lessons learned, process changes, and evolving project needs. Communicate changes to the entire team.</li>
+            </ul>
+            <p class="responsibility">Responsibility: QA Lead, Test Engineering Team, in collaboration with Dev, Ops, Sec, and Project Management.</p>
+        </div>
+    </section>
+
+</body>
+</html>
