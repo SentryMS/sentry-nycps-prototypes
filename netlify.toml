@@ -1,0 +1,8 @@
+[build]
+  publish = "Prototype-Version C - New Look "
+  
+# Redirects
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200 
