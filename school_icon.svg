@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <circle cx="12" cy="12" r="12" fill="#0056A8" stroke="#FFFFFF" stroke-width="0.75"/>
+  <path d="M12 4L5 8v1h14V8L12 4zm-5 6v7h3v-5h4v5h3v-7L12 7.5 7 10z" fill="#FFFFFF"/>
+  <text x="12" y="21" text-anchor="middle" font-family="Arial" font-size="2.5" font-weight="bold" fill="#FFFFFF">SCHOOL</text>
+</svg> 

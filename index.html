@@ -1,0 +1,28 @@
+<!-- Font Awesome for Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+<!-- Mapbox CSS -->
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<!-- Favicon -->
+<link rel="shortcut icon" href="favicon.svg" type="image/svg+xml">
+</head>
+
+<body>
+    <header class="app-header">
+        <div class="header-brand">
+            <img src="nycps-logo.png" alt="NYCPS Logo" id="header-logo-nycps" class="header-logo nycps-logo">
+            <span class="logo-separator"></span>
+            <img src="sentry.svg" alt="Sentry Logo" id="header-logo-sentry" class="header-logo sentry-logo">
+            <span id="header-title" class="header-title-text">New York City Public Schools Transportation Management
+                System</span>
+        </div>
+        <div class="header-controls">
+            <span id="user-info"></span>
+            <button id="theme-toggle-btn" class="btn btn-sm btn-outline icon-only" title="Toggle Dark/Light Mode">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button id="logout-btn" class="btn btn-sm btn-outline" style="display: none;">Logout <i
+                    class="fas fa-sign-out-alt"></i></button>
+        </div>
+    </header>
+</body>
