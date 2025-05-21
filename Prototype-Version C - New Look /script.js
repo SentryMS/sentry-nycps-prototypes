@@ -1,6 +1,420 @@
 document.addEventListener('DOMContentLoaded', () => {
     console.log("DOM fully loaded and parsed");
 
+    // --- Mapbox Configuration ---
+    mapboxgl.accessToken = 'pk.eyJ1Ijoia2FydGlrc2hhbmthcjgiLCJhIjoiY21heDRzNWI2MG5ndzJqcTBwemRzb201biJ9.acWNHPsR3coetekAP0wTQA';
+
+    // Map instances for different views
+    let parentMap = null;
+    let driverMap = null;
+    let schoolMap = null;
+    let adminMap = null;
+
+    // NYC Coordinates (City Hall as center)
+    const nycCoordinates = {
+        center: [-73.9979, 40.7128],
+        zoom: 10
+    };
+
+    // Sample data for map elements
+    const busData = [
+        { id: 'B1234', routeId: 'BX41', lat: -73.9800, lng: 40.7140, status: 'active', speed: 18, heading: 90, nextStop: 'Main St & 1st Ave', studentCount: 23 },
+        { id: 'B5678', routeId: 'QN05', lat: -73.9700, lng: 40.7220, status: 'delayed', speed: 10, heading: 180, nextStop: 'Broadway & 34th St', studentCount: 18 },
+        { id: 'B9012', routeId: 'BK22', lat: -73.9500, lng: 40.6900, status: 'inactive', speed: 0, heading: 270, nextStop: 'Atlantic Ave & Court St', studentCount: 0 }
+    ];
+
+    const schoolData = [
+        { id: 'PS123', name: 'PS 123', lat: -73.9750, lng: 40.7200, busCount: 8, studentCount: 120 },
+        { id: 'PS456', name: 'PS 456', lat: -73.9650, lng: 40.7150, busCount: 5, studentCount: 85 },
+        { id: 'MS789', name: 'MS 789', lat: -73.9550, lng: 40.7250, busCount: 12, studentCount: 220 }
+    ];
+
+    const stopData = [
+        { id: 'ST001', name: 'Main St & 1st Ave', lat: -73.9820, lng: 40.7160, time: '7:45 AM', studentCount: 5 },
+        { id: 'ST002', name: 'Park Ave & 42nd St', lat: -73.9770, lng: 40.7190, time: '7:52 AM', studentCount: 3 },
+        { id: 'ST003', name: 'Lexington Ave & 86th St', lat: -73.9570, lng: 40.7280, time: '8:05 AM', studentCount: 4 }
+    ];
+
+    // Routes (paths) for buses
+    const routeData = {
+        'BX41': [
+            [-73.9820, 40.7160], // Stop 1
+            [-73.9800, 40.7140], // Current bus position
+            [-73.9770, 40.7190], // Stop 2
+            [-73.9750, 40.7200]  // School
+        ]
+    };
+
+    // Initialize maps for different views
+    function initializeMaps() {
+        // Initialize Parent/Student Map
+        if (document.getElementById('parent-map')) {
+            parentMap = new mapboxgl.Map({
+                container: 'parent-map',
+                style: 'mapbox://styles/mapbox/streets-v11',
+                center: nycCoordinates.center,
+                zoom: 12
+            });
+
+            // Add navigation controls
+            parentMap.addControl(new mapboxgl.NavigationControl(), 'top-right');
+
+            // Add bus, school and route when map loads
+            parentMap.on('load', () => {
+                // Get first bus for display
+                const bus = busData[0];
+
+                // Add bus marker
+                const busMarkerElement = document.createElement('div');
+                busMarkerElement.className = 'bus-marker';
+
+                new mapboxgl.Marker(busMarkerElement)
+                    .setLngLat([bus.lat, bus.lng])
+                    .setPopup(new mapboxgl.Popup().setHTML(`
+                        <h4>Bus #${bus.id}</h4>
+                        <p>Route: ${bus.routeId}</p>
+                        <p>Next Stop: ${bus.nextStop}</p>
+                        <p>Status: ${bus.status === 'active' ? 'On time' : 'Delayed'}</p>
+                    `))
+                    .addTo(parentMap);
+
+                // Add route line
+                parentMap.addSource('route', {
+                    'type': 'geojson',
+                    'data': {
+                        'type': 'Feature',
+                        'properties': {},
+                        'geometry': {
+                            'type': 'LineString',
+                            'coordinates': routeData['BX41']
+                        }
+                    }
+                });
+
+                parentMap.addLayer({
+                    'id': 'route',
+                    'type': 'line',
+                    'source': 'route',
+                    'layout': {
+                        'line-join': 'round',
+                        'line-cap': 'round'
+                    },
+                    'paint': {
+                        'line-color': '#10b981',
+                        'line-width': 4,
+                        'line-opacity': 0.8
+                    }
+                });
+
+                // Add stop markers
+                routeData['BX41'].forEach((coord, index) => {
+                    if (index !== 1) { // Skip bus position
+                        const stopElement = document.createElement('div');
+                        stopElement.className = 'stop-marker';
+
+                        new mapboxgl.Marker(stopElement)
+                            .setLngLat(coord)
+                            .setPopup(new mapboxgl.Popup().setHTML(`
+                                <h4>Bus Stop ${index + 1}</h4>
+                                <p>${index === 0 ? 'First pickup' : index === routeData['BX41'].length - 1 ? 'Final destination' : 'Intermediate stop'}</p>
+                            `))
+                            .addTo(parentMap);
+                    }
+                });
+
+                // Set map view
+                parentMap.fitBounds([
+                    [Math.min(...routeData['BX41'].map(coord => coord[0])) - 0.01, Math.min(...routeData['BX41'].map(coord => coord[1])) - 0.01],
+                    [Math.max(...routeData['BX41'].map(coord => coord[0])) + 0.01, Math.max(...routeData['BX41'].map(coord => coord[1])) + 0.01]
+                ], { padding: 50 });
+            });
+        }
+
+        // Initialize Driver Map
+        if (document.getElementById('driver-map')) {
+            driverMap = new mapboxgl.Map({
+                container: 'driver-map',
+                style: 'mapbox://styles/mapbox/streets-v11',
+                center: nycCoordinates.center,
+                zoom: 14
+            });
+
+            // Add navigation and geolocate controls
+            driverMap.addControl(new mapboxgl.NavigationControl(), 'top-right');
+            driverMap.addControl(new mapboxgl.GeolocateControl({
+                positionOptions: {
+                    enableHighAccuracy: true
+                },
+                trackUserLocation: true
+            }), 'top-right');
+
+            // Add route and stops when map loads
+            driverMap.on('load', () => {
+                // Add route line
+                driverMap.addSource('driver-route', {
+                    'type': 'geojson',
+                    'data': {
+                        'type': 'Feature',
+                        'properties': {},
+                        'geometry': {
+                            'type': 'LineString',
+                            'coordinates': routeData['BX41']
+                        }
+                    }
+                });
+
+                driverMap.addLayer({
+                    'id': 'driver-route',
+                    'type': 'line',
+                    'source': 'driver-route',
+                    'layout': {
+                        'line-join': 'round',
+                        'line-cap': 'round'
+                    },
+                    'paint': {
+                        'line-color': '#10b981',
+                        'line-width': 4,
+                        'line-opacity': 0.8
+                    }
+                });
+
+                // Add driver's position marker
+                const driverPositionElement = document.createElement('div');
+                driverPositionElement.className = 'bus-marker';
+
+                new mapboxgl.Marker(driverPositionElement)
+                    .setLngLat(routeData['BX41'][1]) // Current position
+                    .addTo(driverMap);
+
+                // Add stop markers with more detailed info
+                routeData['BX41'].forEach((coord, index) => {
+                    if (index !== 1) { // Skip current position
+                        const stopElement = document.createElement('div');
+                        stopElement.className = 'stop-marker';
+
+                        let stopInfo;
+                        if (index === 0) {
+                            stopInfo = `
+                                <h4>Stop 1: Pickup</h4>
+                                <p>Main St & 1st Ave</p>
+                                <p>Scheduled: 7:45 AM</p>
+                                <p>Students: 5</p>
+                            `;
+                        } else if (index === routeData['BX41'].length - 1) {
+                            stopInfo = `
+                                <h4>Final Stop: School</h4>
+                                <p>PS 123</p>
+                                <p>ETA: 8:15 AM</p>
+                            `;
+                        } else {
+                            stopInfo = `
+                                <h4>Stop ${index + 1}</h4>
+                                <p>Park Ave & 42nd St</p>
+                                <p>ETA: 8:05 AM</p>
+                                <p>Students: 3</p>
+                            `;
+                        }
+
+                        new mapboxgl.Marker(stopElement)
+                            .setLngLat(coord)
+                            .setPopup(new mapboxgl.Popup().setHTML(stopInfo))
+                            .addTo(driverMap);
+                    }
+                });
+
+                // Set map view for driver - slightly closer
+                driverMap.fitBounds([
+                    [Math.min(...routeData['BX41'].map(coord => coord[0])) - 0.005, Math.min(...routeData['BX41'].map(coord => coord[1])) - 0.005],
+                    [Math.max(...routeData['BX41'].map(coord => coord[0])) + 0.005, Math.max(...routeData['BX41'].map(coord => coord[1])) + 0.005]
+                ], { padding: 50 });
+            });
+        }
+
+        // Initialize School Admin Map
+        if (document.getElementById('school-map')) {
+            schoolMap = new mapboxgl.Map({
+                container: 'school-map',
+                style: 'mapbox://styles/mapbox/streets-v11',
+                center: nycCoordinates.center,
+                zoom: 11
+            });
+
+            // Add navigation controls
+            schoolMap.addControl(new mapboxgl.NavigationControl(), 'top-right');
+
+            // Add school and all buses for this school
+            schoolMap.on('load', () => {
+                // Add school marker
+                const schoolMarkerElement = document.createElement('div');
+                schoolMarkerElement.className = 'school-marker';
+
+                new mapboxgl.Marker(schoolMarkerElement)
+                    .setLngLat([schoolData[0].lat, schoolData[0].lng])
+                    .setPopup(new mapboxgl.Popup().setHTML(`
+                        <h4>${schoolData[0].name}</h4>
+                        <p>Buses: ${schoolData[0].busCount}</p>
+                        <p>Students: ${schoolData[0].studentCount}</p>
+                    `))
+                    .addTo(schoolMap);
+
+                // Add all bus markers
+                busData.forEach(bus => {
+                    const busElement = document.createElement('div');
+                    busElement.className = 'bus-marker';
+
+                    // Add different styling for delayed buses
+                    if (bus.status === 'delayed') {
+                        busElement.style.filter = 'hue-rotate(150deg)';
+                    }
+
+                    new mapboxgl.Marker(busElement)
+                        .setLngLat([bus.lat, bus.lng])
+                        .setPopup(new mapboxgl.Popup().setHTML(`
+                            <h4>Bus #${bus.id}</h4>
+                            <p>Route: ${bus.routeId}</p>
+                            <p>Students: ${bus.studentCount}</p>
+                            <p>Status: ${bus.status === 'active' ? 'On time' : bus.status === 'delayed' ? 'Delayed' : 'Inactive'}</p>
+                            <button class="btn btn-sm btn-primary" onclick="alert('Bus details view would open here')">View Details</button>
+                        `))
+                        .addTo(schoolMap);
+                });
+
+                // Set bounds to include school and all buses
+                const allCoords = [
+                    [schoolData[0].lat, schoolData[0].lng],
+                    ...busData.map(bus => [bus.lat, bus.lng])
+                ];
+
+                schoolMap.fitBounds([
+                    [Math.min(...allCoords.map(coord => coord[0])) - 0.01, Math.min(...allCoords.map(coord => coord[1])) - 0.01],
+                    [Math.max(...allCoords.map(coord => coord[0])) + 0.01, Math.max(...allCoords.map(coord => coord[1])) + 0.01]
+                ], { padding: 50 });
+            });
+        }
+
+        // Initialize OPT Admin Map
+        if (document.getElementById('admin-map')) {
+            adminMap = new mapboxgl.Map({
+                container: 'admin-map',
+                style: 'mapbox://styles/mapbox/streets-v11',
+                center: nycCoordinates.center,
+                zoom: 10
+            });
+
+            // Add navigation controls
+            adminMap.addControl(new mapboxgl.NavigationControl(), 'top-right');
+
+            // Add all schools and buses
+            adminMap.on('load', () => {
+                // Add all school markers
+                schoolData.forEach(school => {
+                    const schoolElement = document.createElement('div');
+                    schoolElement.className = 'school-marker';
+
+                    new mapboxgl.Marker(schoolElement)
+                        .setLngLat([school.lat, school.lng])
+                        .setPopup(new mapboxgl.Popup().setHTML(`
+                            <h4>${school.name}</h4>
+                            <p>Buses: ${school.busCount}</p>
+                            <p>Students: ${school.studentCount}</p>
+                        `))
+                        .addTo(adminMap);
+                });
+
+                // Add all bus markers
+                busData.forEach(bus => {
+                    const busElement = document.createElement('div');
+                    busElement.className = 'bus-marker';
+
+                    // Add different styling for different statuses
+                    if (bus.status === 'delayed') {
+                        busElement.style.filter = 'hue-rotate(150deg)';
+                    } else if (bus.status === 'inactive') {
+                        busElement.style.opacity = '0.5';
+                    }
+
+                    new mapboxgl.Marker(busElement)
+                        .setLngLat([bus.lat, bus.lng])
+                        .setPopup(new mapboxgl.Popup().setHTML(`
+                            <h4>Bus #${bus.id}</h4>
+                            <p>Route: ${bus.routeId}</p>
+                            <p>Students: ${bus.studentCount}</p>
+                            <p>Status: ${bus.status === 'active' ? 'On time' : bus.status === 'delayed' ? 'Delayed' : 'Inactive'}</p>
+                            <button class="btn btn-sm btn-primary" onclick="alert('Bus details view would open here')">View Details</button>
+                        `))
+                        .addTo(adminMap);
+                });
+
+                // Add borough boundaries (placeholder)
+                adminMap.addSource('boroughs', {
+                    'type': 'geojson',
+                    'data': {
+                        'type': 'Feature',
+                        'properties': {},
+                        'geometry': {
+                            'type': 'Polygon',
+                            'coordinates': [[
+                                [-74.03, 40.69],
+                                [-73.98, 40.69],
+                                [-73.98, 40.73],
+                                [-74.03, 40.73],
+                                [-74.03, 40.69]
+                            ]]
+                        }
+                    }
+                });
+
+                adminMap.addLayer({
+                    'id': 'borough-boundaries',
+                    'type': 'line',
+                    'source': 'boroughs',
+                    'layout': {},
+                    'paint': {
+                        'line-color': '#0ea5e9',
+                        'line-width': 2,
+                        'line-opacity': 0.5
+                    }
+                });
+            });
+        }
+    }
+
+    // Initialize QR code generator
+    function generateQRCode() {
+        const qrCodeContainer = document.getElementById('student-qr-code');
+        if (qrCodeContainer) {
+            // Generate a QR code for student ID
+            const studentId = '12345';
+
+            // Clear existing content
+            qrCodeContainer.innerHTML = '';
+
+            // Generate QR code using the qrcode.js library
+            QRCode.toCanvas(qrCodeContainer, studentId, {
+                width: 180,
+                color: {
+                    dark: '#000000',
+                    light: '#ffffff'
+                },
+                errorCorrectionLevel: 'H'
+            }, function (error) {
+                if (error) console.error(error);
+
+                // Add student ID text below QR code
+                const idElement = document.createElement('div');
+                idElement.className = 'student-id';
+                idElement.textContent = `Student ID: ${studentId}`;
+                qrCodeContainer.appendChild(idElement);
+
+                // Add instruction text
+                const instructionElement = document.createElement('div');
+                instructionElement.className = 'qr-code-text';
+                instructionElement.textContent = 'Present this pass to the driver when boarding';
+                qrCodeContainer.appendChild(instructionElement);
+            });
+        }
+    }
+
     // --- Get Element References ---
     const headerTitle = document.getElementById('header-title');
     const userInfoSpan = document.getElementById('user-info');
@@ -134,6 +548,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Populate Bottom Nav for ALL logged-in users
             populateBottomNav(currentRole);
+
+            // Initialize maps when their view becomes active
+            if (viewId === 'parent-student-view') {
+                if (!parentMap) initializeMaps();
+                generateQRCode();
+            } else if (viewId === 'driver-view') {
+                if (!driverMap) initializeMaps();
+            } else if (viewId === 'school-admin-view') {
+                if (!schoolMap) initializeMaps();
+            } else if (viewId === 'opt-admin-view') {
+                if (!adminMap) initializeMaps();
+            }
         } else {
             // Reset on logout/initial view
             headerTitle.textContent = 'NYCPS Transportation';
@@ -161,15 +587,15 @@ document.addEventListener('DOMContentLoaded', () => {
         if (links) {
             links.forEach(link => {
                 const linkElement = document.createElement('a');
-                linkElement.href = '#'; 
-                linkElement.dataset.target = link.target; 
+                linkElement.href = '#';
+                linkElement.dataset.target = link.target;
                 linkElement.innerHTML = `
                     <i class="fas ${link.icon} fa-fw"></i>
                     <span>${link.text}</span>
                 `;
                 sidebarNav.appendChild(linkElement); // Append to sidebarNav
             });
-        } 
+        }
     }
 
     // Function to populate the bottom navigation
@@ -191,7 +617,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         } else {
             // Keep footer empty if no links defined for role or not logged in
-            bottomNavContainer.innerHTML = '<span style="color: var(--text-muted); font-size: 0.8em;">(Nav Unavailable)</span>'; 
+            bottomNavContainer.innerHTML = '<span style="color: var(--text-muted); font-size: 0.8em;">(Nav Unavailable)</span>';
         }
     }
 
@@ -450,12 +876,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     'Cancel'
                 );
             }
-             else if (target.id === 'report-issue-btn') {
-                 showModal('Report Issue', 'Issue reporting feature integration pending...');
-             }
+            else if (target.id === 'report-issue-btn') {
+                showModal('Report Issue', 'Issue reporting feature integration pending...');
+            }
             else if (target.id === 'view-schedule-btn') {
-                 // Reverted to simpler modal content to fix syntax errors
-                 showModal('Student Schedule (Simulated)', 'AM: BX41 (8:00 AM), PM: BX45 (3:45 PM). Stop: Main St & 1st Ave.');
+                // Reverted to simpler modal content to fix syntax errors
+                showModal('Student Schedule (Simulated)', 'AM: BX41 (8:00 AM), PM: BX45 (3:45 PM). Stop: Main St & 1st Ave.');
             }
             else if (target.id === 'request-info-update-btn') {
                 showModal('Request Info Update', 'Info update request portal integration pending...');
@@ -483,38 +909,68 @@ document.addEventListener('DOMContentLoaded', () => {
                     // showModal('Ridership', `${listItem.querySelector('.student-name').textContent.trim()} marked boarded.`);
                 }
             } else if (noShowBtn) {
-                 const listItem = noShowBtn.closest('li');
+                const listItem = noShowBtn.closest('li');
                 if (listItem && !listItem.classList.contains('status-boarded')) {
                     listItem.classList.add('status-noshow');
                     listItem.querySelectorAll('.student-actions button').forEach(btn => btn.disabled = true);
                     // Optional: Confirmation modal
                     // showModal('Ridership', `${listItem.querySelector('.student-name').textContent.trim()} marked no-show.`);
-                 }
+                }
             }
             // Other Driver Buttons
             else if (targetButton.id === 'scan-id-btn') {
                 showModal('Scan Student ID', 'Simulating ID scan... Student [Jane Doe] identified & marked boarded.');
                 // Find Jane Doe in the list and mark her as boarded visually
                 const janeDoeItem = Array.from(driverView.querySelectorAll('.ridership-list li')).find(li => li.textContent.includes('Doe, Jane'));
-                if(janeDoeItem && !janeDoeItem.classList.contains('status-boarded') && !janeDoeItem.classList.contains('status-noshow')) {
+                if (janeDoeItem && !janeDoeItem.classList.contains('status-boarded') && !janeDoeItem.classList.contains('status-noshow')) {
                     janeDoeItem.classList.add('status-boarded');
                     janeDoeItem.querySelectorAll('.student-actions button').forEach(btn => btn.disabled = true);
                 }
             }
             else if (targetButton.id === 'audio-nav-btn') {
-                showModal('Navigation', 'Audio navigation toggled.');
+                showModal('Audio Navigation', 'Audio navigation activated: "Turn left on Elm Street in 200 feet."');
             }
             else if (targetButton.id === 'full-route-btn') {
-                 // Reverted to simpler modal content to fix syntax errors
-                 showModal('Route Stop List', 'Depot -> Stop 1 -> Stop 2 -> Stop 3 (Current) -> ... -> PS 123');
+                // Create route list content
+                const routeListContent = document.createElement('ul');
+                routeListContent.classList.add('simple-list');
+                routeListContent.innerHTML = `
+                    <li class="current-stop"><span class="badge warning">Current</span> <strong class="stop-name">Stop 3:</strong> Oak Hill Apartments (8:05 AM)</li>
+                    <li><span class="badge">Next</span> <strong class="stop-name">Stop 4:</strong> Central Park West (8:12 AM)</li>
+                    <li><span class="badge">Next</span> <strong class="stop-name">Stop 5:</strong> Metro Heights (8:19 AM)</li>
+                    <li><span class="badge">Next</span> <strong class="stop-name">Stop 6:</strong> West Village (8:26 AM)</li>
+                    <li><span class="badge success">School</span> <strong class="stop-name">PS 123</strong> (8:35 AM)</li>
+                `;
+                showModal('Route BX41 - All Stops', routeListContent);
             }
             else if (targetButton.id === 'driver-alert-btn') {
-                // Potential: Show a modal with alert options (breakdown, delay, etc.)
-                showModal('Send Alert', 'Select Alert Type (e.g., Breakdown, Delay, Student Issue)... (Not Implemented)');
+                // Create alert form content
+                const alertFormContent = document.createElement('div');
+                alertFormContent.innerHTML = `
+                    <div class="form-group">
+                        <label for="alert-type">Alert Type:</label>
+                        <select id="alert-type" class="form-control">
+                            <option>Bus Delay</option>
+                            <option>Road Closure</option>
+                            <option>Mechanical Issue</option>
+                            <option>Student Incident</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="alert-desc">Description:</label>
+                        <textarea id="alert-desc" class="form-control" rows="3" placeholder="Describe the issue..."></textarea>
+                    </div>
+                `;
+                showModal('Send Alert to Dispatch', alertFormContent, true, () => {
+                    showModal('Alert Sent', 'Your alert has been sent to dispatch. Someone will contact you shortly.');
+                }, 'Send Alert');
             }
             else if (targetButton.id === 'acknowledge-alert-btn') {
-                showModal('Alert Acknowledged', 'Alert: [Heavy Traffic Reported Ahead] has been acknowledged.', false, null, '', 'OK');
-                 targetButton.style.display = 'none'; // Hide button after ack
+                showModal('New Alert', 'Traffic advisory: Accident reported ahead on Main St near your route. Consider alternate route.', true, () => {
+                    targetButton.classList.remove('btn-warning');
+                    targetButton.classList.add('btn-secondary');
+                }, 'Acknowledge');
             }
         });
     }
@@ -525,29 +981,23 @@ document.addEventListener('DOMContentLoaded', () => {
             const targetButton = e.target.closest('button');
             if (!targetButton) return;
 
-            if (targetButton.id === 'apply-school-filter-btn') {
-                const filterValue = schoolAdminView.querySelector('#school-bus-filter').value;
-                showModal('Filter Applied', `Simulating map filter for: ${filterValue}`);
+            if (targetButton.id === 'view-bus-details-btn') {
+                showModal('Bus Detail View', 'Bus detail view would display current location, status, and student list for selected buses.');
+            }
+            else if (targetButton.id === 'manage-student-info-btn') {
+                showModal('Student Management', 'Student management interface would allow viewing and updating student transportation details.');
+            }
+            else if (targetButton.id === 'school-report-issue-btn') {
+                showModal('Report Issue', 'Issue reporting form would allow school staff to submit transportation-related issues.');
             }
             else if (targetButton.id === 'generate-otp-report-btn') {
-                 showModal('Generate Report', 'Generating On-Time Performance Report for PS 123... (Report would download/display)', false, null, '', 'OK');
+                showModal('On-Time Performance Report', 'On-time performance reporting would display metrics for bus arrival/departure times.');
             }
-            else if (targetButton.classList.contains('view-details-btn')) { // Handler for View Details in table
-                const row = targetButton.closest('tr');
-                const route = row.cells[0].textContent;
-                const bus = row.cells[1].textContent;
-                showModal(`Bus Details: ${route} (${bus})`, `Loading detailed status, location history, and assigned students for ${bus}... (Not Implemented)`);
-            }
-            else if (targetButton.closest('.action-buttons')) { // Generic handler for other action buttons
-                const actionText = targetButton.textContent.trim();
-                // Avoid re-triggering report generation
-                if (targetButton.id !== 'generate-otp-report-btn' && targetButton.id !== 'manage-student-info-btn') { 
-                     showModal('School Admin Action', `Initiating action: ${actionText}... (Not Implemented)`);
+            else if (targetButton.id === 'apply-school-filter-btn') {
+                const filterSelect = document.getElementById('school-bus-filter');
+                if (filterSelect) {
+                    showModal('Filter Applied', `Buses filtered by: ${filterSelect.value}`);
                 }
-            }
-            // Handle Manage Students separately if needed
-            else if (targetButton.id === 'manage-student-info-btn') {
-                showModal('Manage Students', 'Navigating to student information portal for PS 123... (Not Implemented)');
             }
         });
     }
@@ -556,93 +1006,74 @@ document.addEventListener('DOMContentLoaded', () => {
     if (optAdminView) {
         optAdminView.addEventListener('click', (e) => {
             const targetButton = e.target.closest('button');
-            const clickableEvent = e.target.closest('.clickable-event');
+            if (!targetButton) return;
 
-            // Filter/Search Button
-            if (targetButton && targetButton.id === 'apply-opt-filter-btn') {
-                const searchValue = optAdminView.querySelector('#opt-search').value;
-                const statusFilter = optAdminView.querySelector('#opt-filter-status').value;
-                const boroughFilter = optAdminView.querySelector('#opt-filter-borough').value;
-                showModal('Filter/Search Applied', `Simulating OPT search/filter: Query='${searchValue || `(none)`}', Status='${statusFilter}', Borough='${boroughFilter}'`);
+            if (targetButton.id === 'apply-opt-filter-btn') {
+                const searchInput = document.getElementById('opt-search');
+                const statusFilter = document.getElementById('opt-filter-status');
+                const boroughFilter = document.getElementById('opt-filter-borough');
+
+                showModal('Search/Filter Applied', `Filtered by: ${searchInput?.value || 'No search term'} | Status: ${statusFilter?.value || 'All'} | Borough: ${boroughFilter?.value || 'All'}`);
+            } else if (targetButton.id === 'view-route-history-btn') {
+                showModal('Route History', 'Route history viewer would allow accessing historical bus routes and replaying them on the map.');
+            } else if (targetButton.classList.contains('clickable-event')) {
+                showModal('Event Action', `You clicked on event: ${targetButton.textContent}`);
             }
-            // Route History Button
-            else if (targetButton && targetButton.id === 'view-route-history-btn') {
-                 showModal('Route History', 'Select route and date range to view history/replay... (Not Implemented)');
-            }
-            // Generic Admin Action Buttons (excluding specific handled ones)
-            else if (targetButton && targetButton.closest('.admin-actions')) {
-                const actionText = targetButton.textContent.trim();
-                const iconClass = targetButton.querySelector('i')?.classList[1]; // Get the specific icon class (e.g., fa-route)
+        });
 
-                let actionTarget = actionText; // Default target description
-                if (iconClass === 'fa-route') actionTarget = 'Route Management';
-                else if (iconClass === 'fa-map-marker-alt') actionTarget = 'Stop Management';
-                else if (iconClass === 'fa-users') actionTarget = 'User Management';
-                else if (iconClass === 'fa-bus-alt') actionTarget = 'Vehicle Management';
-                else if (iconClass === 'fa-file-contract') actionTarget = 'Contract Management';
-                else if (iconClass === 'fa-chart-bar') actionTarget = 'Reporting Dashboard';
-                else if (iconClass === 'fa-bell') actionTarget = 'Alert Configuration';
-                else if (iconClass === 'fa-exclamation-triangle') actionTarget = 'Escalation Queue';
-                else if (iconClass === 'fa-headset') actionTarget = 'Support Ticket System';
-                else if (iconClass === 'fa-broadcast-tower') actionTarget = 'Notification Broadcast Tool';
-                else if (iconClass === 'fa-tools') actionTarget = 'System Settings';
-                else if (iconClass === 'fa-map') actionTarget = 'Map Data Configuration';
-                // Exclude Route History button as it's handled separately
-                if (targetButton.id !== 'view-route-history-btn') { 
-                    showModal('Admin Action', `Navigating to ${actionTarget}... (Not Implemented)`);
-                }
-            }
-            // Clickable Event Feed Items
-            else if (clickableEvent) {
-                 const eventType = clickableEvent.getAttribute('data-event-type');
-                 const requestId = clickableEvent.getAttribute('data-request-id'); // Example attribute
-                 let modalTitleText = 'Event Details';
-                 let modalBodyText = 'Details for this event...';
+        // Make clickable events in the feed work
+        const clickableEvents = optAdminView.querySelectorAll('.event-item.clickable-event');
+        clickableEvents.forEach(item => {
+            item.addEventListener('click', () => {
+                const eventType = item.dataset.eventType;
+                const eventId = item.dataset.eventId || item.dataset.requestId || 'Unknown';
 
-                 // --- Simulate specific event interactions --- 
-                 if (eventType === 'request' && requestId === 'RC123') { // Specific handler for route change
-                    modalTitleText = `Route Change Request (${requestId})`;
-                    modalBodyText = 'SBC requests modifying QN05 start time by +5min due to consistent traffic delays near Stop 2. Impact analysis suggests minimal disruption to other stops. Approve?';
-                    showModal(
-                        modalTitleText,
-                        modalBodyText,
-                        true, // Show confirm
-                        () => { showModal('Request Approved', `Route QN05 start time change approved and scheduled.`); },
-                        'Approve Request', // Confirm text
-                        'Reject/Comment' // Cancel text
-                    );
-                } else if (eventType === 'request' && requestId === 'ADDR01') {
-                    modalTitleText = `Address Change Request (${requestId})`;
-                    modalBodyText = 'Parent request to change PM drop-off address for student #98765. Requires verification and potential route adjustment. View details?';
-                     showModal(
-                       modalTitleText,
-                       modalBodyText,
-                       true,
-                       () => { showModal('View Request', `Loading details for address change ${requestId}... (Not Implemented)`); },
-                       'View Details',
-                       'Dismiss'
-                    );
-                 } else if (eventType === 'issue' && requestId === 'TKT1023') { // Handler for new issue event
-                    modalTitleText = `New Issue Reported (${requestId})`;
-                    modalBodyText = 'Driver #887 (Bus BK55) reports Flat Tire at [Location]. Vehicle requires immediate assistance. Assign nearest roadside assistance?';
-                     showModal(
-                       modalTitleText,
-                       modalBodyText,
-                       true,
-                       () => { showModal('Action Logged', `Roadside assistance dispatched to Bus BK55.`); },
-                       'Dispatch Assistance',
-                       'View Details / Manual Assign'
-                    );
-                 } else {
-                     // Generic handler for other clickable events (or non-clickable ones if needed)
-                     // Non-clickable events won't trigger this due to the initial check for clickableEvent
-                     showModal(modalTitleText, `${modalBodyText} (Event ID: ${requestId || 'N/A'})`);
-                 }
-             } // End of master if/else if for OPT Admin listener
-        }); // End of OPT Admin event listener
-    } // End of if (optAdminView)
+                showModal(`${eventType.toUpperCase()} Details`, `You clicked on ${eventType} with ID: ${eventId}. This would open the full details view.`);
+            });
+        });
+    }
 
-    // --- Initial Setup ---
-    showView('role-selection'); // Start at role selection
+    // Initialize view (first time)
+    showView('role-selection');
 
-}); // END OF DOMContentLoaded listener
+    // Theme Toggle
+    const themeToggleBtn = document.getElementById('theme-toggle-btn');
+    let darkMode = localStorage.getItem('darkMode') === 'enabled';
+
+    // Initialize theme from localStorage
+    if (darkMode) {
+        document.body.classList.add('dark-mode');
+        themeToggleBtn.querySelector('i').classList.remove('fa-moon');
+        themeToggleBtn.querySelector('i').classList.add('fa-sun');
+    }
+
+    // Toggle theme on button click
+    themeToggleBtn.addEventListener('click', () => {
+        darkMode = !darkMode;
+        if (darkMode) {
+            document.body.classList.add('dark-mode');
+            localStorage.setItem('darkMode', 'enabled');
+            themeToggleBtn.querySelector('i').classList.remove('fa-moon');
+            themeToggleBtn.querySelector('i').classList.add('fa-sun');
+        } else {
+            document.body.classList.remove('dark-mode');
+            localStorage.setItem('darkMode', 'disabled');
+            themeToggleBtn.querySelector('i').classList.remove('fa-sun');
+            themeToggleBtn.querySelector('i').classList.add('fa-moon');
+        }
+
+        // Update maps with appropriate styling
+        if (parentMap) {
+            parentMap.setStyle(darkMode ? 'mapbox://styles/mapbox/dark-v10' : 'mapbox://styles/mapbox/streets-v11');
+        }
+        if (driverMap) {
+            driverMap.setStyle(darkMode ? 'mapbox://styles/mapbox/dark-v10' : 'mapbox://styles/mapbox/streets-v11');
+        }
+        if (schoolMap) {
+            schoolMap.setStyle(darkMode ? 'mapbox://styles/mapbox/dark-v10' : 'mapbox://styles/mapbox/streets-v11');
+        }
+        if (adminMap) {
+            adminMap.setStyle(darkMode ? 'mapbox://styles/mapbox/dark-v10' : 'mapbox://styles/mapbox/streets-v11');
+        }
+    });
+});
