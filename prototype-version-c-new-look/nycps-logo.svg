@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="110" height="40" viewBox="0 0 110 40">
+  <style>
+    .nycps-text { fill: currentColor; font-family: 'Arial Black', 'Arial Bold', Arial, sans-serif; font-weight: 900; font-size: 14px; }
+    .nycps-tagline { fill: currentColor; font-family: Arial, sans-serif; font-size: 10px; }
+    
+    /* Colors for light mode */
+    .nycps-color-1 { fill: #FF8400; }  /* Orange */
+    .nycps-color-2 { fill: #308637; }  /* Green */
+    .nycps-color-3 { fill: #0043AF; }  /* Blue */
+    
+    /* Colors will automatically switch in dark mode thanks to inheriting from parent */
+    @media (prefers-color-scheme: dark) {
+      .nycps-color-1 { fill: #FF9D33; }  /* Lighter Orange */
+      .nycps-color-2 { fill: #46B655; }  /* Lighter Green */
+      .nycps-color-3 { fill: #3E86E8; }  /* Lighter Blue */
+    }
+    
+    /* These classes will be controlled by our JS dark mode toggle */
+    .dark-theme .nycps-color-1 { fill: #FF9D33; }  /* Lighter Orange */
+    .dark-theme .nycps-color-2 { fill: #46B655; }  /* Lighter Green */
+    .dark-theme .nycps-color-3 { fill: #3E86E8; }  /* Lighter Blue */
+  </style>
+  
+  <!-- Stylized NYC DOE Logo -->
+  <g transform="translate(0, 8)">
+    <rect class="nycps-color-1" x="0" y="0" width="8" height="24" rx="1" />
+    <rect class="nycps-color-2" x="10" y="0" width="8" height="24" rx="1" />
+    <rect class="nycps-color-3" x="20" y="0" width="8" height="24" rx="1" />
+  </g>
+  
+  <!-- Text -->
+  <text class="nycps-text" x="33" y="17">NYC</text>
+  <text class="nycps-text" x="33" y="30">PUBLIC SCHOOLS</text>
+</svg> 

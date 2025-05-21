@@ -1,6 +1,40 @@
 document.addEventListener('DOMContentLoaded', () => {
     console.log("DOM fully loaded and parsed");
 
+    // --- Mobile optimization functions ---
+    function handleMobileOptimization() {
+        const headerTitle = document.getElementById('header-title');
+
+        // Apply short title for small screens
+        if (window.innerWidth <= 767 && headerTitle) {
+            // Store original text if not already stored
+            if (!headerTitle.dataset.originalTitle) {
+                headerTitle.dataset.originalTitle = headerTitle.textContent;
+            }
+
+            // Use CSS-based content replacement for better performance
+            headerTitle.dataset.shortTitle = "true";
+            // Hide the original text for screens that support ::after
+            headerTitle.textContent = "";
+        } else if (headerTitle && headerTitle.dataset.originalTitle) {
+            // Restore original title on larger screens
+            headerTitle.dataset.shortTitle = "false";
+            headerTitle.textContent = headerTitle.dataset.originalTitle;
+        }
+
+        // Force recalculate map sizes if present (for orientation changes)
+        if (window.innerWidth <= 768) {
+            setTimeout(resizeAllMaps, 300);
+        }
+    }
+
+    // Initialize mobile optimizations
+    handleMobileOptimization();
+
+    // Re-apply on resize and orientation change
+    window.addEventListener('resize', handleMobileOptimization);
+    window.addEventListener('orientationchange', handleMobileOptimization);
+
     // --- Mapbox Configuration ---
     mapboxgl.accessToken = 'pk.eyJ1Ijoia2FydGlrc2hhbmthcjgiLCJhIjoiY21heDRzNWI2MG5ndzJqcTBwemRzb201biJ9.acWNHPsR3coetekAP0wTQA';
 
@@ -53,14 +87,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 container: 'parent-map',
                 style: 'mapbox://styles/mapbox/streets-v11',
                 center: nycCoordinates.center,
-                zoom: 12
+                zoom: 12,
+                width: '100%',
+                height: '100%'
             });
 
             // Add navigation controls
             parentMap.addControl(new mapboxgl.NavigationControl(), 'top-right');
 
+            // Force resize to ensure map fills container
+            parentMap.resize();
+
             // Add bus, school and route when map loads
             parentMap.on('load', () => {
+                // Force resize again after load
+                setTimeout(() => parentMap.resize(), 100);
+
                 // Get first bus for display
                 const bus = busData[0];
 
@@ -136,7 +178,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 container: 'driver-map',
                 style: 'mapbox://styles/mapbox/streets-v11',
                 center: nycCoordinates.center,
-                zoom: 14
+                zoom: 14,
+                width: '100%',
+                height: '100%'
             });
 
             // Add navigation and geolocate controls
@@ -148,8 +192,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 trackUserLocation: true
             }), 'top-right');
 
+            // Force resize to ensure map fills container
+            driverMap.resize();
+
             // Add route and stops when map loads
             driverMap.on('load', () => {
+                // Force resize again after load
+                setTimeout(() => driverMap.resize(), 100);
+
                 // Add route line
                 driverMap.addSource('driver-route', {
                     'type': 'geojson',
@@ -236,14 +286,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 container: 'school-map',
                 style: 'mapbox://styles/mapbox/streets-v11',
                 center: nycCoordinates.center,
-                zoom: 11
+                zoom: 11,
+                width: '100%',
+                height: '100%'
             });
 
             // Add navigation controls
             schoolMap.addControl(new mapboxgl.NavigationControl(), 'top-right');
 
+            // Force resize to ensure map fills container
+            schoolMap.resize();
+
             // Add school and all buses for this school
             schoolMap.on('load', () => {
+                // Force resize again after load
+                setTimeout(() => schoolMap.resize(), 100);
+
                 // Add school marker
                 const schoolMarkerElement = document.createElement('div');
                 schoolMarkerElement.className = 'school-marker';
@@ -298,14 +356,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 container: 'admin-map',
                 style: 'mapbox://styles/mapbox/streets-v11',
                 center: nycCoordinates.center,
-                zoom: 10
+                zoom: 10,
+                width: '100%',
+                height: '100%'
             });
 
             // Add navigation controls
             adminMap.addControl(new mapboxgl.NavigationControl(), 'top-right');
 
+            // Force resize to ensure map fills container
+            adminMap.resize();
+
             // Add all schools and buses
             adminMap.on('load', () => {
+                // Force resize again after load
+                setTimeout(() => adminMap.resize(), 100);
+
                 // Add all school markers
                 schoolData.forEach(school => {
                     const schoolElement = document.createElement('div');
@@ -553,13 +619,32 @@ document.addEventListener('DOMContentLoaded', () => {
             if (viewId === 'parent-student-view') {
                 if (!parentMap) initializeMaps();
                 generateQRCode();
+                // Force resize after a short delay to ensure proper rendering
+                setTimeout(() => {
+                    if (parentMap) parentMap.resize();
+                }, 300);
             } else if (viewId === 'driver-view') {
                 if (!driverMap) initializeMaps();
+                // Force resize after a short delay to ensure proper rendering
+                setTimeout(() => {
+                    if (driverMap) driverMap.resize();
+                }, 300);
             } else if (viewId === 'school-admin-view') {
                 if (!schoolMap) initializeMaps();
+                // Force resize after a short delay to ensure proper rendering
+                setTimeout(() => {
+                    if (schoolMap) schoolMap.resize();
+                }, 300);
             } else if (viewId === 'opt-admin-view') {
                 if (!adminMap) initializeMaps();
+                // Force resize after a short delay to ensure proper rendering
+                setTimeout(() => {
+                    if (adminMap) adminMap.resize();
+                }, 300);
             }
+
+            // For any view with maps, trigger resize after animation completes
+            setTimeout(resizeAllMaps, 500);
         } else {
             // Reset on logout/initial view
             headerTitle.textContent = 'NYCPS Transportation';
@@ -761,6 +846,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Close sidebar when clicking overlay (mobile only)
     if (sidebarOverlay) {
         sidebarOverlay.addEventListener('click', () => {
+            document.body.classList.remove('sidebar-active');
+        });
+    }
+
+    // Close sidebar when clicking close button
+    const sidebarCloseBtn = document.getElementById('sidebar-close-btn');
+    if (sidebarCloseBtn) {
+        sidebarCloseBtn.addEventListener('click', () => {
             document.body.classList.remove('sidebar-active');
         });
     }
@@ -1063,17 +1156,81 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Update maps with appropriate styling
+        const newStyle = darkMode ? 'mapbox://styles/mapbox/dark-v10' : 'mapbox://styles/mapbox/streets-v11';
+        const updateMap = (map) => {
+            if (map) {
+                const currentCenter = map.getCenter();
+                const currentZoom = map.getZoom();
+
+                // Save the current state
+                map.once('styledata', () => {
+                    // After style loads, restore view and resize
+                    map.setCenter(currentCenter);
+                    map.setZoom(currentZoom);
+                    map.resize();
+
+                    // Force another resize after a delay
+                    setTimeout(() => {
+                        map.resize();
+                        console.log("Map resized after style change");
+                    }, 300);
+                });
+
+                // Apply the new style
+                map.setStyle(newStyle);
+            }
+        };
+
+        // Update all maps with the proper style
+        updateMap(parentMap);
+        updateMap(driverMap);
+        updateMap(schoolMap);
+        updateMap(adminMap);
+
+        // Force resize all maps after a delay to ensure they render correctly
+        setTimeout(resizeAllMaps, 600);
+    });
+
+    // Function to force resize maps properly
+    function resizeAllMaps() {
+        console.log("Forcing map resize");
         if (parentMap) {
-            parentMap.setStyle(darkMode ? 'mapbox://styles/mapbox/dark-v10' : 'mapbox://styles/mapbox/streets-v11');
+            parentMap.resize();
+            console.log("Parent map resized");
+            setTimeout(() => parentMap.resize(), 100);
+            setTimeout(() => parentMap.resize(), 500);
         }
         if (driverMap) {
-            driverMap.setStyle(darkMode ? 'mapbox://styles/mapbox/dark-v10' : 'mapbox://styles/mapbox/streets-v11');
+            driverMap.resize();
+            console.log("Driver map resized");
+            setTimeout(() => driverMap.resize(), 100);
+            setTimeout(() => driverMap.resize(), 500);
         }
         if (schoolMap) {
-            schoolMap.setStyle(darkMode ? 'mapbox://styles/mapbox/dark-v10' : 'mapbox://styles/mapbox/streets-v11');
+            schoolMap.resize();
+            console.log("School map resized");
+            setTimeout(() => schoolMap.resize(), 100);
+            setTimeout(() => schoolMap.resize(), 500);
         }
         if (adminMap) {
-            adminMap.setStyle(darkMode ? 'mapbox://styles/mapbox/dark-v10' : 'mapbox://styles/mapbox/streets-v11');
+            adminMap.resize();
+            console.log("Admin map resized");
+            setTimeout(() => adminMap.resize(), 100);
+            setTimeout(() => adminMap.resize(), 500);
+        }
+    }
+
+    // Window resize handler for maps
+    window.addEventListener('resize', () => {
+        // Resize all maps when window size changes
+        resizeAllMaps();
+    });
+
+    // Call resize maps on tab/window focus
+    window.addEventListener('focus', resizeAllMaps);
+    window.addEventListener('visibilitychange', () => {
+        if (!document.hidden) {
+            resizeAllMaps();
         }
     });
 });

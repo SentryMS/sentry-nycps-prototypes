@@ -132,6 +132,77 @@
     --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5), 0 4px 6px rgba(0, 0, 0, 0.4);
 }
 
+/* Dark Mode Header Adjustments */
+.dark-mode .app-header {
+    background: rgba(26, 26, 26, 0.95) !important;
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode .header-title-text {
+    color: #ffffff;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+    /* Shadow for dark mode */
+}
+
+.dark-mode .logo-separator {
+    background-color: #666;
+    opacity: 0.5;
+}
+
+.dark-mode #user-info {
+    color: #ffffff !important;
+}
+
+/* Dark mode card improvements */
+.dark-mode .card {
+    background-color: #1a1a1a !important;
+    border-color: #444444 !important;
+    color: #e0e0e0 !important;
+}
+
+.dark-mode .card-header {
+    background-color: #252525 !important;
+    border-bottom-color: #444444 !important;
+    color: #ffffff !important;
+}
+
+/* Dark mode navigation info for better contrast */
+.dark-mode .navigation-info {
+    background-color: #333333 !important;
+    color: #ffffff !important;
+}
+
+/* Dark mode text contrast improvements */
+.dark-mode .text-secondary {
+    color: #c0c0c0 !important;
+}
+
+.dark-mode h1,
+.dark-mode h2,
+.dark-mode h3,
+.dark-mode h4,
+.dark-mode h5,
+.dark-mode h6,
+.dark-mode p,
+.dark-mode span,
+.dark-mode div {
+    color: #e0e0e0 !important;
+}
+
+.dark-mode .text-primary,
+.dark-mode .text-accent {
+    color: #50d9ab !important;
+    /* Lighter accent color for dark mode */
+}
+
+/* Dark mode marker improvements */
+.dark-mode .bus-marker,
+.dark-mode .school-marker,
+.dark-mode .stop-marker,
+.dark-mode .student-marker {
+    filter: drop-shadow(0px 0px 5px rgba(255, 255, 255, 0.8)) brightness(1.2) !important;
+}
+
 /* Basic Body Styling */
 body {
     font-family: var(--font-family);
@@ -335,6 +406,7 @@ img {
     /* Add specific adjustments if needed */
 }
 
+/* Modern divider */
 .logo-separator {
     display: inline-block;
     height: 28px;
@@ -360,6 +432,39 @@ img {
     text-overflow: ellipsis;
     /* Add ellipsis if it overflows */
     letter-spacing: -0.01em;
+}
+
+/* Ensure SVG objects don't trigger pointer events on their containers */
+object.header-logo {
+    pointer-events: none;
+}
+
+/* Dark mode adjustments for header */
+.dark-mode .app-header {
+    background: rgba(26, 26, 26, 0.95) !important;
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode .header-title-text {
+    color: #ffffff;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+    /* Shadow for dark mode */
+}
+
+.dark-mode .logo-separator {
+    background-color: #666;
+    opacity: 0.5;
+}
+
+/* Add dark-theme class to SVGs for theme toggle */
+.dark-mode object.header-logo {
+    filter: none;
+    /* Remove any filters */
+}
+
+/* Apply theme class to <html> element for SVG internal styles */
+.dark-mode object.header-logo {
+    border: none !important;
 }
 
 .app-header .header-controls {
@@ -621,8 +726,9 @@ section.view.active {
 
 /* Map Container Styles */
 .map-container {
-    height: 300px;
-    width: 100%;
+    height: 550px !important;
+    /* Force much taller height with !important */
+    width: 100% !important;
     border-radius: var(--border-radius-md);
     overflow: hidden;
     margin: var(--padding-md) 0;
@@ -630,23 +736,51 @@ section.view.active {
     position: relative;
     background-color: #f1f5f9;
     border: 1px solid var(--border-color);
+    min-height: 400px !important;
+    /* Force minimum height with !important */
+    display: flex;
+    /* Ensure contents fill container */
+}
+
+/* Force map container children to fill container completely */
+.map-container>div,
+.map-container>canvas,
+.map-container>.mapboxgl-canvas-container,
+.map-container>.mapboxgl-canvas-container>canvas {
+    width: 100% !important;
+    height: 100% !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+}
+
+/* Ensure mapboxgl elements fill container */
+.mapboxgl-map {
+    width: 100% !important;
+    height: 100% !important;
 }
 
 /* Specific map container heights for different views */
 #parent-map {
-    height: 350px;
+    height: 450px !important;
+    /* With !important to override any other styles */
 }
 
 #driver-map {
-    height: 400px;
+    height: 500px !important;
+    /* With !important to override any other styles */
 }
 
 #school-map {
-    height: 380px;
+    height: 480px !important;
+    /* With !important to override any other styles */
 }
 
 #admin-map {
-    height: 450px;
+    height: 550px !important;
+    /* With !important to override any other styles */
 }
 
 /* Mapbox Custom Controls */
@@ -1917,12 +2051,8 @@ select.form-control {
 }
 
 body.sidebar-active .sidebar-overlay {
-
-    /* Only show overlay on mobile viewports */
-    @media (max-width: 991.98px) {
-        opacity: 1;
-        pointer-events: auto;
-    }
+    opacity: 1;
+    pointer-events: auto;
 }
 
 .sidebar-nav {
@@ -1944,4 +2074,346 @@ body.sidebar-active .sidebar-overlay {
 
 .grid-container-2col {
     gap: var(--padding-lg);
+}
+
+/* Map container in dark mode */
+.dark-mode .map-container {
+    background-color: #2a2a2a;
+    /* Darker background for maps in dark mode */
+    border-color: #444444;
+}
+
+/* Custom markers in dark mode need better visibility */
+.dark-mode .bus-marker,
+.dark-mode .school-marker,
+.dark-mode .stop-marker,
+.dark-mode .student-marker {
+    filter: drop-shadow(0px 0px 5px rgba(255, 255, 255, 0.6));
+    /* Add better shadow in dark mode for visibility */
+}
+
+/* Dark mode card improvements */
+.dark-mode .card {
+    background-color: #222222;
+    border-color: #444444;
+}
+
+.dark-mode .card-header {
+    background-color: #303030;
+    border-bottom-color: #444444;
+    color: #ffffff;
+}
+
+/* Dark mode navigation info for better contrast */
+.dark-mode .navigation-info {
+    background-color: #333333;
+    color: #ffffff;
+}
+
+/* Dark mode text contrast improvements */
+.dark-mode .text-secondary {
+    color: #c0c0c0 !important;
+    /* Lighter color for better contrast */
+}
+
+/* Dark mode badge improvements */
+.dark-mode .badge {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Improve contrast for form elements in dark mode */
+.dark-mode .form-control {
+    background-color: #333333;
+    border-color: #444444;
+    color: #e0e0e0;
+}
+
+.dark-mode .form-control:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 0.2rem rgba(16, 185, 129, 0.25);
+}
+
+.dark-mode .form-control::placeholder {
+    color: #888888;
+}
+
+/* Mobile-specific media queries and enhancements */
+/* These will only apply to small screens and won't affect desktop */
+
+/* Extra small devices (phones, 576px and down) */
+@media (max-width: 576px) {
+
+    /* Responsive Header for very small screens */
+    .app-header {
+        padding: 0 10px;
+        /* Smaller padding on tiny screens */
+        height: auto;
+        /* Allow header to grow taller if needed */
+        min-height: var(--header-height);
+        flex-wrap: wrap;
+        /* Allow wrapping on very small screens */
+    }
+
+    .header-brand {
+        width: 100%;
+        /* Take full width */
+        flex-wrap: wrap;
+        /* Allow logo+text to wrap */
+        justify-content: flex-start;
+        gap: 8px;
+        /* Smaller gap */
+    }
+
+    .header-title-text {
+        font-size: 0.85rem;
+        /* Smaller text */
+        width: 100%;
+        /* Force title to new line */
+        margin-top: 4px;
+        white-space: normal;
+        /* Allow text to wrap */
+        line-height: 1.2;
+    }
+
+    .header-controls {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+
+    /* Responsive button sizing for touch */
+    .btn {
+        padding: 0.7rem 1rem;
+        /* Slightly larger for better touch */
+    }
+
+    .btn-sm {
+        padding: 0.5rem 0.8rem;
+        /* Ensure touch-friendly */
+    }
+
+    /* Ensure all grid layouts stack properly */
+    .parent-student-layout,
+    .driver-layout,
+    .grid-container-2col {
+        grid-template-columns: 1fr !important;
+        /* Force single column */
+        gap: var(--padding-md);
+    }
+
+    /* Role selection buttons - better mobile layout */
+    #role-selection .role-options {
+        grid-template-columns: 1fr;
+        /* Single column on phones */
+        gap: 16px;
+        /* Smaller gap */
+    }
+
+    /* Adjust card padding for mobile */
+    .card {
+        padding: var(--padding-md);
+        /* Smaller padding */
+    }
+
+    .card-header {
+        padding: var(--padding-sm) var(--padding-md);
+        margin: calc(-1 * var(--padding-md)) calc(-1 * var(--padding-md)) var(--padding-sm) calc(-1 * var(--padding-md));
+    }
+
+    /* Make maps more proportional to screen size */
+    .map-container {
+        height: 70vh !important;
+        /* Use viewport height instead of fixed height */
+        min-height: 300px !important;
+    }
+
+    /* Responsive KPI container */
+    .kpi-container {
+        grid-template-columns: 1fr 1fr !important;
+        /* Two columns max */
+        gap: 10px;
+    }
+
+    .kpi-item.card .value {
+        font-size: 1.75rem;
+        /* Smaller for mobile */
+    }
+
+    /* Better responsive admin actions grid */
+    .admin-actions-card .admin-actions {
+        grid-template-columns: 1fr 1fr;
+        /* Limit to two columns */
+    }
+
+    /* Adjust filter bar for mobile */
+    .filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filter-bar .form-control {
+        width: 100%;
+        margin-bottom: 8px;
+    }
+
+    .filter-bar .btn {
+        width: 100%;
+        margin-left: 0;
+    }
+}
+
+/* Small devices (portrait phones/landscape phones, between 577px and 767px) */
+@media (min-width: 577px) and (max-width: 767px) {
+
+    /* Header adjustments for small screens but not tiny */
+    .header-title-text {
+        font-size: 0.9rem;
+        max-width: 300px;
+        /* Limit width */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* Adjust card padding for small tablets */
+    .card {
+        padding: var(--padding-md);
+    }
+
+    /* Make maps more proportional to screen size */
+    .map-container {
+        height: 60vh !important;
+        /* Use viewport height */
+        min-height: 350px !important;
+    }
+
+    /* Responsive grid layouts */
+    .parent-student-layout,
+    .driver-layout {
+        grid-template-columns: 1fr !important;
+        /* Single column */
+    }
+
+    .grid-container-2col {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+}
+
+/* Adjust for landscape orientation on mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+    .app-header {
+        position: relative;
+        /* Don't use sticky positioning in landscape */
+    }
+
+    .map-container {
+        height: 60vh !important;
+        /* Smaller height in landscape */
+        min-height: 200px !important;
+    }
+
+    #role-selection .centered-content {
+        min-height: auto;
+        /* Don't force full height */
+        padding: var(--padding-md) 0;
+    }
+}
+
+/* Add media queries to conditionally shorten the header title text for different screen sizes */
+@media (max-width: 767px) {
+
+    /* Create a data attribute version that can be modified by JavaScript */
+    .header-title-text[data-short-title="true"]::after {
+        content: "NYCPS Transportation System";
+        display: inline;
+    }
+
+    .header-title-text[data-short-title="true"] {
+        font-size: 0.9rem;
+        color: var(--text-primary);
+    }
+}
+
+@media (max-width: 575px) {
+
+    /* Even shorter for very small screens */
+    .header-title-text[data-short-title="true"]::after {
+        content: "Transportation System";
+        display: inline;
+    }
+}
+
+/* Touch-friendly improvements */
+@media (max-width: 767px) and (hover: none) {
+
+    /* Bigger touch targets for touch devices */
+    .simple-list li {
+        padding: 12px 8px;
+        /* More vertical padding */
+    }
+
+    .nav-item {
+        padding: 8px 2px;
+        /* Larger touch target */
+    }
+
+    .btn {
+        min-height: 44px;
+        /* Apple's minimum touch target */
+    }
+
+    /* Remove hover effects on touch devices */
+    .card:hover {
+        transform: none;
+        box-shadow: var(--shadow-sm);
+    }
+
+    /* Better touch feedback */
+    .btn:active {
+        transform: scale(0.96);
+        opacity: 0.8;
+        transition: transform 0.1s, opacity 0.1s;
+    }
+}
+
+/* Fix sidebar overlay for small screens */
+@media (max-width: 991.98px) {
+    .sidebar-overlay {
+        display: block;
+        z-index: 999;
+        /* Below sidebar but above content */
+    }
+
+    body.sidebar-active .sidebar-overlay {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .app-sidebar {
+        width: 85%;
+        /* Smaller sidebar on mobile */
+        max-width: var(--sidebar-width);
+        z-index: 1000;
+        /* Above overlay */
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+        /* Stronger shadow */
+    }
+
+    /* Add close button for mobile sidebar */
+    .sidebar-close-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: calc(var(--header-height) + 10px);
+        right: 10px;
+        width: 36px;
+        height: 36px;
+        background-color: rgba(0, 0, 0, 0.1);
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 1001;
+        font-size: 16px;
+        color: var(--text-secondary);
+    }
 }
